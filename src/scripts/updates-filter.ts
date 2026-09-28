@@ -5,8 +5,9 @@
 import { BASE, effect, spatial } from "../motion/policy";
 
 export function initFilters(): void {
-  const form = document.querySelector<HTMLFormElement>("[data-filters]");
-  if (!form) return;
+  const found = document.querySelector<HTMLFormElement>("[data-filters]");
+  if (!found) return;
+  const form: HTMLFormElement = found;
   const lists = [...document.querySelectorAll<HTMLElement>("[data-f-list]")];
   const items = lists.flatMap((l) => [...l.querySelectorAll<HTMLElement>(":scope > li")]);
   const empty = document.querySelector<HTMLElement>("[data-f-empty]");

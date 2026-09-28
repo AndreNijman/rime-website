@@ -182,7 +182,11 @@ Super+Return opens a terminal, Super+Q closes a window and Alt+Tab switches.
 ## The rescue target
 
 Rime ships no recovery boot entry. On a machine that boots GRUB (every install
-from the published ISO), you can start the systemd rescue target for one boot:
+from the published ISO), you can start the systemd rescue target for one boot.
+
+It asks for the root password. The installer creates only your account and
+sets no root password, so give root one while the machine still works
+(`sudo passwd root`); otherwise the rescue target will not open a shell.
 
 1. At the GRUB menu, press `e` on the entry you want.
 2. Add `systemd.unit=rescue.target` to the end of the line that starts with

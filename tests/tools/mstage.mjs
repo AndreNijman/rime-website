@@ -1,0 +1,15 @@
+import { chromium } from "@playwright/test";
+const out = process.argv[2];
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 390, height: 844 }, colorScheme: "dark" });
+await p.goto("http://localhost:4321/shell", { waitUntil: "networkidle" });
+const st = p.locator("#shell-stage .stage");
+await st.scrollIntoViewIfNeeded();
+await p.waitForTimeout(300); await st.screenshot({ path: `${out}/m-closed.png` });
+await p.locator('#shell-stage .stage-act[data-act="dashboard"]').click();
+await p.waitForTimeout(1100); await st.screenshot({ path: `${out}/m-dash.png` });
+await p.locator('#shell-stage .stage-act[data-act="network"]').click();
+await p.waitForTimeout(1300); await st.screenshot({ path: `${out}/m-net.png` });
+await p.locator('#shell-stage .stage-act[data-act="notifications"]').click();
+await p.waitForTimeout(1300); await st.screenshot({ path: `${out}/m-notif.png` });
+await b.close();

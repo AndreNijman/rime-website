@@ -9,8 +9,9 @@ const W = 1440, B = T1.borderWidth, NH = T1.notchHeight;
 const G = { cx: W / 2, strip: B, notchW: T1.cNotchMinWidth, notchH: NH, shoulder: T1.notchShoulder, notchBottom: T1.notchBottom, w: 900, h: NH + T1.dashboardHeight, r: T1.radiusXL, shoulderW1: 28, shoulderH1: 22 };
 
 export function initLab(): void {
-  const lab = document.querySelector<HTMLElement>("[data-lab]");
-  if (!lab || lab.dataset.bound) return;
+  const found = document.querySelector<HTMLElement>("[data-lab]");
+  if (!found || found.dataset.bound) return;
+  const lab: HTMLElement = found;
   lab.dataset.bound = "1";
   const body = lab.querySelector<SVGPathElement>("[data-lab-body]")!;
   const range = lab.querySelector<HTMLInputElement>("[data-lab-t]")!;

@@ -239,18 +239,23 @@ its setup at first login and needs the network for it.
 This account comes from reading the source code. Nobody has reproduced it on a
 real v2.1.0 install yet.
 
-**What goes wrong.** The update client in the v2.1.0 image checks the image's
-signature before it downloads anything, and it trusts one signer: the old
-`apex-os` build workflow. Since 2026-09-28 13:45 UTC, every published image,
-including the one your machine updates from (`ghcr.io/andrenijman/apex-os:apex`),
-is signed by the renamed `rime-os` workflow. By the source, the first
-`sudo apex update` on a fresh v2.1.0 install stops with a refusal that names the
-`rime-os` signer. Machines installed from v2.0.0 are in the same position. A machine that
-ran `apex update` between 03:37 and 13:45 UTC on 2026-09-28 received an
-in-between release that trusts both names, and is not affected.
+**What goes wrong.** The update client in the v2.1.0 image trusts one signer:
+the old `apex-os` build workflow. Every image published since 2026-09-28
+13:45 UTC is signed by the renamed `rime-os` workflow, so by the source the
+first `sudo apex update` on a fresh v2.1.0 install stops at the signature check.
+Machines installed from v2.0.0 are in the same position. A machine that ran
+`apex update` between 03:37 and 13:45 UTC on 2026-09-28 received an in-between
+release that trusts both names, and is not affected.
 
-The ways past the refusal are yours to choose. The safer one is to check the
-image yourself first, then let one update through.
+**The cautious choice is to wait** for an installer published under the Rime
+name: it records the new image name and ships an update client that trusts the
+new signer, so none of this applies.
+
+**Why not `apex update --allow-unverified`.** That would get past the check, but
+it runs the rest of the old client too, including its boot-migration step. On a
+machine with Secure Boot off, that step can try to move the machine from GRUB to
+systemd-boot using a version of the helper that could leave a machine unable to
+update if the trial boot failed. The steps below skip the old client entirely.
 
 ### 1. Ask what the update would do
 
@@ -261,79 +266,72 @@ apex trust --gate
 ```
 
 If it says the update would deploy, run `sudo apex update`, reboot, and skip to
-step 5. If it refuses and names the `rime-os` signer, note the digest it prints
-and continue.
+step 5. If it refuses and names the `rime-os` signer, continue.
 
 ### 2. Verify the image on another computer
 
-cosign is not installed on Rime or APEX-OS, and Fedora does not package it, so
-run this on a computer that has it:
+cosign is not in the package sources Rime uses, so run this on a computer that
+has it:
 
 ```sh
-cosign verify ghcr.io/andrenijman/apex-os:apex \
+cosign verify ghcr.io/andrenijman/rime-os:rime \
   --certificate-identity https://github.com/AndreNijman/rime-os/.github/workflows/build-image.yml@refs/heads/main \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
-This is the tag your machine updates from. The same image is also published as
-`ghcr.io/andrenijman/rime-os:rime`. cosign prints the digest it verified (the
-`docker-manifest-digest` field). It should match the digest from step 1.
+cosign prints the digest it verified (the `docker-manifest-digest` field). Note
+it.
 
-### 3. Let one update through
+### 3. Switch to the Rime image
 
 ```sh
-sudo apex update --allow-unverified
+sudo bootc switch ghcr.io/andrenijman/rime-os:rime
 ```
 
-`--allow-unverified` skips the signature check for this one run. It prints the
-full refusal first, then proceeds. It does not change what later updates check.
+This one command uses bootc directly, which checks no signature itself. That is
+acceptable here, once, because you verified the image in step 2 and check the
+result in step 4. Afterwards, use `rime update` as normal: it is the command that
+checks signatures.
 
 ### 4. Check what was staged, then restart
 
 The tag can move between your check and the download, because every build
-republishes it. Before you restart, confirm that the staged image is the digest
-you verified:
+republishes it. Confirm that the staged image is the digest you verified:
 
 ```sh
 sudo bootc status
 ```
 
-If the staged digest is different, verify that digest with cosign before you
-restart (`cosign verify ghcr.io/andrenijman/apex-os@sha256:…` with the same two
-flags). Then:
+If the staged digest differs, verify that digest with cosign before you restart
+(`cosign verify ghcr.io/andrenijman/rime-os@sha256:…` with the same two flags).
+If that verification fails, do not restart: a staged image does not run until
+you boot it. Otherwise:
 
 ```sh
 sudo systemctl reboot
 ```
 
-On a machine with Secure Boot off, the update may move the boot path from GRUB
-to systemd-boot instead of staging a new image. It says so ("the boot path was
-migrated … this update did not change the OS image"), and `bootc status` shows
-nothing staged. Restart, then repeat steps 1 to 4.
-
 ### 5. After the restart
 
-The machine now runs Rime. It moves its state from the old APEX paths to the
-new ones at that first boot, and leaves links at the old paths so a rollback can
-still find it. `rime` is the command from now on; `apex` still works and prints
-a one-line note.
+The machine now runs Rime and tracks `ghcr.io/andrenijman/rime-os:rime`. At this
+first boot it moves its state from the old APEX paths to the new ones, and leaves
+links at the old paths so a rollback can still find it. `rime` is the command
+from now on; `apex` still works and prints a one-line note.
 
 ```sh
 rime trust --gate
 ```
 
-It should now report a verified signature. Your next `sudo rime update` switches
-the machine to the new image name (`ghcr.io/andrenijman/rime-os:apex`, the same
-image under the new name), and from then on updates pass the signature check
-without help. See [Updating](/docs/updating).
+It should report a verified signature, and from now on `sudo rime update` checks
+every image itself. See [Updating](/docs/updating).
 
 If anything is wrong after the restart, `sudo rime rollback` and a reboot take
 you back to the v2.1.0 image. See [Rollback](/docs/rollback).
 
-### The other way past: turning the check off
+### Don't turn the check off
 
-Setting `signature=off` in `/etc/apex/trust.conf` also gets the update through,
-but it stays off. The first Rime boot moves `/etc/apex` to `/etc/rime`, so the
-setting carries over to `/etc/rime/trust.conf` and every later update deploys
-without a signature check. If you used it, delete that line once you are on
-Rime.
+Setting `signature=off` in `/etc/apex/trust.conf` also gets an update through,
+but it stays off: the first Rime boot moves `/etc/apex` to `/etc/rime`, so every
+later update would deploy without a signature check. If you already did it,
+delete that line once you are on Rime.
+

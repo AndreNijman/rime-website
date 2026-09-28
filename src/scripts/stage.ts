@@ -50,7 +50,25 @@ function setup(fig: HTMLElement): StageHandle {
 
   const forceReduced = fig.dataset.motion === "reduced";
   // ── scale the 1440 × 900 desk to the stage ────────────────────────────────
-  const fit = () => desk.style.setProperty("--k", String(stage.clientWidth / W));
+  // Wide: the whole desktop. Narrow (a phone): a 4:5 cut of the real desktop,
+  // 520 logical px wide, at a size you can read — never a thumbnail of a
+  // 16:10 screen (spec §4.4, §5.2). The cut sits over the notch the current
+  // surface grows from, and pans there on the page spring.
+  const CUT = 520;
+  let narrow = false;
+  const cutFor = (a: Act | null) => (a === "network" || a === "notifications" ? W - CUT : W / 2 - CUT / 2);
+  const pan = new Follower(W / 2 - CUT / 2, springRole("page"), () => apply());
+  function apply() {
+    const sw = stage.clientWidth;
+    if (!narrow) { desk.style.transform = `scale(${sw / W})`; return; }
+    const k = sw / CUT;
+    desk.style.transform = `translateX(${(-pan.value * k).toFixed(2)}px) scale(${k})`;
+  }
+  const fit = () => {
+    narrow = stage.clientWidth < 600;
+    stage.classList.toggle("stage--cut", narrow);
+    apply();
+  };
   new ResizeObserver(fit).observe(stage);
   fit();
 
@@ -149,6 +167,7 @@ function setup(fig: HTMLElement): StageHandle {
       dash.close(); right.close();
     }
     current = a;
+    if (a) pan.follow(cutFor(a), springRole("page"));
     stage.dataset.open = a ?? "";
     for (const b of acts) {
       const on = b.dataset.act === a;
@@ -183,6 +202,7 @@ function setup(fig: HTMLElement): StageHandle {
     while (touring && visible && !isReduced()) {
       const [a, hold] = script[step % script.length];
       const tgt = targets[a ?? "away"];
+      if (a && narrow) pan.follow(cutFor(a), springRole("page"));
       pointer.hidden = false;
       px.follow(tgt[0]); py.follow(tgt[1]);
       await wait(a ? 720 : 520);

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "0.1.0",
-  "description": "rimeos.com \u2014 the website for Rime",
+  "description": "rimeos.com — the website for Rime",
   "engines": {
     "node": ">=22"
   },
@@ -35,7 +35,7 @@
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.62.1",
     "sharp": "^0.35.5",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vitest": "^5.0.2"
   }
 }

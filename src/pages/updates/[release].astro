@@ -32,7 +32,6 @@ const groups: { id: string; title: string; items: Change[]; quiet?: boolean }[] 
 ].filter((g) => g.items.length);
 const ch = channelOf(r.channels);
 const p = r.provenance;
-const product = r.product === "apex" ? "APEX-OS" : "Rime";
 const repoOs = SITE.repos.os, repoShell = SITE.repos.shell;
 const desc = r.summary.split(/(?<=\.)\s+/)[0];
 ---

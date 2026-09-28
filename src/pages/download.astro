@@ -19,7 +19,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
   <section class="container dl-hero">
     <p class="eyebrow">Download</p>
     <h1>Get Rime.</h1>
-    <p class="lead">A network installer for 64-bit PCs. It downloads the signed Rime system image while it installs, then the machine updates like any other.</p>
+    <p class="lead">A network installer for 64-bit PCs. It downloads the signed system image while it installs. The first update afterwards needs one manual step, below.</p>
 
     <div class="dl-card">
       <div class="dl-main">
@@ -50,24 +50,11 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
 
   <section class="container section-tight" id="first-update" aria-labelledby="fu-h">
     <div class="callout dl-issue" data-tone="caution">
-      <p class="eyebrow">Known issue · found in code review, not yet reproduced on a fresh install</p>
-      <h2 id="fu-h">Your first update needs one extra step.</h2>
-      <p>This installer predates the rename. The update tool it installs trusts only images signed by the old <code>apex-os</code> build, and new images are signed by <code>rime-os</code>, so its first update is expected to stop at the signature check instead of installing. Check the image yourself, then let that one update through:</p>
-      <ol class="steps">
-        <li>
-          <p>See what the next update would decide (read-only, no root):</p>
-          <CommandChip cmd="apex trust --gate" />
-        </li>
-        <li>
-          <p>If it refuses, verify the image independently with <a href="https://docs.sigstore.dev/cosign/">cosign</a> (from another machine or a container) against Rime's build identity:</p>
-          <CommandChip wrap cmd={`cosign verify ghcr.io/andrenijman/rime-os:rime --certificate-identity ${identity} --certificate-oidc-issuer https://token.actions.githubusercontent.com`} />
-        </li>
-        <li>
-          <p>Then run the update once without the signature check, and reboot:</p>
-          <CommandChip cmd="sudo apex update --allow-unverified && sudo systemctl reboot" />
-        </li>
-      </ol>
-      <p>After that reboot the machine runs a current image, which trusts the new identity, so every later <code>sudo rime update</code> verifies normally. Machines already on 2026.09.28.3 or later are not affected. <a href="/docs/install#the-first-update">More in the install guide</a> · <a href="/updates/2026.09.28.4#known-issues">Release notes</a></p>
+      <p class="eyebrow">Known issue · worked out from the source, not yet reproduced on a fresh install</p>
+      <h2 id="fu-h">The first update after installing needs a manual step.</h2>
+      <p>This installer predates the rename. The update tool it installs trusts only images signed by the old <code>apex-os</code> build, and new images are signed by <code>rime-os</code>, so its first update is expected to stop at the signature check. The way through is to verify the current image yourself with cosign, switch to it once with <code>bootc</code>, check what was staged, and reboot. After that, <code>sudo rime update</code> checks every image itself.</p>
+      <p>Don't use <code>--allow-unverified</code> or turn the signature check off to get past it: both run parts of the old tool you don't want, or leave the check off for good. Machines already on 2026.09.28.3 or later are not affected.</p>
+      <p class="dl-issue-links"><a class="btn btn-primary" href="/docs/install#the-first-update">The exact steps <Icon name="arrow-right" /></a> <a class="btn" href="/updates/2026.09.28.4#known-issues">Release notes</a></p>
     </div>
   </section>
 
@@ -109,7 +96,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
       <li><strong>Write the ISO to a USB stick</strong> with a USB image writer. Everything on the stick is replaced.</li>
       <li><strong>Boot from the stick</strong> from your firmware's boot menu.</li>
       <li><strong>Follow the installer.</strong> Keyboard and time zone come first. The disk you pick is erased only after you type ERASE for that exact disk. Whole-disk encryption is on by default; write down the recovery key it shows you.</li>
-      <li><strong>Reboot</strong> into Rime, then take the first update (above).</li>
+      <li><strong>Reboot</strong>, then take the first update (<a href="#first-update">above</a>).</li>
     </ol>
     <p><a class="btn" href="/docs/install">Full install guide <Icon name="arrow-right" /></a></p>
     <p class="caption measure">Installing beside Windows: shrink Windows yourself first, then choose the installer's option to install into an existing partition. The installer does not shrink Windows for you. There is no Windows-based installer yet.</p>
@@ -144,6 +131,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
   .dl-issue { padding: clamp(22px, 3vw, 36px); display: grid; gap: 14px; }
   .dl-issue h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
   .dl-issue p { max-width: 76ch; }
+  .dl-issue-links { display: flex; gap: 10px; flex-wrap: wrap; }
   .steps { margin: 4px 0; padding-left: 1.3em; display: grid; gap: 16px; }
   .steps li > p { margin-bottom: 8px; }
   .steps--plain { gap: 10px; max-width: 76ch; margin-bottom: 18px; }

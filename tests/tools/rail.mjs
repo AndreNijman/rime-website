@@ -1,0 +1,12 @@
+import { chromium } from "@playwright/test";
+const out = process.argv[2];
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
+await p.goto("http://localhost:4321/personalise", { waitUntil: "networkidle" });
+await p.locator('label.rail-item:has(input[value="ember"])').click();
+await p.waitForTimeout(120); await p.screenshot({ path: `${out}/rail-120.png` });
+await p.waitForTimeout(1400); await p.screenshot({ path: `${out}/rail-done.png` });
+console.log(await p.evaluate(() => [document.documentElement.dataset.palette, localStorage.getItem("rime.palette"), getComputedStyle(document.body).backgroundColor]));
+await p.goto("http://localhost:4321/", { waitUntil: "networkidle" });
+await p.waitForTimeout(500); await p.screenshot({ path: `${out}/rail-home-after.png` });
+await b.close();

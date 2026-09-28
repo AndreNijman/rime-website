@@ -24,8 +24,9 @@ const BLOOM_W = 880, LENS_W = 640, POUR_W = 420;
 type Surface = { fluid: FluidSurface; trigger: HTMLElement | null; name: string };
 
 export function initFrame(): void {
-  const frame = document.querySelector<HTMLElement>("[data-frame]");
-  if (!frame) return;
+  const found = document.querySelector<HTMLElement>("[data-frame]");
+  if (!found) return;
+  const frame: HTMLElement = found;
   document.documentElement.classList.add("js");
   const svg = frame.querySelector<SVGSVGElement>(".frame-bar")!;
   const fill = svg.querySelector<SVGPathElement>(".bar-fill")!;
@@ -179,7 +180,7 @@ export function initFrame(): void {
     lastFocus = (document.activeElement as HTMLElement) ?? s.trigger;
     s.fluid.open();
     s.trigger?.setAttribute("aria-expanded", "true");
-    frame!.dataset.open = s.name;
+    frame.dataset.open = s.name;
     requestAnimationFrame(() => {
       const first = s === bloomS
         ? bloomEl.querySelector<HTMLInputElement>("[data-lens-input]")
@@ -191,7 +192,7 @@ export function initFrame(): void {
     if (!s.fluid.isOpen) return;
     s.fluid.close();
     s.trigger?.setAttribute("aria-expanded", "false");
-    if (frame!.dataset.open === s.name) delete frame!.dataset.open;
+    if (frame.dataset.open === s.name) delete frame.dataset.open;
     if (restore) (s.trigger ?? lastFocus)?.focus({ preventScroll: true });
   }
   function onSurfaceClosed(s: Surface) {

@@ -52,7 +52,6 @@ const frameLine = `M ${B + r} ${NH + i} C ${B + r - r * K} ${NH + i} ${fx0} ${NH
 const DW = 900, DH = NH + T1.dashboardHeight;
 const bloomG = { cx: W / 2, strip: B, notchW: CW, notchH: NH, shoulder: SH, notchBottom: NB, w: DW, h: DH, r: T1.radiusXL, shoulderW1: 28, shoulderH1: 22 };
 const bloom1 = Geo.centerBloom(1, bloomG);
-const dash = { x: Math.round(W / 2) - DW / 2 + 8, y: B + 8, w: DW - 16, h: DH - B - 16 };
 
 const img = scene.image;
 // Every scene's wallpaper, so the stage can follow a palette the visitor chose elsewhere.
@@ -61,7 +60,6 @@ const images = Object.fromEntries(scenes.scenes.map((s) => [s.id, {
   srcset: Object.fromEntries((["avif", "webp", "jpg"] as const).map((f) => [f, s.image.sources[f].map((x) => `${x.src} ${x.w}w`).join(", ")])),
 }]));
 const srcset = (fmt: "avif" | "webp" | "jpg") => img.sources[fmt].map((s) => `${s.src} ${s.w}w`).join(", ");
-const now = new Date("2026-09-28T09:41:00+08:00");
 const days = Array.from({ length: 42 }, (_, k) => {
   const d = new Date(2026, 8, 1 + k - new Date(2026, 8, 1).getDay());
   return { n: d.getDate(), inMonth: d.getMonth() === 8, today: d.getMonth() === 8 && d.getDate() === 28 };
@@ -228,10 +226,16 @@ const tiles = [
     transform-origin: 0 0; transform: scale(var(--k, 0.9));
     color: var(--rime-text-primary); font: 400 13px/1.35 var(--font-ui);
   }
+  /* No-JS fallback scales; stage.ts sets the exact transform. */
   @media (max-width: 1500px) { .stage-desk { --k: 0.82; } }
   @media (max-width: 1280px) { .stage-desk { --k: 0.7; } }
   @media (max-width: 1024px) { .stage-desk { --k: 0.6; } }
   @media (max-width: 800px) { .stage-desk { --k: 0.45; } }
+  /* Phones: a 4:5 cut of the desktop (stage.ts pans it). */
+  @media (max-width: 640px) {
+    .stage { aspect-ratio: 4 / 5; }
+    .stage-desk { --k: 0.72; transform: translateX(-330px) scale(var(--k)); }
+  }
   .stage-wall { position: absolute; inset: 0; }
   .stage-wall img { width: 100%; height: 100%; object-fit: cover; }
   .stage-wall::after { content: ""; position: absolute; inset: 0; background: var(--rime-surface-base); opacity: 0; transition: opacity var(--dur-state) var(--ease-effects); }

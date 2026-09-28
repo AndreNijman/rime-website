@@ -14,7 +14,7 @@ const change = z.object({
   summary: z.string(),
   detail: z.string().nullish(),
   docs: z.string().nullish(),
-  source: z.array(z.string().url()).default([]),
+  source: z.array(z.url()).default([]),
   breaking: z.boolean().default(false),
 });
 
@@ -34,10 +34,10 @@ const updates = defineCollection({
       osRevision: z.string().regex(/^[0-9a-f]{7,40}$/),
       shellRevision: z.string().regex(/^[0-9a-f]{7,40}$/).nullable(),
       imageDigest: z.string().regex(/^sha256:[0-9a-f]{12,64}$/).nullable(),
-      build: z.string().url().nullable(),
-      iso: z.object({ name: z.string(), bytes: z.number(), sha256: z.string(), url: z.string().url() }).nullable().optional(),
+      build: z.url().nullable(),
+      iso: z.object({ name: z.string(), bytes: z.number(), sha256: z.string(), url: z.url() }).nullable().optional(),
       // Same source rebuilt later (the weekly cron): a new digest, not a new release.
-      reissues: z.array(z.object({ digest: z.string(), build: z.string().url(), date: z.coerce.date(), note: z.string() })).default([]),
+      reissues: z.array(z.object({ digest: z.string(), build: z.url(), date: z.coerce.date(), note: z.string() })).default([]),
     }),
     highlights: z.array(z.string()).default([]),
     changes: z.array(change),

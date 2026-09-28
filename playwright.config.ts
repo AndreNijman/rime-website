@@ -7,7 +7,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: [["list"]],
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
-  use: { baseURL: "http://localhost:4321", reducedMotion: "reduce" },
+  use: { baseURL: "http://localhost:4321", contextOptions: { reducedMotion: "reduce" } },
   webServer: { command: "npx astro preview --port 4321", url: "http://localhost:4321", reuseExistingServer: true, timeout: 60_000 },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
