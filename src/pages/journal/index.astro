@@ -1,0 +1,30 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { formatDate } from "../../lib/releases";
+const posts = (await getCollection("journal")).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<Base title="Journal" description="Engineering notes from Rime: how the motion, the updates and the system are built, with the numbers.">
+  <header class="container page-hero">
+    <p class="eyebrow">Journal</p>
+    <h1>How it's built.</h1>
+    <p class="lead">Long-form engineering notes, written when there is something worth measuring or explaining.</p>
+  </header>
+  <div class="container jr">
+    {posts.map((p) => (
+      <article class="jr-item">
+        <p class="caption"><time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time></p>
+        <h2><a href={`/journal/${p.id}`}>{p.data.title}</a></h2>
+        <p class="muted">{p.data.description}</p>
+      </article>
+    ))}
+  </div>
+</Base>
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: 24px; display: grid; gap: 16px; }
+  .jr { display: grid; gap: 0; padding-bottom: var(--section-pad); border-top: 1px solid var(--rime-hairline); max-width: 900px; }
+  .jr-item { padding: 28px 0; border-bottom: 1px solid var(--rime-hairline); display: grid; gap: 8px; }
+  .jr-item h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
+  .jr-item h2 a { text-decoration: none; }
+  .jr-item h2 a:hover { text-decoration: underline; text-decoration-color: var(--rime-accent); }
+</style>

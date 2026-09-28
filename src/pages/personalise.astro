@@ -1,0 +1,147 @@
+---
+// /personalise — wallpaper becomes the system (spec §6.3). TRUTH RULE: every
+// palette on this page came from Rime's own matugen command (build-scenes.mjs).
+import Base from "../layouts/Base.astro";
+import ProductStage from "../components/ProductStage.astro";
+import PaletteRail from "../components/PaletteRail.astro";
+import Segmented from "../components/Segmented.astro";
+import Evidence from "../components/Evidence.astro";
+import scenes from "../data/scenes.json";
+import { SITE } from "../data/site";
+const s = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
+const g = scenes.generator;
+---
+<Base title="Personalise" description="Rime takes its colours from your wallpaper: matugen reads it, and every surface, text and accent role in the desktop is derived from the result.">
+  <header class="container page-hero">
+    <p class="eyebrow">Personalise</p>
+    <h1>Your wallpaper becomes the system.</h1>
+    <p class="lead">Pick a wallpaper and Rime derives its palette from it: surfaces, text, accent, selection, the bar, the lock screen. There is no fixed brand colour to fight with. The colour belongs to what you are looking at.</p>
+  </header>
+
+  <section class="container-wide" id="palette" aria-labelledby="pal-h">
+    <h2 id="pal-h" class="visually-hidden">Try a wallpaper</h2>
+    <div class="pers-grid">
+      <div class="pers-side">
+        <PaletteRail stage="pers-stage" name="scene-pers" />
+        <div class="pers-scheme" data-pers-scheme>
+          <Segmented name="pers-scheme" label="Light or dark" compact options={[{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }]} />
+        </div>
+      </div>
+      <ProductStage id="pers-stage" eager controls label="The desktop in the chosen wallpaper's palette" caption="The stage's roles change first; the page follows, and its background light follows last." />
+    </div>
+  </section>
+
+  <section class="container section-tight" id="follows" aria-labelledby="fol-h">
+    <div class="split-2">
+      <div>
+        <h2 id="fol-h" class="h2s">What follows the wallpaper</h2>
+        <p class="muted">One wallpaper change updates everything that reads the palette, in the same moment.</p>
+      </div>
+      <ul class="facts">
+        <li><strong>Rime Shell:</strong> every surface, text, outline and accent role, and the lock screen. The login screen and boot splash take your accent.</li>
+        <li><strong>Window borders</strong> in Rime Tiling, and <strong>title bars</strong> in Rime Floating.</li>
+        <li><strong>The terminal:</strong> Ghostty's colours, the prompt's accent, and the greeting's.</li>
+        <li><strong>Light or dark:</strong> one switch in Settings → Appearance. The palette is derived again from the same wallpaper.</li>
+        <li><strong>Not yet:</strong> GTK and Qt applications and other terminals keep their own themes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="rules" aria-labelledby="rules-h">
+    <div class="split-2">
+      <div>
+        <h2 id="rules-h" class="h2s">The rules it follows</h2>
+        <p class="muted">matugen produces a Material colour scheme from the wallpaper. The Shell turns six of its colours into named roles, each a measured mix of the surface, accent and text, and checks every one for contrast on the surfaces it is drawn on.</p>
+      </div>
+      <ul class="facts">
+        <li>Body text aims for 7:1 on every surface, secondary text 4.5:1, icons 3:1. If a wallpaper's palette misses a target, a stronger mix replaces that role, and the Shell logs which one.</li>
+        <li>Warnings, errors and success keep fixed hues: they have to read as alarming on every wallpaper, and every one clears 4.5:1.</li>
+        <li>The accent is always the scheme's primary colour. There is no manual accent override.</li>
+      </ul>
+    </div>
+    <Evidence links={[{ label: "roles.js", href: s("src/theme/roles.js") }, { label: "Colors.qml", href: s("src/theme/Colors.qml") }, { label: "WallpaperService.qml", href: s("src/services/WallpaperService.qml") }, { label: "matugen.toml.in", href: s("src/config/matugen.toml.in") }]}>
+      The command, as the Shell runs it: <code>{g.command}</code>.
+    </Evidence>
+  </section>
+
+  <section class="container section-tight" id="provenance" aria-labelledby="prov-h">
+    <h2 id="prov-h" class="h2s">Where this page's colours came from</h2>
+    <p class="muted prov-intro">Each scene below was run through {g.matugen} with the Shell's command and resolved by the Shell's <code>roles.js</code> when this site was built. The site refuses to build if a mapping misses WCAG AA where it is used, and the Light Field behind the page is pulled toward the base colour just far enough that body text stays at 7:1 on its brightest pixel.</p>
+    <div class="prov-table" role="table" aria-label="Scene palettes">
+      <div class="pt-row pt-head" role="row"><span role="columnheader">Scene</span><span role="columnheader">Scheme</span><span role="columnheader">surface · primary · on_surface</span><span role="columnheader">Fallbacks</span><span role="columnheader">Field</span></div>
+      {scenes.scenes.flatMap((sc) => (["dark", "light"] as const).map((m) => (
+        <div class="pt-row" role="row">
+          <span role="cell">{sc.name}<em>{sc.kind === "shipped" ? "ships with Rime" : "site scene"}</em></span>
+          <span role="cell">{m}</span>
+          <span role="cell" class="mono pt-hex">
+            <i data-hex-swatch={sc[m].source.background}></i>{sc[m].source.background}
+            <i data-hex-swatch={sc[m].source.active}></i>{sc[m].source.active}
+            <i data-hex-swatch={sc[m].source.text}></i>{sc[m].source.text}
+          </span>
+          <span role="cell" class="caption">{sc[m].fired.length ? sc[m].fired.join("; ") : "none"}</span>
+          <span role="cell" class="mono caption">{Math.round(sc[m].field.strength * 100)}% · {sc[m].field.worstTextContrast}:1</span>
+        </div>
+      )))}
+    </div>
+    <p class="caption prov-foot">The first scene is the wallpaper a fresh Rime install starts with. The other five were generated for this site from code in its repository, because the artwork inherited with the Shell has no recorded licence. The palette pipeline is the same for any image.</p>
+  </section>
+
+  <section class="container section-tight" id="accessibility" aria-labelledby="acc-h">
+    <div class="split-2">
+      <div>
+        <h2 id="acc-h" class="h2s">Accessibility is part of the palette</h2>
+        <p class="muted">Contrast is checked, not hoped for. Focus rings are drawn in the text colour, so they are visible on every palette. Status is never shown by colour alone.</p>
+      </div>
+      <ul class="facts">
+        <li>Reduce Motion removes every travelling motion and keeps short fades; the motion speed setting scales the rest.</li>
+        <li>This site follows the same rules: try the Motion and Appearance switches at the bottom of any page.</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initPrefs, currentScheme, setScheme } from "../scripts/prefs";
+  import { syncSegmented } from "../scripts/segmented";
+  const set = document.querySelector<HTMLElement>('[data-pers-scheme] [data-segmented]');
+  if (set) {
+    const sync = () => { const i = set.querySelector<HTMLInputElement>(`input[value="${currentScheme()}"]`); if (i) { i.checked = true; syncSegmented(set); } };
+    sync();
+    set.addEventListener("change", (e) => {
+      setScheme((e.target as HTMLInputElement).value as "dark" | "light");
+      // keep the footer's Appearance control in step
+      const f = document.querySelector<HTMLElement>('[data-prefs] [data-name="scheme"]');
+      const v = (e.target as HTMLInputElement).value;
+      const fi = f?.querySelector<HTMLInputElement>(`input[value="${v}"]`);
+      if (f && fi) { fi.checked = true; syncSegmented(f, false); }
+    });
+  }
+  void initPrefs;
+  // Swatches in the provenance table: colours come from data, set via CSSOM (CSP-safe).
+  document.querySelectorAll<HTMLElement>("[data-hex-swatch]").forEach((i) => { i.style.background = i.dataset.hexSwatch!; });
+</script>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(28px, 4vw, 48px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 62ch; }
+  .pers-grid { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: clamp(20px, 3vw, 44px); align-items: start; }
+  @media (max-width: 900px) { .pers-grid { grid-template-columns: 1fr; } .pers-grid > :first-child { order: 2; } }
+  .pers-side { display: grid; gap: 24px; }
+  .h2s { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; margin-bottom: 20px; }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: 1fr; } }
+  section.section-tight { border-top: 1px solid var(--rime-hairline); }
+  .facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); }
+  .facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  .facts strong { color: var(--rime-text-primary); }
+  .prov-intro { max-width: 76ch; margin-bottom: 20px; }
+  .prov-table { display: grid; border-top: 1px solid var(--rime-hairline); font-size: 0.9rem; }
+  .pt-row { display: grid; grid-template-columns: minmax(0, 1.2fr) 70px minmax(0, 2.2fr) minmax(0, 1.2fr) 120px; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rime-hairline); align-items: center; }
+  .pt-row em { display: block; font-style: normal; font-size: 0.76rem; color: var(--rime-text-secondary); }
+  .pt-head { font-size: 0.78rem; color: var(--rime-text-secondary); font-weight: 600; }
+  .pt-hex { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 0.76rem; }
+  .pt-hex i { width: 12px; height: 12px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--rime-outline-soft); display: inline-block; }
+  @media (max-width: 800px) { .pt-row { grid-template-columns: 1fr 1fr; } .pt-head { display: none; } }
+  .prov-foot { margin-top: 16px; max-width: 76ch; }
+</style>

@@ -1,0 +1,40 @@
+---
+// Convergence — PROVISIONAL (spec §2.2, A.1): the mark forming from fluid
+// material on a first visit. The final Rime mark and its redesigned
+// Convergence are still being designed; this is a stand-in that is cleanly
+// swappable (the mark's path lives in src/brand/mark.ts). Four drops meet on
+// the Shell's hero beat and merge through a meniscus (a blur + alpha
+// threshold, the same idea as the Nexus's smooth-union field); then the crisp
+// mark takes over. Once per session, never blocks input, and under Reduce
+// Motion the mark is simply there.
+import { MARK } from "../brand/mark";
+---
+<div class="conv" data-convergence aria-hidden="true">
+  <svg viewBox={MARK.crop} class="conv-svg">
+    <defs>
+      <filter id="conv-goo" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b" />
+        <feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10" />
+      </filter>
+    </defs>
+    <g class="conv-drops" filter="url(#conv-goo)">
+      <circle cx="256" cy="298" r="46" data-d="0" />
+      <circle cx="256" cy="298" r="34" data-d="1" />
+      <circle cx="256" cy="298" r="34" data-d="2" />
+      <circle cx="256" cy="298" r="30" data-d="3" />
+    </g>
+    <path class="conv-mark" d={MARK.path} />
+  </svg>
+</div>
+<script>
+  import { runConvergence } from "../scripts/convergence";
+  runConvergence();
+</script>
+<style>
+  .conv { width: clamp(44px, 5vw, 64px); aspect-ratio: 296 / 368; color: var(--rime-accent); }
+  .conv-svg { width: 100%; height: 100%; overflow: visible; }
+  .conv-drops { fill: currentColor; opacity: 0; }
+  .conv-mark { fill: currentColor; }
+  :global(:root.js) .conv[data-play] .conv-mark { opacity: 0; }
+  :global(:root.js) .conv[data-play] .conv-drops { opacity: 1; }
+</style>

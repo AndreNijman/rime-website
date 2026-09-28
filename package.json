@@ -1,0 +1,41 @@
+{
+  "name": "rimeos-web",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "rimeos.com \u2014 the website for Rime",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/sync-shell.mjs --check-hashes && node scripts/gen-tokens.mjs --check && astro build && node scripts/postbuild.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "vendor:shell": "node scripts/sync-shell.mjs",
+    "verify:vendor": "node scripts/sync-shell.mjs --check-upstream",
+    "downloads": "node scripts/fetch-downloads.mjs",
+    "scenes": "node scripts/build-scenes.mjs",
+    "scenes:check": "node scripts/build-scenes.mjs --check",
+    "tokens": "node scripts/gen-tokens.mjs",
+    "shapes": "node scripts/gen-shapes.mjs",
+    "launch-gates": "node scripts/launch-gates.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/noto-sans": "^5.3.0",
+    "astro": "^7.3.5",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}

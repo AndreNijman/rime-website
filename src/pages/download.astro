@@ -1,0 +1,162 @@
+---
+// /download (spec §6.6, §16). Renders ONLY what content/downloads.json holds,
+// and that file is generated from the published GitHub release
+// (scripts/fetch-downloads.mjs), checksums cross-checked. Nothing here
+// advertises an installer, architecture or method CI did not publish.
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import CommandChip from "../components/CommandChip.astro";
+import downloads from "../../content/downloads.json";
+import { SITE } from "../data/site";
+const cur = downloads.current, iso = cur.artifacts[0];
+const prev = downloads.previous;
+const gb = (b: number) => (b / 1e9).toFixed(2) + " GB";
+const date = new Date(cur.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" });
+const shortName = cur.name.split(" — ")[0];
+const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/main`;
+---
+<Base title="Download" description={`Download the Rime network installer (${iso.arch}, ${gb(iso.bytes)}), check it, and install.`}>
+  <section class="container dl-hero">
+    <p class="eyebrow">Download</p>
+    <h1>Get Rime.</h1>
+    <p class="lead">A network installer for 64-bit PCs. It downloads the signed Rime system image while it installs, then the machine updates like any other.</p>
+
+    <div class="dl-card">
+      <div class="dl-main">
+        <p class="dl-kicker"><span class="chip">Recommended</span><span class="caption">{shortName} · published {date}</span></p>
+        <h2 class="dl-file mono">{iso.name}</h2>
+        <dl class="dl-facts">
+          <div><dt>Architecture</dt><dd>{iso.arch}</dd></div>
+          <div><dt>Size</dt><dd class="tnum">{gb(iso.bytes)} <span class="caption">({iso.bytes.toLocaleString("en-AU")} bytes)</span></dd></div>
+          <div><dt>Kind</dt><dd>Network installer (needs a connection)</dd></div>
+        </dl>
+        <div class="dl-actions">
+          <a class="btn btn-primary btn-lg" href={iso.url} data-download-start><Icon name="download" /> Download ISO</a>
+          <a class="btn btn-lg" href={iso.checksumUrl}>Checksum file</a>
+        </div>
+      </div>
+      <div class="dl-sha">
+        <p class="caption">SHA-256</p>
+        <CommandChip cmd={iso.sha256} prompt="" label="SHA-256 copied" wrap />
+        <p class="caption">From GitHub's own record of the file, and it matches the published <code>.sha256</code>.</p>
+      </div>
+    </div>
+
+    <aside class="callout dl-name" data-tone="caution">
+      <h2 class="h4">Why the file says APEX-OS</h2>
+      <p>Rime was called APEX-OS until 28 September 2026, and no installer has been published under the new name yet. This one is the current installer. The system it installs is the same one, and it takes the Rime name as it updates.</p>
+    </aside>
+  </section>
+
+  <section class="container section-tight" id="first-update" aria-labelledby="fu-h">
+    <div class="callout dl-issue" data-tone="caution">
+      <p class="eyebrow">Known issue · found in code review, not yet reproduced on a fresh install</p>
+      <h2 id="fu-h">Your first update needs one extra step.</h2>
+      <p>This installer predates the rename. The update tool it installs trusts only images signed by the old <code>apex-os</code> build, and new images are signed by <code>rime-os</code>, so its first update is expected to stop at the signature check instead of installing. Check the image yourself, then let that one update through:</p>
+      <ol class="steps">
+        <li>
+          <p>See what the next update would decide (read-only, no root):</p>
+          <CommandChip cmd="apex trust --gate" />
+        </li>
+        <li>
+          <p>If it refuses, verify the image independently with <a href="https://docs.sigstore.dev/cosign/">cosign</a> (from another machine or a container) against Rime's build identity:</p>
+          <CommandChip wrap cmd={`cosign verify ghcr.io/andrenijman/rime-os:rime --certificate-identity ${identity} --certificate-oidc-issuer https://token.actions.githubusercontent.com`} />
+        </li>
+        <li>
+          <p>Then run the update once without the signature check, and reboot:</p>
+          <CommandChip cmd="sudo apex update --allow-unverified && sudo systemctl reboot" />
+        </li>
+      </ol>
+      <p>After that reboot the machine runs a current image, which trusts the new identity, so every later <code>sudo rime update</code> verifies normally. Machines already on 2026.09.28.3 or later are not affected. <a href="/docs/install#first-update">More in the install guide</a> · <a href="/updates/2026.09.28.4#known-issues">Release notes</a></p>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="requirements" aria-labelledby="req-h">
+    <div class="dl-grid">
+      <div>
+        <h2 id="req-h">Requirements</h2>
+        <dl class="req-list">
+          <div><dt>Computer</dt><dd>A 64-bit PC with UEFI. Legacy BIOS can also boot the stick.</dd></div>
+          <div><dt>Disk</dt><dd>At least 16 GB. If the target is the machine's only drive, about 53 GB, because the download is staged on it. Otherwise a second drive or USB stick with 32 GB free is used as scratch space and is not erased.</dd></div>
+          <div><dt>Network</dt><dd>A connection during the install.</dd></div>
+          <div><dt>USB stick</dt><dd>One that holds {gb(iso.bytes)}. It is overwritten.</dd></div>
+          <div><dt>Secure Boot</dt><dd>Optional. The installer offers to enrol Rime's Secure Boot key; with Secure Boot on, the Rime kernel boots only after that key is enrolled. You can skip it and leave Secure Boot off.</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h2>Known hardware notes</h2>
+        <ul class="hw">
+          <li>Wi-Fi networks with a captive portal (sign-in page) don't work in the installer. Use a normal network or Ethernet.</li>
+          <li>USB Wi-Fi adapters that need out-of-tree drivers don't work in the installer.</li>
+          <li>Tablets without a keyboard can't complete the account page.</li>
+          <li>NVIDIA's driver is part of the image and signed with Rime's key, so it loads with Secure Boot on once that key is enrolled.</li>
+          <li>Xbox wireless dongles need their firmware fetched once after install; it can't be redistributed.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="verify" aria-labelledby="ver-h">
+    <h2 id="ver-h">Check the download</h2>
+    <p class="muted measure">Put the ISO and its checksum file in one folder and run:</p>
+    <CommandChip cmd={`sha256sum -c ${iso.name}.sha256`} />
+    <p class="muted measure">It prints <code>{iso.name}: OK</code>. Or compare the file's SHA-256 with the one above by eye. The ISO itself carries no signature. The system image it downloads is signed, and <code>rime update</code> checks that signature on every update. <a href="/docs/verify">How verification works</a></p>
+  </section>
+
+  <section class="container section-tight" id="install" aria-labelledby="inst-h">
+    <h2 id="inst-h">Install</h2>
+    <ol class="steps steps--plain">
+      <li><strong>Write the ISO to a USB stick</strong> with a USB image writer. Everything on the stick is replaced.</li>
+      <li><strong>Boot from the stick</strong> from your firmware's boot menu.</li>
+      <li><strong>Follow the installer.</strong> Keyboard and time zone come first. The disk you pick is erased only after you type ERASE for that exact disk. Whole-disk encryption is on by default; write down the recovery key it shows you.</li>
+      <li><strong>Reboot</strong> into Rime, then take the first update (above).</li>
+    </ol>
+    <p><a class="btn" href="/docs/install">Full install guide <Icon name="arrow-right" /></a></p>
+    <p class="caption measure">Installing beside Windows: shrink Windows yourself first, then choose the installer's option to install into an existing partition. The installer does not shrink Windows for you. There is no Windows-based installer yet.</p>
+  </section>
+
+  {prev && (
+    <section class="container section-tight dl-prev" aria-labelledby="prev-h">
+      <h2 id="prev-h" class="h4">Previous installer</h2>
+      <p class="caption">For recovery only. <a href={prev.url}>{prev.name}</a>, published {new Date(prev.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" })}.</p>
+      {prev.artifacts.map((a) => (
+        <p class="caption mono prev-a"><a href={a.url}>{a.name}</a> · {a.bytes.toLocaleString("en-AU")} bytes · sha256 {a.sha256}</p>
+      ))}
+    </section>
+  )}
+</Base>
+
+<style>
+  .dl-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: 24px; display: grid; gap: 18px; }
+  .dl-hero .lead { max-width: 58ch; }
+  .dl-card { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(20px, 4vw, 48px); padding: clamp(24px, 4vw, 44px); border-radius: calc(var(--radius-xl) + 6px); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); margin-top: 18px; }
+  @media (max-width: 900px) { .dl-card { grid-template-columns: 1fr; } }
+  .dl-main { display: grid; gap: 16px; align-content: start; }
+  .dl-kicker { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .dl-file { font-size: clamp(1rem, 0.9rem + 0.6vw, 1.35rem); font-weight: 600; letter-spacing: 0; overflow-wrap: anywhere; }
+  .dl-facts { display: flex; flex-wrap: wrap; gap: 14px 32px; margin: 0; }
+  .dl-facts dt { font-size: 0.78rem; color: var(--rime-text-secondary); }
+  .dl-facts dd { margin: 2px 0 0; font-weight: 600; }
+  .dl-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  .dl-sha { display: grid; gap: 10px; align-content: start; }
+  .dl-name { margin-top: 8px; max-width: 80ch; }
+  .dl-name h2, .h4 { font-size: 1.05rem; margin-bottom: 6px; }
+  .dl-issue { padding: clamp(22px, 3vw, 36px); display: grid; gap: 14px; }
+  .dl-issue h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
+  .dl-issue p { max-width: 76ch; }
+  .steps { margin: 4px 0; padding-left: 1.3em; display: grid; gap: 16px; }
+  .steps li > p { margin-bottom: 8px; }
+  .steps--plain { gap: 10px; max-width: 76ch; margin-bottom: 18px; }
+  .dl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 5vw, 72px); }
+  @media (max-width: 900px) { .dl-grid { grid-template-columns: 1fr; } }
+  .dl-grid h2, #verify h2, #install h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin-bottom: 16px; }
+  .req-list { margin: 0; border-top: 1px solid var(--rime-hairline); }
+  .req-list div { display: grid; grid-template-columns: 120px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rime-hairline); }
+  .req-list dt { color: var(--rime-text-secondary); font-size: 0.9rem; }
+  .req-list dd { margin: 0; }
+  .hw { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+  .measure { max-width: 76ch; margin-block: 12px; }
+  #verify .cmd, #first-update .cmd { max-width: 900px; }
+  .dl-prev { padding-bottom: var(--section-pad); }
+  .prev-a { overflow-wrap: anywhere; margin-top: 6px; }
+</style>

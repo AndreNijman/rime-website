@@ -1,0 +1,149 @@
+# Image build: build-image run 36324599458 (push to main, merge of #66).
+# date = when the run's last channel tag moved (2026-09-27 22:35:07 AWST).
+# Published under ghcr.io/andrenijman/apex-os only, plus daily-<osRevision>.
+# Merged PRs: rime-os #66 (compare 12b30386...aac4fb7f); the vendored shell
+# moved 99c5ab7a -> cfea262b, which is rime-shell #27 only (first-parent
+# history). This is the first image carrying #66 and shell #27; the next
+# build (2026.09.27.3) added only #64.
+# Shell #27 is 122 commits; its user-visible changes are listed one per
+# effect below, each sourced to the PR plus the commit(s) that made it.
+# Omitted on purpose:
+#   - the lock-screen defect "a lock requested during the unlock release was
+#     dropped" (fixed in 99431fa): the unlock release it affected was
+#     introduced by this same PR, so no released build ever had it.
+#   - internal test harness, CI and docs commits.
+#   - small visual polish folded into other entries (frame fillets, window
+#     corners matching the frame, the tray's background-apps toggle).
+# product/name say APEX-OS because the image was titled "APEX-OS".
+schema: 1
+id: "2026.09.27.2"
+product: apex
+name: "APEX-OS 2026.09.27.2"
+title: "A redesigned shell with fluid motion, and a new boot splash"
+date: "2026-09-27T14:35:07Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "APEX Shell's redesign ships: panels grow out of the bar on springs, settings have one home, the lock screen has an arrival and departure, and volume and brightness show in the top notch. The boot splash is redrawn as a calm focus pull on black."
+predecessor: "2026.09.27"
+provenance:
+  osRevision: "aac4fb7f17d0e3f1d64e836ffc66c9c678f93027"
+  shellRevision: "cfea262b9077a033fe6a867dfe15293a666a644f"
+  imageDigest: "sha256:fa35192118632e34848f4407d5dfe51845aa482e7ec8e9487e49be32bb0d507a"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36324599458"
+  iso: null
+highlights: ["shell-fluid-surfaces", "settings-one-home", "lock-screen-transition", "notch-osd", "boot-splash-focus"]
+changes:
+  - id: "boot-splash-focus"
+    area: system
+    kind: improved
+    title: "A new boot splash on plain black"
+    summary: "The logo comes into focus out of a soft glow, a halo settles, and the APEX OS wordmark fades in. The old comet trails and the gradient background are gone, and the splash runs at 60 Hz instead of about 48."
+    detail: "Nothing moves on screen; only opacity changes, timed from the boot's progress, so a slow frame no longer stretches the animation. The disk passphrase prompt, the 24 accent themes and the settled splash at shutdown are kept, and reboot now shows the settled splash too. If the boot image lacks the text component, the prompt still shows a pre-drawn 'Enter passphrase to unlock'. Prompt text scales with the screen."
+    source: ["https://github.com/AndreNijman/rime-os/pull/66"]
+    breaking: false
+  - id: "shell-fluid-surfaces"
+    area: shell
+    kind: improved
+    title: "Panels grow out of the bar instead of fading in"
+    summary: "Every panel now grows out of the bar or a screen edge on a spring: the Dashboard from the centre notch, network, notifications, audio and toasts from the right notch, the power menu and quick controls from the side strips, the clipboard from the corner and the wallpaper picker from the bottom. Reversing mid-way keeps the motion's speed."
+    detail: "Hyprland no longer fades the shell's own surfaces in over 400 ms; the shell declares that rule itself at start and after every config reload. The Nexus settings window extrudes from the centre notch."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/04fde34d3c580c8300c878c20830865742870cf7", "https://github.com/AndreNijman/rime-shell/commit/5a62fedabf6dcf0fbe9822eea56baef18e1ff9bf", "https://github.com/AndreNijman/rime-shell/commit/325b54a9ee99b8e0b9c1af1c29540cb86d048780", "https://github.com/AndreNijman/rime-shell/commit/3e0c61c143b2f9b9e6632e92208b8b22e0a99e1c"]
+    breaking: false
+  - id: "settings-one-home"
+    area: shell
+    kind: improved
+    title: "Settings have one home"
+    summary: "All settings live in the Nexus window. The Dashboard's Config tab is gone; Settings is now the last tab in the Dashboard's tab bar and opens the Nexus. Its navigation is grouped into five sections."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/e57f1a0f4dbd946717a61381a41a8f8f90f40ad4", "https://github.com/AndreNijman/rime-shell/commit/f30b432f26ccd0a5ad3020cda7520dcc835c5ceb", "https://github.com/AndreNijman/rime-shell/commit/a46ee7495f66d11382df7598e328652d7a4b2975"]
+    breaking: false
+  - id: "lock-screen-transition"
+    area: shell
+    kind: improved
+    title: "The lock screen pours down from the notch"
+    summary: "Locking pours a shape down from the top notch over the desktop, and unlocking plays the same motion in reverse back onto the desktop."
+    detail: "The lock surface is still opaque from its first frame, and a successful password check is still the only way to unlock."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/ba9f53f091180ae315f8aa2eefa6c7777fecabb4", "https://github.com/AndreNijman/rime-shell/commit/ec52988965998fb0ca9c3592cea1fc3ac08fda50", "https://github.com/AndreNijman/rime-shell/commit/e50eb16d2f28501ffc5ae620dc29054208fcbc66"]
+    breaking: false
+  - id: "lock-password-shapes"
+    area: shell
+    kind: new
+    title: "Password shapes on the lock screen"
+    summary: "Each character you type on the lock screen appears as a Material 3 Expressive shape instead of a dot. The shapes show only how many characters you have typed."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/e7b1c6817d525bc701b4462ad2493e06b993f5f4", "https://github.com/AndreNijman/rime-shell/commit/43618af7a32ae2c69f53961ae0b0b2982c0a65ab"]
+    breaking: false
+  - id: "notch-osd"
+    area: shell
+    kind: improved
+    title: "Volume and brightness show in the top notch"
+    summary: "Changing the volume or brightness widens the centre notch and shows the level inside it, then returns to what the notch was showing."
+    detail: "The separate floating indicator is still used where the notch can't take it: when a fullscreen window hides the bar, in focus mode, or while the Dashboard or the Nexus is open."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/654343abb4ba99998e362af41f34480185a5f90d"]
+    breaking: false
+  - id: "workspace-dots"
+    area: shell
+    kind: improved
+    title: "Workspace dots show only what is there"
+    summary: "The workspace indicator shows workspaces with windows, the one you are on and an urgent one, instead of a fixed row of ten. Each dot carries its number."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/54c38878a7965bd7567bae50e94bae5b36d3d7c8", "https://github.com/AndreNijman/rime-shell/commit/c326b32bbaeef2bbaa61141fe89449a5d447f2f3"]
+    breaking: false
+  - id: "screenshot-freeze"
+    area: shell
+    kind: new
+    title: "Area screenshots freeze the screen"
+    summary: "Starting an area screenshot freezes every screen while you pick the region, so a video frame, tooltip or open menu is captured as it was when you pressed the key."
+    detail: "This also fixes area screenshots on Hyprland capturing the selection border as it faded out."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/ea853d08b5bb99b5834cb72ffeabbaa8dcb93f1c"]
+    breaking: false
+  - id: "new-settings"
+    area: shell
+    kind: new
+    title: "New settings for the bar, clock, recordings and avatar"
+    summary: "You can keep the volume and battery percentages visible in the bar, choose a 12-hour, 24-hour or system clock, pick the folder screen recordings are saved to, and set your own profile picture."
+    detail: "Every default matches the previous behaviour. The clock choice applies to the bar, the lock screen, the Dashboard and notification times."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/3fbdd9965d790d8e7497559abfa2afce6a431198"]
+    breaking: false
+  - id: "light-mode"
+    area: shell
+    kind: improved
+    title: "Light mode is available"
+    summary: "Every text colour and glyph now follows the palette, so the shell is readable on light surfaces, and the Light or dark control is back on the Appearance page."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/2b31ecff2723b7637e481668acef1b33d297c60b"]
+    breaking: false
+  - id: "keyboard-accessibility"
+    area: shell
+    kind: improved
+    title: "The shell works from the keyboard"
+    summary: "Every transient surface, application tray menus, the network panes, the notification centre, the clipboard history and the Dashboard tabs can be used from the keyboard. Icon buttons are named for what they do, and focus rings show only when you use the keyboard."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/b5c8da6464f614ffee38349789b659dec618a25b", "https://github.com/AndreNijman/rime-shell/commit/f036788005ecc37b5813e274e265d768329f0b1c", "https://github.com/AndreNijman/rime-shell/commit/2bfcd42ea96159cf7df117c748c5a635fffcf26c", "https://github.com/AndreNijman/rime-shell/commit/4a0ad20e0b0e7e38ebb3a2597c4cb3da8ee26f52"]
+    breaking: false
+  - id: "motion-settings-apply-to-windows"
+    area: shell
+    kind: improved
+    title: "Motion speed and Reduce Motion apply to windows too"
+    summary: "The shell's motion speed setting now also scales Hyprland's window and workspace animations. With Reduce Motion on, window and workspace movement is turned off and fades are kept short."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/5d029d30be9c88c92a85dd7cb2258956f71dd3ba", "https://github.com/AndreNijman/rime-shell/commit/d532ea33acb25cd81a23913fb56399329ff82724"]
+    breaking: false
+  - id: "notification-cards"
+    area: shell
+    kind: improved
+    title: "Notifications show when they arrived, and can be flung away"
+    summary: "Each notification card shows when it arrived ('now', '12 min', a time, 'Yesterday', then a date), and cards can be flung away."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/99df15446394364ecaad4f418f022307b7b8d1e2", "https://github.com/AndreNijman/rime-shell/commit/5db2f457bbed4a6029c89146368363ac3f016472"]
+    breaking: false
+  - id: "notification-stale-fixes"
+    area: shell
+    kind: fixed
+    title: "Closed notifications no longer linger"
+    summary: "A notification that arrived during Do Not Disturb stayed in the list after its app closed it, and toasts kept showing notifications their sender had already closed. Both are fixed."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27", "https://github.com/AndreNijman/rime-shell/commit/5db2f457bbed4a6029c89146368363ac3f016472", "https://github.com/AndreNijman/rime-shell/commit/ad3545f51e26045680ce85563a61c34ea3d56378"]
+    breaking: false
+knownIssues:
+  - title: "Animation smoothness not yet measured on every display"
+    summary: "The shell's frame timing for this build was tested on headless and nested compositors; measurement on real panels was still open, and setups mixing monitors with different refresh rates were not tested."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/27"]
+  - title: "New splash's passphrase prompt not yet seen on a real encrypted boot"
+    summary: "The new boot splash, including its passphrase prompt, was tested in a real plymouthd in a lab, not on a real encrypted boot or on real display hardware."
+    source: ["https://github.com/AndreNijman/rime-os/pull/66"]
+  - title: "Splash images are upscaled on high-density panels"
+    summary: "Where the boot splash runs at device scale 2, every image is upscaled 2x, as it was before this release."
+    source: ["https://github.com/AndreNijman/rime-os/pull/66"]
+rollback: null

@@ -1,0 +1,109 @@
+---
+// ─── Motion Lab ─────────────────────────────────────────────────────────────
+// A slow, scrubbable replay of CENTER_BLOOM (spec §12 row 3: "slow
+// explanatory replay with scrub control; not forced scroll animation"). The
+// replay is RECORDED in the browser from the ported SurfaceLifecycle and drawn
+// by the Shell's geometry.js — no video, nothing hand-animated. The chart is
+// the three liquid channels; the readout is the family's own parameters.
+// ────────────────────────────────────────────────────────────────────────────
+import * as Geo from "../vendor/rime-shell/geometry.mjs";
+import { T1 } from "../geometry/theme.mjs";
+import Segmented from "./Segmented.astro";
+import Icon from "./Icon.astro";
+const W = 1440, B = T1.borderWidth, NH = T1.notchHeight;
+const g = { cx: W / 2, strip: B, notchW: T1.cNotchMinWidth, notchH: NH, shoulder: T1.notchShoulder, notchBottom: T1.notchBottom, w: 900, h: NH + T1.dashboardHeight, r: T1.radiusXL, shoulderW1: 28, shoulderH1: 22 };
+const done = Geo.centerBloom(1, g);
+const notch = Geo.barNotch({ x: W / 2 - g.notchW / 2, w: g.notchW, strip: B, h: NH, shoulder: g.shoulder, bottomL: g.notchBottom, bottomR: g.notchBottom });
+---
+<div class="lab" data-lab>
+  <div class="lab-view">
+    <svg viewBox="200 -10 1040 640" class="lab-svg" role="img" aria-label="The Dashboard's silhouette at the scrubbed moment" data-lab-svg>
+      <rect x="200" y="-10" width="1040" height={B + 10} class="lab-strip" />
+      <path d={notch.path} class="lab-notch" />
+      <path d={done.path} class="lab-final" />
+      <path d={done.path} class="lab-body" data-lab-body />
+      <g class="lab-marks" data-lab-marks>
+        <line data-m="w" x1="0" y1="0" x2="0" y2="0" />
+        <line data-m="d" x1="0" y1="0" x2="0" y2="0" />
+        <text data-m="wt" x="0" y="0">W</text>
+        <text data-m="dt" x="0" y="0">D</text>
+      </g>
+    </svg>
+  </div>
+  <div class="lab-side">
+    <Segmented name="lab-mode" label="Replay" compact options={[{ value: "open", label: "Open" }, { value: "reverse", label: "Open, then close halfway" }]} />
+    <div class="lab-scrub">
+      <label for="lab-t" class="caption">Time <output class="mono" data-lab-tout for="lab-t">0 ms</output></label>
+      <input id="lab-t" type="range" min="0" max="1000" step="1" value="1000" data-lab-t />
+      <div class="lab-play">
+        <button type="button" class="btn btn-sm" data-lab-play><Icon name="play" size={14} /><span>Play at ¼ speed</span></button>
+        <button type="button" class="btn btn-sm btn-quiet" data-lab-play-real><span>Real speed</span></button>
+      </div>
+    </div>
+    <dl class="lab-read mono" data-lab-read>
+      <div><dt>width</dt><dd data-r="W">900</dd></div>
+      <div><dt>depth</dt><dd data-r="D">560</dd></div>
+      <div><dt>shoulder</dt><dd data-r="sw">28</dd></div>
+      <div><dt>corner</dt><dd data-r="rb">24</dd></div>
+      <div><dt>edge bow</dt><dd data-r="bow">0</dd></div>
+    </dl>
+    <figure class="lab-chart">
+      <svg viewBox="0 0 300 120" preserveAspectRatio="none" role="img" aria-label="The lead, body and trail springs over time" data-lab-chart>
+        <line x1="0" y1="20" x2="300" y2="20" class="lab-grid" />
+        <line x1="0" y1="110" x2="300" y2="110" class="lab-grid" />
+        <polyline data-c="lead" class="lab-c lab-c-lead" points="" />
+        <polyline data-c="body" class="lab-c lab-c-body" points="" />
+        <polyline data-c="trail" class="lab-c lab-c-trail" points="" />
+        <line data-lab-head x1="0" y1="10" x2="0" y2="116" class="lab-head" />
+      </svg>
+      <figcaption class="lab-legend caption">
+        <span><i class="k-lead"></i>lead → width</span>
+        <span><i class="k-body"></i>body → depth</span>
+        <span><i class="k-trail"></i>trail → shoulders, corners</span>
+      </figcaption>
+    </figure>
+  </div>
+</div>
+<p class="lab-hz caption" data-lab-hz>Computing the same open at 60 Hz and 144 Hz…</p>
+
+<script>
+  import { initLab } from "../scripts/lab";
+  initLab();
+</script>
+
+<style is:global>
+  .lab { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+  @media (max-width: 900px) { .lab { grid-template-columns: 1fr; } }
+  .lab-view { background: color-mix(in srgb, var(--rime-surface-raised) 55%, transparent); border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--rime-hairline); overflow: hidden; }
+  .lab-svg { width: 100%; height: auto; display: block; }
+  .lab-strip, .lab-notch { fill: var(--rime-surface-base); }
+  .lab-final { fill: none; stroke: var(--rime-outline-strong); stroke-width: 1.5; stroke-dasharray: 6 7; }
+  .lab-body { fill: var(--rime-surface-base); stroke: var(--rime-accent); stroke-width: 2; }
+  .lab-marks line { stroke: var(--rime-accent-text); stroke-width: 1.5; }
+  .lab-marks text { fill: var(--rime-accent-text); font: 600 22px var(--font-mono); }
+  .lab-side { display: grid; gap: 22px; }
+  .lab-scrub { display: grid; gap: 10px; }
+  .lab-scrub label { display: flex; justify-content: space-between; }
+  .lab-scrub output { color: var(--rime-text-primary); }
+  .lab-scrub input[type="range"] { width: 100%; accent-color: var(--rime-accent); height: 28px; }
+  .lab-play { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lab-read { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0; }
+  .lab-read div { background: var(--rime-surface-raised); border-radius: var(--radius-s); padding: 8px 10px; box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  .lab-read dt { font-size: 0.66rem; color: var(--rime-text-secondary); }
+  .lab-read dd { margin: 2px 0 0; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  @media (max-width: 520px) { .lab-read { grid-template-columns: repeat(3, 1fr); } }
+  .lab-chart { margin: 0; }
+  .lab-chart svg { width: 100%; height: 120px; display: block; background: var(--rime-surface-raised); border-radius: var(--radius-m); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  .lab-grid { stroke: var(--rime-hairline); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .lab-c { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .lab-c-lead { stroke: var(--rime-accent); }
+  .lab-c-body { stroke: var(--rime-text-primary); }
+  .lab-c-trail { stroke: var(--rime-text-secondary); stroke-dasharray: 4 3; }
+  .lab-head { stroke: var(--rime-accent-text); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .lab-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }
+  .lab-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .k-lead { background: var(--rime-accent); }
+  .k-body { background: var(--rime-text-primary); }
+  .k-trail { background: var(--rime-text-secondary); }
+  .lab-hz { margin-top: 18px; max-width: 80ch; }
+</style>

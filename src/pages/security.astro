@@ -1,0 +1,118 @@
+---
+// /security (spec §6.5). Only what rime-os@2d9c5438a actually does.
+import Base from "../layouts/Base.astro";
+import CommandChip from "../components/CommandChip.astro";
+import Evidence from "../components/Evidence.astro";
+import { SITE } from "../data/site";
+const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
+const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/main`;
+---
+<Base title="Security" description="How Rime signs and verifies its images, what Secure Boot does and doesn't cover, how disks are encrypted, and how to report a vulnerability.">
+  <header class="container page-hero">
+    <p class="eyebrow">Security</p>
+    <h1>What is verified, and what isn't.</h1>
+    <p class="lead">Rime's security rests on one signed image, checked before every update. This page says exactly what that covers, and where the gaps are.</p>
+  </header>
+
+  <section class="container section-tight" id="signing" aria-labelledby="sig-h">
+    <div class="split-2">
+      <div>
+        <h2 id="sig-h" class="h2s">Signed images</h2>
+        <p class="muted">Every image is signed in CI with cosign, keyless: the signature is tied to the GitHub Actions workflow that built it, not to a key someone holds. CI verifies the signature and the attestation itself before it moves any tag.</p>
+      </div>
+      <ul class="facts">
+        <li>Signer identity: <code class="wrap">{identity}</code></li>
+        <li>Every image carries a signed SPDX software bill of materials, recorded in the public Rekor log.</li>
+        <li>During the rename, clients accept both the old <code>apex-os</code> and the new <code>rime-os</code> identity.</li>
+      </ul>
+    </div>
+    <CommandChip wrap cmd={`cosign verify ghcr.io/andrenijman/rime-os:rime --certificate-identity ${identity} --certificate-oidc-issuer https://token.actions.githubusercontent.com`} />
+  </section>
+
+  <section class="container section-tight" id="updates" aria-labelledby="up-h">
+    <div class="split-2">
+      <div>
+        <h2 id="up-h" class="h2s">Checked before every update</h2>
+        <p class="muted"><code>rime update</code> verifies the digest the registry is serving right now: the payload hash, the signature, the certificate chain up to a Fulcio root pinned inside the image, the signer identity and issuer, and that the signature names this digest. Under the default policy anything that fails or is missing is refused, and an offline check refuses too.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime trust --gate" />
+        <Evidence links={[{ label: "docs/trust-enforcement.md", href: os("docs/trust-enforcement.md") }, { label: "enforcement.conf", href: os("files/system/trust/enforcement.conf") }]}>
+          Not checked: the Rekor transparency log. bootc's own policy accepts any image, so a <code>bootc upgrade</code> run by hand skips Rime's check. Use <code>rime update</code>.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="secure-boot" aria-labelledby="sb-h">
+    <div class="split-2">
+      <div>
+        <h2 id="sb-h" class="h2s">Secure Boot is your choice</h2>
+        <p class="muted">Installed machines boot through Fedora's Microsoft-signed shim, then GRUB, then a kernel signed with Rime's Secure Boot key. The installer offers to enrol that key; if you skip it, leave Secure Boot off. Out-of-tree drivers such as NVIDIA's are signed with the same key.</p>
+      </div>
+      <ul class="facts">
+        <li>The kernel does not enforce module signatures and is not locked down under Secure Boot.</li>
+        <li>systemd-boot with signed unified kernel images, and automatic rollback after a failed boot, are built but not yet what any published install uses.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="encryption" aria-labelledby="enc-h">
+    <div class="split-2">
+      <div>
+        <h2 id="enc-h" class="h2s">Encrypted by default</h2>
+        <p class="muted">The installer encrypts the whole disk with LUKS2 and always enrols a recovery key first, which you must acknowledge before you can reboot.</p>
+      </div>
+      <ul class="facts">
+        <li>A TPM unlock is added only when Secure Boot is enforcing, bound to PCR 7 and with no PIN by default.</li>
+        <li>The installer's automated tests don't exercise TPM enrolment yet.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="agents" aria-labelledby="ag-h">
+    <div class="split-2">
+      <div>
+        <h2 id="ag-h" class="h2s">Agent sessions are sandboxed</h2>
+        <p class="muted">Rime can supervise command-line coding agents. A session runs in a default-deny bubblewrap sandbox, holds no root, and asks a person to approve privilege requests from a fixed list. Credentials are brokered: the API that hands out access has no verb that returns a secret.</p>
+      </div>
+      <ul class="facts">
+        <li>The sandbox is meant for a cooperating but fallible agent, not a determined kernel attacker.</li>
+        <li>Ordinary terminals are never sandboxed.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="network" aria-labelledby="net-h">
+    <div class="split-2">
+      <div>
+        <h2 id="net-h" class="h2s">No telemetry service</h2>
+        <p class="muted">Rime runs no telemetry service and uploads no health reports. The one service Rime operates is the relay for Rime Remote, which carries encrypted traffic it cannot read. Every default network contact is listed on <a href="/docs/privacy-on-rime">Privacy on Rime</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="reporting" aria-labelledby="rep-h">
+    <div class="callout rep" data-tone="caution">
+      <h2 id="rep-h" class="h2s">Reporting a vulnerability</h2>
+      <p>Please report security problems privately through GitHub's private vulnerability reporting on the <a href={`${SITE.repos.os}/security/advisories/new`}>rime-os repository</a> (or <a href={`${SITE.repos.shell}/security/advisories/new`}>rime-shell</a> for the desktop). Please don't open a public issue with exploit details.</p>
+      <p class="caption">Machine-readable contact: <a href="/.well-known/security.txt" class="mono">/.well-known/security.txt</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(28px, 4vw, 48px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 62ch; }
+  .h2s { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; margin-bottom: 20px; }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: 1fr; } }
+  section.section-tight { border-top: 1px solid var(--rime-hairline); }
+  .stack > * + * { margin-top: 12px; }
+  .facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); }
+  .facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  code.wrap { overflow-wrap: anywhere; }
+  .rep { display: grid; gap: 12px; padding: clamp(22px, 3vw, 36px); }
+  #reporting { padding-bottom: var(--section-pad); }
+</style>

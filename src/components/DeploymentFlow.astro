@@ -1,0 +1,70 @@
+---
+// Two deployments, four moments (spec §5.3, §12 row 4): what bootc keeps on
+// disk as a Rime machine updates, reboots and rolls back. Static and complete
+// without JavaScript. Commands are the real ones (rime-os rimed/rime/src/main.rs:
+// update, rollback; bootc keeps the booted deployment and one more).
+import CommandChip from "./CommandChip.astro";
+interface Props { from?: string; to?: string }
+const { from = "2026.09.28.3", to = "2026.09.28.4" } = Astro.props;
+type Slot = { name: string; state: "running" | "staged" | "previous" | "empty" };
+const steps: { n: string; title: string; note: string; cmd?: string; slots: [Slot, Slot] }[] = [
+  { n: "1", title: "Running", note: "One signed image: the system and Rime Shell together.",
+    slots: [{ name: from, state: "running" }, { name: "", state: "empty" }] },
+  { n: "2", title: "Staged", note: "The new image is verified, then written beside the running one. Nothing you are using changes.",
+    cmd: "sudo rime update", slots: [{ name: from, state: "running" }, { name: to, state: "staged" }] },
+  { n: "3", title: "Rebooted", note: "The next boot starts the new image. The one before stays on disk and in the boot menu.",
+    cmd: "sudo systemctl reboot", slots: [{ name: from, state: "previous" }, { name: to, state: "running" }] },
+  { n: "4", title: "Rolled back", note: "The previous image becomes the default again. Your home folder and /etc stay as the newer system left them.",
+    cmd: "sudo rime rollback", slots: [{ name: from, state: "running" }, { name: to, state: "previous" }] },
+];
+const label = { running: "running", staged: "staged for next boot", previous: "kept to go back to", empty: "" };
+---
+<ol class="flow" aria-label="How a Rime update and a rollback change what is on disk">
+  {steps.map((s, i) => (
+    <li class="flow-step reveal">
+      <div class="flow-head"><span class="flow-n mono">{s.n}</span><h3>{s.title}</h3></div>
+      <div class="flow-slots">
+        {s.slots.map((sl) => (
+          <div class:list={["flow-slot", `is-${sl.state}`]}>
+            {sl.state === "empty" ? <span class="flow-empty">empty slot</span> : (
+              <>
+                <span class="flow-name mono">Rime {sl.name}</span>
+                <span class="flow-state">{label[sl.state]}</span>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+      <p class="flow-note">{s.note}</p>
+      {s.cmd && <CommandChip cmd={s.cmd} />}
+      {i < steps.length - 1 && <span class="flow-arrow" aria-hidden="true"></span>}
+    </li>
+  ))}
+</ol>
+<style>
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s; }
+  @media (max-width: 1100px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .flow { grid-template-columns: 1fr; } }
+  .flow-step {
+    position: relative; display: flex; flex-direction: column; gap: 14px; padding: 20px;
+    background: var(--rime-surface-raised); border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+  }
+  .flow-head { display: flex; align-items: center; gap: 10px; }
+  .flow-head h3 { font-size: 1.1rem; }
+  .flow-n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 0.8rem; background: var(--rime-surface-high); }
+  .flow-slots { display: grid; gap: 8px; }
+  .flow-slot {
+    min-height: 58px; border-radius: var(--radius-m); padding: 10px 12px; display: grid; gap: 2px; align-content: center;
+    background: var(--rime-surface-overlay); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+  }
+  .flow-slot.is-running { background: var(--rime-accent-container); color: var(--rime-on-accent-container); box-shadow: none; }
+  .flow-slot.is-staged { box-shadow: inset 0 0 0 1.5px var(--rime-accent-text); }
+  .flow-slot.is-empty { background: transparent; box-shadow: inset 0 0 0 1px var(--rime-outline-soft); }
+  .flow-name { font-size: 0.8rem; font-weight: 600; }
+  .flow-state { font-size: 0.8rem; opacity: 0.85; }
+  .flow-slot.is-running .flow-state::before { content: "● "; }
+  .flow-empty { font-size: 0.8rem; color: var(--rime-text-secondary); }
+  .flow-note { font-size: 0.92rem; color: var(--rime-text-secondary); flex: 1; }
+  .flow-arrow { position: absolute; right: -14px; top: 50%; width: 10px; height: 10px; border-top: 2px solid var(--rime-outline-strong); border-right: 2px solid var(--rime-outline-strong); transform: translateY(-50%) rotate(45deg); z-index: 1; }
+  @media (max-width: 1100px) { .flow-arrow { display: none; } }
+</style>

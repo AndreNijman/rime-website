@@ -1,0 +1,22 @@
+---
+// /updates/latest — always the newest release. On Cloudflare Pages the
+// _redirects file answers this with a 302 before the page is ever served; this
+// page is the fallback for any other static host, and it keeps ?from= intact.
+import { latestRelease } from "../../lib/releases";
+import { SITE } from "../../data/site";
+const r = (await latestRelease())!;
+const to = `/updates/${r.id}`;
+const js = `location.replace(${JSON.stringify(to)} + location.search + location.hash);`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Latest Rime update — {r.name}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={`${SITE.url}${to}`} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline set:html={js} />
+  </head>
+  <body><p>The latest release is <a href={to}>{r.name}: {r.title}</a>.</p></body>
+</html>

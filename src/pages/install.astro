@@ -1,0 +1,10 @@
+---
+// /install is part of the spec's routing (§10.5); the guide itself lives in
+// the docs. Cloudflare Pages answers this with a 301 from _redirects first.
+import { SITE } from "../data/site";
+const to = "/docs/install";
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Install Rime</title><meta name="robots" content="noindex" />
+<link rel="canonical" href={`${SITE.url}${to}`} /><meta http-equiv="refresh" content={`0; url=${to}`} /></head>
+<body><p><a href={to}>Install Rime</a></p></body></html>

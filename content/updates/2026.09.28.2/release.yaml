@@ -1,0 +1,49 @@
+# Image build: build-image run 36362322212 (push to main, merge of #69).
+# date = when the run's last channel tag moved (2026-09-28 09:09:09 AWST).
+# Published under ghcr.io/andrenijman/apex-os only, plus daily-<osRevision>.
+# Merged PRs: rime-os #69 (compare 1094c432...79c275fc); the vendored shell
+# moved f7472250 -> cb7add74, which is rime-shell #28 only. Both are docs PRs.
+# SBOM attestation: switched on by the repository variable APEX_ATTEST_SBOM,
+# not by a PR. It is listed because #69's docs/trust-enforcement.md states it
+# (commit dd56a92f "the SBOM attestation is on from 2026-09-28") and this
+# run's log says "signature and SBOM attestation both verify"; the two
+# previous builds' logs say "SBOM attestation is off".
+# product/name say APEX-OS because the image was titled "APEX-OS".
+schema: 1
+id: "2026.09.28.2"
+product: apex
+name: "APEX-OS 2026.09.28.2"
+title: "Signed SBOM on every image, and updated documentation"
+date: "2026-09-28T01:09:09Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "From this build on, every image carries a signed software bill of materials that the update check verifies alongside the signature. The documentation in both repositories was brought up to date with the shipped system."
+predecessor: "2026.09.28"
+provenance:
+  osRevision: "79c275fc0ae78fb858eb76f2e2b8fffa09e5da70"
+  shellRevision: "cb7add747f22ed06617533fec3a7a20f8635768b"
+  imageDigest: "sha256:005c718385267acb7ac691931cd4e3ebeed74fda14aa7ec701505a66ab52aece"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36362322212"
+  iso: null
+highlights: ["sbom-attestation"]
+changes:
+  - id: "sbom-attestation"
+    area: security
+    kind: security
+    title: "Every image carries a signed SBOM"
+    summary: "Each published image now has a signed software bill of materials (SBOM) attached, and the provenance half of the update check verifies it alongside the image signature."
+    detail: "The SBOM is an SPDX document listing every package found in the image: the RPM set, the npm trees inside the Claude and ChatGPT desktop apps, and the Go and Rust modules inside the binaries. It is signed by the same GitHub build identity as the image."
+    source: ["https://github.com/AndreNijman/rime-os/pull/69", "https://github.com/AndreNijman/rime-os/commit/dd56a92f15c73997b08c5e02ca046b88f472044b", "https://github.com/AndreNijman/rime-os/actions/runs/36362322212"]
+    breaking: false
+  - id: "docs-refresh"
+    area: developer
+    kind: improved
+    title: "Documentation matches the shipped system"
+    summary: "Every current doc and README in both repositories was checked against the code and corrected, then rewritten in plain prose."
+    detail: "Commands, paths, code blocks and signing fingerprints were kept exactly. The docs now cover the redesigned shell, the new boot splash, Hyprland on springs, the login screen's password shapes, the offline first boot and the scx_lavd fix."
+    source: ["https://github.com/AndreNijman/rime-os/pull/69", "https://github.com/AndreNijman/rime-shell/pull/28"]
+    breaking: false
+knownIssues:
+  - title: "Machines on images built before 2026-09-23 refuse this update"
+    summary: "An older update check misread the SBOM's signature and refuses attested images. A machine on an image built before 2026-09-23 needs `provenance=off` in /etc/apex/trust.conf for one update, which brings the fixed check."
+    source: ["https://github.com/AndreNijman/rime-os/pull/69", "https://github.com/AndreNijman/rime-os/commit/dd56a92f15c73997b08c5e02ca046b88f472044b"]
+rollback: null

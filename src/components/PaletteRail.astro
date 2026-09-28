@@ -1,0 +1,95 @@
+---
+// ─── PaletteRail ────────────────────────────────────────────────────────────
+// Wallpaper → palette, the way Rime does it. Each scene's roles were produced
+// by Rime's own matugen command and the Shell's roles.js at build time
+// (scripts/build-scenes.mjs); nothing here picks a colour. Choosing a scene
+// retunes the stage it drives FIRST, then the site and its Light Field follow
+// (spec §2.4, §6.3). The choice is remembered in this browser.
+//
+// A native radio group: arrow keys, Space, and screen readers work as they
+// always do. Without JavaScript it is a list of the scenes.
+// ────────────────────────────────────────────────────────────────────────────
+import scenes from "../data/scenes.json";
+interface Props { stage: string; variant?: "side" | "row"; name?: string }
+const { stage, variant = "side", name = `scene-${stage}` } = Astro.props;
+const list = scenes.scenes;
+const data = list.map((s) => ({
+  id: s.id, name: s.name, kind: s.kind, note: s.note,
+  field: { dark: s.dark.field.src, light: s.light.field.src },
+  roles: {
+    dark: { base: s.dark.roles.surfaceBase, raised: s.dark.roles.surfaceRaised, selected: s.dark.roles.surfaceSelected, accent: s.dark.roles.accent, container: s.dark.roles.accentContainer, text: s.dark.roles.textPrimary, secondary: s.dark.roles.textSecondary },
+    light: { base: s.light.roles.surfaceBase, raised: s.light.roles.surfaceRaised, selected: s.light.roles.surfaceSelected, accent: s.light.roles.accent, container: s.light.roles.accentContainer, text: s.light.roles.textPrimary, secondary: s.light.roles.textSecondary },
+  },
+  img: {
+    src: s.image.sources.jpg[1]?.src ?? s.image.sources.jpg[0].src,
+    srcset: Object.fromEntries((["avif", "webp", "jpg"] as const).map((f) => [f, s.image.sources[f].map((x) => `${x.src} ${x.w}w`).join(", ")])),
+  },
+}));
+const thumb = (s: (typeof list)[number]) => s.image.sources.webp[0].src;
+const def = list.find((s) => s.default)!;
+---
+<div class:list={["rail", `rail--${variant}`]} data-rail={stage} data-scenes={JSON.stringify(data)}>
+  <fieldset class="rail-set">
+    <legend class="rail-legend">Wallpaper</legend>
+    <div class="rail-list">
+      {list.map((s) => (
+        <label class="rail-item" data-kind={s.kind}>
+          <input type="radio" name={name} value={s.id} checked={s.id === def.id} />
+          <span class="rail-thumb"><img src={thumb(s)} alt="" width="160" height="90" loading="lazy" decoding="async" /></span>
+          <span class="rail-name">{s.name}<em>{s.kind === "shipped" ? "Ships with Rime" : "Site scene"}</em></span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+  <div class="rail-roles" aria-live="polite" data-roles>
+    <p class="caption rail-roles-title">Roles from <span data-role-scene>{def.name}</span>, <span data-role-scheme>dark</span></p>
+    <ul class="swatches">
+      {(["base", "raised", "selected", "container", "accent", "text"] as const).map((k) => (
+        <li><span class="sw" data-sw={k}></span><span class="sw-name">{({ base: "surfaceBase", raised: "surfaceRaised", selected: "surfaceSelected", container: "accentContainer", accent: "accent", text: "textPrimary" })[k]}</span><code class="sw-hex" data-hex={k}>{def.dark.roles[({ base: "surfaceBase", raised: "surfaceRaised", selected: "surfaceSelected", container: "accentContainer", accent: "accent", text: "textPrimary" })[k] as "surfaceBase"]}</code></li>
+      ))}
+    </ul>
+  </div>
+</div>
+<script>
+  import { initRails } from "../scripts/rail";
+  initRails();
+</script>
+<style is:global>
+  .rail { display: grid; gap: 22px; }
+  .rail-set { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .rail-legend { font-size: 0.8rem; font-weight: 600; color: var(--rime-text-secondary); margin-bottom: 12px; padding: 0; }
+  .rail-list { display: grid; gap: 8px; }
+  .rail--row .rail-list { grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+  .rail-item {
+    display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 12px; padding: 6px; border-radius: var(--radius-m);
+    cursor: pointer; position: relative; scroll-snap-align: start;
+    transition: background-color var(--dur-hover) var(--ease-effects);
+  }
+  .rail--row .rail-item { grid-template-columns: 1fr; gap: 8px; }
+  .rail-item:hover { background: var(--rime-hover); }
+  .rail-item input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .rail-thumb { display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 9; box-shadow: 0 0 0 1px var(--rime-hairline); transition: box-shadow var(--dur-state) var(--ease-effects); }
+  .rail-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .rail-name { display: grid; gap: 2px; font-weight: 600; font-size: 0.92rem; line-height: 1.2; }
+  .rail-name em { font-style: normal; font-weight: 500; font-size: 0.76rem; color: var(--rime-text-secondary); }
+  .rail-item input:checked ~ .rail-thumb { box-shadow: 0 0 0 2px var(--rime-surface-base), 0 0 0 4px var(--rime-accent-text); }
+  .rail-item:has(input:checked) { background: var(--rime-surface-selected); }
+  .rail-item input:focus-visible ~ .rail-thumb { outline: 2px solid var(--rime-text-primary); outline-offset: 4px; }
+  .rail-roles-title { margin-bottom: 10px; }
+  .swatches { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .swatches li { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 10px; font-size: 0.82rem; }
+  .sw { width: 22px; height: 22px; border-radius: 7px; box-shadow: inset 0 0 0 1px var(--rime-outline-soft); }
+  .sw[data-sw="base"] { background: var(--rime-surface-base); }
+  .sw[data-sw="raised"] { background: var(--rime-surface-raised); }
+  .sw[data-sw="selected"] { background: var(--rime-surface-selected); }
+  .sw[data-sw="container"] { background: var(--rime-accent-container); }
+  .sw[data-sw="accent"] { background: var(--rime-accent); }
+  .sw[data-sw="text"] { background: var(--rime-text-primary); }
+  .sw-name { font-family: var(--font-mono); font-size: 0.76rem; color: var(--rime-text-secondary); }
+  .sw-hex { font-size: 0.76rem; }
+  @media (max-width: 900px) {
+    .rail--side .rail-list { grid-auto-flow: column; grid-auto-columns: minmax(140px, 1fr); overflow-x: auto; padding-bottom: 6px; }
+    .rail--side .rail-item { grid-template-columns: 1fr; gap: 8px; }
+    .rail-roles { display: none; }
+  }
+</style>

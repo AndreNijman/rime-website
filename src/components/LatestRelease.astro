@@ -1,0 +1,40 @@
+---
+// The latest release as a living editorial card (spec §5.3, §12 row 7).
+import Icon from "./Icon.astro";
+import { formatDate, AREA_LABEL, type Release } from "../lib/releases";
+interface Props { release: Release; headingId?: string }
+const { release: r, headingId } = Astro.props;
+const hl = r.highlights.map((id) => r.changes.find((c) => c.id === id)).filter(Boolean).slice(0, 4);
+const first = r.summary.split(/(?<=\.)\s+/).slice(0, 2).join(" ");
+---
+<article class="latest" aria-labelledby={headingId}>
+  <div class="latest-main">
+    <p class="eyebrow">Latest update · {formatDate(r.date)}</p>
+    <h2 id={headingId}><span class="latest-name mono">{r.name}</span>{r.title}</h2>
+    <p class="lead">{first}</p>
+    <a class="btn btn-primary" href={`/updates/${r.id}`}>See what changed <Icon name="arrow-right" /></a>
+  </div>
+  <ul class="latest-hl">
+    {hl.map((c) => (
+      <li>
+        <span class="chip" data-kind={c!.kind}>{AREA_LABEL[c!.area]}</span>
+        <strong>{c!.title}</strong>
+      </li>
+    ))}
+  </ul>
+</article>
+<style>
+  .latest {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); align-items: center;
+    padding: clamp(28px, 5vw, 64px); border-radius: calc(var(--radius-xl) + 8px);
+    background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+  }
+  @media (max-width: 900px) { .latest { grid-template-columns: 1fr; } }
+  .latest-main { display: grid; gap: 18px; justify-items: start; }
+  .latest h2 { display: grid; gap: 10px; }
+  .latest-name { font-size: 0.9rem; color: var(--rime-accent-text); letter-spacing: 0; font-weight: 500; }
+  .latest .lead { max-width: 56ch; }
+  .latest-hl { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .latest-hl li { display: grid; gap: 8px; justify-items: start; padding: 16px 18px; border-radius: var(--radius-l); background: var(--rime-surface-overlay); }
+  .latest-hl strong { font-weight: 600; line-height: 1.35; }
+</style>

@@ -1,0 +1,206 @@
+---
+// /shell — Rime Shell (spec §6.1). Facts from rime-shell@6289d1f8.
+import Base from "../layouts/Base.astro";
+import ProductStage from "../components/ProductStage.astro";
+import MotionLab from "../components/MotionLab.astro";
+import PasswordShapes from "../components/PasswordShapes.astro";
+import Evidence from "../components/Evidence.astro";
+import Icon from "../components/Icon.astro";
+import { SITE } from "../data/site";
+const s = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
+const families = [
+  ["CENTER_BLOOM", "Dashboard", "The centre notch widens, then drops; its shoulders grow into a wider join.", "520 / 380 ms"],
+  ["RIGHT_POUR", "Wi-Fi, Bluetooth, VPN, audio, notifications, toasts", "The right edge drops first, then the body pours left and melts into the frame.", "520 / 380 ms"],
+  ["NOTCH_EXTRUDE", "Settings (the Nexus)", "A broad neck comes down from the notch, swells into a flask and becomes the window.", "640 / 520 ms"],
+  ["LENS_REVEAL", "Rime Search", "The field is there from the first frame; results reveal beneath it as one group.", "400 ms reveal"],
+  ["LEFT_SPILL", "Power menu", "A short bar extrudes from the left edge, then unfolds up and down.", "360 / 240 ms"],
+  ["EDGE_SPILL", "Volume and brightness controls", "Out of the right edge on hover; the top settles early, the bottom drips late.", "360 / 240 ms"],
+  ["BOTTOM_RISE", "Wallpaper picker", "The bottom edge swells along its length, then the body rises.", "520 / 380 ms"],
+  ["CORNER_RISE", "Clipboard history", "Rises up the right edge, then pours left along the bottom.", "520 / 380 ms"],
+  ["STACK_REFLOW", "The notification stack", "Cards arrive, leave and make room as objects, not list rows.", "420 ms reflow"],
+  ["PIVOT_POP", "Context and tray menus", "From the corner nearest the pointer, with a whisper of overshoot.", "400 ms"],
+  ["CAPSULE", "Volume and brightness, over fullscreen apps", "Normally the level lives in the centre notch; over a fullscreen window it floats as a capsule.", "400 / 220 ms"],
+];
+---
+<Base title="Rime Shell" description="Rime Shell is the desktop: a frame and three notches, surfaces that grow out of them on springs, and colour that comes from your wallpaper.">
+  <header class="container page-hero">
+    <p class="eyebrow">Rime Shell</p>
+    <h1>A frame, three notches, and everything that grows out of them.</h1>
+    <p class="lead">Rime Shell is the desktop: the bar, the Dashboard, the panels, notifications, settings, the lock screen. Each surface has an origin on the screen, and it grows out of that place and folds back into it.</p>
+  </header>
+
+  <section class="container-wide" id="frame" aria-label="Try the Shell">
+    <ProductStage id="shell-stage" caption="Try it: the centre notch opens the Dashboard; the Wi-Fi icon and the bell open panes of one right-hand surface. Switch between them while one is open." />
+  </section>
+
+  <section class="container section-tight" aria-labelledby="anat-h">
+    <h2 id="anat-h" class="h2s">The frame</h2>
+    <div class="anat">
+      <div><h3>Left notch</h3><p>The Rime mark, in your accent colour, opens the power menu. Beside it are workspace dots: only the ones that have windows, the focused one and any that need you, each with its number.</p></div>
+      <div><h3>Centre notch</h3><p>The focused app's name, or music, a timer, a stopwatch or a recording as they become active. Volume and brightness levels appear here too. Click it for the Dashboard.</p></div>
+      <div><h3>Right notch</h3><p>Network, Bluetooth, VPN and hotspot when they're in use, volume, battery, the clock and the notification bell. Each opens its pane of the right-hand panel.</p></div>
+      <div><h3>The edges</h3><p>A thin frame runs down the sides and along the bottom, its corners concentric with window corners. Hover the right edge for volume and brightness; the bottom edge opens the wallpaper picker and, at the corner, the clipboard.</p></div>
+    </div>
+    <Evidence links={[{ label: "TopBar.qml", href: s("src/windows/TopBar.qml") }, { label: "Border.qml", href: s("src/windows/Border.qml") }, { label: "ThemeSet.qml", href: s("src/theme/ThemeSet.qml") }]}>
+      The bar and every surface that grows out of it are drawn from one set of geometry functions, so at the start of an animation the surface is the notch, to the pixel.
+    </Evidence>
+  </section>
+
+  <section class="container section-tight" id="dashboard" aria-labelledby="dash-h">
+    <div class="split-2">
+      <div><h2 id="dash-h" class="h2s">Dashboard</h2><p class="muted">Six tabs across the top: Home, System, Agents, Tasks and Apps, and Settings at the end, which opens the settings window. Home has your profile, a calendar, a clock with timer, alarm and stopwatch, the media player, brightness and eleven quick settings.</p></div>
+      <ul class="facts">
+        <li><kbd>Super</kbd> <kbd>D</kbd> opens Home; <kbd>Alt</kbd> <kbd>Space</kbd> opens Apps; <kbd>Super</kbd> <kbd>Z</kbd> opens Tasks.</li>
+        <li>The width follows the page: 900 px for Home, 560 for Apps. Changing page while it is open reshapes it on a spring.</li>
+        <li>System shows CPU, memory and integrated GPU gauges, network, the power profile and disks. Tasks is a board with To Do, Ongoing and Done.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="search" aria-labelledby="lens-h">
+    <div class="split-2">
+      <div><h2 id="lens-h" class="h2s">Rime Search</h2><p class="muted">One field over apps, files, settings, open windows, the clipboard, a calculator, commands, projects, agents, SSH hosts and packages. The field is focused from the first frame; results appear beneath it as one group, never row by row.</p></div>
+      <ul class="facts">
+        <li>Start with <code>=</code> to calculate, <code>&gt;</code> for commands, <code>~/</code> for files, <code>install</code> or <code>ssh</code> for packages and hosts.</li>
+        <li>Every result is marked safe, changes something, or destructive. Enter on anything that isn't safe opens a preview of the exact command first; running it takes <kbd>Ctrl</kbd> <kbd>Enter</kbd>.</li>
+        <li>Only <code>?</code> questions that aren't arithmetic leave the machine, to Wolfram|Alpha, and only with an App ID you provide.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="right" aria-labelledby="right-h">
+    <div class="split-2">
+      <div><h2 id="right-h" class="h2s">One surface on the right</h2><p class="muted">Wi-Fi, Bluetooth, VPN, hotspot, audio, the notification centre and incoming toasts are panes of one surface under the right notch. Switching from Wi-Fi to notifications keeps it open: its width and depth retarget on a spring and the panes cross-fade.</p></div>
+      <ul class="facts">
+        <li>Panes: network 480 px wide, notifications 400, audio 200 (300 for the mixer).</li>
+        <li>The notch itself never moves; the panel draws the band that joins them, in the same frame as its body.</li>
+        <li><kbd>Super</kbd> <kbd>N</kbd> notifications · <kbd>Super</kbd> <kbd>Alt</kbd> <kbd>W</kbd> Wi-Fi · <kbd>Super</kbd> <kbd>A</kbd> audio.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="notifications" aria-labelledby="nt-h">
+    <div class="split-2">
+      <div><h2 id="nt-h" class="h2s">Notifications move like objects</h2><p class="muted">A new notification arrives on top and the others make room. Dismiss one and the gap closes a beat later, so nothing lands on a card that is still leaving. Clear all lets them go from the bottom up.</p></div>
+      <ul class="facts">
+        <li>Drag a card sideways to dismiss it: past 40 % of its width, or flicked faster than 600 px/s. Otherwise it settles back.</li>
+        <li>Toasts show one at a time for five seconds; the rest queue, and ones their app has already withdrawn are dropped.</li>
+        <li>Do Not Disturb keeps notifications in the centre and stops toasts.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="nexus" aria-labelledby="nx-h">
+    <div class="split-2">
+      <div><h2 id="nx-h" class="h2s">Settings, from the notch</h2><p class="muted">The settings window — the Nexus — is a real window with sixteen pages in five groups. It extrudes from the centre notch: a broad neck comes down, swells into a flask and becomes the window, then the neck thins and draws back. Closing, the content goes first and the mass is drawn back up into the notch.</p></div>
+      <ul class="facts">
+        <li><strong>Look &amp; feel:</strong> Appearance, Layout &amp; Behavior, Display.</li>
+        <li><strong>Input:</strong> Input, Keybinds.</li>
+        <li><strong>Privacy &amp; agents:</strong> Privacy &amp; Permissions, Firewall, Agents.</li>
+        <li><strong>Devices:</strong> Pair a device, Paired devices.</li>
+        <li><strong>System:</strong> Data &amp; Storage, Closing the Lid, Gaming, Recovery, Blueprint, Misc.</li>
+        <li>Open with <kbd>Super</kbd> <kbd>C</kbd>, or <code>rime shell nexus</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="lock" aria-labelledby="lock-h">
+    <div class="split-2">
+      <div>
+        <h2 id="lock-h" class="h2s">Lock and unlock</h2>
+        <p class="muted">Locking takes a picture of the desktop first, then pours a notch-coloured shade down over it from the centre notch while the desktop sinks and darkens underneath. Unlocking runs the same thing backwards, frame for frame, and hands you the desktop exactly as you left it.</p>
+        <p class="muted">Each character you type adds a shape: a clover, an arrow, a pill, a soft burst, a diamond, a clamshell, a pentagon. The login screen uses the same code.</p>
+      </div>
+      <div class="lock-demo">
+        <PasswordShapes />
+        <Evidence links={[{ label: "PasswordShapes.qml", href: s("src/components/auth/PasswordShapes.qml") }, { label: "Lockscreen.qml", href: s("src/windows/Lockscreen.qml") }]}>
+          These are the Shell's own shapes — Google's Material 3 Expressive set from AndroidX graphics-shapes, Apache-2.0 — generated from its source when this site was built, popping in on the same spring.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="families" aria-labelledby="fam-h">
+    <h2 id="fam-h" class="h2s">Every surface has an origin</h2>
+    <p class="muted fam-intro">Each kind of surface has a named motion family in the Shell's code, with its own geometry and timing (open / close, at the default speed).</p>
+    <div class="fam-table" role="table" aria-label="Surfaces and their motion families">
+      <div class="fam-row fam-head" role="row"><span role="columnheader">Family</span><span role="columnheader">Used by</span><span role="columnheader">How it moves</span><span role="columnheader">Timing</span></div>
+      {families.map(([f, used, how, t]) => (
+        <div class="fam-row" role="row"><span role="cell" class="mono">{f}</span><span role="cell">{used}</span><span role="cell" class="muted">{how}</span><span role="cell" class="mono caption">{t}</span></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-wide section-tight" id="motion" aria-labelledby="mo-h">
+    <div class="section-head mo-head">
+      <h2 id="mo-h" class="h2s">Motion that holds at 60, 120 and 144 Hz</h2>
+      <p class="muted">Surfaces run on springs, solved exactly for however much time passed since the last frame. A reversal keeps its velocity; nothing restarts from rest. Scrub through a real open of the Dashboard below.</p>
+    </div>
+    <MotionLab />
+  </section>
+
+  <section class="container-wide section-tight" id="reduce-motion" aria-labelledby="rm-h">
+    <div class="section-head mo-head">
+      <h2 id="rm-h" class="h2s">Reduce Motion keeps the meaning</h2>
+      <p class="muted">With Reduce Motion on, nothing travels: surfaces appear as their finished shape and fade, and effects are held to 160 ms. The Dashboard still opens from the same place; it just doesn't grow.</p>
+      <p><button type="button" class="btn" data-rm-both><Icon name="play" size={14} /> Open the Dashboard in both</button></p>
+    </div>
+    <div class="rm-grid">
+      <ProductStage id="rm-full" controls={false} caption="Full motion" />
+      <ProductStage id="rm-reduced" controls={false} reduced caption="Reduce Motion" />
+    </div>
+  </section>
+
+  <section class="container section-tight" id="access" aria-labelledby="ax-h">
+    <div class="split-2">
+      <div><h2 id="ax-h" class="h2s">Built to be used from the keyboard</h2><p class="muted">Every surface can be opened, used and closed from the keyboard, and focus rings appear only when you are using the keyboard, not after a click. Text colours are checked against each surface they sit on: body text aims for 7:1, secondary text 4.5:1.</p></div>
+      <ul class="facts">
+        <li>Motion speed is a setting (Snappy, Balanced, Relaxed, or a custom scale), and Reduce Motion applies to window animations too.</li>
+        <li>The lock screen announces errors and Caps Lock to screen readers.</li>
+        <li>Rime Shell runs on Hyprland, niri and labwc.</li>
+      </ul>
+    </div>
+    <p class="caption credit">Rime Shell began as a fork of Brain_Shell by Brainitech, used under the MIT licence. <a href={SITE.repos.shell}>Source on GitHub</a>.</p>
+  </section>
+</Base>
+
+<script>
+  import { stageById, initStages } from "../scripts/stage";
+  initStages();
+  document.querySelector("[data-rm-both]")?.addEventListener("click", () => {
+    const a = stageById("rm-full"), b = stageById("rm-reduced");
+    const open = !(a?.el.querySelector<HTMLElement>(".stage")?.dataset.open);
+    a?.open(open ? "dashboard" : null);
+    b?.open(open ? "dashboard" : null);
+  });
+</script>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(28px, 4vw, 48px); display: grid; gap: 18px; }
+  .page-hero h1 { max-width: 20ch; }
+  .page-hero .lead { max-width: 62ch; }
+  .h2s { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .anat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 8px 0 28px; }
+  @media (max-width: 1000px) { .anat { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .anat { grid-template-columns: 1fr; } }
+  .anat h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .anat p { color: var(--rime-text-secondary); font-size: 0.97rem; }
+  .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: 1fr; } }
+  section.section-tight { border-top: 1px solid var(--rime-hairline); }
+  .facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); }
+  .facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  .facts strong { color: var(--rime-text-primary); }
+  .lock-demo { display: grid; gap: 24px; }
+  .fam-intro { max-width: 70ch; margin-bottom: 20px; }
+  .fam-table { display: grid; border-top: 1px solid var(--rime-hairline); }
+  .fam-row { display: grid; grid-template-columns: 150px minmax(0, 1.2fr) minmax(0, 2fr) 110px; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rime-hairline); align-items: baseline; }
+  .fam-row .mono:first-child { font-size: 0.78rem; color: var(--rime-accent-text); }
+  .fam-head { font-size: 0.8rem; color: var(--rime-text-secondary); font-weight: 600; }
+  @media (max-width: 800px) { .fam-row { grid-template-columns: 1fr; gap: 4px; } .fam-head { display: none; } }
+  .mo-head { margin-bottom: 28px; }
+  .rm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 900px) { .rm-grid { grid-template-columns: 1fr; } }
+  .credit { margin-top: 28px; }
+</style>

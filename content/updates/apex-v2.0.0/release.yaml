@@ -1,0 +1,108 @@
+# Source: the published GitHub release body,
+#   https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0
+# and PR #58, which the body names as its change.
+# osRevision is the v2.0.0 tag's commit (the merge of #58). Per the body, the
+# ISO itself was built at f1f8e2c116a8c7fcbbfa20cecbb3fefee9403974; the tagged
+# merge adds only a build-script guard and README wording.
+# imageDigest is the image the ISO pins (registry tag netinstall-v2.0.0). That
+# image's own revision label is c6b9e1508835d7ec0f8f44a3d2b751ed6c0a5635, and
+# shellRevision is its org.apexos.apex-shell.ref label.
+# build is null: no CI run is recorded for this ISO.
+# `requirements` is an extra top-level field (not in schema 1).
+schema: 1
+id: "apex-v2.0.0"
+product: apex
+name: "APEX-OS v2.0.0"
+title: "One image, encrypted by default"
+date: "2026-09-25T23:38:00Z"
+channels: []
+summary: "The installer for APEX-OS as it is today: one image for every machine, disk encryption on by default, and an installer that was installed and booted end to end from this exact ISO before it was published. Machines already running APEX-OS do not need it; `sudo apex update` keeps them current."
+predecessor: "apex-v1.0.0"
+provenance:
+  osRevision: "5b1de336765929f926af51151c78ba1e695ec9c1"
+  shellRevision: "17eec38acd4823785329060b98f51ee605da2c2d"
+  imageDigest: "sha256:a754443eb15460c58e81de9198e952490c7ca55242e129b5b5952bdd05f5bcdd"
+  build: null
+  iso:
+    name: "apex-os-netinstall-x86_64.iso"
+    bytes: 1901017088
+    sha256: "eafe2722a568dc34af6df718402f275f39e19af46b4dab0075447537ac902dcd"
+    url: "https://github.com/AndreNijman/rime-os/releases/download/v2.0.0/apex-os-netinstall-x86_64.iso"
+requirements:
+  - "A 64-bit PC with UEFI (legacy BIOS can boot the stick)."
+  - "At least 16 GB of disk. If the target disk is the machine's only drive, it needs about 53 GB, because the download is staged on it; otherwise a second drive or USB stick with 32 GB free is used as scratch and is not erased."
+  - "Network during the install: Ethernet, Wi-Fi, or phone tethering."
+highlights: ["one-image", "disk-encryption-default", "erase-binds-to-device", "pinned-tested-image"]
+changes:
+  - id: "one-image"
+    area: system
+    kind: improved
+    title: "One image for every machine"
+    summary: "The Daily and Gaming editions became one. The ISO installs ghcr.io/andrenijman/apex-os:apex and the machine updates from that tag."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "pinned-tested-image"
+    area: security
+    kind: security
+    title: "The ISO installs the exact build it was tested with"
+    summary: "The ISO downloads one pinned image, and the ISO build refuses it unless it carries the signature of APEX's own build pipeline. The first `sudo apex update` after installing brings the system current."
+    detail: "Pinned image: sha256:a754443eb15460c58e81de9198e952490c7ca55242e129b5b5952bdd05f5bcdd."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "disk-encryption-default"
+    area: security
+    kind: new
+    title: "Whole-disk encryption is on by default"
+    summary: "Installs use LUKS2 whole-disk encryption. A recovery key is shown at the end, and Reboot stays locked until you tick that you have written it down."
+    detail: "The unlock prompt names your keyboard layout, and the recovery key works at that prompt too."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "keyboard-timezone-first"
+    area: system
+    kind: improved
+    title: "Keyboard and time zone come first"
+    summary: "You pick them before setting passwords, so passwords are typed on the layout you will use. Both carry into the installed system."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "erase-binds-to-device"
+    area: security
+    kind: security
+    title: "ERASE means this disk"
+    summary: "The confirm page records each disk's serial, size and partition IDs, and the installer checks them again just before its first write. A USB drive that is unplugged or swapped during the download cannot be erased in its place."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "single-disk-laptops"
+    area: system
+    kind: fixed
+    title: "Single-disk laptops can be installed"
+    summary: "With no second drive, the download is staged on the disk being installed to, never in RAM."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "secure-boot-enrolment"
+    area: security
+    kind: improved
+    title: "Secure Boot key enrolment is offered again"
+    summary: "The installer offers to enrol the Secure Boot key, so Secure Boot can be switched on later without reinstalling."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+  - id: "installer-scratch-space"
+    area: system
+    kind: fixed
+    title: "Network installs no longer fail at 'Preparing the installer runtime'"
+    summary: "A network install could download the OS and then fail because the USB session's scratch space filled up, with no error shown. Found by installing from this ISO in a VM, fixed and re-verified before release."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/58"]
+    breaking: false
+knownIssues:
+  - title: "Switching to a text console restarts the installer"
+    summary: "Don't press Ctrl+Alt+F2 while the installer window is open: it restarts the installer from the first page. Fixed in v2.1.0."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"]
+  - title: "The boot splash may not show the passphrase box"
+    summary: "On an encrypted install, type your passphrase and press Enter anyway, or press Esc to see the text prompt. The fix reaches installed machines through `apex update`."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0", "https://github.com/AndreNijman/rime-os/pull/60"]
+  - title: "Some networks and adapters don't work in the installer"
+    summary: "Captive-portal Wi-Fi and USB Wi-Fi adapters that need out-of-tree drivers don't work in the installer."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0"]
+  - title: "Tablets without a keyboard cannot finish the account page"
+    summary: "There is no way to complete the account page without a keyboard."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.0.0"]
+rollback: null

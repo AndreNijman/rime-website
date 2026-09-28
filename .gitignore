@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+tests/visual/__diff__/
+*.log
+.DS_Store

@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+<Base title="Not found" noindex description="This page doesn't exist.">
+  <section class="container nf">
+    <p class="mono caption">404</p>
+    <h1>Nothing grows from here.</h1>
+    <p class="lead">This page doesn't exist, or it moved. If you followed an APEX-OS link, its Rime page is probably under the same name.</p>
+    <p class="nf-links"><a class="btn btn-primary" href="/">Home</a> <a class="btn" href="/updates">Updates</a> <a class="btn" href="/sitemap">Site map <Icon name="arrow-right" /></a></p>
+  </section>
+</Base>
+<style>
+  .nf { padding-top: calc(var(--notch-h) + clamp(64px, 12vw, 160px)); padding-bottom: var(--section-pad); display: grid; gap: 18px; }
+  .nf-links { display: flex; gap: 10px; flex-wrap: wrap; }
+</style>

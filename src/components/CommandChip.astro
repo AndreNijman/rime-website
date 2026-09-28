@@ -1,0 +1,30 @@
+---
+// A command or digest: selectable mono text with a copy action (spec §11).
+import Icon from "./Icon.astro";
+interface Props { cmd: string; prompt?: string; label?: string; wrap?: boolean }
+const { cmd, prompt = "$", label, wrap = false } = Astro.props;
+---
+<div class:list={["cmd", { "cmd--wrap": wrap }]}>
+  {prompt && <span class="cmd-prompt" aria-hidden="true">{prompt}</span>}
+  <code class="cmd-text">{cmd}</code>
+  <button type="button" class="cmd-copy" data-copy={cmd} data-copy-label={label ?? "Copied"} aria-label={`Copy: ${cmd}`}>
+    <Icon name="copy" size={15} />
+  </button>
+</div>
+<style>
+  .cmd {
+    display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 4px 4px 14px;
+    background: var(--rime-surface-raised); border-radius: var(--radius-m);
+    box-shadow: inset 0 0 0 1px var(--rime-hairline); max-width: 100%;
+  }
+  .cmd-prompt { color: var(--rime-text-secondary); font-family: var(--font-mono); font-size: 0.84rem; user-select: none; }
+  .cmd-text { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; font-size: 0.84rem; padding: 8px 0; scrollbar-width: thin; }
+  .cmd--wrap .cmd-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .cmd-copy {
+    flex: none; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: var(--radius-s);
+    background: transparent; color: var(--rime-text-secondary); cursor: pointer;
+    transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-hover) var(--ease-effects);
+  }
+  .cmd-copy:hover { background: var(--rime-hover); color: var(--rime-text-primary); }
+  html:not(.js) .cmd-copy { display: none; }
+</style>

@@ -1,0 +1,194 @@
+---
+// /system — the operating system (spec §6.2). Every statement here was checked
+// against rime-os@2d9c5438a (the fact dossier behind this site); where a thing
+// is designed but not live, the page says so.
+import Base from "../layouts/Base.astro";
+import DeploymentFlow from "../components/DeploymentFlow.astro";
+import CommandChip from "../components/CommandChip.astro";
+import Evidence from "../components/Evidence.astro";
+import Icon from "../components/Icon.astro";
+import { SITE } from "../data/site";
+import { latestRelease } from "../lib/releases";
+const latest = (await latestRelease())!;
+const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
+---
+<Base title="System" description="Rime is one signed, image-based system: updates are staged beside the running one, the Shell moves with it, and you can always go back.">
+  <header class="container page-hero">
+    <p class="eyebrow">System</p>
+    <h1>One image. Staged, signed, and reversible.</h1>
+    <p class="lead">Rime is built as a single container image on Fedora's bootc. The operating system, its drivers and Rime Shell ship together, update together, and roll back together.</p>
+    <nav class="page-toc" aria-label="On this page">
+      <a href="#updates">Updates</a><a href="#trust">Signatures</a><a href="#rollback">Rollback</a><a href="#channels">Channels</a>
+      <a href="#packages">Packages</a><a href="#recovery">Recovery</a><a href="#sessions">Sessions</a><a href="#gaming">Gaming</a><a href="#lid">Lid</a>
+    </nav>
+  </header>
+
+  <section class="section-tight container" id="updates" aria-labelledby="u-h">
+    <div class="split-2">
+      <div>
+        <h2 id="u-h">Updates are staged, not painted over the running system.</h2>
+        <p class="muted">An update downloads the next image and writes it beside the one you are using. Nothing you are running changes until you reboot into it. Updates never start on their own; the automatic update timer is masked.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="sudo rime update" />
+        <ol class="plain-steps">
+          <li>Stops if the last update left the machine worse off (a local health check), unless you pass <code>--force</code>.</li>
+          <li>Checks the new image's signature (below).</li>
+          <li>Stages the image with bootc. The Shell is inside it.</li>
+          <li>Refreshes the packages you added, Flatpak apps and firmware. Each has a <code>--skip-…</code> flag.</li>
+        </ol>
+        <Evidence links={[{ label: "rimed/rime/src/ops.rs", href: os("rimed/rime/src/ops.rs") }, { label: "Containerfile.base", href: os("Containerfile.base") }]}>
+          <code>rime update --check</code> reports what is available and downloads nothing. <code>rime changelog</code> prints the image's own labels, including the exact OS and Shell revisions.
+        </Evidence>
+      </div>
+    </div>
+    <div class="flow-wrap"><DeploymentFlow from={latest.predecessor ?? "2026.09.28.3"} to={latest.id} /></div>
+  </section>
+
+  <section class="section-tight container" id="trust" aria-labelledby="t-h">
+    <div class="split-2">
+      <div>
+        <h2 id="t-h">Every update is checked against Rime's build.</h2>
+        <p class="muted">Images are signed in CI with cosign, keyless, by the workflow that built them. Before deploying, <code>rime update</code> verifies the signature on the exact digest the registry is serving, against a certificate root pinned inside the image, and refuses anything signed by someone else.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime trust --gate" />
+        <p class="small muted">Shows the decision the next update would make, without root and without staging anything. Every image also carries a signed SPDX software bill of materials.</p>
+        <Evidence links={[{ label: "docs/trust-enforcement.md", href: os("docs/trust-enforcement.md") }, { label: "Security page", href: "/security" }]}>
+          What is not checked: the Rekor transparency log. And running <code>bootc upgrade</code> by hand skips Rime's check entirely; only <code>rime update</code> applies it.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="rollback" aria-labelledby="r-h">
+    <div class="split-2">
+      <div>
+        <h2 id="r-h">If an update is wrong, go back.</h2>
+        <p class="muted">The machine keeps the image it booted and one more. Rolling back makes the previous one the default for the next boot; you can also pick it in the boot menu. Your home folder, <code>/etc</code> and <code>/var</code> stay as the newer system left them.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="sudo rime rollback && sudo systemctl reboot" />
+        <CommandChip cmd="sudo rime pin" />
+        <p class="small muted">Pin keeps the booted image from being replaced, so two bad updates in a row can't push out the last good one.</p>
+        <Evidence links={[{ label: "docs/rollback.md", href: os("docs/rollback.md") }, { label: "docs/boot-v2.md", href: os("docs/boot-v2.md") }]}>
+          Automatic rollback after a failed boot is built but not active: it needs systemd-boot's boot counting, and every published install boots GRUB today.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="channels" aria-labelledby="c-h">
+    <div class="split-2">
+      <div>
+        <h2 id="c-h">One channel today.</h2>
+        <p class="muted">Rime's update client knows four channels — stable, candidate, beta and edge — with staged rollouts and a halt a person can pull. Only <strong>edge</strong> is published so far: every image tag is the same build, and switching to another channel is refused until its first promotion.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime channel status" />
+        <Evidence links={[{ label: "docs/update-channels.md", href: os("docs/update-channels.md") }, { label: "Channels, in the docs", href: "/docs/channels" }]}>
+          No telemetry: a machine works out its rollout slot from its own machine ID and never sends it. <code>rime channel report</code> prints what a health report would contain and says nothing was sent. Rime runs no telemetry service.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="packages" aria-labelledby="p-h">
+    <div class="split-2">
+      <div>
+        <h2 id="p-h">Add software without touching the image.</h2>
+        <p class="muted">Packages you install go into one system extension beside the image, rebuilt whenever your list changes. The image itself stays exactly what was signed, so updates and rollback keep working. Kernels, glibc, systemd and the boot stack are refused.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="sudo rime install htop" />
+        <CommandChip cmd="sudo rime install org.gimp.GIMP" />
+        <CommandChip cmd="rime env create fedora" />
+        <p class="small muted">A reverse-DNS ID installs from Flathub. <code>rime env</code> makes rootless containers for other distributions, with GPU access if you ask. Local <code>.rpm</code>, <code>.deb</code> and AppImage files work too; <code>.deb</code>, AppImage and unsigned <code>.rpm</code> files need <code>--allow-unsigned</code>.</p>
+        <Evidence links={[{ label: "docs/packages.md", href: os("docs/packages.md") }, { label: "Packages, in the docs", href: "/docs/packages" }]}>
+          Sources: Fedora, RPM Fusion and any COPR you enable. There is no Rime package registry.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="recovery" aria-labelledby="rc-h">
+    <div class="split-2">
+      <div>
+        <h2 id="rc-h">Ways back in.</h2>
+        <p class="muted">If the desktop won't start, the login screen offers Rime Safe Graphics: a minimal session with software rendering, a menu for diagnosis and rollback, and no Shell. After three failed starts in a row it is preselected for you.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime recover status" />
+        <CommandChip cmd="rime recover repair" />
+        <p class="small muted">Every <code>rime recover</code> command is a dry run until you commit it. Settings has a Recovery page that shows the same health rows.</p>
+        <Evidence links={[{ label: "docs/recovery.md", href: os("docs/recovery.md") }, { label: "Recovery, in the docs", href: "/docs/recovery" }]}>
+          There is no factory reset beyond reinstalling, and no separate recovery boot entry. Both are deliberate.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="sessions" aria-labelledby="s-h">
+    <h2 id="s-h">Pick how windows behave at the login screen.</h2>
+    <div class="sessions">
+      <div class="sess"><h3>Rime Tiling</h3><p class="caption mono">Hyprland · default</p><p>Windows tile automatically. Springs drive window motion too.</p></div>
+      <div class="sess"><h3>Rime Scrolling</h3><p class="caption mono">niri</p><p>Windows sit in columns on an endless strip you scroll through.</p></div>
+      <div class="sess"><h3>Rime Floating</h3><p class="caption mono">labwc</p><p>Classic overlapping windows with title bars, themed from the same palette.</p></div>
+      <div class="sess"><h3>Rime Gaming Mode</h3><p class="caption mono">gamescope + Steam</p><p>Appears once Steam and gamescope are installed.</p></div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="gaming" aria-labelledby="g-h">
+    <div class="split-2">
+      <div>
+        <h2 id="g-h">Gaming, on demand.</h2>
+        <p class="muted">Rime builds its own kernel from CachyOS's tree, with sched-ext schedulers that Gaming Mode loads while a session runs. NVIDIA's driver is built into the image and signed. On hybrid laptops, apps that ask for the discrete GPU get it when you start them from the Shell.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="sudo rime install steam gamescope mangohud gamemode" />
+        <CommandChip cmd="rime gaming" />
+        <p class="small muted"><code>rime gaming</code> checks whether Gaming Mode would start, and says why not.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="lid" aria-labelledby="l-h">
+    <div class="split-2">
+      <div>
+        <h2 id="l-h">Close the lid, keep working.</h2>
+        <p class="muted">While an agent session is running, closing a laptop's lid keeps it awake: the screen, keyboard light and background jobs switch off, Wi-Fi stays up so a VPN holds. Temperature and battery guards suspend it anyway if they have to. With nothing running, it sleeps as usual.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime lid status" />
+        <p class="small muted">Quick Settings has a "Lid stays awake" tile; after you reopen the lid, <code>rime lid report</code> says how long it stayed up and what it cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container sys-end">
+    <p><a class="btn btn-primary" href="/download"><Icon name="download" /> Download Rime</a> <a class="btn" href="/docs">Read the docs</a></p>
+  </section>
+</Base>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(24px, 3vw, 40px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 60ch; }
+  .page-toc { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .page-toc a { padding: 8px 14px; border-radius: 999px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+  .page-toc a:hover { background: var(--rime-surface-high); }
+  .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: 1fr; } }
+  .split-2 h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .stack > * + * { margin-top: 12px; }
+  .plain-steps { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; color: var(--rime-text-secondary); }
+  .flow-wrap { margin-top: clamp(32px, 4vw, 56px); }
+  section[id] { border-top: 1px solid var(--rime-hairline); }
+  .sessions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+  @media (max-width: 1000px) { .sessions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .sessions { grid-template-columns: 1fr; } }
+  .sess { padding: 20px; border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); display: grid; gap: 6px; align-content: start; }
+  .sess p:last-child { color: var(--rime-text-secondary); font-size: 0.95rem; }
+  #sessions h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); }
+  .sys-end { padding-bottom: var(--section-pad); }
+  .sys-end p { display: flex; gap: 12px; flex-wrap: wrap; }
+</style>

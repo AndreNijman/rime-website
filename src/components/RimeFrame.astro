@@ -1,0 +1,289 @@
+---
+// ─── RimeFrame ──────────────────────────────────────────────────────────────
+// The persistent top frame (spec §4.1): Rime Shell's bar — a strip across the
+// top and three notches hanging from it — drawn by the Shell's own
+// barSilhouette/barHairline at the Shell's own tokens. Left: home. Centre: the
+// section, and the site map + search that BLOOM out of it (CENTER_BLOOM).
+// Right: Updates, and Download, which POURS out of the right notch
+// (RIGHT_POUR). Phones get one centre capsule instead (§4.4).
+//
+// Without JavaScript every trigger is a plain link (/sitemap, /download) and
+// the bar is drawn from a server-rendered path; frame.ts redraws it exactly
+// for the real width and wires the surfaces.
+// ────────────────────────────────────────────────────────────────────────────
+import RimeMark from "./RimeMark.astro";
+import Icon from "./Icon.astro";
+import * as Geo from "../vendor/rime-shell/geometry.mjs";
+import { T1 } from "../geometry/theme.mjs";
+import { NAV, sectionFor } from "../data/site";
+import downloads from "../../content/downloads.json";
+import { latestRelease } from "../lib/releases";
+
+const path = Astro.url.pathname;
+const section = sectionFor(path);
+const latest = await latestRelease();
+const iso = downloads.current.artifacts[0];
+const gb = (b: number) => (b / 1e9).toFixed(1).replace(/\.0$/, "") + " GB";
+
+// Server-rendered bar at a nominal 1440 px. frame.ts replaces it on load.
+const W0 = 1440, L = 128, C = T1.cNotchMinWidth, R = 244;
+const ssr = Geo.barSilhouette({ w: W0, strip: T1.borderWidth, h: T1.notchHeight, shoulder: T1.notchShoulder,
+  bottom: T1.notchBottom, leftW: L, centerW: C, rightW: R, rightBottomL: T1.notchBottom });
+const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeight, shoulder: T1.notchShoulder,
+  bottom: T1.notchBottom, leftW: L, centerW: C, rightW: R, rightBottomL: T1.notchBottom, frameInset: 0 });
+---
+<header class="rime-frame" data-frame data-section={section}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="frame-bar" viewBox={`0 0 ${W0} ${T1.notchHeight}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="bar-fill" d={ssr.path} />
+    <path class="bar-line" d={ssrLine.path} />
+  </svg>
+
+  <nav class="frame-zones" aria-label="Primary">
+    <div class="zone zone-left" data-zone="left">
+      <a href="/" class="frame-home" aria-label="Rime home">
+        <RimeMark size={16} tone="role" />
+        <span class="wordmark">Rime</span>
+      </a>
+    </div>
+
+    <div class="zone zone-center" data-zone="center">
+      <a href="/" class="frame-home frame-home--capsule" aria-label="Rime home"><RimeMark size={15} tone="role" /></a>
+      <a href="/sitemap" class="frame-trigger" data-bloom-trigger aria-haspopup="dialog" aria-controls="site-bloom" aria-expanded="false">
+        <span class="frame-section" data-frame-label>{section}</span>
+        <Icon name="chevron-down" size={16} class="frame-chev" />
+      </a>
+      <button type="button" class="frame-search" data-search-trigger aria-controls="site-bloom" aria-label="Search the site" title="Search (/)">
+        <Icon name="search" size={16} />
+      </button>
+      <a href="/download" class="frame-get" data-pour-trigger aria-label="Download Rime"><Icon name="download" size={17} /></a>
+    </div>
+
+    <div class="zone zone-right" data-zone="right">
+      <a href="/updates" class="frame-link" aria-current={path.startsWith("/updates") ? "page" : undefined}>Updates</a>
+      <a href="/download" class="frame-download" data-pour-trigger aria-haspopup="dialog" aria-controls="download-pour" aria-expanded="false">
+        <Icon name="download" size={16} />
+        <span>Download</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- CENTER_BLOOM: the site map and search, out of the centre notch -->
+<div class="fluid-layer" id="site-bloom" role="dialog" aria-modal="true" aria-label="Site map and search" hidden inert data-bloom>
+  <div class="fluid-backdrop" data-close></div>
+  <svg class="fluid-shape" aria-hidden="true" focusable="false"><path data-path fill-rule="evenodd" /></svg>
+  <div class="fluid-hole" data-hole aria-hidden="true"></div>
+  <div class="fluid-reveal" data-reveal>
+    <div class="fluid-content bloom-content" data-content>
+      <form class="lens" role="search" action="/sitemap" data-lens>
+        <Icon name="search" size={18} class="lens-icon" />
+        <label for="lens-input" class="visually-hidden">Search Rime</label>
+        <input id="lens-input" name="q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Search docs, features and updates" data-lens-input
+          aria-controls="lens-results" aria-autocomplete="list" />
+        <kbd aria-hidden="true">Esc</kbd>
+      </form>
+      <div class="bloom-nav" data-bloom-nav>
+        {NAV.map((g) => (
+          <section class="bloom-group" aria-labelledby={`bg-${g.label}`}>
+            <h2 id={`bg-${g.label}`}><a href={g.href}>{g.label}</a></h2>
+            <ul>
+              {g.items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <div class="lens-results" id="lens-results" role="listbox" aria-label="Search results" hidden data-lens-results></div>
+      <div class="bloom-foot">
+        {latest && (
+          <a href={`/updates/${latest.id}`} class="bloom-latest">
+            <span class="mono">{latest.name}</span>
+            <span>{latest.title}</span>
+            <Icon name="arrow-right" size={16} />
+          </a>
+        )}
+        <span class="caption bloom-hint"><kbd>/</kbd> search · <kbd>↑</kbd><kbd>↓</kbd> choose · <kbd>Esc</kbd> close</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT_POUR: the download surface, out of the right notch -->
+<div class="fluid-layer" id="download-pour" role="dialog" aria-modal="true" aria-label="Download Rime" hidden inert data-pour>
+  <div class="fluid-backdrop" data-close></div>
+  <svg class="fluid-shape" aria-hidden="true" focusable="false"><path data-path /></svg>
+  <div class="fluid-reveal" data-reveal>
+    <div class="fluid-content pour-content" data-content>
+      <p class="eyebrow">Installer · {iso.arch}</p>
+      <h2 class="pour-title">Get Rime</h2>
+      <p class="pour-note">
+        The published installer is the <strong>{downloads.current.name.split(" — ")[0]}</strong> network installer.
+        It installs the signed system image and needs a connection while it runs.
+      </p>
+      <dl class="pour-facts">
+        <div><dt>File</dt><dd class="mono">{iso.name}</dd></div>
+        <div><dt>Size</dt><dd class="tnum">{gb(iso.bytes)}</dd></div>
+        <div><dt>Published</dt><dd class="tnum">{downloads.current.publishedAt.slice(0, 10)}</dd></div>
+      </dl>
+      <div class="pour-sha">
+        <span class="caption">SHA-256</span>
+        <button type="button" class="sha-chip mono" data-copy={iso.sha256} data-copy-label="SHA-256 copied">
+          <span>{iso.sha256.slice(0, 16)}…{iso.sha256.slice(-8)}</span>
+          <Icon name="copy" size={15} />
+        </button>
+      </div>
+      <div class="pour-actions">
+        <a class="btn btn-primary" href={iso.url} data-download-start>
+          <Icon name="download" /> Download ISO
+        </a>
+        <a class="btn" href="/download">Requirements &amp; verify</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="status-capsule" role="status" aria-live="polite" data-capsule hidden></div>
+
+<script>
+  import { initFrame } from "../scripts/frame";
+  initFrame();
+</script>
+
+<style is:global>
+  .rime-frame {
+    position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--notch-h);
+    pointer-events: none; color: var(--rime-text-primary);
+  }
+  .frame-bar { position: absolute; inset: 0; width: 100%; height: var(--notch-h); overflow: visible; }
+  .bar-fill { fill: var(--rime-surface-base); transition: fill var(--dur-state) var(--ease-effects); }
+  .bar-line { fill: none; stroke: var(--rime-hairline); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  :root[data-scheme="light"] .bar-line, :root:not([data-scheme]) .bar-line { stroke: var(--rime-outline-soft); }
+  .frame-zones { position: absolute; inset: 0; pointer-events: none; }
+  .zone {
+    position: absolute; top: 0; height: var(--notch-h); pointer-events: auto;
+    display: flex; align-items: center; gap: 4px; padding: var(--strip) 14px 0;
+  }
+  .zone-left { left: 0; width: var(--l-w, 128px); padding-left: 18px; }
+  .zone-center { left: 50%; transform: translateX(-50%); width: var(--c-w, 300px); justify-content: center; padding-inline: 10px; }
+  .zone-right { right: 0; width: var(--r-w, 244px); justify-content: flex-end; padding-right: 10px; gap: 6px; }
+
+  .frame-home { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; height: 30px; padding: 0 8px; border-radius: 999px; }
+  .frame-home:hover { background: var(--rime-hover); }
+  .wordmark { font-weight: 650; font-size: 1.02rem; letter-spacing: -0.01em; }
+  .frame-home--capsule, .frame-search, .frame-get { display: none; }
+
+  .frame-trigger {
+    display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px 0 14px;
+    border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
+    transition: background-color var(--dur-hover) var(--ease-effects);
+  }
+  .frame-trigger:hover, .frame-trigger[aria-expanded="true"] { background: var(--rime-hover); }
+  .frame-trigger[aria-expanded="true"] { background: var(--rime-surface-selected); }
+  .frame-section { transition: opacity var(--dur-fade-out) var(--ease-effects); }
+  .frame-chev { color: var(--rime-text-secondary); transition: transform var(--dur-state) var(--ease-standard); }
+  .frame-trigger[aria-expanded="true"] .frame-chev { transform: rotate(180deg); }
+
+  .frame-link, .frame-download {
+    display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 999px;
+    font-weight: 600; font-size: 0.9rem; text-decoration: none; white-space: nowrap;
+    transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-state) var(--ease-effects);
+  }
+  .frame-link:hover { background: var(--rime-hover); }
+  .frame-link[aria-current="page"] { background: var(--rime-surface-selected); }
+  .frame-download { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+  .frame-download:hover { background: color-mix(in srgb, var(--rime-accent-container) 88%, var(--rime-text-primary)); }
+  .frame-download[aria-expanded="true"] { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
+
+  /* phones: one centre capsule (spec §4.4); every control 44 px */
+  @media (max-width: 760px) {
+    .zone-left, .zone-right { display: none; }
+    .zone-center { width: var(--c-w, min(100vw - 24px, 340px)); justify-content: space-between; padding-inline: 8px; }
+    .frame-home--capsule, .frame-search, .frame-get { display: inline-flex; align-items: center; justify-content: center; }
+    .frame-home--capsule, .frame-search, .frame-get { width: 40px; height: 34px; border-radius: 999px; color: var(--rime-text-primary); background: none; border: 0; }
+    .frame-home--capsule:hover, .frame-search:hover, .frame-get:hover { background: var(--rime-hover); }
+    .frame-get { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+    .frame-trigger { flex: 1; justify-content: center; height: 34px; }
+  }
+
+  /* ── fluid surfaces ── */
+  .fluid-layer { position: fixed; inset: 0; z-index: 60; }
+  .fluid-layer[hidden] { display: none; }
+  .fluid-backdrop { position: absolute; inset: 0; }
+  .fluid-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .fluid-shape path { fill: var(--rime-surface-base); pointer-events: visiblePainted; }
+  .fluid-hole { position: absolute; background: var(--rime-surface-base); pointer-events: none; }
+  .fluid-reveal { position: absolute; pointer-events: none; }
+  .fluid-content { position: absolute; inset: 0; pointer-events: auto; will-change: transform, opacity; }
+
+  .bloom-content { display: flex; flex-direction: column; gap: 18px; padding: 10px 14px 16px; }
+  .lens {
+    display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 12px 0 16px; flex: none;
+    background: var(--rime-surface-high); border-radius: var(--radius-l);
+  }
+  .lens:focus-within { box-shadow: 0 0 0 2px var(--rime-accent-text); }
+  .lens-icon { color: var(--rime-text-secondary); flex: none; }
+  .lens input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font-size: 1.02rem; }
+  .lens input::placeholder { color: var(--rime-text-secondary); }
+  .lens input::-webkit-search-cancel-button { display: none; }
+  .lens input:focus-visible { outline: none; box-shadow: none; }
+  .bloom-nav {
+    flex: 1; min-height: 0; overflow: auto; display: grid; gap: 26px 20px; padding: 6px 8px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); align-content: start;
+  }
+  .bloom-group h2 { font-size: 0.8rem; font-weight: 600; color: var(--rime-text-secondary); letter-spacing: 0; margin-bottom: 8px; }
+  .bloom-group h2 a { text-decoration: none; }
+  .bloom-group h2 a:hover { color: var(--rime-text-primary); }
+  .bloom-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .bloom-group li a {
+    display: block; padding: 7px 10px; margin-inline: -10px; border-radius: var(--radius-s);
+    text-decoration: none; font-size: 0.98rem; transition: background-color var(--dur-hover) var(--ease-effects);
+  }
+  .bloom-group li a:hover { background: var(--rime-hover); }
+  .lens-results { flex: 1; min-height: 0; overflow: auto; padding: 0 4px; }
+  .lens-group + .lens-group { margin-top: 14px; }
+  .lens-group h3 { font-size: 0.78rem; font-weight: 600; color: var(--rime-text-secondary); margin: 0 0 6px 10px; }
+  .lens-row {
+    display: block; padding: 10px 12px; border-radius: var(--radius-m); text-decoration: none;
+    transition: background-color var(--dur-hover) var(--ease-effects);
+  }
+  .lens-row strong { display: block; font-weight: 600; }
+  .lens-row span { display: block; font-size: 0.88rem; color: var(--rime-text-secondary); margin-top: 2px; }
+  .lens-row:hover, .lens-row[aria-selected="true"] { background: var(--rime-surface-selected); }
+  .lens-empty { padding: 18px 12px; color: var(--rime-text-secondary); }
+  .bloom-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 0 6px; flex: none; }
+  .bloom-latest {
+    display: inline-flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-m);
+    background: var(--rime-surface-raised); text-decoration: none; font-size: 0.92rem;
+  }
+  .bloom-latest:hover { background: var(--rime-surface-high); }
+  .bloom-latest .mono { color: var(--rime-accent-text); font-size: 0.8rem; }
+  .bloom-hint kbd { font-size: 0.75rem; }
+  @media (max-width: 760px) { .bloom-hint { display: none; } .bloom-nav { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; } }
+
+  .pour-content { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .pour-title { font-size: 1.6rem; }
+  .pour-note { font-size: 0.95rem; color: var(--rime-text-secondary); }
+  .pour-note strong { color: var(--rime-text-primary); font-weight: 600; }
+  .pour-facts { display: grid; grid-template-columns: 1fr auto auto; gap: 16px; margin: 4px 0 0; }
+  .pour-facts dt { font-size: 0.78rem; color: var(--rime-text-secondary); }
+  .pour-facts dd { margin: 2px 0 0; font-weight: 600; font-size: 0.92rem; overflow-wrap: anywhere; }
+  .pour-facts dd.mono { font-weight: 500; font-size: 0.78rem; }
+  .pour-sha { display: flex; align-items: center; gap: 12px; }
+  .sha-chip {
+    display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; min-height: 36px;
+    padding: 0 12px; border-radius: var(--radius-s); background: var(--rime-surface-high); font-size: 0.78rem;
+  }
+  .sha-chip:hover { background: color-mix(in srgb, var(--rime-surface-high) 85%, var(--rime-text-primary)); }
+  .pour-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+  /* CAPSULE: tiny transient feedback, out of the top centre */
+  .status-capsule {
+    position: fixed; z-index: 70; left: 50%; top: calc(var(--notch-h) + 10px);
+    transform: translateX(-50%); padding: 10px 18px; border-radius: 999px;
+    background: var(--rime-surface-high); color: var(--rime-text-primary); font-weight: 600; font-size: 0.92rem;
+    box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.45), inset 0 0 0 1px var(--rime-hairline);
+    display: inline-flex; align-items: center; gap: 8px; pointer-events: none;
+  }
+  .status-capsule[hidden] { display: none; }
+</style>

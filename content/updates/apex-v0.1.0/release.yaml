@@ -1,0 +1,79 @@
+# Source: the published GitHub release body,
+#   https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0
+# osRevision is the commit the v0.1.0 tag resolves to today. The release's
+# targetCommitish is "main"; both repositories' history was re-signed on
+# 2026-09-22, so SHAs quoted before then no longer resolve.
+# imageDigest and shellRevision are null: this netinstall downloads its
+# edition's image from the registry at install time and pins no digest.
+# build is null: no CI run is recorded for this ISO.
+# Two ISOs were published. `iso` holds the Daily edition (listed first in the
+# body). The Gaming (NVIDIA) edition:
+#   name:   apex-os-gaming-nvidia-netinstall.iso
+#   bytes:  1926615040
+#   sha256: f6e808c05c6306f2d1fd2dae7d95f14758e0ca6bb42c62c316b60270fc07e2f8
+#   url:    https://github.com/AndreNijman/rime-os/releases/download/v0.1.0/apex-os-gaming-nvidia-netinstall.iso
+# `requirements` is an extra top-level field (not in schema 1) carrying the
+# body's install requirements.
+schema: 1
+id: "apex-v0.1.0"
+product: apex
+name: "APEX-OS v0.1.0"
+title: "First public release"
+date: "2026-07-28T07:46:48Z"
+channels: []
+summary: "The first public APEX-OS installer: a graphical netinstall ISO in two editions, Daily and Gaming (NVIDIA). It was verified in QEMU but had not yet been installed on real hardware."
+predecessor: null
+provenance:
+  osRevision: "596aee513107b363270d8ce735e04f34fe6c00bc"
+  shellRevision: null
+  imageDigest: null
+  build: null
+  iso:
+    name: "apex-os-daily-netinstall.iso"
+    bytes: 1926746112
+    sha256: "850b6fd776cb576b503136c56e163d158cd892ac24b27e9bf3df816d964a7749"
+    url: "https://github.com/AndreNijman/rime-os/releases/download/v0.1.0/apex-os-daily-netinstall.iso"
+requirements:
+  - "Internet access during the install: each ISO holds only the installer and downloads the OS (about 5 GB) from the registry."
+highlights: ["two-editions", "graphical-installer", "erase-confirmation"]
+changes:
+  - id: "two-editions"
+    area: system
+    kind: new
+    title: "Two installer ISOs, Daily and Gaming (NVIDIA)"
+    summary: "Daily is the general-purpose desktop. Gaming is performance-tuned and includes the NVIDIA driver. Both use the same installer, and each ISO records its own edition as the update origin, so updates keep you on the edition you installed."
+    detail: "Each ISO is about 1.8 GB. Write it to a USB stick with dd, Rufus, or balenaEtcher in DD/image mode, then boot the stick. Check the download with `sha256sum -c apex-os-daily-netinstall.iso.sha256`. The Gaming edition file is apex-os-gaming-nvidia-netinstall.iso (1,926,615,040 bytes, sha256 f6e808c05c6306f2d1fd2dae7d95f14758e0ca6bb42c62c316b60270fc07e2f8)."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+    breaking: false
+  - id: "graphical-installer"
+    area: system
+    kind: new
+    title: "A six-screen graphical installer"
+    summary: "The installer walks through network, disk, whole disk or a single partition, your account, Secure Boot, and a final confirmation. Your account is created during the install, so the first boot does not lock you out."
+    detail: "A Wi-Fi connection you set up in the installer carries into the installed system. There is no text-mode fallback to get stranded in. The installer runs on software rendering, so it does not need a working GPU driver, and the same ISO boots UEFI and legacy BIOS, with or without safe graphics."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+    breaking: false
+  - id: "erase-confirmation"
+    area: security
+    kind: new
+    title: "Nothing is erased until you type ERASE"
+    summary: "No disk is touched until you type ERASE on a screen that lists every partition and whether it will be erased, kept or shared."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+    breaking: false
+knownIssues:
+  - title: "Not yet installed on real hardware"
+    summary: "Everything was verified in QEMU and by measurement (four boot paths, 33 automated tests, every installer screen at two panel sizes), but nobody had installed this release on real hardware yet."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+  - title: "No ISO for the Gaming-Mesa (non-NVIDIA) edition"
+    summary: "A Gaming-Mesa image exists in the registry but has no published ISO. You can build one with EDITION=gaming-mesa."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+  - title: "Secure Boot enrolment depends on a signed kernel"
+    summary: "The installer offers Secure Boot enrolment, but it only works if the downloaded image carries a signed kernel. If it does not, the installer says it has nothing to enrol and the system installs and boots normally with Secure Boot off. Once signed images are published, the same ISO enrols without any change."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+  - title: "Tablets without a physical keyboard cannot finish the account screen"
+    summary: "There is no on-screen keyboard."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+  - title: "US keyboard layout for passwords"
+    summary: "The installer assumes a US keyboard layout when you type your password."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v0.1.0"]
+rollback: "sudo bootc rollback        # if anything broke"

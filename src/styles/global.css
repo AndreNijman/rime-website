@@ -1,0 +1,277 @@
+/* ─── rimeos.com global styles ──────────────────────────────────────────────
+ * Colour: only --rime-* roles (generated/scenes.css, from matugen via the
+ * Shell's roles.js). Timing: only --dur-* / --ease-* (generated/motion.css,
+ * from the Shell's motion.js). Geometry: the Shell's ThemeSet radii.
+ * Nothing in this file names a colour or a duration of its own.
+ * ────────────────────────────────────────────────────────────────────────── */
+@import "./generated/motion.css";
+@import "./generated/scenes.css";
+
+:root {
+  --font-ui: "Noto Sans Variable", "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.9rem, 1.3rem + 5.4vw, 6.6rem);
+  --fs-h1: clamp(2.5rem, 1.5rem + 3.6vw, 4.6rem);
+  --fs-h2: clamp(1.95rem, 1.3rem + 2.3vw, 3.2rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --fs-lead: clamp(1.15rem, 1.02rem + 0.55vw, 1.45rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-caption: 0.8125rem;
+  --fs-mono: 0.84rem;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --section-pad: clamp(72px, 9vw, 144px);
+  --gutter: clamp(16px, 4vw, 48px);
+  --measure: 66ch;
+  --content: 1180px;
+  --wide: 1520px;
+  --frame-h: calc(var(--notch-h) + 8px);
+  --hit: 44px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--notch-h) + 24px);
+  hanging-punctuation: first last;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--rime-surface-base);
+  color: var(--rime-text-primary);
+  font: 400 var(--fs-body)/1.6 var(--font-ui);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+  transition: background-color var(--dur-state) var(--ease-effects), color var(--dur-state) var(--ease-effects);
+}
+/* The Light Field (spec §2.4): the wallpaper's own light behind the whole
+ * site, pre-blurred and pulled toward the base surface at build time just far
+ * enough that primary text on it clears 7:1 at its worst pixel. The frame and
+ * every surface sit on it the way Rime Shell sits on a wallpaper. */
+.page-field {
+  position: fixed; inset: -6vmax; z-index: -1; pointer-events: none;
+  background: var(--rime-surface-base) var(--rime-field) center / cover no-repeat;
+  /* static layer: blurred once when rasterised, never on scroll */
+  filter: blur(28px);
+}
+.page-field-next { position: absolute; inset: 0; opacity: 0; background: center / cover no-repeat; }
+
+img, svg, video, picture { display: block; max-width: 100%; }
+img, video { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+::selection { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.08; letter-spacing: -0.022em; text-wrap: balance; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); line-height: 1.25; letter-spacing: -0.012em; }
+h4 { font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.005em; }
+p { margin: 0; text-wrap: pretty; }
+.display { font-size: var(--fs-display); line-height: 0.98; letter-spacing: -0.035em; font-weight: 620; }
+.lead { font-size: var(--fs-lead); line-height: 1.5; color: var(--rime-text-secondary); max-width: 38ch; }
+.muted { color: var(--rime-text-secondary); }
+.small { font-size: var(--fs-small); }
+.caption { font-size: var(--fs-caption); color: var(--rime-text-secondary); }
+.mono, code, kbd, samp, pre { font-family: var(--font-mono); font-size: var(--fs-mono); font-variant-ligatures: none; }
+.tnum { font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font: 500 var(--fs-caption)/1.4 var(--font-mono);
+  color: var(--rime-text-secondary);
+  letter-spacing: 0.01em;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+}
+.eyebrow::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rime-accent); flex: none;
+}
+
+a { color: inherit; text-decoration-color: color-mix(in srgb, var(--rime-accent) 70%, transparent); text-underline-offset: 0.18em; text-decoration-thickness: 1.5px; }
+a:hover { text-decoration-color: var(--rime-accent); }
+.link-quiet { text-decoration: none; }
+.link-quiet:hover { text-decoration: underline; text-decoration-color: var(--rime-accent); }
+
+/* Keyboard focus: a two-layer ring with a gap, the Shell's focus language.
+ * :focus-visible only, so a click never leaves a ring behind (spec §11.2). */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--rime-text-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--rime-accent) 38%, transparent);
+  border-radius: var(--radius-s);
+}
+
+.skip-link {
+  position: fixed; left: 50%; top: calc(var(--notch-h) + 8px); z-index: 100;
+  transform: translate(-50%, -200%);
+  background: var(--rime-surface-high); color: var(--rime-text-primary);
+  padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 600;
+}
+.skip-link:focus-visible { transform: translate(-50%, 0); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+.container { width: min(100% - 2 * var(--gutter), var(--content)); margin-inline: auto; }
+.container-wide { width: min(100% - 2 * var(--gutter), var(--wide)); margin-inline: auto; }
+.section { padding-block: var(--section-pad); position: relative; }
+.section-tight { padding-block: calc(var(--section-pad) * 0.6); }
+.stack > * + * { margin-top: var(--flow, 1em); }
+.cluster { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.grid-2 { display: grid; gap: clamp(24px, 4vw, 64px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); align-items: start; }
+.grid-3 { display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.split { display: grid; gap: clamp(32px, 6vw, 96px); grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+.section-head { max-width: 760px; }
+.section-head > * + * { margin-top: var(--space-4); }
+.section-head .lead { max-width: 52ch; }
+main { display: block; }
+
+/* ── surfaces ───────────────────────────────────────────────────────────── */
+.surface {
+  background: var(--rime-surface-raised);
+  border-radius: var(--radius-xl);
+  box-shadow: inset 0 0 0 1px var(--rime-hairline);
+}
+.surface-overlay { background: var(--rime-surface-overlay); }
+.hairline { border: 0; border-top: 1px solid var(--rime-hairline); margin: 0; }
+.card {
+  background: var(--rime-surface-raised);
+  border-radius: var(--radius-l);
+  padding: clamp(20px, 2.4vw, 32px);
+  box-shadow: inset 0 0 0 1px var(--rime-hairline);
+}
+.card > * + * { margin-top: var(--space-3); }
+
+/* ── buttons: filled surface, soft state change, fast press, deliberate release (§11.1) */
+.btn {
+  --btn-bg: var(--rime-surface-high);
+  --btn-fg: var(--rime-text-primary);
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: var(--hit); padding: 0 20px;
+  border: 0; border-radius: var(--radius-m);
+  background: var(--btn-bg); color: var(--btn-fg);
+  font-weight: 600; font-size: 0.98rem; letter-spacing: -0.005em; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  position: relative; isolation: isolate;
+  transition:
+    transform var(--dur-press-out) var(--ease-spring),
+    background-color var(--dur-hover) var(--ease-effects),
+    color var(--dur-state) var(--ease-effects);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn::after { /* the state layer */
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  background: var(--btn-fg); opacity: 0;
+  transition: opacity var(--dur-hover) var(--ease-effects);
+}
+.btn:hover::after { opacity: 0.07; }
+.btn:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-press-in), var(--dur-hover), var(--dur-state); }
+.btn:active::after { opacity: 0.11; }
+.btn-primary { --btn-bg: var(--rime-accent-container); --btn-fg: var(--rime-on-accent-container); }
+.btn-quiet { --btn-bg: transparent; }
+.btn-lg { min-height: 54px; padding: 0 26px; font-size: 1.05rem; border-radius: var(--radius-l); }
+.btn-sm { min-height: 36px; padding: 0 14px; font-size: 0.9rem; border-radius: var(--radius-s); }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn[aria-disabled="true"], .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 28px; padding: 0 12px; border-radius: 999px;
+  background: var(--rime-surface-high); color: var(--rime-text-secondary);
+  font: 500 var(--fs-caption)/1 var(--font-ui);
+}
+.chip[data-kind="new"], .chip[data-kind="security"] { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+
+kbd {
+  display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-radius: 6px;
+  background: var(--rime-surface-high); box-shadow: inset 0 -1px 0 var(--rime-outline-soft);
+  font-size: 0.82em; text-align: center; color: var(--rime-text-primary);
+}
+
+/* ── prose (docs, journal, release notes) ───────────────────────────────── */
+.prose { max-width: var(--measure); font-size: 1.0625rem; line-height: 1.7; }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin-top: 2.2em; letter-spacing: -0.02em; }
+.prose h3 { font-size: 1.25rem; margin-top: 1.8em; }
+.prose h2 + *, .prose h3 + * { margin-top: 0.6em; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li + li { margin-top: 0.4em; }
+.prose li::marker { color: var(--rime-text-secondary); }
+.prose code:not(pre code) {
+  padding: 0.12em 0.38em; border-radius: 6px; background: var(--rime-surface-high); font-size: 0.86em;
+  overflow-wrap: anywhere;
+}
+.prose pre, pre.block {
+  background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+  border-radius: var(--radius-m); padding: 16px 18px; overflow-x: auto; line-height: 1.6;
+  font-size: 0.84rem;
+}
+.prose pre code { background: none; padding: 0; }
+.prose blockquote {
+  margin-inline: 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--rime-accent);
+  color: var(--rime-text-secondary);
+}
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.95rem; display: block; overflow-x: auto; }
+.prose th, .prose td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rime-hairline); vertical-align: top; }
+.prose th { font-weight: 600; color: var(--rime-text-secondary); font-size: 0.85rem; }
+.prose hr { border: 0; border-top: 1px solid var(--rime-hairline); margin-block: 2.4em; }
+.prose img { border-radius: var(--radius-m); }
+.prose a { overflow-wrap: anywhere; }
+.prose .callout, .callout {
+  background: var(--rime-surface-raised); border-radius: var(--radius-m);
+  padding: 16px 18px; box-shadow: inset 0 0 0 1px var(--rime-hairline);
+}
+.callout[data-tone="caution"] { box-shadow: inset 3px 0 0 var(--rime-accent), inset 0 0 0 1px var(--rime-hairline); }
+
+/* ── details / accordions: semantic HTML first (§14.3) */
+details.disclosure { border-bottom: 1px solid var(--rime-hairline); }
+details.disclosure > summary {
+  list-style: none; cursor: pointer; padding: 18px 0; display: flex; gap: 12px; align-items: center;
+  font-weight: 600;
+}
+details.disclosure > summary::-webkit-details-marker { display: none; }
+details.disclosure > summary::after {
+  content: ""; margin-left: auto; width: 10px; height: 10px; flex: none;
+  border-right: 2px solid var(--rime-text-secondary); border-bottom: 2px solid var(--rime-text-secondary);
+  transform: translateY(-3px) rotate(45deg);
+  transition: transform var(--dur-state) var(--ease-standard);
+}
+details.disclosure[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+details.disclosure > div { padding-bottom: 20px; }
+
+/* ── reveal on scroll: the first frame is already coherent (§3.5). Only a
+ * small travel under full motion, and never content that starts invisible
+ * without JS: .js-reveal is only set by the script that also reveals it. */
+:root.js .reveal { opacity: 0; transform: translateY(18px); animation: reveal-failsafe 0s linear 2.5s forwards; }
+:root.js .reveal.is-in, :root.js .reveal.no-anim { animation: none; }
+:root.js .reveal.no-anim { opacity: 1; transform: none; }
+@keyframes reveal-failsafe { to { opacity: 1; transform: none; } }
+:root.js .reveal.is-in {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-fade-in) var(--ease-effects), transform var(--dur-hero) var(--ease-spring);
+}
+:root[data-motion="reduced"].js .reveal, :root[data-motion="off"].js .reveal { transform: none; }
+
+/* ── generic media frame ───────────────────────────────────────────────── */
+.media-frame { border-radius: var(--radius-xl); overflow: hidden; background: var(--rime-surface-raised); position: relative; }
+
+@media (max-width: 720px) {
+  :root { --fs-body: 1.03rem; }
+  .btn-lg { min-height: 52px; }
+}
+
+@media print {
+  .rime-frame, .site-footer, .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+}

@@ -1,0 +1,2644 @@
+{
+  "generator": {
+    "matugen": "matugen 4.2.0",
+    "command": "matugen image <wall> --source-color-index 0 --type scheme-content -m <mode> --dry-run -j hex",
+    "mapping": "rime-shell src/config/rime-shell-colors.json.example",
+    "roles": "rime-shell src/theme/roles.js @ 6289d1f8"
+  },
+  "scenes": [
+    {
+      "id": "rime-default",
+      "name": "Rime default",
+      "kind": "shipped",
+      "note": "The wallpaper a fresh Rime install starts with (installed as /usr/share/backgrounds/rime/default.jpg).",
+      "source": "rime-os files/branding/wallpapers/rime-wallpaper-default.jpg @ 2d9c5438a",
+      "licence": "Rime OS repository asset",
+      "default": true,
+      "sha256": "bf0e3ce3427bd7d9cee083762a6093dea416604e518fc931dffc37cef2312265",
+      "dark": {
+        "source": {
+          "background": "#121315",
+          "active": "#b2c8ec",
+          "text": "#e3e2e5",
+          "subtext": "#c4c6ce",
+          "border": "#44474d",
+          "iconFont": "#061f3b"
+        },
+        "roles": {
+          "surfaceBase": "#121315",
+          "surfaceRaised": "#1c1d1f",
+          "surfaceOverlay": "#232426",
+          "surfaceHigh": "#2b2c2e",
+          "surfaceSelected": "#2c3037",
+          "accentContainer": "#3c424d",
+          "outlineSoft": "#2b2c2e",
+          "outlineStrong": "#444547",
+          "hairline": "#27282a",
+          "textPrimary": "#e3e2e5",
+          "textSecondary": "#a8a8ab",
+          "textTertiary": "#7a7a7d",
+          "accent": "#b2c8ec",
+          "accentText": "#b2c8ec",
+          "surfaceOnSelected": "#121315",
+          "onAccentContainer": "#b2c8ec",
+          "iconDefault": "#a8a8ab",
+          "iconActive": "#b2c8ec",
+          "hover": "#1f1f21",
+          "pressed": "#27282a"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.41,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 13.02,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.1,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.85,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.28,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.85,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.09,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.91,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.6,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.37,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.95,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.89,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.95,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.84,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.93,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/rime-default.bf0e3ce342.field-dark.webp",
+          "strength": 0.78,
+          "worstTextContrast": 7.28
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#faf9fb",
+          "active": "#000613",
+          "text": "#1b1c1e",
+          "subtext": "#44474d",
+          "border": "#c4c6ce",
+          "iconFont": "#061f3b"
+        },
+        "roles": {
+          "surfaceBase": "#faf9fb",
+          "surfaceRaised": "#efeef0",
+          "surfaceOverlay": "#e8e7e9",
+          "surfaceHigh": "#dfdee0",
+          "surfaceSelected": "#d2d2d6",
+          "accentContainer": "#b9babf",
+          "outlineSoft": "#dfdee0",
+          "outlineStrong": "#c4c4c6",
+          "hairline": "#e4e3e5",
+          "textPrimary": "#1b1c1e",
+          "textSecondary": "#595a5c",
+          "textTertiary": "#8b8b8c",
+          "accent": "#000613",
+          "accentText": "#000613",
+          "surfaceOnSelected": "#faf9fb",
+          "onAccentContainer": "#000613",
+          "iconDefault": "#595a5c",
+          "iconActive": "#000613",
+          "hover": "#edecee",
+          "pressed": "#e4e3e5"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.25,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.74,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.87,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.77,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 11.32,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.58,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 5.97,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.62,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.17,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 4.58,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.26,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 19.32,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 17.53,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 10.45,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 8.79,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/rime-default.bf0e3ce342.field-light.webp",
+          "strength": 0.58,
+          "worstTextContrast": 7.19
+        }
+      },
+      "image": {
+        "width": 3258,
+        "height": 2160,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/rime-default.bf0e3ce342.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/rime-default.bf0e3ce342.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/rime-default.bf0e3ce342.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/rime-default.bf0e3ce342.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/rime-default.bf0e3ce342.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/rime-default.bf0e3ce342.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/rime-default.bf0e3ce342.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAAAwBgCdASogABIAPtFapU0oJSOiMBgIAQAaCWMAnTMM+gwfSgG1kZboqTGMY9ADHw3rdH+y+6w7JZxAAP7vvb1MZCgCyeDzljFhDx4XP3JNklQnGnHc9Zxwy294v8zQ760ItCMYxbjnrcIsIlNEBHUReFnsQB+5BM+f/6nkL3srlO+oLXor6nUNmi12wUuHYcK6Ho7NGKN/RBQHJT6Rjqn9BFgqFWC/N0JZT7hwnyYjf3s+DqpyF4gSep//Rc8IL7ojLgloLsw6Z7dgy5CUOD+f2fXfM+O/3yb3yDMpVcEOZAWoVpANdG3LHHE3v0uAAAA="
+      }
+    },
+    {
+      "id": "harbour-dusk",
+      "name": "Harbour dusk",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (harbour_dusk, seed 1101)",
+      "licence": "Original to this repository",
+      "default": false,
+      "sha256": "b06207265425ab0e4ac052f6711240729e1955a4e41f1ac8632807b9270e5a4d",
+      "dark": {
+        "source": {
+          "background": "#171214",
+          "active": "#feafd7",
+          "text": "#ecdfe3",
+          "subtext": "#d5c2c9",
+          "border": "#514349",
+          "iconFont": "#8e4e71"
+        },
+        "roles": {
+          "surfaceBase": "#171214",
+          "surfaceRaised": "#221c1e",
+          "surfaceOverlay": "#282225",
+          "surfaceHigh": "#312b2d",
+          "surfaceSelected": "#3c2b33",
+          "accentContainer": "#533b47",
+          "outlineSoft": "#312b2d",
+          "outlineStrong": "#4a4346",
+          "hairline": "#2c2729",
+          "textPrimary": "#ecdfe3",
+          "textSecondary": "#b0a6a9",
+          "textTertiary": "#82797b",
+          "accent": "#feafd7",
+          "accentText": "#feafd7",
+          "surfaceOnSelected": "#171214",
+          "onAccentContainer": "#feafd7",
+          "iconDefault": "#b0a6a9",
+          "iconActive": "#feafd7",
+          "hover": "#241e20",
+          "pressed": "#2c2729"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.32,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 12.94,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.02,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.78,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.23,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.81,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.06,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.56,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.88,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.58,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.36,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.88,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.83,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.93,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.8,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.93,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/harbour-dusk.b062072654.field-dark.webp",
+          "strength": 0.66,
+          "worstTextContrast": 7.08
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#fff8f8",
+          "active": "#723758",
+          "text": "#201a1c",
+          "subtext": "#514349",
+          "border": "#d5c2c9",
+          "iconFont": "#8e4e71"
+        },
+        "roles": {
+          "surfaceBase": "#fff8f8",
+          "surfaceRaised": "#f4eded",
+          "surfaceOverlay": "#ede6e6",
+          "surfaceHigh": "#e4ddde",
+          "surfaceSelected": "#e8d9de",
+          "accentContainer": "#dac6ce",
+          "outlineSoft": "#e4ddde",
+          "outlineStrong": "#c9c3c3",
+          "hairline": "#e9e2e2",
+          "textPrimary": "#201a1c",
+          "textSecondary": "#5e585a",
+          "textTertiary": "#90898a",
+          "accent": "#723758",
+          "accentText": "#723758",
+          "surfaceOnSelected": "#fff8f8",
+          "onAccentContainer": "#723758",
+          "iconDefault": "#5e585a",
+          "iconActive": "#723758",
+          "hover": "#f2ebeb",
+          "pressed": "#e9e2e2"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.34,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.82,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.95,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.84,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 12.6,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.62,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 6,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.65,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.2,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.1,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.27,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 8.34,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 7.56,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.39,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 10.56,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/harbour-dusk.b062072654.field-light.webp",
+          "strength": 0.64,
+          "worstTextContrast": 7.09
+        }
+      },
+      "image": {
+        "width": 2560,
+        "height": 1440,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/harbour-dusk.b062072654.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/harbour-dusk.b062072654.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/harbour-dusk.b062072654.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/harbour-dusk.b062072654.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/harbour-dusk.b062072654.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/harbour-dusk.b062072654.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/harbour-dusk.b062072654.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/harbour-dusk.b062072654.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/harbour-dusk.b062072654.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/harbour-dusk.b062072654.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/harbour-dusk.b062072654.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/harbour-dusk.b062072654.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADwBACdASogABIAPsVSo0unpKMhsAwA8BiJQBfrJABgUzIm/kRoupkq0TmSTzx60TgA/ulYPAz/P8b75n9rpz0btqa2ZG4OobWQf0PvYzjOGDebNe30558F3YloNmJKWT6ENJQODRgp7H5yR7dP0HWmXHA/VQAAAAA="
+      }
+    },
+    {
+      "id": "deep-water",
+      "name": "Deep water",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (deep_water, seed 2202)",
+      "licence": "Original to this repository",
+      "default": false,
+      "sha256": "06d8eaada29bce888df1c2af7ab87028b4e92abcf7cf73296e4e8ea88ccc9311",
+      "dark": {
+        "source": {
+          "background": "#101416",
+          "active": "#74d3f0",
+          "text": "#dfe3e5",
+          "subtext": "#bdc8cd",
+          "border": "#3e484c",
+          "iconFont": "#42a7c2"
+        },
+        "roles": {
+          "surfaceBase": "#101416",
+          "surfaceRaised": "#1a1e20",
+          "surfaceOverlay": "#212527",
+          "surfaceHigh": "#292d2f",
+          "surfaceSelected": "#203339",
+          "accentContainer": "#2a464f",
+          "outlineSoft": "#292d2f",
+          "outlineStrong": "#424648",
+          "hairline": "#25292b",
+          "textPrimary": "#dfe3e5",
+          "textSecondary": "#a5a9ab",
+          "textTertiary": "#787b7e",
+          "accent": "#74d3f0",
+          "accentText": "#74d3f0",
+          "surfaceOnSelected": "#101416",
+          "onAccentContainer": "#74d3f0",
+          "iconDefault": "#a5a9ab",
+          "iconActive": "#74d3f0",
+          "hover": "#1c2022",
+          "pressed": "#25292b"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.34,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 12.95,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.03,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.79,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.25,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.82,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.06,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.56,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.88,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.36,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.87,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.81,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.93,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.82,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.93,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/deep-water.06d8eaada2.field-dark.webp",
+          "strength": 0.58,
+          "worstTextContrast": 7.24
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#f6fafc",
+          "active": "#00677c",
+          "text": "#181c1e",
+          "subtext": "#3e484c",
+          "border": "#bdc8cd",
+          "iconFont": "#42a7c2"
+        },
+        "roles": {
+          "surfaceBase": "#f6fafc",
+          "surfaceRaised": "#ebeff1",
+          "surfaceOverlay": "#e4e8ea",
+          "surfaceHigh": "#dbdfe1",
+          "surfaceSelected": "#cfe2e8",
+          "accentContainer": "#b6d4db",
+          "outlineSoft": "#dbdfe1",
+          "outlineStrong": "#c1c5c7",
+          "hairline": "#e0e4e6",
+          "textPrimary": "#181c1e",
+          "textSecondary": "#565a5c",
+          "textTertiary": "#878b8d",
+          "accent": "#00677c",
+          "accentText": "#00677c",
+          "surfaceOnSelected": "#f6fafc",
+          "onAccentContainer": "#181c1e",
+          "iconDefault": "#565a5c",
+          "iconActive": "#00677c",
+          "hover": "#e9edef",
+          "pressed": "#e0e4e6"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.34,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.82,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.95,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.84,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 12.86,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.62,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 6,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.65,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.2,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.21,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.27,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 6.19,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 5.61,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 10.95,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 10.95,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/deep-water.06d8eaada2.field-light.webp",
+          "strength": 0.64,
+          "worstTextContrast": 7.2
+        }
+      },
+      "image": {
+        "width": 2560,
+        "height": 1440,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/deep-water.06d8eaada2.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/deep-water.06d8eaada2.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/deep-water.06d8eaada2.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/deep-water.06d8eaada2.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/deep-water.06d8eaada2.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/deep-water.06d8eaada2.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/deep-water.06d8eaada2.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/deep-water.06d8eaada2.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/deep-water.06d8eaada2.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/deep-water.06d8eaada2.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/deep-water.06d8eaada2.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/deep-water.06d8eaada2.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAACwBACdASogABIAPtFapE0oJSOlsBgIAQAaCUATplqnwMf+B4ucLjW9rG2n79UAAP7vVqkfcTlMDJsK3QY0KEHZcg3uDaWsaL2dt6TWFEHAKn2H01JmGwIIf9ZYd141IdkyK/Py3o8qyWXMiYqfk20D2yM4lbgtaDGRwteO4yyK1fq3xAA="
+      }
+    },
+    {
+      "id": "fern",
+      "name": "Fern",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (fern, seed 3303)",
+      "licence": "Original to this repository",
+      "default": false,
+      "sha256": "7f0acc4f9562fc1452a0120f8a232ba2468bfd120edbebe0b44ec46ac547bc4b",
+      "dark": {
+        "source": {
+          "background": "#121410",
+          "active": "#add190",
+          "text": "#e3e3db",
+          "subtext": "#c4c8ba",
+          "border": "#43483e",
+          "iconFont": "#90b375"
+        },
+        "roles": {
+          "surfaceBase": "#121410",
+          "surfaceRaised": "#1c1e1a",
+          "surfaceOverlay": "#232520",
+          "surfaceHigh": "#2b2d28",
+          "surfaceSelected": "#2b3224",
+          "accentContainer": "#3a4531",
+          "outlineSoft": "#2b2d28",
+          "outlineStrong": "#444641",
+          "hairline": "#272924",
+          "textPrimary": "#e3e3db",
+          "textSecondary": "#a8a9a2",
+          "textTertiary": "#7a7b76",
+          "accent": "#add190",
+          "accentText": "#add190",
+          "surfaceOnSelected": "#121410",
+          "onAccentContainer": "#add190",
+          "iconDefault": "#a8a9a2",
+          "iconActive": "#add190",
+          "hover": "#1f201c",
+          "pressed": "#272924"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.36,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 12.97,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.05,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.8,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.25,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.83,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.07,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.57,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.89,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.37,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.85,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.8,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.91,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.82,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.93,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/fern.7f0acc4f95.field-dark.webp",
+          "strength": 0.76,
+          "worstTextContrast": 7.26
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#fafaf2",
+          "active": "#486731",
+          "text": "#1a1c18",
+          "subtext": "#43483e",
+          "border": "#c4c8ba",
+          "iconFont": "#90b375"
+        },
+        "roles": {
+          "surfaceBase": "#fafaf2",
+          "surfaceRaised": "#efefe7",
+          "surfaceOverlay": "#e8e8e1",
+          "surfaceHigh": "#dfdfd8",
+          "surfaceSelected": "#dee2d3",
+          "accentContainer": "#ccd4c0",
+          "outlineSoft": "#dfdfd8",
+          "outlineStrong": "#c4c5be",
+          "hairline": "#e4e4dc",
+          "textPrimary": "#1a1c18",
+          "textSecondary": "#595a55",
+          "textTertiary": "#8a8b85",
+          "accent": "#486731",
+          "accentText": "#486731",
+          "surfaceOnSelected": "#fafaf2",
+          "onAccentContainer": "#1a1c18",
+          "iconDefault": "#595a55",
+          "iconActive": "#486731",
+          "hover": "#edede5",
+          "pressed": "#e4e4dc"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.37,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.84,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.97,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.86,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 13.05,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.63,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 6.01,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.66,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.2,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.28,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.28,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 6.14,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 5.57,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 11.21,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 11.21,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/fern.7f0acc4f95.field-light.webp",
+          "strength": 0.6,
+          "worstTextContrast": 7.2
+        }
+      },
+      "image": {
+        "width": 2560,
+        "height": 1440,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/fern.7f0acc4f95.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/fern.7f0acc4f95.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/fern.7f0acc4f95.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/fern.7f0acc4f95.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/fern.7f0acc4f95.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/fern.7f0acc4f95.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/fern.7f0acc4f95.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/fern.7f0acc4f95.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/fern.7f0acc4f95.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/fern.7f0acc4f95.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/fern.7f0acc4f95.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/fern.7f0acc4f95.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACQBACdASogABIAPtFUpU2oJCOiMBgIAQAaCWMAuwAQ5mZZ3pjB8hkWL0Qi44AA/u+8CmS5DD6QU0hgYn9WlNxiw4AhnC2upiNkH4ogDlEEsRVSGqE7Nw2Okl5BQU9+Fr/316nIacgHWZAA"
+      }
+    },
+    {
+      "id": "ember",
+      "name": "Ember",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (ember, seed 4404)",
+      "licence": "Original to this repository",
+      "default": false,
+      "sha256": "f34469913bff1c2fd51ae66e29ddd8b867effb49ced121fd7a332c5853e1c173",
+      "dark": {
+        "source": {
+          "background": "#1c100c",
+          "active": "#ffb59b",
+          "text": "#f6ddd6",
+          "subtext": "#e1bfb5",
+          "border": "#594139",
+          "iconFont": "#f36730"
+        },
+        "roles": {
+          "surfaceBase": "#1c100c",
+          "surfaceRaised": "#271a16",
+          "surfaceOverlay": "#2d201c",
+          "surfaceHigh": "#362924",
+          "surfaceSelected": "#402a23",
+          "accentContainer": "#573b31",
+          "outlineSoft": "#362924",
+          "outlineStrong": "#50413c",
+          "hairline": "#322520",
+          "textPrimary": "#f6ddd6",
+          "textSecondary": "#b9a49d",
+          "textTertiary": "#897771",
+          "accent": "#ffb59b",
+          "accentText": "#ffb59b",
+          "surfaceOnSelected": "#1c100c",
+          "onAccentContainer": "#ffb59b",
+          "iconDefault": "#b9a49d",
+          "iconActive": "#ffb59b",
+          "hover": "#291c18",
+          "pressed": "#322520"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.38,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 13.01,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.1,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.86,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.27,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.83,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.08,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.58,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.91,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.36,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.93,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.89,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.95,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.83,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.92,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/ember.f34469913b.field-dark.webp",
+          "strength": 0.4,
+          "worstTextContrast": 7.11
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#fff8f6",
+          "active": "#aa3700",
+          "text": "#251914",
+          "subtext": "#594139",
+          "border": "#e1bfb5",
+          "iconFont": "#f36730"
+        },
+        "roles": {
+          "surfaceBase": "#fff8f6",
+          "surfaceRaised": "#f4edeb",
+          "surfaceOverlay": "#eee6e4",
+          "surfaceHigh": "#e5dddb",
+          "surfaceSelected": "#f1d9cf",
+          "accentContainer": "#e9c6b6",
+          "outlineSoft": "#e5dddb",
+          "outlineStrong": "#cbc2c0",
+          "hairline": "#e9e2df",
+          "textPrimary": "#251914",
+          "textSecondary": "#625753",
+          "textTertiary": "#928985",
+          "accent": "#aa3700",
+          "accentText": "#aa3700",
+          "surfaceOnSelected": "#fff8f6",
+          "onAccentContainer": "#251914",
+          "iconDefault": "#625753",
+          "iconActive": "#aa3700",
+          "hover": "#f2ebe8",
+          "pressed": "#e9e2df"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.3,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.78,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.91,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.8,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 12.7,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.62,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 6,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.65,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.2,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.16,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.27,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 6.15,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 5.57,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 10.75,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 10.75,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/ember.f34469913b.field-light.webp",
+          "strength": 0.66,
+          "worstTextContrast": 7.1
+        }
+      },
+      "image": {
+        "width": 2560,
+        "height": 1440,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/ember.f34469913b.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/ember.f34469913b.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/ember.f34469913b.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/ember.f34469913b.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/ember.f34469913b.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/ember.f34469913b.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/ember.f34469913b.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/ember.f34469913b.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/ember.f34469913b.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/ember.f34469913b.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/ember.f34469913b.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/ember.f34469913b.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAABwBACdASogABIAPtFYpEuoJSOhsAgBABoJQBUe1f4bP3Dux56SDfsUjlMTQAD+9o2sKYukSUtNHTm/X6TTJqVV2XE+bQPYMbVVYpa5D1Yg1Fxc9EAp0IwpShnhyaPHf6wRlC1M6/Z0m1DROJ75Z7txs1vVuOqikGHKOIh3vOxKkGd0gvIa7ECzQZAAAA=="
+      }
+    },
+    {
+      "id": "chalk",
+      "name": "Chalk",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (chalk, seed 5505)",
+      "licence": "Original to this repository",
+      "default": false,
+      "sha256": "f87c948fdf1f866683c5f850dfcbf9200bf29d64826c93e37118f02b1fa1fdb9",
+      "dark": {
+        "source": {
+          "background": "#131315",
+          "active": "#b7c8df",
+          "text": "#e4e2e3",
+          "subtext": "#c4c6cd",
+          "border": "#44474c",
+          "iconFont": "#8596ac"
+        },
+        "roles": {
+          "surfaceBase": "#131315",
+          "surfaceRaised": "#1d1d1f",
+          "surfaceOverlay": "#242425",
+          "surfaceHigh": "#2c2c2e",
+          "surfaceSelected": "#2d3035",
+          "accentContainer": "#3e424a",
+          "outlineSoft": "#2c2c2e",
+          "outlineStrong": "#454546",
+          "hairline": "#28282a",
+          "textPrimary": "#e4e2e3",
+          "textSecondary": "#a9a8a9",
+          "textTertiary": "#7c7a7c",
+          "accent": "#b7c8df",
+          "accentText": "#b7c8df",
+          "surfaceOnSelected": "#131315",
+          "onAccentContainer": "#b7c8df",
+          "iconDefault": "#a9a8a9",
+          "iconActive": "#b7c8df",
+          "hover": "#201f21",
+          "pressed": "#28282a"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 14.39,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 13,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 12.08,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 10.83,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 10.26,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 7.84,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 7.09,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 6.58,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.9,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 4.37,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 10.9,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 9.85,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 5.93,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 7.83,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.93,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/chalk.f87c948fdf.field-dark.webp",
+          "strength": 0.78,
+          "worstTextContrast": 7.35
+        }
+      },
+      "light": {
+        "source": {
+          "background": "#fbf9fa",
+          "active": "#4f6074",
+          "text": "#1b1c1d",
+          "subtext": "#44474c",
+          "border": "#c4c6cd",
+          "iconFont": "#8596ac"
+        },
+        "roles": {
+          "surfaceBase": "#fbf9fa",
+          "surfaceRaised": "#f0eeef",
+          "surfaceOverlay": "#e9e7e8",
+          "surfaceHigh": "#e0dedf",
+          "surfaceSelected": "#dfe1e5",
+          "accentContainer": "#ced1d7",
+          "outlineSoft": "#e0dedf",
+          "outlineStrong": "#c5c4c5",
+          "hairline": "#e5e3e4",
+          "textPrimary": "#1b1c1d",
+          "textSecondary": "#5a5a5b",
+          "textTertiary": "#8b8b8b",
+          "accent": "#4f6074",
+          "accentText": "#4f6074",
+          "surfaceOnSelected": "#fbf9fa",
+          "onAccentContainer": "#1b1c1d",
+          "iconDefault": "#5a5a5b",
+          "iconActive": "#4f6074",
+          "hover": "#eeeced",
+          "pressed": "#e5e3e4"
+        },
+        "fired": [],
+        "checks": [
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceBase",
+            "ratio": 16.28,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceRaised",
+            "ratio": 14.77,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceOverlay",
+            "ratio": 13.9,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceHigh",
+            "ratio": 12.8,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "surfaceSelected",
+            "ratio": 13,
+            "floor": 4.5,
+            "target": 7,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceBase",
+            "ratio": 6.59,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceRaised",
+            "ratio": 5.97,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceOverlay",
+            "ratio": 5.62,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceHigh",
+            "ratio": 5.18,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textSecondary",
+            "bg": "surfaceSelected",
+            "ratio": 5.26,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textTertiary",
+            "bg": "surfaceBase",
+            "ratio": 3.26,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceBase",
+            "ratio": 6.15,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "accentText",
+            "bg": "surfaceRaised",
+            "ratio": 5.58,
+            "floor": 3,
+            "target": 3,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "onAccentContainer",
+            "bg": "accentContainer",
+            "ratio": 11.18,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "textPrimary",
+            "bg": "accentContainer",
+            "ratio": 11.18,
+            "floor": 4.5,
+            "target": 4.5,
+            "ok": true,
+            "onTarget": true
+          },
+          {
+            "fg": "outlineStrong",
+            "bg": "surfaceBase",
+            "ratio": 1.66,
+            "floor": 1.3,
+            "target": 1.3,
+            "ok": true,
+            "onTarget": true
+          }
+        ],
+        "field": {
+          "src": "/media/scenes/chalk.f87c948fdf.field-light.webp",
+          "strength": 0.3,
+          "worstTextContrast": 8.24
+        }
+      },
+      "image": {
+        "width": 2560,
+        "height": 1440,
+        "sources": {
+          "avif": [
+            {
+              "w": 640,
+              "src": "/media/scenes/chalk.f87c948fdf.640.avif"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/chalk.f87c948fdf.1280.avif"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/chalk.f87c948fdf.1920.avif"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/chalk.f87c948fdf.2560.avif"
+            }
+          ],
+          "webp": [
+            {
+              "w": 640,
+              "src": "/media/scenes/chalk.f87c948fdf.640.webp"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/chalk.f87c948fdf.1280.webp"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/chalk.f87c948fdf.1920.webp"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/chalk.f87c948fdf.2560.webp"
+            }
+          ],
+          "jpg": [
+            {
+              "w": 640,
+              "src": "/media/scenes/chalk.f87c948fdf.640.jpg"
+            },
+            {
+              "w": 1280,
+              "src": "/media/scenes/chalk.f87c948fdf.1280.jpg"
+            },
+            {
+              "w": 1920,
+              "src": "/media/scenes/chalk.f87c948fdf.1920.jpg"
+            },
+            {
+              "w": 2560,
+              "src": "/media/scenes/chalk.f87c948fdf.2560.jpg"
+            }
+          ]
+        },
+        "placeholder": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACwAwCdASogABIAPr1Qn0uppSMht/qoATAXiWcAvVgyfawCQEAUAAD+8KlP6tzaD/pD+WQ9tVMUEr1rCmzBYXoDZjFTHwaaZkB6qDL3BrMcoAAA"
+      }
+    }
+  ]
+}

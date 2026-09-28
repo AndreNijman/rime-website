@@ -1,0 +1,137 @@
+# Image build: build-image run 36420444425 (push to main, merge of #71),
+# "Release B" of the rename: the first Rime-named release (image title
+# "Rime OS"). date = when the run's last tag moved (2026-09-28 21:45:01 AWST).
+# Published under ghcr.io/andrenijman/rime-os AND ghcr.io/andrenijman/apex-os,
+# every channel tag plus the new rime / platform-rime, plus daily-<osRevision>.
+# Merged PRs: rime-os #71 only (compare 795a1fac...2d9c5438); the vendored
+# shell moved cb7add74 -> 6289d1f8, which is rime-shell #29 only.
+# The core layer was rebuilt in this run.
+#
+# REISSUE: the weekly scheduled build (run 36424778175, event "schedule")
+# rebuilt the same source about 40 minutes later: same OS revision, same
+# shell ref, same fedora-bootc base digest, same kernel, core reused, only
+# the top two layers differ. It moved every channel tag under both names to
+# sha256:142bc4e2a5ff73b1b98c27cdfa1db8b453b19cb7301b69eeb97775cfe8747e7a
+# at 2026-09-28T14:22:55Z, and that is what the channel tags serve now. It has
+# no merged PRs, so it is not a separate release; imageDigest below is the
+# merge build's.
+#
+# Omitted on purpose: the Android remote app's package id changed to
+# com.rimeos.remote in #71, but the APK is not part of the OS image and no APK
+# has been published on the Releases page since, so no user has received it.
+schema: 1
+id: "2026.09.28.4"
+product: rime
+name: "Rime 2026.09.28.4"
+title: "APEX-OS is now Rime"
+date: "2026-09-28T13:45:01Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia", "platform-rime", "rime"]
+summary: "The first release under the Rime name: APEX-OS becomes Rime OS and APEX Shell becomes Rime Shell. The first boot and first login move your system and desktop settings to the new names, the old names keep working as aliases, and a rollback to APEX keeps working. The core layer was rebuilt, so this is a full download."
+predecessor: "2026.09.28.3"
+provenance:
+  osRevision: "2d9c5438acf8bd5ea83e9c7d05332415b05be295"
+  shellRevision: "6289d1f89916d3432ca3bd1f4ca68db7141559d9"
+  imageDigest: "sha256:86180f68e80525052929ca1f40e67dbf9570dd7cdbe43e31e058c62028cb2f3b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36420444425"
+  iso: null
+  # The weekly scheduled build rebuilt the same source ~40 minutes later; its
+  # digest is what every channel tag serves now. No merged PRs, so not a release.
+  reissues:
+    - digest: "sha256:142bc4e2a5ff73b1b98c27cdfa1db8b453b19cb7301b69eeb97775cfe8747e7a"
+      build: "https://github.com/AndreNijman/rime-os/actions/runs/36424778175"
+      date: "2026-09-28T14:22:55Z"
+      note: "Weekly scheduled rebuild of the same OS and Shell revisions, Fedora base and kernel. Every channel tag serves this digest now."
+highlights: ["rename-rime-os", "system-migration", "session-migration", "rime-signer"]
+changes:
+  - id: "rename-rime-os"
+    area: system
+    kind: new
+    title: "APEX-OS is now Rime OS, and APEX Shell is now Rime Shell"
+    summary: "The system, the shell, the boot splash wordmark (RIME OS) and the image carry the new name. The command is now `rime`; `apex` still works and prints a one-line note that the command is now `rime`."
+    detail: "The note goes to stderr only, so scripts and tools that read `apex` output keep working. The old names of 21 service units, 47 helper programs and the old /usr/share paths are kept as aliases. Some names stay as they were so existing machines and paired phones keep working: the APEX folder on the EFI system partition and the 'APEX-OS Primary' firmware boot entry, the Rime Remote pairing scheme, relay and wire labels, backup formats, and the `apex` image tag (with `rime` added beside it)."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-shell/pull/29", "https://github.com/AndreNijman/rime-os/commit/5e336fc9ea29032e81830182fe44645538d707f3", "https://github.com/AndreNijman/rime-os/commit/ffb822d58325706bd9dbbf5fe7da6c26dd52884b"]
+    breaking: false
+  - id: "system-migration"
+    area: system
+    kind: new
+    title: "The first boot moves system state to the new names"
+    summary: "A one-time service moves APEX's state and settings (/var/lib/apex* and /etc/apex*) to their Rime names, re-points which services are enabled, renames a saved Rime Remote firewall exception, and updates the login screen's remembered session to its new name."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-os/commit/fc966f52c16cebd793c7e8d7e82872a48b47ecf5", "https://github.com/AndreNijman/rime-os/commit/2dcafd526ffd52be0dc04d2f37a2da257005c0c6"]
+    breaking: false
+  - id: "session-migration"
+    area: shell
+    kind: new
+    title: "Your first login moves your desktop settings to the new names"
+    summary: "Your apex folders under ~/.config and the other XDG directories, ~/.config/hypr/apex, the shell's config, cache and state, and your user services move to their Rime names. The shell's old directories are left behind as links, and its migration never overwrites anything."
+    detail: "Your own files are rewritten only where an old name stops working. Because this release keeps every old name as an alias, Hyprland binds, niri's autostart, labwc commands and menus, and ~/.zshrc are left as they are. Quickshell IPC calls are the exception: they move to /usr/share/rime-shell now, and hypridle's lock command becomes a chain that tries the APEX path and then the Rime one, so the idle lock works on either image. On the first start the shell waits up to 2 seconds for its own migration; after that it starts without waiting."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-shell/pull/29", "https://github.com/AndreNijman/rime-os/commit/fb2a37e9e662bc438c1e279d5707c44150c4d1ce", "https://github.com/AndreNijman/rime-os/commit/18ba2f4b723dd4de4e68ddc14ee5e076f6525007"]
+    breaking: false
+  - id: "packages-carry-over"
+    area: system
+    kind: improved
+    title: "Packages you installed keep working"
+    summary: "Packages added with `apex install` live in an extension named apex-user. The renamed package tool adopts it as-is, so nothing is rebuilt or downloaded at the first boot."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-os/commit/185ccaf6d09dbfef952086d2d6f4803664d6db21"]
+    breaking: false
+  - id: "rime-signer"
+    area: security
+    kind: security
+    title: "Images are signed by the renamed repository"
+    summary: "Because the repository is now AndreNijman/rime-os, images are signed by its build workflow. Machines on 2026.09.28.3 already accept that identity, so they verify and install this update."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70", "https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-os/actions/runs/36420444425"]
+    breaking: false
+  - id: "rime-image-name"
+    area: system
+    kind: improved
+    title: "The image moves to ghcr.io/andrenijman/rime-os"
+    summary: "Every build is published under both ghcr.io/andrenijman/rime-os and ghcr.io/andrenijman/apex-os, with a new `rime` tag beside `apex`. A machine on 2026.09.28.3 that tracks an apex-os tag switches to the same tag under rime-os on its next update."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70", "https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-os/actions/runs/36420444425"]
+    breaking: false
+  - id: "rollback-safe"
+    area: system
+    kind: improved
+    title: "Rolling back to APEX keeps working"
+    summary: "The secret store stays where APEX expects it, the generated Hyprland keybinds stay usable by APEX Shell, and niri's config no longer collects a duplicate block on each round trip."
+    detail: "A test build of this release was taken APEX to Rime to APEX to Rime in a VM. On every boot the first-run step succeeded, Hyprland reported no config errors, every keybind was registered once, a stored credential was readable and the idle lock reached the running shell. The niri fix came after that run and is covered by the automated tests."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-shell/pull/29", "https://github.com/AndreNijman/rime-os/commit/01f9c56ecc69b48c05bdbb3e0dc07366d97383f7", "https://github.com/AndreNijman/rime-shell/commit/741cecb4c950d135989a083b319432ffc08be0a9", "https://github.com/AndreNijman/rime-os/commit/4d7ce31ed834d68313ffece14686c79cf818fc2f"]
+    breaking: false
+knownIssues:
+  - title: "Machines that skipped 2026.09.28.3 do not know the new signer"
+    summary: "Images built after the rename carry a new signer, and machines learned it in 2026.09.28.3. A machine on an older image, with the default signature=enforce, refuses images signed only by the new identity."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70", "https://github.com/AndreNijman/rime-os/pull/71"]
+  - title: "Your own apex-shell IPC binds stop working after a rollback"
+    summary: "A bind of your own in labwc or niri that calls `qs -p /usr/share/apex-shell` is rewritten for Rime, so it does nothing if you roll back to APEX."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71"]
+  - title: "labwc keybinds saved on Rime use the new command"
+    summary: "labwc keybinds saved again on Rime run `rime shell …`, which an APEX image does not have, so they fail after a rollback."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71"]
+  - title: "Both package extensions merge after a rollback"
+    summary: "If you change packages on Rime and then roll back to APEX, APEX merges both apex-user.raw and rime-user.raw."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71"]
+  - title: "Full download"
+    summary: "This build rebuilt the core layer, so the update is a full download for every machine."
+    source: ["https://github.com/AndreNijman/rime-os/pull/71", "https://github.com/AndreNijman/rime-os/actions/runs/36420444425"]
+rollback: >-
+  A rollback to APEX keeps working (found by booting the test image in a VM,
+  then rolling back). The secret store stays at /var/lib/apex-secretd: APEX's
+  apex-secretd.service refuses a symlinked StateDirectory, so
+  rime-secretd.service declares StateDirectory=apex-secretd:rime-secretd and
+  systemd links the new name to it. Users' files are rewritten only where the
+  old name stops working on this image. This release carries every old name as
+  an alias, so hyprland.lua binds, niri's autostart, labwc commands and menus,
+  and ~/.zshrc are left as they are and work on both images; a later release
+  that drops an alias rewrites what uses it. Quickshell IPC calls are the
+  exception (quickshell finds an instance by the path as given, so the alias
+  cannot carry them): they move to /usr/share/rime-shell now, and in
+  hypridle.conf they become `qs -c /usr/share/apex-shell … || qs -c
+  /usr/share/rime-shell …` so the idle lock works on both. The generated
+  Hyprland keybinds keep the APEX shell's APEX-SHELL-GENERATED marker, so after
+  a rollback APEX regenerates the file instead of moving it into
+  shell-keybinds-user.lua, where it had required itself (every bind registered
+  63 times). A stale copy loaded under another name binds nothing. On niri, a
+  rollback lets APEX's first-run step append its own include block; the next
+  Rime login removes it again, so round trips do not stack blocks. Known limits
+  of a rollback: a user's own `qs -p /usr/share/apex-shell` bind in labwc or
+  niri is rewritten and does nothing on APEX; labwc keybinds re-saved on Rime
+  run `rime shell …`; after a package change on Rime, a rollback merges both
+  apex-user.raw and rime-user.raw.

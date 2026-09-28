@@ -1,0 +1,36 @@
+# Image build: build-image run 36324857490 (push to main, merge of #64).
+# date = when the run's last channel tag moved (2026-09-27 23:08:06 AWST).
+# Published under ghcr.io/andrenijman/apex-os only, plus daily-<osRevision>.
+# Merged PRs: rime-os #64 only (compare aac4fb7f...94bd62f2). The vendored
+# shell (cfea262b) is unchanged from 2026.09.27.2.
+# #64's body describes an earlier tuning (bezier curves, 420/280 ms from 90 %);
+# the merged branch ends with 315e49ecb, which moved windows onto real
+# springs. The entry describes what was merged.
+# product/name say APEX-OS because the image was titled "APEX-OS".
+schema: 1
+id: "2026.09.27.3"
+product: apex
+name: "APEX-OS 2026.09.27.3"
+title: "Windows open, move and switch workspaces on springs"
+date: "2026-09-27T15:08:06Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "Hyprland's window and workspace motion now uses the same springs as the shell, so windows grow in rather than mostly fading."
+predecessor: "2026.09.27.2"
+provenance:
+  osRevision: "94bd62f2d8504e083427d3a8527057e1136316e1"
+  shellRevision: "cfea262b9077a033fe6a867dfe15293a666a644f"
+  imageDigest: "sha256:1deae8dc5dc5b9830a11a855590659542664703c54fbe066bb073b01f956607b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36324857490"
+  iso: null
+highlights: ["hyprland-springs"]
+changes:
+  - id: "hyprland-springs"
+    area: shell
+    kind: improved
+    title: "Windows open, move and switch workspaces on springs"
+    summary: "A new window grows in on a spring from 80 % of its size and is opaque within 180 ms. A tile moved again mid-glide keeps its speed, and a workspace slide comes to a clean stop. Closing a window takes 200 ms."
+    detail: "The springs are shared with the shell, so its motion speed setting and Reduce Motion scale them. The shell's own panels are left unanimated by Hyprland, so they grow out of the bar instead of fading in."
+    source: ["https://github.com/AndreNijman/rime-os/pull/64", "https://github.com/AndreNijman/rime-os/commit/315e49ecb491d97cc258e21c1d6dcb66f3d7d87e"]
+    breaking: false
+knownIssues: []
+rollback: null

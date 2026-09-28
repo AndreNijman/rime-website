@@ -1,0 +1,71 @@
+# Source: the published GitHub release body,
+#   https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0
+# and PRs #60 and #61, which the body names as its changes.
+# osRevision is the v2.1.0 tag's commit (6ffb56db, the merge of #61). Per the
+# body, the ISO itself was built at 1672d059cc87f4cc1104b8ce6db0aad1b32e55b7;
+# the tagged merge adds main's #60 merge and #61's review fixes, none of which
+# is in the ISO.
+# imageDigest is the image the ISO pins (registry tag netinstall-v2.1.0). That
+# image's own revision label is 097ed8fc284f1a80cfe3f423704cf78fe3c00b07, and
+# shellRevision is its org.apexos.apex-shell.ref label.
+# build is null: no CI run is recorded for this ISO. (The image build of the
+# tag commit, run 36210903776, published digest
+# sha256:5b3809eee9a0f097344735e403a55ee232e3b8a4c52429ce407e4a347539ff75 to
+# the channel tags; the ISO does not install that one.)
+# `requirements` is an extra top-level field (not in schema 1).
+schema: 1
+id: "apex-v2.1.0"
+product: apex
+name: "APEX-OS v2.1.0"
+title: "A visible unlock prompt, and an installer that survives its screen"
+date: "2026-09-26T02:47:43Z"
+channels: []
+summary: "Fixes the two known issues v2.0.0 shipped with. The ISO was installed and booted end to end in a VM, including killing the installer's display partway through an install, before it was published. Machines already running APEX-OS get the boot-screen fix through `sudo apex update`."
+predecessor: "apex-v2.0.0"
+provenance:
+  osRevision: "6ffb56db6deb6a709e2f252d5c337925558a334f"
+  shellRevision: "99c5ab7a309b49e07d1c54928a4b8ba1970435f4"
+  imageDigest: "sha256:148f57de20e1db04ee672037791d10d6d6d02a188784b6f213255c7d50153a92"
+  build: null
+  iso:
+    name: "apex-os-netinstall-x86_64.iso"
+    bytes: 1902344192
+    sha256: "7208b6fd5c2641e3e1bb035eac0d1c642f4f7eda85b1ba3295993b8ec0227248"
+    url: "https://github.com/AndreNijman/rime-os/releases/download/v2.1.0/apex-os-netinstall-x86_64.iso"
+requirements:
+  - "A 64-bit PC with UEFI. Legacy BIOS can also boot the stick."
+  - "At least 16 GB of disk. If the target disk is the machine's only drive, it needs about 53 GB, because the download is staged on it. Otherwise a second drive or USB stick with 32 GB free is used as scratch space, and it is not erased."
+  - "A network connection during the install."
+highlights: ["passphrase-prompt-visible", "console-switch-safe"]
+changes:
+  - id: "passphrase-prompt-visible"
+    area: system
+    kind: fixed
+    title: "The disk passphrase prompt is visible again"
+    summary: "On an encrypted install, the boot screen dimmed its star and drew nothing else: no prompt, no dots as you type, no keyboard hint. It now shows the prompt, the dots, the keyboard layout in use, and a reminder that the recovery key works there too."
+    detail: "The boot splash was missing the component that draws text, so every word on it was blank."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0", "https://github.com/AndreNijman/rime-os/pull/60"]
+    breaking: false
+  - id: "console-switch-safe"
+    area: system
+    kind: fixed
+    title: "Switching to a text console can no longer wreck an install"
+    summary: "Pressing Ctrl+Alt+F2 while the installer was open could crash its display; the installer restarted from the first page while the install carried on unseen. Now the installer's screen comes back by itself and reconnects to the install in progress, then shows the normal final page, recovery key included."
+    detail: "A second install on the same machine is refused before it touches anything. An install whose screen crashed now finishes as a success; before, it could report 'failed' on its very last step, on a disk that was completely installed."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0", "https://github.com/AndreNijman/rime-os/pull/61"]
+    breaking: false
+  - id: "iso-image-kept"
+    area: system
+    kind: fixed
+    title: "Published ISOs keep working"
+    summary: "Each release's image now gets a permanent tag, so registry cleanup can never remove the build an ISO downloads."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0", "https://github.com/AndreNijman/rime-os/pull/61"]
+    breaking: false
+knownIssues:
+  - title: "Some networks and adapters don't work in the installer"
+    summary: "Captive-portal Wi-Fi doesn't work in the installer, and neither do USB Wi-Fi adapters that need out-of-tree drivers."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"]
+  - title: "Tablets without a keyboard cannot finish the account page"
+    summary: "Tablets without a keyboard can't complete the account page."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"]
+rollback: null

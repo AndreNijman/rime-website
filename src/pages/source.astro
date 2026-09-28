@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../data/site";
+import source from "../vendor/rime-shell/SOURCE.json";
+import shapes from "../data/password-shapes.json";
+import scenes from "../data/scenes.json";
+const files = Object.entries(source.files);
+---
+<Base title="Source" description="Where Rime's source lives, under which licences, and how this website is built from it.">
+  <header class="container page-hero">
+    <p class="eyebrow">Source</p>
+    <h1>Built in the open.</h1>
+    <p class="lead">Rime is two repositories: the operating system and the desktop. Every release page links the exact revisions it was built from.</p>
+  </header>
+  <section class="container section-tight prose">
+    <h2>Repositories</h2>
+    <table>
+      <thead><tr><th>Repository</th><th>What it is</th><th>Licence</th></tr></thead>
+      <tbody>
+        <tr><td><a href={SITE.repos.os}>AndreNijman/rime-os</a></td><td>The image, the <code>rime</code> command and its daemons, the installer, the package engine</td><td>Declared MIT in its metadata and image labels. A licence file is not committed yet.</td></tr>
+        <tr><td><a href={SITE.repos.shell}>AndreNijman/rime-shell</a></td><td>Rime Shell, the Quickshell desktop</td><td>MIT. Rime Shell began as a fork of Brain_Shell by Brainitech (Venkat Saahit Kamu), used under the MIT licence.</td></tr>
+      </tbody>
+    </table>
+    <h2>Third-party code the Shell carries</h2>
+    <ul>
+      <li>The Material 3 Expressive shapes (the lock screen's password shapes) are a JavaScript port of AndroidX graphics-shapes via end-4/rounded-polygon-qmljs, under the Apache License 2.0, in <code>src/shapes/material/</code>.</li>
+      <li>Fonts: Noto Sans and JetBrains Mono, both under the SIL Open Font License. This site serves its own copies of both.</li>
+    </ul>
+
+    <h2 id="website">How this website is built</h2>
+    <p>rimeos.com doesn't reimplement the Shell's motion, colour or geometry. It runs the Shell's own files, copied byte for byte from <a href={`${SITE.repos.shell}/tree/${source.ref}`} class="mono">rime-shell@{source.ref.slice(0, 8)}</a> and checked against these hashes on every build:</p>
+    <table class="hashes">
+      <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
+      <tbody>{files.map(([p, r]) => <tr><td><code>{p}</code></td><td class="mono">{(r as { sha256: string }).sha256}</td></tr>)}</tbody>
+    </table>
+    <p>The frame at the top of every page is drawn by the Shell's <code>barSilhouette</code>; the site map blooms out of the centre notch and the download panel pours out of the right one on a port of <code>SurfaceLifecycle.qml</code>. The desktop on the home page is a reconstruction at the Shell's own sizes, not a video.</p>
+
+    <h2 id="palettes">Palettes</h2>
+    <p>At build time each scene is run through {scenes.generator.matugen} with the command Rime Shell uses — <code>{scenes.generator.command}</code> — in an empty home directory, mapped as <code>{scenes.generator.mapping}</code> maps it, and resolved by <code>roles.js</code>. Before writing anything, the pipeline regenerates Rime's default wallpaper and compares the result with the Shell's own test fixture; if they differ by a single digit, the build stops. It stops too if any role misses WCAG AA where the site uses it.</p>
+    <p>The password shapes on the Shell page come from the same revision's <code>materialpath.js</code>, evaluated at build time ({shapes.order.length} shapes; {shapes.licence}).</p>
+    <h2>This site's own source</h2>
+    <p>The website's repository is not public yet. When it is, it will be linked here.</p>
+  </section>
+</Base>
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(20px, 3vw, 32px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 60ch; }
+  .prose { padding-bottom: var(--section-pad); max-width: 900px; }
+  .hashes td.mono { font-size: 0.72rem; overflow-wrap: anywhere; }
+</style>

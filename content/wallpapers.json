@@ -1,0 +1,126 @@
+{
+  "$comment": "Every scene the site can show. `publish: false` entries are recorded, not built. Palettes are generated from `file` by scripts/build-palettes.mjs with Rime Shell's own matugen command; nobody picks colours by hand.",
+  "wallpapers": [
+    {
+      "id": "rime-default",
+      "file": "rime-wallpaper-default.jpg",
+      "name": "Rime default",
+      "kind": "shipped",
+      "note": "The wallpaper a fresh Rime install starts with (installed as /usr/share/backgrounds/rime/default.jpg).",
+      "source": "rime-os files/branding/wallpapers/rime-wallpaper-default.jpg @ 2d9c5438a",
+      "licence": "Rime OS repository asset",
+      "publish": true,
+      "default": true
+    },
+    {
+      "id": "harbour-dusk",
+      "file": "scene-harbour-dusk.jpg",
+      "name": "Harbour dusk",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (harbour_dusk, seed 1101)",
+      "licence": "Original to this repository",
+      "publish": true
+    },
+    {
+      "id": "deep-water",
+      "file": "scene-deep-water.jpg",
+      "name": "Deep water",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (deep_water, seed 2202)",
+      "licence": "Original to this repository",
+      "publish": true
+    },
+    {
+      "id": "fern",
+      "file": "scene-fern.jpg",
+      "name": "Fern",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (fern, seed 3303)",
+      "licence": "Original to this repository",
+      "publish": true
+    },
+    {
+      "id": "ember",
+      "file": "scene-ember.jpg",
+      "name": "Ember",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (ember, seed 4404)",
+      "licence": "Original to this repository",
+      "publish": true
+    },
+    {
+      "id": "chalk",
+      "file": "scene-chalk.jpg",
+      "name": "Chalk",
+      "kind": "site-scene",
+      "note": "Generated for rimeos.com. Not shipped in Rime.",
+      "source": "scripts/scenes/generate-scenes.py (chalk, seed 5505)",
+      "licence": "Original to this repository",
+      "publish": true
+    },
+    {
+      "id": "shell-default-0",
+      "file": null,
+      "name": "rime-shell-default-0.png",
+      "kind": "shipped",
+      "note": "Ships in Rime (seeded into ~/Pictures/Wallpapers). Inherited from the Brain_Shell fork and reads \"BRAIN SHELL\"; not suitable for the site.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-0.png",
+      "licence": "unknown — MIT covers the fork's code, not its artwork",
+      "publish": false
+    },
+    {
+      "id": "shell-default-1",
+      "file": null,
+      "name": "rime-shell-default-1.png",
+      "kind": "shipped",
+      "note": "Ships in Rime. Third-party illustration of unknown provenance.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-1.png",
+      "licence": "unknown — needs clearance before public use",
+      "publish": false
+    },
+    {
+      "id": "shell-default-2",
+      "file": null,
+      "name": "rime-shell-default-2.jpg",
+      "kind": "shipped",
+      "note": "Ships in Rime. Third-party illustration of unknown provenance.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-2.jpg",
+      "licence": "unknown — needs clearance before public use",
+      "publish": false
+    },
+    {
+      "id": "shell-default-3",
+      "file": null,
+      "name": "rime-shell-default-3.jpg",
+      "kind": "shipped",
+      "note": "Ships in Rime. Third-party illustration of unknown provenance.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-3.jpg",
+      "licence": "unknown — needs clearance before public use",
+      "publish": false
+    },
+    {
+      "id": "shell-default-4",
+      "file": null,
+      "name": "rime-shell-default-4.jpg",
+      "kind": "shipped",
+      "note": "Ships in Rime. Photograph of unknown provenance.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-4.jpg",
+      "licence": "unknown — needs clearance before public use",
+      "publish": false
+    },
+    {
+      "id": "shell-default-5",
+      "file": null,
+      "name": "rime-shell-default-5.jpg",
+      "kind": "shipped",
+      "note": "Ships in Rime. Third-party illustration of unknown provenance.",
+      "source": "rime-shell src/assets/wallpapers/rime-shell-default-5.jpg",
+      "licence": "unknown — needs clearance before public use",
+      "publish": false
+    }
+  ]
+}

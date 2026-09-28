@@ -1,0 +1,55 @@
+# Image build: build-image run 36372134350 (push to main, merge of #70),
+# "Release A" of the rename. date = when the run's last tag moved
+# (2026-09-28 11:37:42 AWST); the apex-os tags moved at 03:35:45Z and the
+# rime-os copies by 03:37:42Z.
+# Published under ghcr.io/andrenijman/apex-os AND, for the first time,
+# ghcr.io/andrenijman/rime-os (same digest, same channel tags), plus
+# daily-<osRevision>.
+# Merged PRs: rime-os #70 only (compare 79c275fc...795a1fac). The vendored
+# shell (cb7add74) is unchanged from 2026.09.28.2.
+# product/name say APEX-OS because the image was titled "APEX-OS".
+schema: 1
+id: "2026.09.28.3"
+product: apex
+name: "APEX-OS 2026.09.28.3"
+title: "Preparing machines for the Rime OS name"
+date: "2026-09-28T03:37:42Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "The last APEX-OS release before the rename. It teaches machines to trust images from the renamed repository and to follow the image to its new name, so updates keep arriving after the rename. Nothing is renamed yet."
+predecessor: "2026.09.28.2"
+provenance:
+  osRevision: "795a1face2776221abe8780d177ebba787905fd8"
+  shellRevision: "cb7add747f22ed06617533fec3a7a20f8635768b"
+  imageDigest: "sha256:be973425dc97caccacd25a14f2aa32aac5f36f89331c5ff436a2e3a630974804"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36372134350"
+  iso: null
+highlights: ["accept-both-signers", "follow-renamed-image"]
+changes:
+  - id: "accept-both-signers"
+    area: security
+    kind: security
+    title: "The update check accepts both the old and the new build identity"
+    summary: "Image signatures name the repository that built them, so renaming the repository changes the signer of every later image. The update check now accepts images signed by either the apex-os or the rime-os build workflow, so a machine keeps verifying and updating across the rename."
+    detail: "A trust override may list several signers and still replaces the defaults. `apex trust --json` keeps expectedSigner and adds expectedSigners."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70"]
+    breaking: false
+  - id: "follow-renamed-image"
+    area: system
+    kind: new
+    title: "Updates move a machine to the new image name"
+    summary: "The registry does not redirect a renamed image. `apex update` now moves a machine that tracks a tag of ghcr.io/andrenijman/apex-os to the same tag of ghcr.io/andrenijman/rime-os, once the new name serves that tag."
+    detail: "The move uses `bootc switch`, and the trust check verifies the name being deployed. If the switch fails, the update checks and upgrades under the old name as before. A machine pinned to a digest, or following a fork's image, never moves."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70"]
+    breaking: false
+  - id: "publish-both-names"
+    area: system
+    kind: new
+    title: "Every image is published under both names"
+    summary: "Each build is published as ghcr.io/andrenijman/apex-os and ghcr.io/andrenijman/rime-os, with the same digest and tags, and a signature and SBOM attestation made under each name."
+    source: ["https://github.com/AndreNijman/rime-os/pull/70", "https://github.com/AndreNijman/rime-os/actions/runs/36372134350"]
+    breaking: false
+knownIssues:
+  - title: "Machines on images built before 2026-09-23 refuse this update"
+    summary: "Every build since 2026.09.28.2 carries an SBOM attestation, which an older update check misreads and refuses. A machine on an image built before 2026-09-23 needs `provenance=off` in /etc/apex/trust.conf for one update, which brings the fixed check."
+    source: ["https://github.com/AndreNijman/rime-os/pull/69", "https://github.com/AndreNijman/rime-os/commit/dd56a92f15c73997b08c5e02ca046b88f472044b"]
+rollback: null

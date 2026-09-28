@@ -1,0 +1,33 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Privacy" description="What rimeos.com stores and sends (almost nothing), and every network contact a Rime install makes by default.">
+  <header class="container page-hero">
+    <p class="eyebrow">Privacy</p>
+    <h1>No accounts, no trackers, no analytics.</h1>
+    <p class="lead">You don't need an account to download Rime, read the docs or read the release notes. This site runs no analytics and no third-party scripts, and sets no cookies.</p>
+  </header>
+  <section class="container section-tight prose">
+    <h2>What this site keeps in your browser</h2>
+    <p>Three choices, stored in your browser's local storage and never sent anywhere:</p>
+    <table>
+      <thead><tr><th>Key</th><th>What it holds</th></tr></thead>
+      <tbody>
+        <tr><td><code>rime.scheme</code></td><td>Dark or light, if you chose one instead of following your system</td></tr>
+        <tr><td><code>rime.motion</code></td><td>Full, reduced or no motion, if you chose one</td></tr>
+        <tr><td><code>rime.palette</code></td><td>The wallpaper scene you picked</td></tr>
+      </tbody>
+    </table>
+    <p>One more, in session storage, remembers that the opening animation has played so it doesn't replay on every page: <code>rime.converged</code>. Clear your site data and all of them go.</p>
+    <h2>What reaches the server</h2>
+    <p>Your browser asks the static host for pages, images and fonts, which are all served from this site's own domain. Hosts keep ordinary access logs of requests. Search runs entirely in your browser against a file downloaded with the site; your query is never sent.</p>
+    <p>When Rime opens the notes for an update, the address can include <code>?from=</code> and the ID of the release you updated from. That is a public release number, the same for everyone who ran it, and nothing about your machine. The page uses it in your browser to list what changed.</p>
+    <h2>What Rime itself contacts</h2>
+    <p>Rime runs no telemetry service. A fresh install does make a few network contacts by default. They are listed with how to turn each one off on <a href="/docs/privacy-on-rime">Privacy on Rime</a>.</p>
+  </section>
+</Base>
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(20px, 3vw, 32px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 60ch; }
+  .prose { padding-bottom: var(--section-pad); }
+</style>

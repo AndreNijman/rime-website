@@ -1,0 +1,47 @@
+---
+// A segmented choice with a SelectionPill: native radios (keyboard and
+// screen-reader behaviour for free); the pill travels on the Shell's
+// `selection` spring — the one place a whisper of overshoot is allowed.
+interface Props { name: string; label: string; options: { value: string; label: string }[]; value?: string; compact?: boolean }
+const { name, label, options, value, compact = false } = Astro.props;
+---
+<fieldset class:list={["segmented", { "segmented--compact": compact }]} data-segmented data-name={name}>
+  <legend class="segmented-legend">{label}</legend>
+  <div class="segmented-track">
+    <span class="segmented-pill" aria-hidden="true" data-pill></span>
+    {options.map((o, i) => (
+      <label class="segmented-opt">
+        <input type="radio" name={name} value={o.value} checked={value ? value === o.value : i === 0} />
+        <span>{o.label}</span>
+      </label>
+    ))}
+  </div>
+</fieldset>
+<script>
+  import { initSegmented } from "../scripts/segmented";
+  initSegmented();
+</script>
+<style is:global>
+  .segmented { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .segmented-legend { padding: 0; margin-bottom: 8px; font-size: 0.78rem; color: var(--rime-text-secondary); font-weight: 600; }
+  .segmented-track {
+    position: relative; display: inline-flex; padding: 4px; gap: 2px; border-radius: 999px;
+    background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+  }
+  .segmented-pill {
+    position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 999px;
+    background: var(--rime-surface-selected); box-shadow: inset 0 0 0 1px var(--rime-outline-soft);
+    pointer-events: none; opacity: 0;
+  }
+  .segmented-opt { position: relative; z-index: 1; display: inline-flex; cursor: pointer; }
+  .segmented-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+  .segmented-opt span {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px;
+    font-size: 0.88rem; font-weight: 600; color: var(--rime-text-secondary);
+    transition: color var(--dur-state) var(--ease-effects);
+  }
+  .segmented--compact .segmented-opt span { min-height: 32px; padding: 0 12px; font-size: 0.84rem; }
+  .segmented-opt input:checked + span { color: var(--rime-text-primary); }
+  .segmented-opt input:focus-visible + span { outline: 2px solid var(--rime-text-primary); outline-offset: 1px; }
+  html:not(.js) .segmented-opt input:checked + span { background: var(--rime-surface-selected); }
+</style>

@@ -1,0 +1,23 @@
+---
+// The replaceable mark (src/brand/mark.ts). tone="role" takes the palette's
+// accent; tone="mono" is currentColor. Motion lives elsewhere (Convergence).
+import { MARK } from "../brand/mark";
+interface Props { size?: number; tone?: "role" | "mono"; label?: string; class?: string }
+const { size = 22, tone = "mono", label, class: cls } = Astro.props;
+const [, , w, h] = MARK.crop.split(" ").map(Number);
+---
+<svg
+  class:list={["rime-mark", `rime-mark--${tone}`, cls]}
+  viewBox={MARK.crop}
+  width={Math.round(size * (w / h))}
+  height={size}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  focusable="false"
+  data-mark-status={MARK.status}
+><path d={MARK.path} fill="currentColor" /></svg>
+<style>
+  .rime-mark { flex: none; }
+  .rime-mark--role { color: var(--rime-accent); }
+</style>

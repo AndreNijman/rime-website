@@ -1,0 +1,97 @@
+{
+  "repo": "https://github.com/AndreNijman/rime-shell",
+  "ref": "6289d1f89916d3432ca3bd1f4ca68db7141559d9",
+  "vendoredAt": "2026-09-28T14:30:21.097Z",
+  "files": {
+    "src/theme/motion.js": {
+      "sha256": "2164dad00e08a599125082908aa772461b280d898bb6edb8cce3927c02d76326",
+      "exports": [
+        "BASE",
+        "LOOPS",
+        "SPRINGS",
+        "spring",
+        "EXPRESSIVE",
+        "expressive",
+        "SPEEDS",
+        "SCALE_MIN",
+        "SCALE_MAX",
+        "REDUCED_EFFECT_CAP",
+        "PRESS_SCALE",
+        "PAGE_TRAVEL",
+        "CURVES",
+        "speedScale",
+        "spatial",
+        "effect",
+        "legacyDuration",
+        "ease"
+      ]
+    },
+    "src/theme/spring.js": {
+      "sha256": "c5aef423e19f657fb251dbb27f47f67ce912bbbec029dd404c6d1eef45df860e",
+      "exports": [
+        "step",
+        "atRest",
+        "settleTime"
+      ]
+    },
+    "src/theme/roles.js": {
+      "sha256": "706696a519577bd02729db87d9f81557816bbe7741163dc2618627546d9bc431",
+      "exports": [
+        "rgb",
+        "mix",
+        "channel",
+        "luminance",
+        "contrast",
+        "TARGETS",
+        "hover",
+        "pressed",
+        "resolve"
+      ]
+    },
+    "src/shapes/fluid/geometry.js": {
+      "sha256": "6abf92d813429885ab5aeb5e291275e704182e766cb84402d8500bf50dc6eafc",
+      "exports": [
+        "KAPPA",
+        "Path",
+        "clamp01",
+        "lerp",
+        "span",
+        "smooth",
+        "decel",
+        "accel",
+        "curve",
+        "fastDecel",
+        "standard",
+        "softCap",
+        "size",
+        "notchHole",
+        "standardDecel",
+        "emphasizedDecel",
+        "barNotch",
+        "barSilhouette",
+        "barHairline",
+        "windowRounding",
+        "centerBloom",
+        "rightPourWidth",
+        "rightPour",
+        "leftSpill",
+        "edgeSpillRight",
+        "spillRidge",
+        "leftSpillWidth",
+        "edgeSpillWidth",
+        "riseRidge",
+        "bottomRise",
+        "bottomRiseHeight",
+        "cornerRise",
+        "cornerRiseWidth",
+        "cornerRiseHeight",
+        "notchExtrudeField",
+        "notchExtrudeDerived",
+        "dropField",
+        "sdRoundBox",
+        "sdRoundCone",
+        "smin"
+      ]
+    }
+  }
+}

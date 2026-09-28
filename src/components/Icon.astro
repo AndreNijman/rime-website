@@ -1,0 +1,22 @@
+---
+import { ICONS } from "./icons";
+interface Props { name: string; size?: number; label?: string; class?: string }
+const { name, size = 20, label, class: cls } = Astro.props;
+const def = ICONS[name];
+if (!def) throw new Error(`Icon "${name}" is not defined in icons.ts`);
+---
+<svg
+  class:list={["icon", cls]}
+  width={size}
+  height={size}
+  viewBox={def.vb ?? "0 0 24 24"}
+  fill={def.fill ? "currentColor" : "none"}
+  stroke={def.fill ? "none" : "currentColor"}
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  focusable="false"
+><path d={def.d} /></svg>

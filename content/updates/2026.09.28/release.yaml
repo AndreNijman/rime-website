@@ -1,0 +1,77 @@
+# Image build: build-image run 36333622777 (push to main, merge of #68).
+# date = when the run's last channel tag moved: 2026-09-27T17:44:44Z, which is
+# 2026-09-28 01:44:44 AWST, hence the 2026.09.28 id.
+# Published under ghcr.io/andrenijman/apex-os only, plus daily-<osRevision>.
+# Merged PRs (compare 94bd62f2...1094c432, first-parent history): rime-os #67,
+# #62, #68; the vendored shell moved cfea262b -> f7472250, which is
+# rime-shell #26 only. The builds for #67 (run 36330885687) and #62 (run
+# 36333338426) were cancelled before publishing, so this is the first image
+# carrying all four.
+# The core layer was rebuilt in this run (#68 touches Containerfile.core).
+# product/name say APEX-OS because the image was titled "APEX-OS".
+schema: 1
+id: "2026.09.28"
+product: apex
+name: "APEX-OS 2026.09.28"
+title: "Games on the discrete GPU, a Gaming Mode freeze fix, and a faster offline first boot"
+date: "2026-09-27T17:44:44Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "Steam and its games start on the discrete GPU, Gaming Mode no longer stalls for half a minute at a time, an offline first boot no longer waits minutes on Flathub, and the login screen types in the lock screen's shapes. This update rebuilds the image's core layer, so it is a larger download than usual."
+predecessor: "2026.09.27.3"
+provenance:
+  osRevision: "1094c4327e3596cfbe9a9e4869b88f939e0c4aa1"
+  shellRevision: "f7472250f8cae6d5234b885451fba06ef0d0ac42"
+  imageDigest: "sha256:8601baab5f0b330108359445a517e91ca277cac88501f9668f60b4b8b90ac0b3"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36333622777"
+  iso: null
+highlights: ["steam-discrete-gpu", "scx-lavd-stall-fix", "offline-first-boot"]
+changes:
+  - id: "steam-discrete-gpu"
+    area: gaming
+    kind: fixed
+    title: "Steam and its games run on the discrete GPU"
+    summary: "Steam's desktop entry asks for the non-default GPU, but the shell's launcher ignored that, so Steam and every game it started ran on the integrated GPU. Apps that ask for the discrete GPU are now started on it."
+    detail: "The launcher reads PrefersNonDefaultGPU (or the older X-KDE-RunOnDiscreteGpu) and starts those apps through switcherooctl, which sets the right environment for NVIDIA or AMD. On a machine with no discrete GPU the app starts as before. On an Intel plus NVIDIA test laptop, a game running on the integrated GPU had hung it, and the GPU reset crashed Hyprland into safe mode."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/26"]
+    breaking: false
+  - id: "scx-lavd-stall-fix"
+    area: gaming
+    kind: fixed
+    title: "Gaming Mode no longer freezes for half a minute"
+    summary: "The scx_lavd scheduler Gaming Mode uses (scx-scheds 1.1.3 from the CachyOS COPR) could strand a task until the kernel's watchdog ejected it, freezing the game for 31 to 37 seconds. The image now ships scx_lavd 1.1.3 with upstream's fix for that stall."
+    detail: "In a test session the COPR build stalled 5 times in 16 minutes; the patched build ran 24 minutes of gaming with none. Once the COPR build is newer than 1.1.3, the image keeps it, since it already contains the fix. /usr/lib/apex-scx-versions records which binary shipped. The mode switch also stops logging 'not the scheduler that was asked for' on every successful entry."
+    source: ["https://github.com/AndreNijman/rime-os/pull/68"]
+    breaking: false
+  - id: "offline-first-boot"
+    area: system
+    kind: fixed
+    title: "An offline first boot no longer waits 9+ minutes"
+    summary: "Without a network, the first boot sat on 'A start job is running' while the Flathub setup retried ten times. Boot now continues, and the setup keeps retrying in the background."
+    detail: "Each attempt has a time limit: 2 minutes to add the Flathub remote, 20 minutes for the Zen download."
+    source: ["https://github.com/AndreNijman/rime-os/pull/62"]
+    breaking: false
+  - id: "login-password-shapes"
+    area: shell
+    kind: new
+    title: "The login screen types in the lock screen's shapes"
+    summary: "The login screen's password field draws the same Material 3 Expressive shapes as the lock screen, moving on the last user's own motion settings (Reduce Motion, speed, scale). If the shapes cannot load, it falls back to the dotted field."
+    source: ["https://github.com/AndreNijman/rime-os/pull/67"]
+    breaking: false
+  - id: "login-error-outline"
+    area: shell
+    kind: fixed
+    title: "A refused login's red outline stays visible"
+    summary: "After a wrong password, the red outline was cleared in the same frame it appeared. It now stays until you start typing."
+    source: ["https://github.com/AndreNijman/rime-os/pull/67"]
+    breaking: false
+knownIssues:
+  - title: "Restart Steam once"
+    summary: "A Steam that was already running needs one restart to start on the discrete GPU."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/26"]
+  - title: "The discrete GPU stays awake while Steam is open"
+    summary: "This applies in every mode, not only Gaming Mode, because Steam is usually running before a mode switch and games inherit its environment."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/26"]
+  - title: "Offline first boot not tested end to end"
+    summary: "The first-boot change was checked with systemd's own tools, but an offline first boot was not tested end to end."
+    source: ["https://github.com/AndreNijman/rime-os/pull/62"]
+rollback: null

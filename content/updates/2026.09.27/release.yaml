@@ -1,0 +1,39 @@
+# Image build: build-image run 36311159838 (push to main, merge of #65).
+# date = when the run's last channel tag moved (2026-09-27 18:32:40 AWST).
+# Published under ghcr.io/andrenijman/apex-os only (the rime-os package did not
+# exist yet), plus the per-commit tag daily-<osRevision>.
+# Merged PRs since v2.1.0's target 6ffb56db (compare 6ffb56db...12b30386,
+# first-parent history): rime-os #65 only. The vendored shell (99c5ab7a) is the
+# same one the v2.1.0 build carried, so there are no shell changes.
+# product/name say APEX-OS because the image was titled "APEX-OS"
+# (org.opencontainers.image.title).
+schema: 1
+id: "2026.09.27"
+product: apex
+name: "APEX-OS 2026.09.27"
+title: "SUPER+drag moves and resizes windows again"
+date: "2026-09-27T10:32:40Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia"]
+summary: "A single fix: holding SUPER and dragging a window moves or resizes it again."
+predecessor: "apex-v2.1.0"
+provenance:
+  osRevision: "12b30386cbb85548271df7300ec7787b92270637"
+  shellRevision: "99c5ab7a309b49e07d1c54928a4b8ba1970435f4"
+  imageDigest: "sha256:8da559896b50b2772d805f82b57d583d2afee8ae404270e54b67bce397128015"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36311159838"
+  iso: null
+highlights: ["super-drag-fixed"]
+changes:
+  - id: "super-drag-fixed"
+    area: shell
+    kind: fixed
+    title: "SUPER+drag moves and resizes windows again"
+    summary: "Holding SUPER and dragging with the left mouse button moves a window, and with the right button resizes it. Both had done nothing since the desktop's Hyprland configuration moved to Lua."
+    detail: "The two binds were declared so that they fired only when the mouse button was released, while moving and resizing act on the press. They now use Hyprland's mouse-bind form, and both the config migrator and the image build refuse the broken form."
+    source: ["https://github.com/AndreNijman/rime-os/pull/65"]
+    breaking: false
+knownIssues:
+  - title: "Already-migrated configs keep the broken binds"
+    summary: "If your Hyprland config was migrated from the old format, your own ~/.config/hypr/apex/user-overrides.lua still declares SUPER+drag with `{ drag = true }`, and the migrator does not run again. Changing those two binds to `{ mouse = true }` fixes them."
+    source: ["https://github.com/AndreNijman/rime-os/pull/65"]
+rollback: null

@@ -1,0 +1,262 @@
+---
+// ─── /updates/<release> ──────────────────────────────────────────────────────
+// The permanent, human-readable record of one release (spec §8.1). Immutable
+// by ID; ?from=<public release id> adds a local-only "you updated from…"
+// banner and the cumulative list of what the machine crossed (§8.2), computed
+// in the browser from the static index — no request carries anything but a
+// public release ID, and the canonical URL never includes it (§17.1).
+// ────────────────────────────────────────────────────────────────────────────
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import CommandChip from "../../components/CommandChip.astro";
+import { allReleases, formatDate, AREA_LABEL, KIND_LABEL, type Release } from "../../lib/releases";
+import { inline, sourceLabel } from "../../lib/md";
+import { channelOf } from "../../lib/channels";
+import { SITE } from "../../data/site";
+
+export async function getStaticPaths() {
+  const all = await allReleases();
+  return all.map((r, i) => ({ params: { release: r.id }, props: { r, newer: all[i - 1] ?? null, older: all[i + 1] ?? null } }));
+}
+const { r, newer, older } = Astro.props as { r: Release; newer: Release | null; older: Release | null };
+type Change = Release["changes"][number];
+const hl = r.highlights.map((id) => r.changes.find((c) => c.id === id)).filter((c): c is Change => !!c);
+const rest = r.changes.filter((c) => !r.highlights.includes(c.id));
+const isSec = (c: Change) => c.area === "security" || c.kind === "security";
+const groups: { id: string; title: string; items: Change[]; quiet?: boolean }[] = [
+  { id: "shell", title: "Shell", items: rest.filter((c) => c.area === "shell" && c.kind !== "fixed" && !isSec(c)) },
+  { id: "system", title: "System", items: rest.filter((c) => (c.area === "system" || c.area === "gaming" || c.area === "agents") && c.kind !== "fixed" && !isSec(c)) },
+  { id: "security", title: "Security", items: rest.filter(isSec) },
+  { id: "fixed", title: "Fixed", items: rest.filter((c) => c.kind === "fixed" && !isSec(c) && c.area !== "developer"), quiet: true },
+  { id: "developer", title: "Developer changes", items: rest.filter((c) => c.area === "developer"), quiet: true },
+].filter((g) => g.items.length);
+const ch = channelOf(r.channels);
+const p = r.provenance;
+const product = r.product === "apex" ? "APEX-OS" : "Rime";
+const repoOs = SITE.repos.os, repoShell = SITE.repos.shell;
+const desc = r.summary.split(/(?<=\.)\s+/)[0];
+---
+<Base title={`${r.name}: ${r.title}`} description={desc} og={`/og/updates/${r.id}.png`}>
+  <article class="rel" data-release={r.id} data-predecessor={r.predecessor ?? ""}>
+    <header class="rel-hero container">
+      <nav class="rel-crumbs caption" aria-label="Breadcrumb"><a href="/updates">Updates</a> <span aria-hidden="true">/</span> <span>{r.id}</span></nav>
+      <div class="rel-from" data-from hidden role="status"></div>
+      <p class="rel-kicker"><span class="mono">{r.name}</span>{r.product === "apex" && <span class="chip">Before the rename</span>}</p>
+      <h1>{r.title}</h1>
+      <p class="lead rel-summary" set:html={inline(r.summary)} />
+      <dl class="rel-meta">
+        <div><dt>Released</dt><dd><time datetime={r.date.toISOString()}>{formatDate(r.date)}</time></dd></div>
+        <div><dt>Channel</dt><dd>{ch.label}</dd></div>
+        {p.osRevision && <div><dt>OS revision</dt><dd class="mono"><a href={`${repoOs}/commit/${p.osRevision}`}>{p.osRevision.slice(0, 9)}</a></dd></div>}
+        {p.shellRevision && <div><dt>Shell revision</dt><dd class="mono"><a href={`${repoShell}/commit/${p.shellRevision}`}>{p.shellRevision.slice(0, 8)}</a></dd></div>}
+      </dl>
+    </header>
+
+    <div class="container rel-body">
+      <nav class="rel-toc" aria-label="On this page">
+        <ul>
+          {hl.length > 0 && <li><a href="#highlights">Highlights</a></li>}
+          {groups.map((g) => <li><a href={`#${g.id}`}>{g.title}</a></li>)}
+          <li><a href="#known-issues">Known issues</a></li>
+          {r.requirements && <li><a href="#requirements">Requirements</a></li>}
+          <li><a href="#provenance">Provenance</a></li>
+          <li><a href="#help">If something is wrong</a></li>
+        </ul>
+      </nav>
+
+      <div class="rel-main">
+        <div class="rel-crossed" data-crossed hidden></div>
+
+        {hl.length > 0 && (
+          <section id="highlights" aria-labelledby="h-highlights" class="rel-sec">
+            <h2 id="h-highlights">Highlights</h2>
+            <div class="hl-list">
+              {hl.map((c) => (
+                <article class="hl" id={c.id}>
+                  <p class="hl-tags"><span class="chip">{AREA_LABEL[c.area]}</span><span class="chip" data-kind={c.kind}>{KIND_LABEL[c.kind]}</span>{c.breaking && <span class="chip">Breaking</span>}</p>
+                  <h3>{c.title}</h3>
+                  <p set:html={inline(c.summary)} />
+                  {c.detail && <p class="hl-detail" set:html={inline(c.detail)} />}
+                  {(c.source.length > 0 || c.docs) && (
+                    <p class="src caption">
+                      {c.docs && <a href={c.docs}>Docs</a>}
+                      {c.source.map((s) => <a href={s} class="mono">{sourceLabel(s)}</a>)}
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {groups.map((g) => (
+          <section id={g.id} aria-labelledby={`h-${g.id}`} class:list={["rel-sec", { "rel-sec--quiet": g.quiet }]}>
+            <h2 id={`h-${g.id}`}>{g.title}</h2>
+            <ul class="ch-list">
+              {g.items.map((c) => (
+                <li id={c.id}>
+                  <details class="ch">
+                    <summary>
+                      <span class="ch-kind" data-kind={c.kind}>{g.id === "fixed" ? AREA_LABEL[c.area] : KIND_LABEL[c.kind]}</span>
+                      <span class="ch-title">{c.title}</span>
+                    </summary>
+                    <div class="ch-body">
+                      <p set:html={inline(c.summary)} />
+                      {c.detail && <p set:html={inline(c.detail)} />}
+                      {(c.source.length > 0 || c.docs) && (
+                        <p class="src caption">
+                          {c.docs && <a href={c.docs}>Docs</a>}
+                          {c.source.map((s) => <a href={s} class="mono">{sourceLabel(s)}</a>)}
+                        </p>
+                      )}
+                    </div>
+                  </details>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        <section id="known-issues" aria-labelledby="h-known" class="rel-sec">
+          <h2 id="h-known">Known issues</h2>
+          {r.knownIssues.length === 0 ? (
+            <p>No known release-blocking issues.</p>
+          ) : (
+            <ul class="ki-list">
+              {r.knownIssues.map((k) => (
+                <li>
+                  <h3><Icon name="alert" size={18} />{k.title}</h3>
+                  <p set:html={inline(k.summary)} />
+                  {k.source.length > 0 && <p class="src caption">{k.source.map((s) => <a href={s} class="mono">{sourceLabel(s)}</a>)}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {r.requirements && (
+          <section id="requirements" aria-labelledby="h-req" class="rel-sec">
+            <h2 id="h-req">Requirements</h2>
+            <ul class="req">{r.requirements.map((q) => <li set:html={inline(q)} />)}</ul>
+          </section>
+        )}
+
+        <section id="provenance" aria-labelledby="h-prov" class="rel-sec">
+          <h2 id="h-prov">Provenance</h2>
+          <dl class="prov mono">
+            <div><dt>Release</dt><dd>{r.id}</dd></div>
+            <div><dt>OS revision</dt><dd><a href={`${repoOs}/commit/${p.osRevision}`}>{p.osRevision}</a></dd></div>
+            {p.shellRevision && <div><dt>Shell revision</dt><dd><a href={`${repoShell}/commit/${p.shellRevision}`}>{p.shellRevision}</a></dd></div>}
+            {p.imageDigest && <div><dt>Image digest</dt><dd>{p.imageDigest}</dd></div>}
+            {p.reissues.map((x) => <div><dt>Reissued</dt><dd>{x.digest}<br /><span class="reissue-note">{x.date.toISOString()} · <a href={x.build}>{x.build.replace("https://github.com/", "")}</a> · {x.note}</span></dd></div>)}
+            {p.iso && <div><dt>Installer</dt><dd><a href={p.iso.url}>{p.iso.name}</a> · {p.iso.bytes.toLocaleString("en-AU")} bytes</dd></div>}
+            {p.iso && <div><dt>ISO SHA-256</dt><dd>{p.iso.sha256}</dd></div>}
+            <div><dt>Channel</dt><dd>{ch.label}</dd></div>
+            <div><dt>Released</dt><dd>{r.date.toISOString()}</dd></div>
+            {p.build && <div><dt>Build</dt><dd><a href={p.build}>{p.build.replace("https://github.com/", "")}</a></dd></div>}
+          </dl>
+          <p class="caption prov-note">{ch.note} This page explains the release; it is never consulted by an update. What a machine installs is decided by the registry and the image signature (see <a href="/security">Security</a>). Machine-readable: <a href={`/updates/${r.id}.json`} class="mono">{r.id}.json</a>.</p>
+        </section>
+
+        <section id="help" aria-labelledby="h-help" class="rel-sec">
+          <h2 id="h-help">If something is wrong</h2>
+          {r.product === "rime" || r.channels.length ? (
+            <>
+              <p>Go back to the image you were running before this one. It becomes the default at the next boot; your files and settings stay as they are.</p>
+              <CommandChip cmd="sudo rime rollback && sudo systemctl reboot" />
+              <p class="caption">On an APEX-named system the command is <code>apex</code>. You can also pick the previous entry in the boot menu. More in <a href="/docs/rollback">Rolling back</a> and <a href="/docs/recovery">Recovery</a>.</p>
+            </>
+          ) : (
+            <p>This release is an installer. If an install goes wrong, see <a href="/docs/install">Install</a> and <a href="/docs/recovery">Recovery</a>.</p>
+          )}
+          {r.rollback && (
+            <details class="disclosure">
+              <summary>What this release does when you roll back</summary>
+              <div><p set:html={inline(r.rollback)} /></div>
+            </details>
+          )}
+        </section>
+
+        <nav class="rel-pager" aria-label="Other releases">
+          {older ? <a href={`/updates/${older.id}`} class="pager-prev"><span class="caption">Previous</span><span class="mono">{older.name}</span><span>{older.title}</span></a> : <span></span>}
+          {newer && <a href={`/updates/${newer.id}`} class="pager-next"><span class="caption">Next</span><span class="mono">{newer.name}</span><span>{newer.title}</span></a>}
+        </nav>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<script>
+  import { initFrom } from "../../scripts/release-from";
+  initFrom();
+</script>
+
+<style>
+  .rel-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(32px, 4vw, 56px); display: grid; gap: 18px; justify-items: start; }
+  .rel-crumbs a { color: var(--rime-text-secondary); }
+  .rel-kicker { display: flex; align-items: center; gap: 12px; }
+  .rel-kicker .mono { color: var(--rime-accent-text); font-size: 0.95rem; }
+  .rel-hero h1 { max-width: 20ch; }
+  .rel-summary { max-width: 64ch; }
+  .rel-meta { display: flex; flex-wrap: wrap; gap: 14px 36px; margin: 8px 0 0; }
+  .rel-meta dt { font-size: 0.78rem; color: var(--rime-text-secondary); }
+  .rel-meta dd { margin: 2px 0 0; font-weight: 600; }
+  .rel-meta dd.mono { font-weight: 500; font-size: 0.86rem; }
+  .rel-from {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-m);
+    background: var(--rime-accent-container); color: var(--rime-on-accent-container); font-weight: 600;
+  }
+  .rel-body { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); padding-bottom: var(--section-pad); }
+  @media (max-width: 900px) { .rel-body { grid-template-columns: 1fr; } .rel-toc { display: none; } }
+  .rel-toc ul { position: sticky; top: calc(var(--notch-h) + 28px); list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 0.9rem; }
+  .rel-toc a { display: block; padding: 6px 10px; border-radius: var(--radius-s); color: var(--rime-text-secondary); text-decoration: none; }
+  .rel-toc a:hover { background: var(--rime-hover); color: var(--rime-text-primary); }
+  .rel-main { display: grid; gap: clamp(40px, 5vw, 64px); min-width: 0; }
+  .rel-sec h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin-bottom: 18px; }
+  .hl-list { display: grid; gap: 14px; }
+  .hl { padding: clamp(20px, 3vw, 28px); border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); display: grid; gap: 10px; }
+  .hl h3 { font-size: 1.3rem; }
+  .hl-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .hl-detail { color: var(--rime-text-secondary); font-size: 0.97rem; }
+  .src { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .src a { color: var(--rime-text-secondary); font-size: 0.78rem; }
+  .ch-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rime-hairline); }
+  .ch-list > li { border-bottom: 1px solid var(--rime-hairline); }
+  .ch summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 96px 1fr 16px; gap: 12px; align-items: baseline; padding: 14px 0; }
+  .ch summary::-webkit-details-marker { display: none; }
+  .ch summary::after { content: "+"; color: var(--rime-text-secondary); font-family: var(--font-mono); }
+  .ch[open] summary::after { content: "−"; }
+  .ch-kind { font-size: 0.78rem; color: var(--rime-text-secondary); }
+  .ch-kind[data-kind="new"] { color: var(--rime-accent-text); }
+  .ch-title { font-weight: 600; }
+  .ch-body { padding: 0 0 18px 108px; display: grid; gap: 10px; color: var(--rime-text-secondary); }
+  @media (max-width: 620px) { .ch summary { grid-template-columns: 1fr 16px; } .ch-kind { grid-column: 1 / -1; } .ch-body { padding-left: 0; } }
+  .rel-sec--quiet .ch-title { font-weight: 500; }
+  .ki-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .ki-list li { padding: 18px 20px; border-radius: var(--radius-l); background: var(--rime-surface-raised); box-shadow: inset 3px 0 0 var(--rime-accent), inset 0 0 0 1px var(--rime-hairline); display: grid; gap: 8px; }
+  .ki-list h3 { font-size: 1.05rem; display: flex; gap: 10px; align-items: center; }
+  .ki-list p { color: var(--rime-text-secondary); }
+  .req { display: grid; gap: 8px; padding-left: 1.2em; }
+  .prov { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--rime-hairline); font-size: 0.8rem; }
+  .prov div { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rime-hairline); }
+  .prov dt { color: var(--rime-text-secondary); }
+  .prov dd { margin: 0; overflow-wrap: anywhere; }
+  @media (max-width: 560px) { .prov div { grid-template-columns: 1fr; gap: 2px; } }
+  .prov-note { margin-top: 14px; max-width: 70ch; }
+  .reissue-note { font-family: var(--font-ui); color: var(--rime-text-secondary); font-size: 0.82rem; }
+  #help { display: grid; gap: 14px; }
+  .rel-pager { display: flex; justify-content: space-between; gap: 16px; padding-top: 24px; border-top: 1px solid var(--rime-hairline); }
+  .rel-pager a { display: grid; gap: 4px; max-width: 46%; text-decoration: none; padding: 12px 14px; border-radius: var(--radius-m); }
+  .rel-pager a:hover { background: var(--rime-hover); }
+  .pager-next { text-align: right; margin-left: auto; }
+  .rel-pager .mono { font-size: 0.8rem; color: var(--rime-accent-text); }
+  .rel-crossed { padding: 20px 22px; border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+</style>
+<style is:global>
+  /* built by release-from.ts, so not scoped */
+  .crossed-title { font-size: 1.25rem; margin-bottom: 14px; }
+  .crossed-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .crossed-list > li > a { display: grid; gap: 2px; text-decoration: none; }
+  .crossed-list > li > a .mono { color: var(--rime-accent-text); font-size: 0.8rem; }
+  .crossed-list ul { margin: 6px 0 0; padding-left: 1.1em; color: var(--rime-text-secondary); font-size: 0.94rem; display: grid; gap: 3px; }
+</style>

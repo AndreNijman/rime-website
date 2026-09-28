@@ -1,0 +1,36 @@
+---
+// The HTML site map: where the centre notch's bloom goes when JavaScript
+// doesn't run, and a plain index of everything.
+import Base from "../layouts/Base.astro";
+import { NAV } from "../data/site";
+import { getCollection } from "astro:content";
+import { allReleases } from "../lib/releases";
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+const journal = (await getCollection("journal")).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const releases = await allReleases();
+const q = Astro.url.searchParams?.get?.("q");
+---
+<Base title="Site map" description="Every page on rimeos.com.">
+  <header class="container page-hero">
+    <h1>Site map</h1>
+    {q && <p class="lead">Search needs JavaScript. Here is everything instead.</p>}
+  </header>
+  <div class="container sm">
+    {NAV.map((g) => (
+      <section><h2><a href={g.href}>{g.label}</a></h2><ul>{g.items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul></section>
+    ))}
+    <section><h2><a href="/docs">All docs</a></h2><ul>{docs.map((d) => <li><a href={`/docs/${d.id}`}>{d.data.title}</a></li>)}</ul></section>
+    <section><h2><a href="/journal">Journal</a></h2><ul>{journal.map((j) => <li><a href={`/journal/${j.id}`}>{j.data.title}</a></li>)}</ul></section>
+    <section><h2><a href="/updates">Releases</a></h2><ul>{releases.map((r) => <li><a href={`/updates/${r.id}`}>{r.name}</a></li>)}</ul></section>
+    <section><h2>About</h2><ul><li><a href="/security">Security</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/source">Source</a></li><li><a href="/brand">Brand</a></li></ul></section>
+  </div>
+</Base>
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: 24px; }
+  .sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; padding-bottom: var(--section-pad); }
+  .sm h2 { font-size: 1.1rem; margin-bottom: 10px; }
+  .sm ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .sm a { text-decoration: none; }
+  .sm li a { color: var(--rime-text-secondary); }
+  .sm li a:hover { color: var(--rime-text-primary); text-decoration: underline; }
+</style>

@@ -1,0 +1,72 @@
+---
+import "@fontsource-variable/noto-sans/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
+import "../styles/global.css";
+import RimeFrame from "../components/RimeFrame.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../data/site";
+import scenes from "../data/scenes.json";
+
+interface Props {
+  title?: string;           // page title; "Rime" is appended
+  description?: string;
+  canonical?: string;       // path; defaults to this page's path with no query
+  og?: string;              // path of the social card image
+  noindex?: boolean;
+  bodyClass?: string;
+  palette?: string;         // a scene id the page starts in (visitor choice still wins)
+}
+const { title, description = SITE.description, canonical, og = "/og/default.png", noindex = false, bodyClass, palette } = Astro.props;
+const fullTitle = title ? `${title} — Rime` : `Rime — ${SITE.tagline}`;
+const path = (canonical ?? Astro.url.pathname).replace(/\.html$/, "").replace(/\/$/, "") || "/";
+const canonicalUrl = SITE.url + (path === "/" ? "/" : path);
+const def = scenes.scenes.find((s) => s.default)!;
+const ids = scenes.scenes.map((s) => s.id);
+// The boot script runs before first paint so a returning visitor's scheme,
+// palette and motion choice never flash. It is inline and hashed into the CSP.
+const boot = `(function(){var d=document.documentElement;d.classList.add("js");try{var s=localStorage.getItem("rime.scheme");if(s==="dark"||s==="light")d.dataset.scheme=s;var p=localStorage.getItem("rime.palette");if(p&&${JSON.stringify(ids)}.indexOf(p)>=0)d.dataset.palette=p;var m=localStorage.getItem("rime.motion");if(m==="full"||m==="reduced"||m==="off")d.dataset.motion=m;}catch(e){}})();`;
+---
+<!doctype html>
+<html lang="en" data-palette={palette ?? def.id}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={def.dark.roles.surfaceBase} />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content={def.light.roles.surfaceBase} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/atom+xml" title="Rime updates (Atom)" href="/updates/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Rime updates (RSS)" href="/updates/rss.xml" />
+    <link rel="alternate" type="application/feed+json" title="Rime updates (JSON Feed)" href="/updates/feed.json" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rime" />
+    <meta property="og:title" content={title ?? "Rime"} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL(og, SITE.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline set:html={boot} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <div class="page-field" aria-hidden="true"><div class="page-field-next" data-field-next></div></div>
+    <RimeFrame />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initReveal } from "../scripts/reveal";
+      initReveal();
+    </script>
+  </body>
+</html>

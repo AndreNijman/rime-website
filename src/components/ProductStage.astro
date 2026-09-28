@@ -1,0 +1,375 @@
+---
+// ─── ProductStage ───────────────────────────────────────────────────────────
+// A Rime desktop, reconstructed from the Shell's own source rather than
+// filmed: a 1440 × 900 logical screen at the Shell's scale-1 tokens, the frame
+// and bar drawn by geometry.js, the Dashboard blooming out of the centre notch
+// and the right panel pouring out of the right notch on SurfaceLifecycle's
+// liquid springs — the same code the Shell runs, pinned to rime-shell@6289d1f8.
+// Layout and labels follow that revision (DashboardLayout.qml, DashHome.qml,
+// QuickSettings.qml, NetworkPane.qml, NotificationList.qml). Names, networks
+// and notifications are demo data.
+//
+// Without JavaScript it renders its finished state — the Dashboard open — as
+// a still (spec §10.4: never an empty stage).
+// ────────────────────────────────────────────────────────────────────────────
+import * as Geo from "../vendor/rime-shell/geometry.mjs";
+import { T1 } from "../geometry/theme.mjs";
+import Icon from "./Icon.astro";
+import RimeMark from "./RimeMark.astro";
+import scenes from "../data/scenes.json";
+
+interface Props {
+  id: string;
+  tour?: boolean;           // run the guided interaction when in view
+  controls?: boolean;       // the "take control" buttons under the stage
+  scene?: string;           // wallpaper / palette id
+  caption?: string;
+  label?: string;
+  eager?: boolean;          // the page's hero asset (spec §14.1: prioritise one)
+  reduced?: boolean;        // run this stage under Reduce Motion whatever the visitor's setting
+}
+const { id, tour = false, controls = true, scene: sceneId, caption, label = "Interactive reconstruction of the Rime Shell desktop", eager = false, reduced = false } = Astro.props;
+const scene = scenes.scenes.find((s) => s.id === sceneId) ?? scenes.scenes.find((s) => s.default)!;
+
+const W = 1440, H = 900, B = T1.borderWidth, NH = T1.notchHeight, SH = T1.notchShoulder, NB = T1.notchBottom;
+const LW = 137, CW = T1.cNotchMinWidth, RW = 200;
+const bar = Geo.barSilhouette({ w: W, strip: B, h: NH, shoulder: SH, bottom: NB, leftW: LW, centerW: CW, rightW: RW, rightBottomL: NB });
+const line = Geo.barHairline({ w: W, strip: B, h: NH, shoulder: SH, bottom: NB, leftW: LW, centerW: CW, rightW: RW, rightBottomL: NB, frameInset: B + T1.cornerRadius });
+// The frame (windows/Border.qml): side and bottom strips, their fillets meeting the bar.
+const r = T1.cornerRadius, K = Geo.KAPPA;
+const rr = (x: number, y: number, w: number, h: number, c: number) =>
+  `M ${x + c} ${y} H ${x + w - c} C ${x + w - c + c * K} ${y} ${x + w} ${y + c - c * K} ${x + w} ${y + c} V ${y + h - c} ` +
+  `C ${x + w} ${y + h - c + c * K} ${x + w - c + c * K} ${y + h} ${x + w - c} ${y + h} H ${x + c} ` +
+  `C ${x + c - c * K} ${y + h} ${x} ${y + h - c + c * K} ${x} ${y + h - c} V ${y + c} C ${x} ${y + c - c * K} ${x + c - c * K} ${y} ${x + c} ${y} Z`;
+const framePath = `M 0 ${NH} H ${W} V ${H} H 0 Z ` + rr(B, NH, W - 2 * B, H - NH - B, r);
+const i = 0.5, fx0 = B + i, fx1 = W - B - i, fy1 = H - B - i;
+const frameLine = `M ${B + r} ${NH + i} C ${B + r - r * K} ${NH + i} ${fx0} ${NH + r - r * K} ${fx0} ${NH + r} V ${fy1 - r} ` +
+  `C ${fx0} ${fy1 - r + r * K} ${B + r - r * K} ${fy1} ${B + r} ${fy1} H ${W - B - r} ` +
+  `C ${W - B - r + r * K} ${fy1} ${fx1} ${fy1 - r + r * K} ${fx1} ${fy1 - r} V ${NH + r} ` +
+  `C ${fx1} ${NH + r - r * K} ${W - B - r + r * K} ${NH + i} ${W - B - r} ${NH + i}`;
+
+// The finished Dashboard, for the no-JS still.
+const DW = 900, DH = NH + T1.dashboardHeight;
+const bloomG = { cx: W / 2, strip: B, notchW: CW, notchH: NH, shoulder: SH, notchBottom: NB, w: DW, h: DH, r: T1.radiusXL, shoulderW1: 28, shoulderH1: 22 };
+const bloom1 = Geo.centerBloom(1, bloomG);
+const dash = { x: Math.round(W / 2) - DW / 2 + 8, y: B + 8, w: DW - 16, h: DH - B - 16 };
+
+const img = scene.image;
+// Every scene's wallpaper, so the stage can follow a palette the visitor chose elsewhere.
+const images = Object.fromEntries(scenes.scenes.map((s) => [s.id, {
+  src: s.image.sources.jpg[1]?.src ?? s.image.sources.jpg[0].src,
+  srcset: Object.fromEntries((["avif", "webp", "jpg"] as const).map((f) => [f, s.image.sources[f].map((x) => `${x.src} ${x.w}w`).join(", ")])),
+}]));
+const srcset = (fmt: "avif" | "webp" | "jpg") => img.sources[fmt].map((s) => `${s.src} ${s.w}w`).join(", ");
+const now = new Date("2026-09-28T09:41:00+08:00");
+const days = Array.from({ length: 42 }, (_, k) => {
+  const d = new Date(2026, 8, 1 + k - new Date(2026, 8, 1).getDay());
+  return { n: d.getDate(), inMonth: d.getMonth() === 8, today: d.getMonth() === 8 && d.getDate() === 28 };
+});
+const tiles = [
+  ["wifi", "Wi-Fi", "Studio", true], ["bluetooth", "Bluetooth", "Off", false], ["arrow-up-right", "Airplane Mode", "", false],
+  ["refresh", "Hotspot", "", false], ["moon", "Night Light", "", false], ["clock", "Caffeine", "", false],
+  ["grid", "Focus Mode", "", false], ["bell", "Do Not Disturb", "", false], ["monitor", "Screen Capture", "", false],
+  ["palette", "Filter", "", false], ["lock", "Lid stays awake", "Auto", true],
+] as const;
+---
+<figure class="stage-figure" id={id} data-stage={id} data-tour={tour ? "1" : undefined} data-scene={scene.id} data-palette={scene.id} data-images={JSON.stringify(images)} data-motion={reduced ? "reduced" : undefined}>
+  <div class="stage" role="group" aria-roledescription="interactive demo" aria-label={label}>
+    <div class="stage-desk" data-desk>
+      <picture class="stage-wall" data-wall>
+        <source type="image/avif" srcset={srcset("avif")} sizes="(min-width: 1500px) 1400px, 94vw" />
+        <source type="image/webp" srcset={srcset("webp")} sizes="(min-width: 1500px) 1400px, 94vw" />
+        <img src={img.sources.jpg[1]?.src ?? img.sources.jpg[0].src} srcset={srcset("jpg")} sizes="(min-width: 1500px) 1400px, 94vw"
+          width={img.width} height={img.height} alt="" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={eager ? "high" : "auto"} />
+      </picture>
+
+      <svg class="stage-chrome" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
+        <path class="stage-frame" d={framePath} fill-rule="evenodd" />
+        <path class="stage-frame-line" d={frameLine} />
+        <path class="stage-bar" d={bar.path} />
+        <path class="stage-bar-line" d={line.path} data-bar-line />
+      </svg>
+
+      <!-- bar content: left / centre / right notches -->
+      <div class="sb-left">
+        <span class="sb-spark"><RimeMark size={16} tone="role" /></span>
+        <span class="sb-ws" aria-hidden="true"><i class="on">1</i><i>2</i><i>3</i></span>
+      </div>
+      <button class="sb-center" type="button" data-act="dashboard" aria-label="Open the Dashboard (centre notch)">
+        <span class="sb-title" data-sb-title>Desktop</span>
+      </button>
+      <div class="sb-right">
+        <button type="button" class="sb-ic" data-act="network" aria-label="Open Wi-Fi (right notch)"><Icon name="wifi" size={15} /></button>
+        <span class="sb-ic" aria-hidden="true"><Icon name="volume" size={15} /></span>
+        <span class="sb-ic" aria-hidden="true"><Icon name="battery" size={15} /></span>
+        <span class="sb-clock tnum">09:41</span>
+        <button type="button" class="sb-ic" data-act="notifications" aria-label="Open notifications (right notch)"><Icon name="bell" size={15} /></button>
+      </div>
+
+      <!-- CENTER_BLOOM: the Dashboard -->
+      <div class="st-layer" data-surface="dashboard" data-ssr-open>
+        <svg class="st-shape" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false"><path data-path d={bloom1.path} fill-rule="evenodd" /></svg>
+        <div class="st-hole" data-hole aria-hidden="true"></div>
+        <div class="st-reveal st-reveal-dash" data-reveal>
+          <div class="st-content dash" data-content>
+            <div class="dash-tabs" role="presentation">
+              <span class="dash-tab on"><Icon name="grid" size={14} />Home</span>
+              <span class="dash-tab"><Icon name="monitor" size={14} />System</span>
+              <span class="dash-tab"><Icon name="sparkle" size={14} />Agents</span>
+              <span class="dash-tab"><Icon name="check" size={14} />Tasks</span>
+              <span class="dash-tab"><Icon name="search" size={14} />Apps</span>
+              <span class="dash-tab"><Icon name="key" size={14} />Settings</span>
+            </div>
+            <div class="dash-home">
+              <div class="dh-col">
+                <div class="dh-card dh-profile">
+                  <span class="dh-avatar" aria-hidden="true"></span>
+                  <div><strong>alex</strong><span>Hyprland</span><span class="mono">up 3 hours</span></div>
+                </div>
+                <div class="dh-card dh-cal">
+                  <div class="dh-cal-head"><span>‹</span><strong>SEP  2026</strong><span>›</span></div>
+                  <div class="dh-cal-grid">
+                    {["Su","Mo","Tu","We","Th","Fr","Sa"].map((d) => <b>{d}</b>)}
+                    {days.map((d) => <span class:list={[{ out: !d.inMonth, today: d.today }]}>{d.n}</span>)}
+                  </div>
+                </div>
+              </div>
+              <div class="dh-col dh-mid">
+                <div class="dh-card dh-clock">
+                  <div class="dh-time mono"><span>09</span><span class="accent">41</span></div>
+                  <div class="dh-clock-tabs"><span class="on">Clock</span><span>Timer</span><span>Alarm</span><span>Stopwatch</span></div>
+                </div>
+                <div class="dh-card dh-player">
+                  <strong>Nothing playing</strong>
+                  <div class="dh-player-ctl"><i></i><i class="big"></i><i></i></div>
+                  <div class="dh-seek"><span class="mono">0:00</span><b></b><span class="mono">0:00</span></div>
+                </div>
+              </div>
+              <div class="dh-col">
+                <div class="dh-card dh-qs">
+                  <div class="dh-qs-row"><span>Brightness</span><span class="mono">72%</span></div>
+                  <div class="dh-slider"><b></b></div>
+                  <div class="dh-tiles">
+                    {tiles.map(([ic, name, sub, on]) => (
+                      <span class:list={["dh-tile", { on }]}><Icon name={ic} size={14} /><strong>{name}</strong>{sub && <em>{sub}</em>}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT_POUR: one surface, several panes -->
+      <div class="st-layer" data-surface="right" hidden>
+        <svg class="st-shape" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false"><path data-path /></svg>
+        <div class="st-reveal" data-reveal>
+          <div class="st-content pane" data-content>
+            <div class="pane-net" data-pane="network">
+              <div class="pn-head"><strong>Wi-Fi</strong><span class="pn-icons"><Icon name="refresh" size={13} /></span></div>
+              <p class="pn-sec">CONNECTED</p>
+              <div class="pn-row on"><div><strong>Studio</strong><span>Connected</span></div><span class="pn-sig">▂▄▆█</span><span class="pn-btn">Disconnect</span></div>
+              <p class="pn-sec">AVAILABLE</p>
+              <div class="pn-row"><div><strong>Library</strong></div><span class="pn-sig">▂▄▆</span><span class="pn-btn">Connect</span></div>
+              <div class="pn-row"><div><strong>Studio 5G</strong></div><span class="pn-sig">▂▄▆</span><span class="pn-btn">Connect</span></div>
+              <div class="pn-row"><div><strong>Cafe Guest</strong></div><span class="pn-sig">▂▄</span><span class="pn-btn">Connect</span></div>
+              <div class="pn-tabs"><span class="on"><Icon name="wifi" size={13} />Wi-Fi</span><span><Icon name="bluetooth" size={13} />Bluetooth</span><span><Icon name="shield" size={13} />VPN</span><span><Icon name="refresh" size={13} />Hotspot</span></div>
+            </div>
+            <div class="pane-notif" data-pane="notifications" hidden>
+              <div class="pn-head"><strong>Notifications</strong><span class="pn-clear">Clear all</span></div>
+              <div class="nt-card"><span class="nt-ic">S</span><div><p><b>Screenshot</b><em>now</em></p><strong>Screenshot saved</strong><span>Pictures/Screenshots/2026-09-28-094102.png</span></div></div>
+              <div class="nt-card"><span class="nt-ic">T</span><div><p><b>Terminal</b><em>4 min</em></p><strong>Build finished</strong><span>cargo build --release completed in 1m 12s</span></div></div>
+              <div class="nt-card"><span class="nt-ic">F</span><div><p><b>Files</b><em>12 min</em></p><strong>3 items copied</strong><span>to Documents/Projects</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="st-pointer" data-pointer aria-hidden="true" hidden><svg viewBox="0 0 24 24" width="26" height="26"><path d="M5 3l14 8.5-6.2 1.4 3.6 6.8-2.6 1.3-3.5-6.9L5 18.5z" /></svg></div>
+    </div>
+  </div>
+  {controls && (
+    <div class="stage-controls" data-controls>
+      <div class="stage-acts" role="group" aria-label="Open a Shell surface">
+        <button type="button" class="stage-act" data-act="dashboard" aria-pressed="false"><span class="fam mono">CENTER_BLOOM</span> Dashboard</button>
+        <button type="button" class="stage-act" data-act="network" aria-pressed="false"><span class="fam mono">RIGHT_POUR</span> Wi-Fi</button>
+        <button type="button" class="stage-act" data-act="notifications" aria-pressed="false"><span class="fam mono">RIGHT_POUR</span> Notifications</button>
+      </div>
+      {tour && (
+        <button type="button" class="stage-tour" data-tour-toggle aria-pressed="true">
+          <span class="tour-pause"><Icon name="pause" size={14} /> Pause tour</span>
+          <span class="tour-play"><Icon name="play" size={14} /> Play tour</span>
+        </button>
+      )}
+    </div>
+  )}
+  <figcaption class="stage-caption caption">
+    {caption ?? "Reconstructed from Rime Shell's source, not recorded: its geometry, springs and tokens, running in your browser."}
+    {" "}<a href="https://github.com/AndreNijman/rime-shell/tree/6289d1f8/src/shapes/fluid" class="mono">rime-shell@6289d1f8</a>
+  </figcaption>
+</figure>
+
+<script>
+  import { initStages } from "../scripts/stage";
+  initStages();
+</script>
+
+<style is:global>
+  .stage-figure { margin: 0; }
+  .stage {
+    position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; container-type: inline-size;
+    border-radius: clamp(14px, 2vw, 26px); background: var(--rime-surface-base);
+    box-shadow: 0 40px 90px -40px rgb(0 0 0 / 0.55), 0 0 0 1px var(--rime-hairline);
+    isolation: isolate;
+  }
+  .stage-desk {
+    position: absolute; left: 0; top: 0; width: 1440px; height: 900px;
+    transform-origin: 0 0; transform: scale(var(--k, 0.9));
+    color: var(--rime-text-primary); font: 400 13px/1.35 var(--font-ui);
+  }
+  @media (max-width: 1500px) { .stage-desk { --k: 0.82; } }
+  @media (max-width: 1280px) { .stage-desk { --k: 0.7; } }
+  @media (max-width: 1024px) { .stage-desk { --k: 0.6; } }
+  @media (max-width: 800px) { .stage-desk { --k: 0.45; } }
+  .stage-wall { position: absolute; inset: 0; }
+  .stage-wall img { width: 100%; height: 100%; object-fit: cover; }
+  .stage-wall::after { content: ""; position: absolute; inset: 0; background: var(--rime-surface-base); opacity: 0; transition: opacity var(--dur-state) var(--ease-effects); }
+  .stage-chrome, .st-shape { position: absolute; inset: 0; width: 1440px; height: 900px; overflow: visible; pointer-events: none; }
+  .stage-frame, .stage-bar, .st-shape path { fill: var(--rime-surface-base); transition: fill var(--dur-state) var(--ease-effects); }
+  .stage-frame-line, .stage-bar-line { fill: none; stroke: var(--rime-hairline); stroke-width: 1; }
+
+  .sb-left, .sb-center, .sb-right { position: absolute; top: 6px; height: 34px; display: flex; align-items: center; }
+  /* Notch widths at 1440: left = spark + dots + 2 × 14 padding (137), centre
+   * cNotchMinWidth (300), right = four glyphs + clock + 2 × 14 (200). The
+   * Dashboard's content rect is centerBloom's finished box inset by 8
+   * (DashboardLayout.contentInset): 278, 14, 884 × 538. stage.ts asserts both. */
+  .sb-left { left: 0; width: 137px; padding: 0 14px 0 16px; gap: 5px; }
+  .sb-center { width: 300px; }
+  .sb-right { width: 200px; }
+  .st-reveal-dash { left: 278px; top: 14px; width: 884px; height: 538px; }
+  .sb-spark { width: 24px; height: 24px; display: grid; place-items: center; }
+  .sb-ws { display: inline-flex; gap: 5px; padding: 5px; border-radius: 16px; background: var(--rime-surface-high); }
+  .sb-ws i {
+    width: 16px; height: 16px; border-radius: 16px; font: 700 10px/16px var(--font-ui); font-style: normal; text-align: center;
+    background: var(--rime-surface-selected); color: var(--rime-text-secondary);
+  }
+  .sb-ws i.on { width: 28px; background: var(--rime-accent); color: var(--rime-surface-base); }
+  .sb-center {
+    left: 50%; transform: translateX(-50%); justify-content: center; border: 0; background: none; padding: 0; cursor: pointer;
+    font: 400 13px/1 var(--font-ui); color: var(--rime-text-primary);
+  }
+  .sb-title { transition: opacity var(--dur-fade-out) var(--ease-effects); }
+  .stage[data-open="dashboard"] .sb-title { opacity: 0; }
+  .sb-right { right: 0; justify-content: flex-end; gap: 8px; padding-right: 14px; }
+  .sb-ic { width: 24px; height: 24px; display: grid; place-items: center; border: 0; background: none; padding: 0; color: var(--rime-icon-default); border-radius: 12px; cursor: pointer; }
+  button.sb-ic:hover { color: var(--rime-text-primary); }
+  .sb-ic[aria-expanded="true"] { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
+  .sb-clock { font: 600 14px/1 var(--font-ui); margin: 0 2px; }
+
+  .st-layer { position: absolute; inset: 0; }
+  .st-layer[hidden] { display: none; }
+  .st-hole { position: absolute; background: var(--rime-surface-base); display: none; }
+  .st-reveal { position: absolute; }
+  .st-content { position: absolute; inset: 0; }
+
+  /* Dashboard: DashTabBar + DashHome at 900 × 520 */
+  .dash { display: flex; flex-direction: column; }
+  .dash-tabs { height: 40px; display: flex; align-items: center; justify-content: space-around; border-bottom: 1px solid color-mix(in srgb, var(--rime-text-primary) 7%, transparent); flex: none; }
+  .dash-tab { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 14px; border-radius: 999px; font-size: 12px; color: var(--rime-text-secondary); }
+  .dash-tab.on { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
+  .dash-home { flex: 1; display: grid; grid-template-columns: 210px 1fr 210px; gap: 8px; padding-top: 8px; min-height: 0; }
+  .dh-col { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+  .dh-card { background: var(--rime-surface-raised); border-radius: 12px; padding: 12px; min-height: 0; }
+  .dh-profile { height: 160px; display: flex; align-items: center; gap: 14px; }
+  .dh-avatar { width: 64px; height: 64px; border-radius: 50%; flex: none; background: var(--rime-surface-high); box-shadow: inset 0 0 0 2px var(--rime-accent-container); }
+  .dh-profile div { display: grid; gap: 4px; }
+  .dh-profile strong { font-size: 15px; font-weight: 600; }
+  .dh-profile span { font-size: 11px; color: var(--rime-text-secondary); }
+  .dh-cal { flex: 1; }
+  .dh-cal-head { display: flex; justify-content: space-between; font-size: 11px; color: var(--rime-text-secondary); padding: 2px 4px 8px; }
+  .dh-cal-head strong { color: var(--rime-text-primary); font-weight: 600; letter-spacing: 0.06em; white-space: pre; }
+  .dh-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 3px; text-align: center; font-size: 10.5px; }
+  .dh-cal-grid b { font-weight: 600; color: var(--rime-text-secondary); font-size: 9.5px; padding-bottom: 4px; }
+  .dh-cal-grid span { line-height: 24px; border-radius: 12px; font-variant-numeric: tabular-nums; }
+  .dh-cal-grid span.out { color: var(--rime-text-secondary); opacity: 0.55; }
+  .dh-cal-grid span.today { background: var(--rime-surface-selected); box-shadow: inset 0 0 0 1px var(--rime-accent); }
+  .dh-clock { height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 14px 12px 12px; }
+  .dh-time { display: grid; justify-items: center; font-size: 72px; font-weight: 700; line-height: 0.92; letter-spacing: -4px; margin-top: 4px; }
+  .dh-time .accent { color: var(--rime-accent-text); }
+  .dh-clock-tabs { display: flex; gap: 6px; font-size: 12px; color: var(--rime-text-secondary); }
+  .dh-clock-tabs span { padding: 6px 12px; border-radius: 999px; }
+  .dh-clock-tabs .on { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
+  .dh-player { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 18px 14px 12px; }
+  .dh-player strong { font-size: 15px; font-weight: 600; }
+  .dh-player-ctl { display: flex; gap: 14px; align-items: center; }
+  .dh-player-ctl i { width: 30px; height: 30px; border-radius: 50%; background: var(--rime-surface-high); }
+  .dh-player-ctl i.big { width: 36px; height: 36px; }
+  .dh-seek { width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 9.5px; color: var(--rime-text-secondary); }
+  .dh-seek b { height: 4px; border-radius: 2px; background: var(--rime-surface-high); }
+  .dh-qs { flex: 1; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .dh-qs-row { display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rime-text-secondary); }
+  .dh-slider { height: 6px; border-radius: 3px; background: var(--rime-surface-high); position: relative; margin-bottom: 4px; }
+  .dh-slider b { position: absolute; left: 0; top: 0; bottom: 0; width: 72%; border-radius: 3px; background: var(--rime-accent); }
+  .dh-slider b::after { content: ""; position: absolute; right: -7px; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--rime-accent); }
+  .dh-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .dh-tile { height: 72px; border-radius: 12px; background: var(--rime-surface-high); padding: 10px; display: flex; flex-direction: column; gap: 4px; color: var(--rime-text-secondary); }
+  .dh-tile strong { font-size: 11px; font-weight: 600; color: var(--rime-text-primary); }
+  .dh-tile em { font-style: normal; font-size: 10px; }
+  .dh-tile.on { background: var(--rime-surface-selected); color: var(--rime-accent-text); }
+
+  /* right panel panes */
+  .pane { padding: 16px 16px 12px; }
+  .pane > div { position: absolute; inset: 16px 16px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .pane > div[hidden] { display: none; }
+  .pn-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--rime-hairline); margin-bottom: 6px; }
+  .pn-head strong { font-size: 15px; font-weight: 600; }
+  .pn-icons { color: var(--rime-text-secondary); }
+  .pn-clear { font-size: 11px; padding: 5px 10px; border-radius: 13px; background: var(--rime-surface-high); }
+  .pn-sec { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--rime-text-secondary); margin: 6px 0 2px; }
+  .pn-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; }
+  .pn-row.on { background: var(--rime-surface-selected); }
+  .pn-row div { flex: 1; display: grid; gap: 2px; }
+  .pn-row strong { font-weight: 500; }
+  .pn-row div span { font-size: 11px; color: var(--rime-text-secondary); }
+  .pn-sig { font-size: 11px; letter-spacing: -2px; color: var(--rime-icon-default); }
+  .pn-btn { font-size: 11.5px; font-weight: 600; padding: 7px 12px; border-radius: 8px; background: var(--rime-surface-high); }
+  .pn-row.on .pn-btn { background: var(--rime-surface-on-selected); }
+  .pn-tabs { margin-top: auto; display: flex; justify-content: space-around; padding-top: 8px; font-size: 12px; color: var(--rime-text-secondary); }
+  .pn-tabs span { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; }
+  .pn-tabs .on { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
+  .nt-card { display: flex; gap: 12px; padding: 12px; border-radius: 12px; background: var(--rime-surface-raised); margin-bottom: 2px; }
+  .nt-ic { width: 32px; height: 32px; border-radius: 10px; flex: none; display: grid; place-items: center; font-weight: 700; background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+  .nt-card div { display: grid; gap: 2px; min-width: 0; }
+  .nt-card p { display: flex; justify-content: space-between; font-size: 11px; color: var(--rime-text-secondary); }
+  .nt-card p b { font-weight: 600; }
+  .nt-card p em { font-style: normal; }
+  .nt-card strong { font-weight: 600; }
+  .nt-card span { font-size: 12px; color: var(--rime-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .st-pointer { position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none; }
+  .st-pointer svg path { fill: #fff; stroke: #111; stroke-width: 1.3; stroke-linejoin: round; }
+  .st-pointer.press svg { transform: scale(0.88); transition: transform var(--dur-press-in) var(--ease-spring); }
+  .st-pointer svg { transition: transform var(--dur-press-out) var(--ease-spring); transform-origin: 20% 15%; }
+
+  .stage-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; }
+  .stage-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stage-act, .stage-tour {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 0;
+    background: var(--rime-surface-raised); color: var(--rime-text-primary); font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    box-shadow: inset 0 0 0 1px var(--rime-hairline);
+    transition: background-color var(--dur-hover) var(--ease-effects), transform var(--dur-press-out) var(--ease-spring);
+  }
+  .stage-act:hover, .stage-tour:hover { background: var(--rime-surface-high); }
+  .stage-act:active, .stage-tour:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-hover), var(--dur-press-in); }
+  .stage-act[aria-pressed="true"] { background: var(--rime-surface-selected); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); }
+  .stage-act .fam { font-size: 0.68rem; color: var(--rime-text-secondary); font-weight: 500; }
+  .stage-tour .tour-play { display: none; }
+  .stage-tour[aria-pressed="false"] .tour-pause { display: none; }
+  .stage-tour[aria-pressed="false"] .tour-play { display: inline-flex; }
+  .stage-tour span { display: inline-flex; align-items: center; gap: 8px; }
+  html:not(.js) .stage-controls { display: none; }
+  .stage-caption { margin-top: 14px; max-width: 70ch; }
+  .stage-caption a { color: var(--rime-text-secondary); }
+  @media (max-width: 720px) { .stage-act .fam { display: none; } }
+</style>

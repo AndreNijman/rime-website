@@ -1,0 +1,143 @@
+---
+// /updates — the release index (spec §8.5).
+import Base from "../../layouts/Base.astro";
+import LatestRelease from "../../components/LatestRelease.astro";
+import Icon from "../../components/Icon.astro";
+import { allReleases, formatDate, AREA_LABEL, KIND_LABEL } from "../../lib/releases";
+import { channelOf } from "../../lib/channels";
+const all = await allReleases();
+const latest = all[0];
+const rime = all.filter((r) => r.product === "rime");
+const apex = all.filter((r) => r.product === "apex");
+const areas = ["shell", "system", "security", "gaming", "agents", "developer"].filter((a) => all.some((r) => r.changes.some((c) => c.area === a)));
+const text = (r: (typeof all)[number]) => [r.name, r.title, r.summary, ...r.changes.map((c) => `${c.title} ${c.summary}`)].join(" ").toLowerCase();
+---
+<Base title="Updates" description="Every Rime release, with what changed, what is known to be wrong, and exactly what was built.">
+  <section class="container upd-hero">
+    <p class="eyebrow">Updates</p>
+    <h1>What changed, release by release.</h1>
+    <p class="lead">Every release Rime has published, newest first. Each one has a permanent page: the changes, the known issues, the exact revisions it was built from, and how to go back.</p>
+  </section>
+
+  <section class="container-wide">
+    <LatestRelease release={latest} headingId="latest-h" />
+  </section>
+
+  <section class="container upd-list-wrap" aria-labelledby="all-h">
+    <div class="upd-head">
+      <h2 id="all-h">All releases</h2>
+      <form class="filters" data-filters role="search" aria-label="Filter releases">
+        <label class="f-search">
+          <Icon name="search" size={16} />
+          <span class="visually-hidden">Search release notes</span>
+          <input type="search" name="q" placeholder="Search release notes" data-f-q autocomplete="off" />
+        </label>
+        <fieldset class="f-areas">
+          <legend class="visually-hidden">Areas</legend>
+          {areas.map((a) => (
+            <label class="f-chip"><input type="checkbox" name="area" value={a} /><span>{AREA_LABEL[a]}</span></label>
+          ))}
+        </fieldset>
+        <fieldset class="f-chan">
+          <legend class="visually-hidden">Channel</legend>
+          <label class="f-chip"><input type="radio" name="channel" value="all" checked /><span>All</span></label>
+          <label class="f-chip"><input type="radio" name="channel" value="edge" /><span>edge</span></label>
+          <label class="f-chip"><input type="radio" name="channel" value="installer" /><span>Installers</span></label>
+        </fieldset>
+      </form>
+    </div>
+    <p class="caption upd-channels">Only the <strong>edge</strong> channel exists today: every published image tag is the same build. Stable, candidate and beta are designed and will appear here when the first promotion runs. <a href="/docs/channels">About channels</a></p>
+    <p class="upd-empty" data-f-empty hidden>No release notes match.</p>
+
+    <ol class="upd-list" data-f-list>
+      {rime.map((r) => (
+        <li class="upd-item" data-release={r.id} data-channel={channelOf(r.channels).label} data-text={text(r)}>
+          <a href={`/updates/${r.id}`} class="upd-link">
+            <span class="mono upd-id">{r.name}</span>
+            <strong class="upd-title">{r.title}</strong>
+            <span class="caption upd-date">{formatDate(r.date)} · {channelOf(r.channels).label}</span>
+          </a>
+          <ul class="upd-changes">
+            {r.changes.map((c) => (
+              <li data-area={c.area} data-text={`${c.title} ${c.summary}`.toLowerCase()}><span class="ch-kind">{KIND_LABEL[c.kind]}</span><span>{c.title}</span></li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+
+    <h2 class="upd-before" id="before">Before the rename</h2>
+    <p class="caption upd-before-note">Rime was called APEX-OS until 28 September 2026. Its releases stay here so an update from an APEX machine can show everything it crossed.</p>
+    <ol class="upd-list upd-list--quiet" data-f-list>
+      {apex.map((r) => (
+        <li class="upd-item" data-release={r.id} data-channel={channelOf(r.channels).label} data-text={text(r)}>
+          <a href={`/updates/${r.id}`} class="upd-link">
+            <span class="mono upd-id">{r.name}</span>
+            <strong class="upd-title">{r.title}</strong>
+            <span class="caption upd-date">{formatDate(r.date)} · {channelOf(r.channels).label}</span>
+          </a>
+          <ul class="upd-changes">
+            {r.changes.map((c) => (
+              <li data-area={c.area} data-text={`${c.title} ${c.summary}`.toLowerCase()}><span class="ch-kind">{KIND_LABEL[c.kind]}</span><span>{c.title}</span></li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="container section-tight" id="feeds" aria-labelledby="feeds-h">
+    <h2 id="feeds-h">Feeds</h2>
+    <ul class="feeds">
+      <li><a href="/updates/feed.xml"><Icon name="rss" size={16} />Atom</a><span class="mono caption">/updates/feed.xml</span></li>
+      <li><a href="/updates/rss.xml"><Icon name="rss" size={16} />RSS</a><span class="mono caption">/updates/rss.xml</span></li>
+      <li><a href="/updates/feed.json"><Icon name="rss" size={16} />JSON Feed</a><span class="mono caption">/updates/feed.json</span></li>
+      <li><a href="/updates/index.json"><Icon name="code" size={16} />Release index</a><span class="mono caption">/updates/index.json</span></li>
+    </ul>
+    <p class="caption feeds-note">Each release also has a machine-readable record at <code>/updates/&lt;id&gt;.json</code>. These files explain releases. What a machine installs is decided by the registry and the image signature, never by this site.</p>
+  </section>
+</Base>
+
+<script>
+  import { initFilters } from "../../scripts/updates-filter";
+  initFilters();
+</script>
+
+<style>
+  .upd-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(32px, 4vw, 56px); display: grid; gap: 16px; }
+  .upd-hero .lead { max-width: 60ch; }
+  .upd-list-wrap { padding-top: clamp(56px, 7vw, 96px); }
+  .upd-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 14px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  :global(html:not(.js)) .filters { display: none; }
+  .filters fieldset { border: 0; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+  .f-search { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); color: var(--rime-text-secondary); }
+  .f-search:focus-within { box-shadow: inset 0 0 0 2px var(--rime-accent-text); }
+  .f-search input { border: 0; background: none; height: 100%; width: 200px; color: var(--rime-text-primary); }
+  .f-search input:focus-visible { outline: none; box-shadow: none; }
+  .f-chip { position: relative; cursor: pointer; }
+  .f-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .f-chip span { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); font-size: 0.88rem; font-weight: 600; color: var(--rime-text-secondary); transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-state) var(--ease-effects); }
+  .f-chip input:checked + span { background: var(--rime-surface-selected); color: var(--rime-text-primary); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); }
+  .f-chip input:focus-visible + span { outline: 2px solid var(--rime-text-primary); outline-offset: 2px; }
+  .upd-channels { margin-bottom: 28px; max-width: 80ch; }
+  .upd-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .upd-item { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px 32px; padding: 22px 24px; border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  @media (max-width: 800px) { .upd-item { grid-template-columns: 1fr; } }
+  .upd-link { display: grid; gap: 6px; align-content: start; text-decoration: none; }
+  .upd-link:hover .upd-title { text-decoration: underline; text-decoration-color: var(--rime-accent); }
+  .upd-id { font-size: 0.8rem; color: var(--rime-accent-text); }
+  .upd-title { font-size: 1.2rem; font-weight: 600; line-height: 1.3; }
+  .upd-changes { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.94rem; }
+  .upd-changes li { display: grid; grid-template-columns: 82px 1fr; gap: 10px; }
+  .upd-changes li[hidden] { display: none; }
+  .ch-kind { color: var(--rime-text-secondary); font-size: 0.8rem; padding-top: 2px; }
+  .upd-list--quiet .upd-item { background: transparent; }
+  .upd-before { font-size: 1.5rem; margin-top: 56px; }
+  .upd-before-note { margin: 8px 0 18px; max-width: 70ch; }
+  .upd-empty { padding: 20px 0; color: var(--rime-text-secondary); }
+  .feeds { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+  .feeds li { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .feeds a { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; min-width: 130px; }
+  .feeds-note { margin-top: 16px; max-width: 70ch; }
+</style>

@@ -1,0 +1,45 @@
+---
+import Base from "../layouts/Base.astro";
+import RimeMark from "../components/RimeMark.astro";
+import { MARK } from "../brand/mark";
+---
+<Base title="Brand" description="How to write Rime's name, how to use the mark, and why Rime has no brand colour.">
+  <header class="container page-hero">
+    <p class="eyebrow">Brand</p>
+    <h1>Rime, and nothing more.</h1>
+    <p class="lead">The name is Rime. "Rime OS" is for when you need to say the operating system specifically, and "Rime Shell" for the desktop. The website is rimeos.com.</p>
+  </header>
+  <section class="container section-tight brand-grid">
+    <div class="mark-tile mark-dark"><RimeMark size={120} tone="mono" label="The Rime mark" /></div>
+    <div class="mark-tile mark-light"><RimeMark size={120} tone="mono" label="The Rime mark" /></div>
+    <div class="mark-tile mark-role"><RimeMark size={120} tone="role" label="The Rime mark in the current accent" /></div>
+  </section>
+  <section class="container section-tight prose">
+    {MARK.status === "provisional" && <p class="callout"><strong>The mark is provisional.</strong> The evolved Rime mark and its opening animation are still being designed. Until then this is the spark carried over from APEX-OS, and it will be replaced everywhere at once.</p>}
+    <h2>Colour</h2>
+    <p>Rime has no brand colour. On the desktop, colour comes from your wallpaper; on this site, from the wallpaper scene you're viewing. The mark takes the current accent in product contexts and plain black or white everywhere else. It must never depend on a particular blue, green or "ice" colour to be recognisable.</p>
+    <h2>Writing the name</h2>
+    <ul>
+      <li>Write <strong>Rime</strong>, with a capital R and nothing after it, in headlines and ordinary text.</li>
+      <li>Use <strong>Rime OS</strong> only when you need to name the operating system as distinct from the desktop, and <strong>Rime Shell</strong> for the desktop.</li>
+      <li>Rime was called APEX-OS until 28 September 2026. Say so only where history or migration matters.</li>
+      <li>The Rime input method for Chinese, packaged in Fedora as <code>ibus-rime</code>, is an unrelated project.</li>
+    </ul>
+    <h2>Files</h2>
+    <ul>
+      <li><a href="/brand/rime-mark-black.svg" download>rime-mark-black.svg</a></li>
+      <li><a href="/brand/rime-mark-white.svg" download>rime-mark-white.svg</a></li>
+    </ul>
+  </section>
+</Base>
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(20px, 3vw, 32px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 60ch; }
+  .brand-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 760px) { .brand-grid { grid-template-columns: 1fr; } }
+  .mark-tile { aspect-ratio: 4 / 3; border-radius: var(--radius-xl); display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  .mark-dark { background: #000; color: #fff; }
+  .mark-light { background: #fff; color: #000; }
+  .mark-role { background: var(--rime-surface-raised); }
+  .prose { padding-bottom: var(--section-pad); }
+</style>

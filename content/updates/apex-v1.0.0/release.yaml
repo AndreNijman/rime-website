@@ -1,0 +1,102 @@
+# Source: the published GitHub release body,
+#   https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0
+# osRevision is the commit the v1.0.0 tag resolves to today (bcbe327d, "one
+# update channel"). The release's targetCommitish (bda98886…) and the two
+# commits the body links (2e3f7b9, bda9888) predate the 2026-09-22 history
+# re-signing and no longer resolve, so they are not linked here.
+# imageDigest and shellRevision are null: this netinstall pulls
+# ghcr.io/andrenijman/apex-os:daily at install time and pins no digest.
+# build is null: per the body, the attached ISO is a locally built hybrid
+# BIOS/UEFI netinstall (verified on real hardware), not a CI artifact.
+# `requirements` is an extra top-level field (not in schema 1).
+schema: 1
+id: "apex-v1.0.0"
+product: apex
+name: "APEX-OS v1.0.0"
+title: "First stable release"
+date: "2026-07-29T18:28:54Z"
+channels: []
+summary: "The first release where a clean install boots straight to a working desktop with nothing to fix by hand. The shell now ships inside the OS image, so one update moves the OS and the desktop together, and updates never install or reboot on their own."
+predecessor: "apex-v0.1.0"
+provenance:
+  osRevision: "bcbe327d4148fca5ee661acd95673f9c74a92cce"
+  shellRevision: null
+  imageDigest: null
+  build: null
+  iso:
+    name: "apex-os-netinstall-x86_64.iso"
+    bytes: 1928251392
+    sha256: "0b1fa0620fa54a5b5245ea986afcee83a620b4313652357b573fe6747589236c"
+    url: "https://github.com/AndreNijman/rime-os/releases/download/v1.0.0/apex-os-netinstall-x86_64.iso"
+requirements:
+  - "A network connection during the install: the ISO pulls ghcr.io/andrenijman/apex-os:daily while installing, so it always installs the current image."
+highlights: ["one-update-channel", "desktop-starts-first-boot", "no-unattended-updates", "locale-keymap-timezone"]
+changes:
+  - id: "one-update-channel"
+    area: shell
+    kind: improved
+    title: "The shell ships inside the OS image"
+    summary: "APEX Shell is now part of the image at /usr/share/apex-shell. `apex update` moves the OS and the desktop together, and `apex rollback` reverts both."
+    detail: "Before, the shell updated separately through its own in-app updater (a git pull behind a login popup), so a machine could run a new OS with an old shell or the reverse. That second channel is removed: the shell can no longer be updated in place with git pull. First login no longer needs the network, and the shell is covered by the image's signature. Developers can still point the autostart at a local checkout with APEX_SHELL_DIR=~/src/apex-shell."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "no-unattended-updates"
+    area: system
+    kind: fixed
+    title: "Updates and reboots only happen when you run apex update"
+    summary: "Fedora's automatic update timer was found active on a test machine and rebooted it mid-session without asking. It is now masked, so the system only updates when you run `apex update`."
+    detail: "The timer (bootc-fetch-apply-updates.timer) runs `bootc upgrade --apply` about every two hours and reboots. To opt back in: `systemctl unmask bootc-fetch-apply-updates.timer`."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "desktop-starts-first-boot"
+    area: shell
+    kind: fixed
+    title: "The bar, launcher and idle lock start on the first boot"
+    summary: "On a fresh install the compositor could start before the shell was in place, leaving a bare desktop with no bar, launcher, idle management or lock timeout, and it stayed that way. The shell now waits until it is ready, and the first-boot setup checks its own work before reporting success."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "keyboard-layout-unset"
+    area: system
+    kind: fixed
+    title: "Your keyboard layout is used instead of a US fallback"
+    summary: "An unconfigured keymap was written into the desktop config as the text '(unset)', which fell back to a US layout, including at the lock screen. Layout and variant are now validated against the keyboard database."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "keybind-collisions"
+    area: shell
+    kind: fixed
+    title: "SUPER+Q only closes a window"
+    summary: "SUPER+Q closed the window and opened the launcher, and SUPER+W opened Firefox and the wallpaper picker. The launcher is now ALT+SPACE and the wallpaper picker SUPER+SHIFT+W."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "default-wallpaper"
+    area: shell
+    kind: fixed
+    title: "The APEX wallpaper and theme are selected on first login"
+    summary: "The default wallpaper was copied but never selected, so the shell used an upstream wallpaper and derived the bar, border, GTK and terminal colours from it."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "first-boot-config-error"
+    area: shell
+    kind: fixed
+    title: "No config error on first boot"
+    summary: "The first Hyprland start always reported a config error because a file the shell creates later did not exist yet, and every shell keybind was lost with it. The first-login setup now creates those files ahead of time."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "locale-keymap-timezone"
+    area: system
+    kind: fixed
+    title: "Locale, keymap and time zone are set on install"
+    summary: "Nothing set them before: the login screen fell back to a US layout, LANG stayed at C.UTF-8, and the clock ran on UTC. The installer now writes them into the installed system, and the image ships working defaults."
+    detail: "en_US.UTF-8 is now available in the image. The image's default time zone is Australia/Perth; change it with `sudo timedatectl set-timezone <Region/City>` (the choice survives `apex update`)."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+  - id: "zram-swap"
+    area: system
+    kind: fixed
+    title: "Compressed swap in memory"
+    summary: "The system had no swap at all, which made out-of-memory handling abrupt. Fedora's standard zram device (half of RAM up to 8 GB, zstd) is now set up."
+    source: ["https://github.com/AndreNijman/rime-os/releases/tag/v1.0.0"]
+    breaking: false
+knownIssues: []
+rollback: "`apex update` moves the OS and the UI together, atomically. `apex rollback` reverts both."

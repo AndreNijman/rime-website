@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+import { formatDate } from "../../lib/releases";
+export async function getStaticPaths() {
+  return (await getCollection("journal")).map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const { Content } = await render(p);
+---
+<Base title={p.data.title} description={p.data.description}>
+  <article class="container post">
+    <p class="caption"><a href="/journal">Journal</a> · <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time> · {p.data.author}</p>
+    <h1>{p.data.title}</h1>
+    <p class="lead">{p.data.description}</p>
+    <div class="prose"><Content /></div>
+    {p.data.sources.length > 0 && (
+      <footer class="post-src caption"><p>Sources</p><ul>{p.data.sources.map((s) => <li><a href={s} class="mono">{s.replace(/^https?:\/\//, "")}</a></li>)}</ul></footer>
+    )}
+  </article>
+</Base>
+<style>
+  .post { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: var(--section-pad); display: grid; gap: 16px; max-width: 820px; }
+  .post h1 { font-size: clamp(2.1rem, 1.4rem + 2.4vw, 3.4rem); }
+  .post .lead { max-width: 60ch; margin-bottom: 12px; }
+  .post-src { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rime-hairline); }
+  .post-src ul { margin: 6px 0 0; padding-left: 1.1em; display: grid; gap: 4px; }
+  .post-src a { color: var(--rime-text-secondary); overflow-wrap: anywhere; }
+</style>
