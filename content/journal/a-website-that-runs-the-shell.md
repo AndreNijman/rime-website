@@ -70,7 +70,7 @@ The published strengths run from 0.30 to 0.78. The chalk scene's light mode pass
 
 ## Wallpapers we could not show
 
-Rime Shell ships six wallpapers inherited from the Brain_Shell fork it started from. None has a recorded source, author or licence in the tree, and we do not read the fork's MIT licence as a licence for its artwork. One is upstream's own artwork and reads "BRAIN SHELL". Another carries embedded C2PA content credentials whose strings name an image-generation model; we read those strings and did not validate the signature. The other four carry no provenance metadata.
+Rime Shell ships six wallpapers inherited from Brain_Shell, the project it was forked from, which added all six in one commit on 2026-06-09. None has a recorded source, author or licence in the tree, and we do not read the fork's MIT licence as a licence for its artwork. One is upstream's own artwork and reads "BRAIN SHELL". Another carries embedded C2PA content credentials whose strings name an image-generation model; we read those strings and did not validate the signature. The other four carry no provenance metadata.
 
 `content/wallpapers.json` records all six with `publish: false` and a note on each. The site shows Rime's default wallpaper, a repository asset, and five scenes made for the site. `scripts/scenes/generate-scenes.py` paints each one at 2560 × 1440 with numpy and Pillow, from gradients, ridge lines built out of summed sines, glows and grain, with a fixed seed. The provenance of each image is that file. The scenes go through the same matugen command as the default wallpaper, so their palettes are the ones Rime would produce.
 

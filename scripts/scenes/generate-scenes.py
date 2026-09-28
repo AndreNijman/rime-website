@@ -5,7 +5,7 @@ These are NOT wallpapers Rime ships. They exist because the six wallpapers
 inherited from the Brain_Shell fork have no recorded artwork licence, and a
 public page needs images whose provenance is this file. The palette story is
 unaffected: every scene still goes through Rime's own matugen command
-(scripts/build-palettes.mjs), so what the page shows is what Rime would do
+(scripts/build-scenes.mjs), so what the page shows is what Rime would do
 with it.
 
     python3 scripts/scenes/generate-scenes.py          # writes assets/wallpapers/scene-*.jpg

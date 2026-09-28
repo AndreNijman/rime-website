@@ -20,7 +20,7 @@ A curve maps elapsed time to progress from a fixed start. The comment in `src/th
 
 > A curve has one shape whatever came before it: reversed half-way, it restarts from rest and the motion kinks. A spring carries its velocity into the new target, so an open caught by a close flows back.
 
-Close the Dashboard while it is still opening and its body keeps the speed it had, slows, and turns around. No code handles the reversal as a case of its own. The lifecycle sets a new target, and the physics does the rest.
+Close the Dashboard while it is still opening and its body keeps the speed it had, slows, and turns around. The lifecycle swaps in the closing spring's response and damping and sets the new target. Nothing restarts from rest: the closed form carries position and velocity across the change.
 
 ## Two numbers per spring
 

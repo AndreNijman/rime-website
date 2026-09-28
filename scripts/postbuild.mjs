@@ -104,7 +104,13 @@ for (const f of html) {
   for (const m of t.matchAll(/\s(?:href|src)="(\/[^"]*)"/g)) {
     const u = m[1];
     if (u.startsWith("//")) continue;
-    if (!exists(u)) fail(`${rel(f)}: broken link ${u}`);
+    if (!exists(u)) { fail(`${rel(f)}: broken link ${u}`); continue; }
+    const hash = u.split("#")[1];
+    if (hash) {
+      const target = u.split("#")[0].split("?")[0] || rel(f).replace(/\.html$/, "");
+      const tf = target === "/" ? join(DIST, "index.html") : existsSync(join(DIST, target + ".html")) ? join(DIST, target + ".html") : join(DIST, target);
+      if (existsSync(tf) && statSync(tf).isFile() && tf.endsWith(".html") && !readFileSync(tf, "utf8").includes(`id="${hash}"`)) fail(`${rel(f)}: ${u} — no element with id "${hash}"`);
+    }
   }
   for (const m of t.matchAll(/\ssrcset="([^"]+)"/g))
     for (const part of m[1].split(",")) { const u = part.trim().split(/\s+/)[0]; if (u.startsWith("/") && !exists(u)) fail(`${rel(f)}: missing srcset ${u}`); }

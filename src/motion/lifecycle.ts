@@ -44,8 +44,8 @@ export interface LifecycleOptions {
 
 class Tween {
   from = 0; to = 0; t0 = 0; ms = 0; curve: number[] = CURVES.effects; active = false;
-  start(from: number, to: number, ms: number, curve: number[]) {
-    this.from = from; this.to = to; this.ms = ms; this.curve = curve; this.t0 = performance.now(); this.active = ms > 0 && from !== to;
+  start(from: number, to: number, ms: number, curve: number[], t0: number) {
+    this.from = from; this.to = to; this.ms = ms; this.curve = curve; this.t0 = t0; this.active = ms > 0 && from !== to;
   }
   at(now: number): number {
     if (!this.active) return this.to;
@@ -168,7 +168,7 @@ export class SurfaceLifecycle {
     const to = this.open ? 1 : 0;
     const ms = this.dur(this.open ? this.contentIn : this.contentOut, this.content, to);
     if (ms <= 0) { this.content = to; this.cTween.active = false; return; }
-    this.cTween.start(this.content, to, ms, CURVES.effects);
+    this.cTween.start(this.content, to, ms, CURVES.effects, this.clock());
   }
 
   private drive() {
@@ -201,7 +201,7 @@ export class SurfaceLifecycle {
     else {
       const to = this.open ? 1 : 0;
       const ms = this.dur(this.open ? this.contentIn : this.contentOut, this.alpha, to);
-      if (ms <= 0) { this.alpha = to; this.aTween.active = false; } else this.aTween.start(this.alpha, to, ms, CURVES.effects);
+      if (ms <= 0) { this.alpha = to; this.aTween.active = false; } else this.aTween.start(this.alpha, to, ms, CURVES.effects, this.clock());
     }
 
     this.cTween.active = false;
@@ -212,6 +212,9 @@ export class SurfaceLifecycle {
     this.ensureTicking();
     this.emit();
   }
+
+  /** Now, on the clock frames are stepped by (a recording's own clock in manual mode). */
+  private clock() { return this.opts.manual ? this.last : performance.now(); }
 
   private ensureTicking() {
     if (this.ticking || this.opts.manual) return;

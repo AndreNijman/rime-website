@@ -66,7 +66,7 @@ const g = scenes.generator;
 
   <section class="container section-tight" id="provenance" aria-labelledby="prov-h">
     <h2 id="prov-h" class="h2s">Where this page's colours came from</h2>
-    <p class="muted prov-intro">Each scene below was run through {g.matugen} with the Shell's command and resolved by the Shell's <code>roles.js</code> when this site was built. The site refuses to build if a mapping misses WCAG AA where it is used, and the Light Field behind the page is pulled toward the base colour just far enough that body text stays at 7:1 on its brightest pixel.</p>
+    <p class="muted prov-intro">Each scene below was run through {g.matugen} with the Shell's command and resolved by the Shell's <code>roles.js</code> by the site's scene script. The script refuses to write a palette whose mapping misses WCAG AA where the site uses it, and the Light Field behind the page is pulled toward the base colour just far enough that body text stays at 7:1 on its brightest pixel.</p>
     <div class="prov-table" role="table" aria-label="Scene palettes">
       <div class="pt-row pt-head" role="row"><span role="columnheader">Scene</span><span role="columnheader">Scheme</span><span role="columnheader">surface · primary · on_surface</span><span role="columnheader">Fallbacks</span><span role="columnheader">Field</span></div>
       {scenes.scenes.flatMap((sc) => (["dark", "light"] as const).map((m) => (

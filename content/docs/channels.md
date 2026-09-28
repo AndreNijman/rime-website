@@ -94,7 +94,7 @@ firmware, and `rime update` exits 0. `sudo rime update --force` takes the held
 release anyway.
 
 **No rollout document has ever been published**, so nothing is held today.
-Nothing halts a release automatically either: a person would publish a halt.
+No mechanism halts a release on its own either: a person would publish the halt.
 
 ## The health stop
 
@@ -123,3 +123,9 @@ endpoint = "https://example.invalid/rime-health"
 Even with both set, this build sends nothing: it has no code that transmits a
 report, and Rime runs no endpoint to receive one. A file that cannot be read
 counts as off.
+
+## On a machine installed from the v2.1.0 ISO
+
+This page describes current Rime images. A machine installed from the v2.1.0
+ISO runs an older APEX-OS image, with the `apex` command, until its first
+update. See [Install Rime](/docs/install).

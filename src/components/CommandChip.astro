@@ -18,8 +18,9 @@ const { cmd, prompt = "$", label, wrap = false } = Astro.props;
     box-shadow: inset 0 0 0 1px var(--rime-hairline); max-width: 100%;
   }
   .cmd-prompt { color: var(--rime-text-secondary); font-family: var(--font-mono); font-size: 0.84rem; user-select: none; }
-  .cmd-text { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; font-size: 0.84rem; padding: 8px 0; scrollbar-width: thin; }
-  .cmd--wrap .cmd-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+  /* Long commands wrap rather than scroll: a scrolling region would need its
+   * own keyboard stop (axe: scrollable-region-focusable). */
+  .cmd-text { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.84rem; padding: 8px 0; }
   .cmd-copy {
     flex: none; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: var(--radius-s);
     background: transparent; color: var(--rime-text-secondary); cursor: pointer;

@@ -1,5 +1,5 @@
 {
-  "$comment": "Every scene the site can show. `publish: false` entries are recorded, not built. Palettes are generated from `file` by scripts/build-palettes.mjs with Rime Shell's own matugen command; nobody picks colours by hand.",
+  "$comment": "Every scene the site can show. `publish: false` entries are recorded, not built. Palettes are generated from `file` by scripts/build-scenes.mjs with Rime Shell's own matugen command; nobody picks colours by hand.",
   "wallpapers": [
     {
       "id": "rime-default",
@@ -77,7 +77,7 @@
       "file": null,
       "name": "rime-shell-default-1.png",
       "kind": "shipped",
-      "note": "Ships in Rime. Third-party illustration of unknown provenance.",
+      "note": "Ships in Rime. Inherited from Brain_Shell; carries a C2PA manifest naming an image-generation model (signature not validated).",
       "source": "rime-shell src/assets/wallpapers/rime-shell-default-1.png",
       "licence": "unknown — needs clearance before public use",
       "publish": false

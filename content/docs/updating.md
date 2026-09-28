@@ -87,7 +87,7 @@ points at `sudo rime pkg adopt`. See [Installing software](/docs/packages).
 | `--skip-flatpak` | Skip updating Flatpak applications. |
 | `--force` | Update even though the last update left this machine with a regression. It also takes a release a staged rollout is holding back. It does **not** skip the signature check. |
 | `--allow-unverified` | Deploy once even though the image's signature does not verify. It prints the full refusal first. |
-| `--fsync` | Keep ostree's per-object fsync on during the download. About half the speed (roughly 8 MiB/s against 14.6 MiB/s, measured), in exchange for durability if power fails mid-update. |
+| `--fsync` | Keep ostree's per-object fsync on during the download. About half the speed (8 MiB/s against 14.6 MiB/s, measured), in exchange for durability if power fails mid-update. |
 
 ## After the update
 

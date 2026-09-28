@@ -25,8 +25,8 @@ export const NAV: NavGroup[] = [
     label: "Rime", href: "/",
     items: [
       { label: "Overview", href: "/" },
-      { label: "What Rime is for", href: "/#principles" },
       { label: "Journal", href: "/journal" },
+      { label: "Source", href: "/source" },
     ],
   },
   {

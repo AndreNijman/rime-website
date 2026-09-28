@@ -13,6 +13,7 @@ export function record(opts: { hz?: number; closeAt?: number; maxMs?: number } =
   const life = new SurfaceLifecycle({ liquid: true, manual: true, ignorePolicy: true });
   const out: Sample[] = [];
   let now = 1000;
+  life.advanceForTest(0, now);    // start the recording's clock
   life.setOpen(true);
   let closed = false;
   for (let t = 0; t <= maxMs; t += dt * 1000) {

@@ -135,8 +135,8 @@ labwc session with its own read-only configuration, so nothing in your
 **From the login screen.** Pick **Rime Safe Graphics** in the session list.
 
 **The login screen offers it for you.** If your session dies within 45 seconds
-three times in a row, the login screen preselects Rime Safe Graphics and says
-*Your desktop did not start — Rime Safe Graphics selected*. It only preselects:
+three times in a row, the login screen preselects Rime Safe Graphics and puts a
+line above the password box saying your desktop did not start. It only preselects:
 choose your usual desktop and the machine stops suggesting it. Rime never
 remembers Safe Graphics as your default. A normal session that lasts 45 seconds
 clears the count; a reboot does not. To clear it by hand:
@@ -189,7 +189,7 @@ from the published ISO), you can start the systemd rescue target for one boot:
    `linux`.
 3. Press Ctrl+X to boot it.
 
-This changes nothing permanently. If you want a permanent menu entry, add one
+The change lasts for that one boot. For a permanent menu entry, add one
 to `/etc/grub.d/40_custom` and regenerate the GRUB configuration yourself; back
 up `/boot/grub2/grub.cfg` first. Rime does not do this for you.
 

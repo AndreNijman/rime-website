@@ -47,7 +47,7 @@ at `/var/lib/extensions/rime-user.raw` that systemd overlays onto `/usr` at boot
 - `rime rollback` (the OS) and `rime pkg rollback` (your packages) are
   independent.
 
-What happens on an install: dnf resolves against the installed image and
+On an install, dnf resolves against the installed image and
 downloads only what the image lacks, `rpmkeys` checks every RPM's signature,
 the files are extracted without running package scripts, shared caches are
 rebuilt, SELinux labels are applied, and the new extension replaces the old one

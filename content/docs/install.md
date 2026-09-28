@@ -17,7 +17,7 @@ verified: "rime-os@2d9c5438a"
 
 ## The installer still says APEX-OS
 
-Rime was called APEX-OS until 2026-09-28. The only installer published so far is
+Until 2026-09-28, Rime was APEX-OS. The only installer published so far is
 the **APEX-OS v2.1.0** network installer. There is no Rime-named ISO yet, no
 Windows installer and no Android app.
 
@@ -152,8 +152,8 @@ The v2.1.0 menu has three entries:
 | Entry | Use it when |
 |---|---|
 | **Install APEX-OS** | Start here. |
-| **Install APEX-OS (safe graphics — try this if the screen goes black)** | The screen goes black after the menu. |
-| **Install APEX-OS (troubleshoot — dracut shell on failure)** | The stick is not found. It drops to a debug shell. |
+| **Install APEX-OS (safe graphics …)** | The screen goes black after the menu. |
+| **Install APEX-OS (troubleshoot …)** | The stick is not found. It drops to a debug shell. |
 
 The graphical installer appears after 30 to 60 seconds.
 
@@ -187,7 +187,7 @@ apply: choosing a partition, disk encryption and Secure Boot.
 7. **Confirm.** Every partition is listed as **ERASED**, **KEPT** or **SHARED**.
    Nothing has been written yet. Type `ERASE` to start. The confirmation is tied
    to the disk itself: the installer records each device's serial number, size
-   and partition IDs on this page and checks them again just before the first
+   and partition IDs on this page and checks them again before the first
    write, so a different drive swapped in during the download cannot be erased
    in its place.
 
@@ -236,16 +236,16 @@ its setup at first login and needs the network for it.
 
 ## The first update
 
-This problem is derived from the source code. It has not yet been reproduced on
-a real v2.1.0 install.
+This account comes from reading the source code. Nobody has reproduced it on a
+real v2.1.0 install yet.
 
 **What goes wrong.** The update client in the v2.1.0 image checks the image's
 signature before it downloads anything, and it trusts one signer: the old
 `apex-os` build workflow. Since 2026-09-28 13:45 UTC, every published image,
 including the one your machine updates from (`ghcr.io/andrenijman/apex-os:apex`),
-is signed by the renamed `rime-os` workflow. So the first `sudo apex update` on a
-fresh v2.1.0 install is expected to stop with a refusal that names the `rime-os`
-signer. Machines installed from v2.0.0 are in the same position. A machine that
+is signed by the renamed `rime-os` workflow. By the source, the first
+`sudo apex update` on a fresh v2.1.0 install stops with a refusal that names the
+`rime-os` signer. Machines installed from v2.0.0 are in the same position. A machine that
 ran `apex update` between 03:37 and 13:45 UTC on 2026-09-28 received an
 in-between release that trusts both names, and is not affected.
 
@@ -306,6 +306,11 @@ flags). Then:
 sudo systemctl reboot
 ```
 
+On a machine with Secure Boot off, the update may move the boot path from GRUB
+to systemd-boot instead of staging a new image. It says so ("the boot path was
+migrated … this update did not change the OS image"), and `bootc status` shows
+nothing staged. Restart, then repeat steps 1 to 4.
+
 ### 5. After the restart
 
 The machine now runs Rime. It moves its state from the old APEX paths to the
@@ -319,8 +324,8 @@ rime trust --gate
 
 It should now report a verified signature. Your next `sudo rime update` switches
 the machine to the new image name (`ghcr.io/andrenijman/rime-os:apex`, the same
-image under the new name), and updates verify normally from then on. See
-[Updating](/docs/updating).
+image under the new name), and from then on updates pass the signature check
+without help. See [Updating](/docs/updating).
 
 If anything is wrong after the restart, `sudo rime rollback` and a reboot take
 you back to the v2.1.0 image. See [Rollback](/docs/rollback).

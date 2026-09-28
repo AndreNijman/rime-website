@@ -148,14 +148,21 @@ export function initFrame(): void {
     place(bloomReveal, bloomFinal());
     place(bloomHole, (() => { const h = bloom.spec.hole!()!; return { x: h.x, y: h.y, w: h.w, h: h.h }; })());
     bloomHole.style.borderRadius = `0 0 ${Math.max(0, NB - 2)}px ${Math.max(0, NB - 2)}px`;
-    // measure the pour's content at its final width once per layout
+    // Measure the pour's content at its final width, laid out but unseen:
+    // a display:none layer measures 0.
     const f0 = pourFinal();
+    const wasHidden = pourEl.hidden;
+    pourEl.style.visibility = "hidden";
+    pourEl.hidden = false;
     pourReveal.style.width = `${f0.w}px`;
     pourReveal.style.height = "auto";
+    pourReveal.style.clipPath = "none";
     pourContent.style.position = "relative";
     const measured = Math.ceil(pourContent.scrollHeight);
     pourContent.style.position = "";
-    pourH = Math.min(measured, VH - NH - 24);
+    pourEl.hidden = wasHidden;
+    pourEl.style.visibility = "";
+    pourH = Math.min(Math.max(measured, 200), VH - NH - 24);
     pour.spec.family = mobile ? "bottomRise" : "rightPour";
     pour.spec.lead = mobile ? "width" : "depth";
     pourShape.style.width = mobile ? "100%" : `${W + B}px`;
