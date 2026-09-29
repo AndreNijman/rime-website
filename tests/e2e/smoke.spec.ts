@@ -1,5 +1,7 @@
 // Every page loads with no console errors and no CSP violations, in every engine.
 import { test, expect } from "@playwright/test";
+import { readdirSync, readFileSync } from "node:fs";
+import { parse } from "yaml";
 import { PAGES } from "./pages";
 for (const path of PAGES) {
   test(`loads cleanly: ${path}`, async ({ page }) => {
@@ -29,8 +31,15 @@ test("release JSON matches its page", async ({ request }) => {
   const j = await (await request.get("/updates/2026.09.28.4.json")).json();
   expect(j.id).toBe("2026.09.28.4");
   expect(j.notes).toBe("https://rimeos.com/updates/2026.09.28.4");
+  // The newest record, read from content/updates rather than typed here:
+  // releases now arrive without anyone editing this file.
+  const records = readdirSync("content/updates").map((d) => parse(readFileSync(`content/updates/${d}/release.yaml`, "utf8")));
+  const newest = records.sort((a, b) => +new Date(b.date) - +new Date(a.date))[0];
   const idx = await (await request.get("/updates/index.json")).json();
-  expect(idx.latest).toBe("2026.09.29");
-  const latest = await (await request.get("/updates/2026.09.29.json")).json();
-  expect(latest.provenance.imageDigest).toBe("sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23");
+  expect(idx.latest).toBe(newest.id);
+  const latest = await (await request.get(`/updates/${newest.id}.json`)).json();
+  expect(latest.provenance.imageDigest).toBe(newest.provenance.imageDigest);
+  // …and one published fact that must never change.
+  const first = await (await request.get("/updates/2026.09.29.json")).json();
+  expect(first.provenance.imageDigest).toBe("sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23");
 });
