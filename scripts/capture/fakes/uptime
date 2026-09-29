@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# The profile card's uptime, fixed so every clip shows the same one.
+case "${1:-}" in
+    -p) echo "up 2 hours, 14 minutes" ;;
+    *)  echo " 09:41:00 up  2:14,  1 user,  load average: 0.21, 0.18, 0.12" ;;
+esac

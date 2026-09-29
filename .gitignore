@@ -8,3 +8,5 @@ tests/visual/__diff__/
 .DS_Store
 tests/tools/dbg.mjs
 .wrangler/
+scripts/capture/.build/
+__pycache__/

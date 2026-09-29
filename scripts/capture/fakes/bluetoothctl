@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# The capture's BlueZ: rime-shell's tests/lib/fake-bluetoothctl with ordinary
+# device names (the test one says "Fake Mouse", which would be recorded), and
+# nothing connected: the bar shows Bluetooth only for a device BlueZ itself
+# reports connected, and the capture's private system bus has no BlueZ.
+# Answers queries, changes nothing.
+PHONES="AA:BB:CC:00:00:01"; MOUSE="AA:BB:CC:00:00:02"; SPEAKER="AA:BB:CC:00:00:03"
+case "${1:-}" in
+    show)    printf 'Controller 00:11:22:33:44:55 (public)\n\tName: rime\n\tPowered: yes\n' ;;
+    devices)
+        case "${2:-}" in
+            Paired)    printf 'Device %s Headphones\nDevice %s Mouse\n' "$PHONES" "$MOUSE" ;;
+            Connected) : ;;
+            *)         printf 'Device %s Headphones\nDevice %s Mouse\nDevice %s Speaker\n' "$PHONES" "$MOUSE" "$SPEAKER" ;;
+        esac ;;
+    info)    printf 'Device %s\n\tConnected: no\n' "${2:-}" ;;
+    "")      while IFS= read -r _; do :; done ;;
+    *)       : ;;
+esac
+exit 0

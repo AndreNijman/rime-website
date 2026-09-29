@@ -1,6 +1,6 @@
 ---
 title: "A website that runs the shell"
-description: "rimeos.com draws its bar, its demo desktop and its colours with Rime Shell's own code, pinned to rime-shell@6289d1f8, and refuses to build when that code drifts or to write palettes the Shell would not produce."
+description: "rimeos.com draws its bar and its colours with Rime Shell's own code, pinned to a Shell revision, and refuses to build when that code drifts or to write palettes the Shell would not produce. Its demo desktops are now recordings of the real Shell."
 date: 2026-09-28
 author: "Andre Nijman"
 sources:
@@ -10,6 +10,8 @@ sources:
   - "https://github.com/AndreNijman/rime-shell/blob/6289d1f89916d3432ca3bd1f4ca68db7141559d9/tests/fixtures/palettes-matugen-4.2.0.json"
   - "/journal/springs-on-the-wall-clock"
 ---
+
+> **Update, 29 September 2026.** The demo desktop described below was a reconstruction, and next to the real thing it showed: the wrong sizes, icons that were not the Shell's, a Dashboard that opened too big. It has been replaced by recordings of the real Rime Shell, run from `shell.qml` at 3840 × 2400 in a headless Hyprland (see [how this website is built](/source#website)). The bar at the top of every page, the site map and the download panel still run the Shell's own geometry and springs, as this post says.
 
 The front page of rimeos.com shows a Rime desktop. Click the centre notch and the Dashboard blooms out of it; click the Wi-Fi icon and a panel pours from the right. We did not film that desktop or draw it in a design tool. The site runs four of Rime Shell's own source files, draws its bar with the Shell's geometry, and takes its colours from the command the Shell runs on your wallpaper. This post covers how the site stays identical to a pinned Shell revision, and what it refuses to publish.
 

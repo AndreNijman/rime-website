@@ -4,9 +4,10 @@ The website for Rime: product pages, the release record the OS links to after
 an update, downloads and docs. Built from `RimeOS_Website_Master_Specification_v1.md`
 in this directory.
 
-The site does not imitate Rime Shell. It runs the Shell's own code: motion,
-springs, colour roles and fluid geometry are rime-shell's files, vendored byte
-for byte and hash-pinned; palettes come from Rime's own matugen command.
+The site does not imitate Rime Shell. Its demo desktops are recordings of the
+real Shell, and the rest runs the Shell's own code: motion, springs, colour
+roles and fluid geometry are rime-shell's files, vendored byte for byte and
+hash-pinned; palettes come from Rime's own matugen command.
 
 ```sh
 npm install
@@ -44,6 +45,7 @@ src/
 scripts/                      generators and gates (each file says what it does)
 tests/unit tests/e2e tests/visual
 public/_headers               Cloudflare Pages security and cache headers
+public/media/shell/           GENERATED recordings of the Shell (scripts/build-stage.mjs)
 ```
 
 ## How the Shell's code gets here
@@ -63,6 +65,45 @@ unedited; `SOURCE.json` records the ref and a sha256 per file.
 Reduce Motion behaviour); `src/scripts/fluid.ts` is FluidShape plus the reveal
 clip. The frame, the site map (CENTER_BLOOM), the download panel (RIGHT_POUR /
 BOTTOM_RISE on phones) and the product stage all run on them.
+
+## The recordings
+
+Every desktop on the site (home, Shell, Personalise) is the real Rime Shell:
+rime-shell's `shell.qml` at a pinned revision, recorded by `scripts/capture/`
+and published by `scripts/build-stage.mjs`.
+
+```sh
+git -C ../rime-shell archive <rev> | tar -x -C /var/tmp/shell && git -C ../rime-shell rev-parse <rev> > /var/tmp/shell/.rime-shell-commit
+SHELL_ROOT=/var/tmp/shell scripts/capture/capture-all.sh /var/tmp/rime-capture   # about an hour
+node scripts/build-stage.mjs /var/tmp/rime-capture                                # public/media/shell, src/data/stage.json
+```
+
+- **Where it runs:** a Hyprland nested in a private headless labwc (rime-shell's
+  own `tests/lib/headless.sh` sandbox: private HOME, runtime dir and session
+  bus), one output at 3840 × 2400 scale 2, the L16's 1920 × 1200 at twice the
+  pixels, with the image's `/usr/share/rime/hypr/rime/appearance.lua`. Nothing
+  appears on the desk.
+- **What is real:** the Shell's code and a fresh install's settings, the fonts
+  and icons installed on the machine, and each scene's palette (the `source`
+  block of `src/data/scenes.json`, i.e. matugen through the Shell's template).
+- **What is canned:** Wi-Fi (rime-shell's `fake-nmcli`), Bluetooth, brightness,
+  uptime and the account name (`scripts/capture/fakes/`), the NetworkManager and
+  UPower the bar reads for its Wi-Fi and battery icons (a private system bus,
+  `fakes/system-bus.py`, on the real interfaces' introspection XML), three notifications
+  sent on the private bus inside the notification service's 500 ms start-up
+  grace (so no toast is ever on screen), and the clock.
+- **Time:** `clockshift.so` (LD_PRELOAD, the shell process only) starts every
+  session at 09:41 on 28 September 2026 and dilates every clock the shell reads
+  3.125 times. The shell draws each transition over 3.125 times as many
+  frames, and `cut.py` plays the recording back 3.125 times faster, so springs,
+  Qt animations, timers and the Dashboard's seconds all come out at real speed.
+  Qt's animation driver is the time-based one (`QSG_USE_SIMPLE_ANIMATION_DRIVER`);
+  the default steps 16.67 ms per frame, which is only right at a steady vsync.
+- **Clips:** each take is one continuous lossless master through a few
+  states; `cut.py` finds each transition's first moving frame, cuts it to the
+  start of the next (so clips chain on the same frame), crops it to what differs
+  from the resting desktop, and encodes AV1 and H.264. The page shows the rest
+  still and plays clips over it, feathered at their inner edges (`stage.ts`).
 
 ## Palettes
 

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# A backlight at 65 %, for the Dashboard's brightness row. Changes nothing.
+case "${1:-}" in
+    -m) echo "rime_capture,backlight,166,65%,255" ;;   # no such sysfs device: the level stays this
+    g|get) echo 166 ;;
+    m|max) echo 255 ;;
+    *) : ;;
+esac
+exit 0

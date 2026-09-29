@@ -12,7 +12,7 @@ export const SITE = {
     shell: "https://github.com/AndreNijman/rime-shell",
   },
   // The OS and Shell revisions this site's product claims were checked against.
-  pinned: { os: "2d9c5438a", shell: "6289d1f8" },
+  pinned: { os: "2d9c5438a", shell: "9161e30c" },
   // Spec §6.4: the Agents page ships only when the product does.
   agentsPublished: false,
 };

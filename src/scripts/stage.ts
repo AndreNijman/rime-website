@@ -1,31 +1,40 @@
 // ─── The product stage at runtime ────────────────────────────────────────────
-// Runs the reconstructed desktop exactly as the Shell runs its own:
-//   Dashboard     CENTER_BLOOM, liquid lifecycle, width leads (Dashboard.qml)
-//   right panel   RIGHT_POUR, liquid lifecycle, depth leads (TopBar.rightLife);
-//                 switching pane while it is up RETARGETS width and depth on the
-//                 page spring and cross-fades the panes (RightPanel.qml) instead
-//                 of closing and reopening
-// Opening one closes the other (Popups.closeAll()). A guided tour plays while
-// the stage is on screen and motion is on; any interaction hands control to
-// the visitor. Under Reduce Motion there is no tour and surfaces fade.
+// Plays the recordings of the real Rime Shell (ProductStage.astro,
+// src/data/stage.json). The desktop has four states — rest, the Dashboard,
+// Wi-Fi and the notification centre — and every transition between them was
+// recorded from the shell as one clip of the part of the screen it changes.
+// A clip ends on exactly the frame the next one starts on (scripts/capture/
+// cut.py), so the stage chains them: the last clip stays paused on its final
+// frame, and the next is shown only once its first frame is on screen.
+//
+// A transition with no recording of its own (another scene's Wi-Fi to
+// Dashboard) plays through rest. Under Reduce Motion the stage plays the
+// shell's own Reduce Motion recordings, or, for scenes without them, fades the
+// settled surface in, as the shell does; with motion off it jumps. A guided
+// tour plays while the stage is on screen and motion is full; any interaction
+// hands control to the visitor.
 // ─────────────────────────────────────────────────────────────────────────────
-import * as Geo from "../vendor/rime-shell/geometry.mjs";
-import { T1 } from "../geometry/theme.mjs";
-import { FluidSurface, place, type Rect } from "./fluid";
+import data from "../data/stage.json";
 import { Follower } from "../motion/spring";
-import { BASE, effect, isReduced, onMotionChange, springRole } from "../motion/policy";
+import { BASE, effect, isReduced, motionMode, onMotionChange, springRole } from "../motion/policy";
+import { currentScheme, onSchemeChange } from "./prefs";
 
-const W = 1440, B = T1.borderWidth, NH = T1.notchHeight, SH = T1.notchShoulder, NB = T1.notchBottom;
-const LW = 137, CW = T1.cNotchMinWidth, RW = 200;
-const DW = 900, DH = NH + T1.dashboardHeight;
-type Pane = "network" | "notifications";
-const PANE_W: Record<Pane, number> = { network: T1.networkPopupWidth + T1.notchRadius, notifications: T1.notificationsWidth + T1.notchRadius };
-const PANE_D: Record<Pane, number> = { network: 372, notifications: 318 };
-type Act = "dashboard" | Pane;
+type Act = "dashboard" | "network" | "notifications";
+type State = Act | "rest";
+type Clip = { from: State; to: State; box: number[]; duration: number; settle?: number; av1: string; h264: string };
+type Still = { avif: { w: number; src: string }[]; jpg: string };
+type Variant = { scene: string; scheme: "dark" | "light"; reduced: boolean; rest?: Still; restFrom?: string; clips: Record<string, Clip> };
+
+const VARIANTS = data.variants as unknown as Record<string, Variant>;
+const [FW, FH] = data.size;            // the recording: 3840 × 2400
+const [LW, LH] = data.logical;         // the desktop it shows: 1920 × 1200
+const CUT = (LH * 4) / 5;              // a phone's 4:5 cut of it: 960 wide
+const FEATHER = 40;                    // recording px blended at a clip's inner edges (cut.py pads 48)
+const SIZES = "(max-width: 652px) 200vw, (min-width: 1500px) 1400px, 94vw";
 
 export interface StageHandle {
   open(a: Act | null): void;
-  setScene(id: string, img: { srcset: Record<string, string>; src: string }): void;
+  setScene(id: string, img?: unknown): void;
   el: HTMLElement;
 }
 const handles = new Map<string, StageHandle>();
@@ -38,239 +47,307 @@ export function initStages(): void {
   });
 }
 
+// AV1 where it decodes smoothly, H.264 otherwise (Safari without an AV1
+// decoder, phones that would decode it in software).
+let codecChoice: Promise<"av1" | "h264"> | null = null;
+function codec(): Promise<"av1" | "h264"> {
+  codecChoice ??= (async () => {
+    const probe = document.createElement("video");
+    const av1 = probe.canPlayType('video/mp4; codecs="av01.0.12M.10"') !== "";
+    const h264 = probe.canPlayType('video/mp4; codecs="avc1.640032"') !== "";
+    if (!av1 || !h264) return av1 ? "av1" : "h264";
+    try {
+      const r = await navigator.mediaCapabilities.decodingInfo({
+        type: "file",
+        video: { contentType: 'video/mp4; codecs="av01.0.12M.10"', width: 2016, height: 1184, bitrate: 2_500_000, framerate: 60 },
+      });
+      return r.supported && r.smooth ? "av1" : "h264";
+    } catch { return "av1"; }
+  })();
+  return codecChoice;
+}
+
+const pct = (v: number) => `${(v * 100).toFixed(4)}%`;
+function mask([x, y, w, h]: number[]) {
+  const fx = (FEATHER / w) * 100, fy = (FEATHER / h) * 100;
+  const hz = `linear-gradient(to right, ${x > 0 ? `transparent 0%, #000 ${fx}%` : "#000 0%"}, ${x + w < FW ? `#000 ${100 - fx}%, transparent 100%` : "#000 100%"})`;
+  const vt = `linear-gradient(to bottom, ${y > 0 ? `transparent 0%, #000 ${fy}%` : "#000 0%"}, ${y + h < FH ? `#000 ${100 - fy}%, transparent 100%` : "#000 100%"})`;
+  return `${hz}, ${vt}`;
+}
+const frameShown = (v: HTMLVideoElement) => new Promise<void>((res) => {
+  const rvfc = (v as { requestVideoFrameCallback?: (cb: () => void) => number }).requestVideoFrameCallback;
+  if (rvfc) rvfc.call(v, () => res());
+  else (v as HTMLVideoElement).addEventListener("playing", () => res(), { once: true });
+});
+const until = (v: HTMLVideoElement, ev: string, ms: number) => new Promise<void>((res) => {
+  const t = window.setTimeout(done, ms);
+  function done() { clearTimeout(t); v.removeEventListener(ev, done); res(); }
+  v.addEventListener(ev, done);
+});
+const ready = (v: HTMLVideoElement) => (v.readyState >= 3 ? Promise.resolve() : until(v, "canplay", 8000));
+
+function stillPicture(s: Still, scheme: string): HTMLPictureElement {
+  const pic = document.createElement("picture");
+  pic.className = `stage-base stage-base--${scheme}`;
+  pic.dataset.base = scheme;
+  const src = document.createElement("source");
+  src.type = "image/avif";
+  src.srcset = s.avif.map((x) => `${x.src} ${x.w}w`).join(", ");
+  src.sizes = SIZES;
+  const img = document.createElement("img");
+  img.src = s.jpg; img.alt = ""; img.width = 3840; img.height = 2400; img.decoding = "async";
+  pic.append(src, img);
+  return pic;
+}
+
 function setup(fig: HTMLElement): StageHandle {
   const stage = fig.querySelector<HTMLElement>(".stage")!;
   const desk = fig.querySelector<HTMLElement>("[data-desk]")!;
-  const barLine = fig.querySelector<SVGPathElement>("[data-bar-line]")!;
-  const dashEl = fig.querySelector<HTMLElement>('[data-surface="dashboard"]')!;
-  const rightEl = fig.querySelector<HTMLElement>('[data-surface="right"]')!;
-  const pointer = fig.querySelector<HTMLElement>("[data-pointer]")!;
+  const clipsEl = fig.querySelector<HTMLElement>("[data-clips]")!;
+  const dismiss = fig.querySelector<HTMLElement>("[data-dismiss]")!;
   const acts = [...fig.querySelectorAll<HTMLElement>("[data-act]")];
   const tourBtn = fig.querySelector<HTMLElement>("[data-tour-toggle]");
-
   const forceReduced = fig.dataset.motion === "reduced";
-  // ── scale the 1440 × 900 desk to the stage ────────────────────────────────
-  // Wide: the whole desktop. Narrow (a phone): a 4:5 cut of the real desktop,
-  // 520 logical px wide, at a size you can read — never a thumbnail of a
-  // 16:10 screen (spec §4.4, §5.2). The cut sits over the notch the current
-  // surface grows from, and pans there on the page spring.
-  const CUT = 520;
-  let narrow = false;
-  const cutFor = (a: Act | null) => (a === "network" || a === "notifications" ? W - CUT : W / 2 - CUT / 2);
-  const pan = new Follower(W / 2 - CUT / 2, springRole("page"), () => apply());
+
+  let scene = fig.dataset.scene!;
+  let state: State = "rest";
+  const reduced = () => forceReduced || isReduced();
+  const variantKey = () => {
+    let base = `${scene}-${currentScheme()}`;
+    if (!VARIANTS[base]) base = `${scene}-dark`;
+    return reduced() && VARIANTS[`${base}-reduced`] ? `${base}-reduced` : base;
+  };
+
+  // ── the desk: scaled to the stage; on a phone a 4:5 cut that pans ─────────
+  let narrow = false, k = 1;
+  const cutFor = (s: State) => (s === "network" || s === "notifications" ? LW - CUT : LW / 2 - CUT / 2);
+  const pan = new Follower(cutFor("rest"), springRole("page"), () => apply());
   function apply() {
-    const sw = stage.clientWidth;
-    if (!narrow) { desk.style.transform = `scale(${sw / W})`; return; }
-    const k = sw / CUT;
-    desk.style.transform = `translateX(${(-pan.value * k).toFixed(2)}px) scale(${k})`;
+    desk.style.transform = narrow ? `translateX(${(-pan.value * k).toFixed(2)}px) scale(${k})` : `scale(${k})`;
   }
-  const fit = () => {
-    narrow = stage.clientWidth < 600;
+  function measure() {
+    const w = stage.clientWidth;
+    narrow = w < 600;
     stage.classList.toggle("stage--cut", narrow);
+    k = narrow ? w / CUT : w / LW;
     apply();
+  }
+  new ResizeObserver(measure).observe(stage);
+  measure();
+
+  // ── clips ──────────────────────────────────────────────────────────────────
+  const cache = new Map<string, Promise<HTMLVideoElement | null>>();
+  let current: HTMLVideoElement | null = null;     // on screen, paused on its state's frame
+  let top = 1;                                      // the stacking order: the newest clip is on top
+  function video(vk: string, name: string): Promise<HTMLVideoElement | null> {
+    const key = `${vk}/${name}`;
+    let p = cache.get(key);
+    if (!p) { p = make(vk, name); cache.set(key, p); }
+    return p;
+  }
+  async function make(vk: string, name: string): Promise<HTMLVideoElement | null> {
+    const c = VARIANTS[vk]?.clips[name];
+    if (!c) return null;
+    {
+      const v = document.createElement("video");
+      v.muted = true; v.playsInline = true; v.preload = "auto"; v.disablePictureInPicture = true;
+      v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
+      const [x, y, w, h] = c.box;
+      Object.assign(v.style, { left: pct(x / FW), top: pct(y / FH), width: pct(w / FW), height: pct(h / FH), visibility: "hidden" });
+      const m = mask(c.box);
+      v.style.setProperty("mask-image", m); v.style.setProperty("-webkit-mask-image", m);
+      v.style.setProperty("mask-composite", "intersect"); v.style.setProperty("-webkit-mask-composite", "source-in");
+      v.src = c[await codec()];
+      clipsEl.append(v);
+      return v;
+    }
+  }
+  const preload = () => {
+    const vk = variantKey();
+    for (const [name, c] of Object.entries(VARIANTS[vk]?.clips ?? {})) if (c.from === state) void video(vk, name);
   };
-  new ResizeObserver(fit).observe(stage);
-  fit();
+  function hide(v: HTMLVideoElement | null) {
+    if (!v) return;
+    v.style.visibility = "hidden"; v.style.opacity = ""; v.pause();
+  }
+  function show(v: HTMLVideoElement) {
+    v.style.zIndex = String(++top);                 // above whatever is showing
+    v.style.visibility = "visible";
+    if (current && current !== v) hide(current);
+    current = v;
+  }
 
-  // ── Dashboard ─────────────────────────────────────────────────────────────
-  const dashFinal: Rect = { x: Math.round(W / 2) - DW / 2 + 8, y: B + 8, w: DW - 16, h: DH - B - 16 };
-  const dashHole = dashEl.querySelector<HTMLElement>("[data-hole]")!;
-  const holeRect = { x: Math.round(W / 2) - CW / 2 + 2, y: B, w: CW - 4, h: NH - B - 2, rb: NB - 2 };
-  place(dashHole, holeRect);
-  dashHole.style.borderRadius = `0 0 ${holeRect.rb}px ${holeRect.rb}px`;
-  delete dashEl.dataset.ssrOpen;
-  const dash = new FluidSurface({
-    root: dashEl,
-    path: dashEl.querySelector<SVGPathElement>("[data-path]")!,
-    reveal: dashEl.querySelector<HTMLElement>("[data-reveal]")!,
-    content: dashEl.querySelector<HTMLElement>("[data-content]")!,
-    family: "centerBloom",
-    lead: "width",
-    geometry: () => ({ cx: W / 2, strip: B, notchW: CW, notchH: NH, shoulder: SH, notchBottom: NB, w: DW, h: DH, r: T1.radiusXL, shoulderW1: 28, shoulderH1: 22 }),
-    finalRect: () => dashFinal,
-    hole: () => holeRect,
-    holeCover: dashHole,
-    travelPx: forceReduced ? 0 : 10,
-    lifecycle: { forceReduced },
-  });
+  /** Play one recorded transition; resolves when it has ended on screen. */
+  async function play(vk: string, name: string) {
+    const c = VARIANTS[vk].clips[name];
+    const v = await video(vk, name);
+    if (!v) return;
+    await ready(v);
+    v.currentTime = 0;
+    const first = frameShown(v);
+    try { await v.play(); } catch { await jump(vk, c.to); return; }   // autoplay refused (a power-saving mode): no motion
+    await first;
+    show(v);
+    // Done once it stops moving: every later frame is the state's own, and the
+    // next clip starts on it.
+    await Promise.race([until(v, "ended", c.duration * 1000 + 1500), new Promise((r) => setTimeout(r, (c.settle ?? c.duration) * 1000))]);
+    if (!v.ended) v.pause();
+    if (c.to === "rest") { hide(v); current = null; }
+  }
 
-  // ── right panel: one surface, two panes ───────────────────────────────────
-  let pane: Pane = "network";
-  const paneEls: Record<Pane, HTMLElement> = {
-    network: rightEl.querySelector<HTMLElement>('[data-pane="network"]')!,
-    notifications: rightEl.querySelector<HTMLElement>('[data-pane="notifications"]')!,
-  };
-  const rw = new Follower(PANE_W.network, springRole("page"), () => right.render());
-  const rd = new Follower(PANE_D.network, springRole("page"), () => right.render());
-  const rightReveal = rightEl.querySelector<HTMLElement>("[data-reveal]")!;
-  const rightFinal = (): Rect => ({ x: W - PANE_W[pane], y: NH, w: PANE_W[pane] - B, h: PANE_D[pane] });
-  let attached = false;
-  const right = new FluidSurface({
-    root: rightEl,
-    path: rightEl.querySelector<SVGPathElement>("[data-path]")!,
-    reveal: rightReveal,
-    content: rightEl.querySelector<HTMLElement>("[data-content]")!,
-    family: "rightPour",
-    lead: "depth",
-    geometry: () => ({ winW: W, strip: B, seam: NH, shoulder: SH, notchBottom: NB, notchW: RW, w: rw.value, h: rd.value, r: T1.radiusL }),
-    finalRect: rightFinal,
-    travelPx: forceReduced ? 0 : 10,
-    lifecycle: {
-      forceReduced,
-      onUpdate: (l) => {
-        // The bar's hairline stops at the seam while a pane hangs below it.
-        const a = l.progress > 0;
-        if (a !== attached) {
-          attached = a;
-          barLine.setAttribute("d", Geo.barHairline({ w: W, strip: B, h: NH, shoulder: SH, bottom: NB, leftW: LW, centerW: CW,
-            rightW: RW, rightBottomL: NB, rightAttached: a, frameInset: B + T1.cornerRadius }).path);
-        }
-      },
-    },
-  });
-  place(rightReveal, rightFinal());
-
-  function showPane(p: Pane, crossfade: boolean) {
-    const prev = pane;
-    pane = p;
-    place(rightReveal, rightFinal());
-    rw.follow(PANE_W[p], springRole("page"));
-    rd.follow(PANE_D[p], springRole("page"));
-    if (!crossfade || prev === p) {
-      for (const k of Object.keys(paneEls) as Pane[]) { paneEls[k].hidden = k !== p; paneEls[k].style.opacity = "1"; }
+  /** Show a state without its transition: its recording's last frame, faded in over `ms`. */
+  async function jump(vk: string, to: State, ms = 0) {
+    const prev = current;
+    if (to === "rest") {
+      current = null;
+      if (prev && ms > 0) await prev.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, easing: "ease-out" }).finished.catch(() => {});
+      hide(prev);
       return;
     }
-    // RightPanel.qml: the old pane fades over fadeOut, the new one waits that
-    // long and fades in over fadeIn.
-    const out = paneEls[prev], inn = paneEls[p];
-    out.getAnimations().forEach((a) => a.cancel());
-    inn.getAnimations().forEach((a) => a.cancel());
-    const fo = effect(BASE.fadeOut), fi = effect(BASE.fadeIn);
-    out.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fo, fill: "forwards" }).onfinish = () => { if (pane !== prev) out.hidden = true; };
-    inn.hidden = false;
-    inn.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fi, delay: fo, fill: "both", easing: "cubic-bezier(0.25, 0.1, 0.25, 1)" });
+    const c = VARIANTS[vk]?.clips[`rest-${to}`];
+    const v = await video(vk, `rest-${to}`);
+    if (!v || !c) return;
+    await ready(v);
+    v.pause();
+    v.currentTime = Math.max(0, c.duration - 0.02);
+    await until(v, "seeked", 3000);
+    v.style.zIndex = String(++top);
+    v.style.visibility = "visible";
+    current = v;
+    if (ms > 0) await v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms, easing: "ease-out" }).finished.catch(() => {});
+    if (prev && prev !== v) hide(prev);
   }
 
-  // ── acting like the Shell ─────────────────────────────────────────────────
-  let current: Act | null = null;
-  function open(a: Act | null) {
-    if (a === current) a = null;                       // a second click closes
-    if (a === "dashboard") {
-      if (right.isOpen) right.close();
-      dash.open();
-    } else if (a === "network" || a === "notifications") {
-      if (dash.isOpen) dash.close();
-      if (right.isOpen || right.life.mapped) showPane(a, true);
-      else { showPane(a, false); rw.jump(PANE_W[a]); rd.jump(PANE_D[a]); }
-      right.open();
-    } else {
-      dash.close(); right.close();
-    }
-    current = a;
-    if (a) pan.follow(cutFor(a), springRole("page"));
-    stage.dataset.open = a ?? "";
-    for (const b of acts) {
-      const on = b.dataset.act === a;
-      if (b.hasAttribute("aria-pressed")) b.setAttribute("aria-pressed", String(on));
-      else b.setAttribute("aria-expanded", String(on));
-    }
+  function route(vk: string, from: State, to: State): string[] {
+    const clips = VARIANTS[vk].clips;
+    if (clips[`${from}-${to}`]) return [`${from}-${to}`];
+    if (from !== "rest" && to !== "rest") return [`${from}-rest`, `rest-${to}`].filter((n) => clips[n]);
+    return [];
   }
 
-  // Clicks on the desktop outside a surface close it, as the Shell's backdrop does.
-  desk.addEventListener("click", (e) => {
-    const t = e.target as HTMLElement;
-    if (t.closest("[data-act], .st-content")) return;
-    if (current) { takeOver(); open(null); }
+  function mark(target: State) {
+    acts.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.act === target)));
+    if (target === "rest") delete stage.dataset.open; else stage.dataset.open = target;
+    pan.follow(cutFor(target), springRole("page"));
+  }
+
+  // ── going somewhere: one transition at a time, the latest request wins ────
+  let busy = false, want: State | null = null;
+  async function go(target: State) {
+    want = target;
+    if (busy) return;
+    busy = true;
+    while (want !== null && want !== state) {
+      const to = want; want = null;
+      const vk = variantKey();
+      mark(to);
+      if (motionMode() === "off" && !forceReduced) await jump(vk, to);
+      else if (reduced() && !VARIANTS[vk].reduced) await jump(vk, to, effect(BASE.fadeIn));
+      else for (const n of route(vk, state, to)) await play(vk, n);
+      state = to;
+      preload();
+    }
+    busy = false;
+    if (variantPending) void refresh();
+  }
+
+  // ── following the page: scheme, Reduce Motion, the chosen scene ────────────
+  let shown = variantKey(), variantPending = false;
+  async function refresh() {
+    if (busy) { variantPending = true; return; }
+    variantPending = false;
+    const vk = variantKey();
+    if (vk === shown) return;
+    shown = vk;
+    if (state !== "rest") await jump(vk, state, effect(BASE.state));
+    preload();
+  }
+  onSchemeChange(() => void refresh());
+  onMotionChange(() => {
+    pan.spring.response = springRole("page").response;
+    if (reduced()) stopTour();
+    void refresh();
   });
-  for (const b of acts) b.addEventListener("click", (e) => { e.stopPropagation(); takeOver(); open(b.dataset.act as Act); });
-  stage.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { takeOver(); open(null); } });
 
-  // ── the guided tour ───────────────────────────────────────────────────────
-  const px = new Follower(1180, { response: 0.62, damping: 1 }, () => drawPointer());
-  const py = new Follower(620, { response: 0.62, damping: 1 }, () => drawPointer());
-  function drawPointer() { pointer.style.transform = `translate(${px.value}px, ${py.value}px)`; }
-  const targets: Record<Act | "away", [number, number]> = {
-    dashboard: [W / 2 + 34, 24], network: [W - RW + 28, 24], notifications: [W - 26, 24], away: [1010, 640],
-  };
-  let touring = !!fig.dataset.tour;
-  let visible = false;
-  let step = 0, timer = 0;
-  const wait = (ms: number) => new Promise<void>((r) => { timer = window.setTimeout(r, ms); });
-  const script: [Act | null, number][] = [["dashboard", 2600], [null, 900], ["network", 1900], ["notifications", 2300], [null, 1700]];
-
-  async function run() {
-    while (touring && visible && !isReduced()) {
-      const [a, hold] = script[step % script.length];
-      const tgt = targets[a ?? "away"];
-      if (a && narrow) pan.follow(cutFor(a), springRole("page"));
-      pointer.hidden = false;
-      px.follow(tgt[0]); py.follow(tgt[1]);
-      await wait(a ? 720 : 520);
-      if (!touring || !visible) break;
-      if (a || current) {
-        pointer.classList.add("press");
-        await wait(110);
-        pointer.classList.remove("press");
-        // A null step clicks the empty desk, which closes what is open.
-        open(a);
-      }
-      await wait(hold);
-      step++;
+  function setScene(id: string, animate = true) {
+    if (id === scene || !VARIANTS[`${id}-dark`]?.rest) return;
+    scene = id;
+    fig.dataset.scene = id;
+    const old = [...desk.querySelectorAll<HTMLElement>("[data-base]")];
+    const ms = animate ? effect(BASE.state) : 0;
+    for (const m of ["dark", "light"] as const) {
+      const pic = stillPicture(VARIANTS[`${id}-${m}`].rest!, m);
+      desk.insertBefore(pic, clipsEl);
+      if (ms > 0) pic.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms, easing: "ease-out" });
     }
-    if (!touring) pointer.hidden = true;
+    window.setTimeout(() => old.forEach((p) => p.remove()), ms + 50);
+    void refresh();
   }
-  let running = false;
-  async function kick() {
-    if (running || !touring || !visible || isReduced()) return;
-    running = true;
-    try { await run(); } finally { running = false; }
+
+  // ── the visitor ────────────────────────────────────────────────────────────
+  for (const b of acts)
+    b.addEventListener("click", () => {
+      stopTour();
+      const a = b.dataset.act as Act;
+      void go(state === a ? "rest" : a);
+    });
+  // A click on the desktop outside the open surface closes it, as on the desk.
+  dismiss.addEventListener("click", (e) => {
+    const c = VARIANTS[variantKey()].clips[`rest-${state}`];
+    if (c) {
+      const r = desk.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * FW, y = ((e.clientY - r.top) / r.height) * FH;
+      const [bx, by, bw, bh] = c.box;
+      if (x >= bx + 48 && x <= bx + bw - 48 && y >= by && y <= by + bh - 48) return;
+    }
+    stopTour();
+    void go("rest");
+  });
+
+  // ── the tour ───────────────────────────────────────────────────────────────
+  const STEPS: [number, State][] = [[1100, "dashboard"], [3400, "rest"], [1300, "network"], [2300, "notifications"], [2600, "rest"], [2000, "dashboard"]];
+  let touring = !!tourBtn && !reduced(), visible = false, step = 0, timer = 0;
+  function kick() {
+    clearTimeout(timer);
+    if (!touring || !visible) return;
+    const [delay, to] = STEPS[step % STEPS.length];
+    timer = window.setTimeout(async () => {
+      if (!touring || !visible) return;
+      await go(to);
+      step = step % STEPS.length === STEPS.length - 1 ? 1 : step + 1;   // the last step leads into the second
+      kick();
+    }, delay);
   }
-  function takeOver() {
+  function stopTour() {
     if (!touring) return;
     touring = false;
     clearTimeout(timer);
-    pointer.hidden = true;
     tourBtn?.setAttribute("aria-pressed", "false");
   }
+  tourBtn?.setAttribute("aria-pressed", String(touring));
   tourBtn?.addEventListener("click", () => {
-    if (touring) { takeOver(); return; }
+    if (touring) { stopTour(); return; }
     touring = true;
     tourBtn.setAttribute("aria-pressed", "true");
-    open(null);
+    step = state === "dashboard" ? 1 : 0;
     kick();
   });
-  if (tourBtn && isReduced()) { touring = false; tourBtn.setAttribute("aria-pressed", "false"); }
-  onMotionChange(() => {
-    rw.spring.response = rd.spring.response = springRole("page").response;
-    if (isReduced()) takeOver();
-  });
+  // The surfaces open from the stage's top edge, so a fifth of it on screen
+  // (the hero on a 1440 × 900 laptop) is enough to watch the tour.
   new IntersectionObserver(([en]) => {
-    visible = en.isIntersecting && en.intersectionRatio >= 0.35;
+    visible = en.isIntersecting && en.intersectionRatio >= 0.2;
     if (visible) kick(); else clearTimeout(timer);
-  }, { threshold: [0, 0.35, 0.6] }).observe(stage);
+  }, { threshold: [0, 0.2, 0.5] }).observe(stage);
+  // Fetch the clips that can come next a little before the stage is reached.
+  new IntersectionObserver(([en]) => { if (en.isIntersecting) preload(); }, { rootMargin: "300px 0px" }).observe(stage);
 
-  // The finished state was server-rendered for no-JS; start from the closed desk.
-  dash.life.setOpen(false);
-  dashEl.hidden = true;
-
-  const handle: StageHandle = {
-    el: fig,
-    open(a) { takeOver(); open(a); },
-    setScene(id, img) {
-      fig.dataset.scene = id;
-      fig.dataset.palette = id;
-      const pic = fig.querySelector<HTMLElement>("[data-wall]")!;
-      const sources = pic.querySelectorAll("source");
-      sources[0].setAttribute("srcset", img.srcset.avif);
-      sources[1].setAttribute("srcset", img.srcset.webp);
-      const im = pic.querySelector("img")!;
-      im.setAttribute("srcset", img.srcset.jpg);
-      im.setAttribute("src", img.src);
-    },
-  };
   // Follow a palette the visitor chose elsewhere on the site.
-  const want = document.documentElement.dataset.palette;
-  const images = JSON.parse(fig.dataset.images ?? "{}");
-  if (want && want !== fig.dataset.scene && images[want]) handle.setScene(want, images[want]);
-  return handle;
+  const wantScene = document.documentElement.dataset.palette;
+  if (wantScene && wantScene !== scene) setScene(wantScene, false);
+
+  return {
+    el: fig,
+    open(a) { stopTour(); void go(a ?? "rest"); },
+    setScene(id) { setScene(id, true); },
+  };
 }

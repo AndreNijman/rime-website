@@ -1,0 +1,2413 @@
+{
+ "variants": {
+  "chalk-dark": {
+   "scene": "chalk",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.635,
+     "settle": 0.571,
+     "av1": "/media/shell/chalk-dark/dashboard-rest.98a0f5ac97.av1.mp4",
+     "h264": "/media/shell/chalk-dark/dashboard-rest.9b5f1dddab.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.306,
+     "settle": 0.494,
+     "av1": "/media/shell/chalk-dark/network-notifications.bd9ef9487c.av1.mp4",
+     "h264": "/media/shell/chalk-dark/network-notifications.0b40b44655.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.644,
+     "settle": 0.575,
+     "av1": "/media/shell/chalk-dark/network-rest.c0045412b3.av1.mp4",
+     "h264": "/media/shell/chalk-dark/network-rest.a87a558f06.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.275,
+     "settle": 0.556,
+     "av1": "/media/shell/chalk-dark/notifications-network.24984ad87c.av1.mp4",
+     "h264": "/media/shell/chalk-dark/notifications-network.451e56e137.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.566,
+     "settle": 0.566,
+     "av1": "/media/shell/chalk-dark/notifications-rest.eae5efa617.av1.mp4",
+     "h264": "/media/shell/chalk-dark/notifications-rest.7720eb6aaa.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.253,
+     "settle": 0.796,
+     "av1": "/media/shell/chalk-dark/rest-dashboard.d54e39da67.av1.mp4",
+     "h264": "/media/shell/chalk-dark/rest-dashboard.43e8f9e992.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.235,
+     "settle": 0.806,
+     "av1": "/media/shell/chalk-dark/rest-network.6d3265b0b4.av1.mp4",
+     "h264": "/media/shell/chalk-dark/rest-network.c50cb2f61b.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.202,
+     "settle": 0.694,
+     "av1": "/media/shell/chalk-dark/rest-notifications.47c2c5dc91.av1.mp4",
+     "h264": "/media/shell/chalk-dark/rest-notifications.175a5e64d6.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/chalk-dark/rest.a5880fe627.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/chalk-dark/rest.a5880fe627.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/chalk-dark/rest.a5880fe627.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/chalk-dark/rest.a5880fe627.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/chalk-dark/rest.a5880fe627.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/chalk-dark/dashboard.6ec95ffb6f.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/chalk-dark/dashboard.6ec95ffb6f.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/chalk-dark/dashboard.6ec95ffb6f.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/chalk-dark/dashboard.6ec95ffb6f.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/chalk-dark/dashboard.6ec95ffb6f.1920.jpg"
+   }
+  },
+  "chalk-light": {
+   "scene": "chalk",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1168
+     ],
+     "duration": 0.642,
+     "settle": 0.566,
+     "av1": "/media/shell/chalk-light/dashboard-rest.cac150d0c8.av1.mp4",
+     "h264": "/media/shell/chalk-light/dashboard-rest.e0bdb41119.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.272,
+     "settle": 0.382,
+     "av1": "/media/shell/chalk-light/network-notifications.600e230bac.av1.mp4",
+     "h264": "/media/shell/chalk-light/network-notifications.5b9b8fe147.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.661,
+     "settle": 0.593,
+     "av1": "/media/shell/chalk-light/network-rest.85e37fda86.av1.mp4",
+     "h264": "/media/shell/chalk-light/network-rest.70d331afad.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.284,
+     "settle": 0.534,
+     "av1": "/media/shell/chalk-light/notifications-network.26ad06fcb3.av1.mp4",
+     "h264": "/media/shell/chalk-light/notifications-network.dce245771f.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.55,
+     "settle": 0.548,
+     "av1": "/media/shell/chalk-light/notifications-rest.381bbb9797.av1.mp4",
+     "h264": "/media/shell/chalk-light/notifications-rest.f3d55fce13.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.251,
+     "settle": 0.744,
+     "av1": "/media/shell/chalk-light/rest-dashboard.75c908814d.av1.mp4",
+     "h264": "/media/shell/chalk-light/rest-dashboard.97b3d733c0.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.256,
+     "settle": 0.607,
+     "av1": "/media/shell/chalk-light/rest-network.31174f7338.av1.mp4",
+     "h264": "/media/shell/chalk-light/rest-network.1df5245ea4.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.266,
+     "settle": 0.436,
+     "av1": "/media/shell/chalk-light/rest-notifications.58c305932d.av1.mp4",
+     "h264": "/media/shell/chalk-light/rest-notifications.608bdd7230.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/chalk-light/rest.509b0a933f.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/chalk-light/rest.509b0a933f.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/chalk-light/rest.509b0a933f.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/chalk-light/rest.509b0a933f.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/chalk-light/rest.509b0a933f.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/chalk-light/dashboard.9e0283c281.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/chalk-light/dashboard.9e0283c281.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/chalk-light/dashboard.9e0283c281.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/chalk-light/dashboard.9e0283c281.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/chalk-light/dashboard.9e0283c281.1920.jpg"
+   }
+  },
+  "deep-water-dark": {
+   "scene": "deep-water",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.606,
+     "settle": 0.538,
+     "av1": "/media/shell/deep-water-dark/dashboard-rest.82d7a66afe.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/dashboard-rest.10c11b621d.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.289,
+     "settle": 0.474,
+     "av1": "/media/shell/deep-water-dark/network-notifications.8baf1245e8.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/network-notifications.ee7d2bd689.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.647,
+     "settle": 0.581,
+     "av1": "/media/shell/deep-water-dark/network-rest.2985443523.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/network-rest.6be687a402.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.271,
+     "settle": 0.542,
+     "av1": "/media/shell/deep-water-dark/notifications-network.a401a90e91.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/notifications-network.503e92306d.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.554,
+     "settle": 0.554,
+     "av1": "/media/shell/deep-water-dark/notifications-rest.181ea92965.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/notifications-rest.c07d97b00a.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.313,
+     "settle": 0.797,
+     "av1": "/media/shell/deep-water-dark/rest-dashboard.4acfd46dbd.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/rest-dashboard.5c81769438.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.25,
+     "settle": 0.696,
+     "av1": "/media/shell/deep-water-dark/rest-network.901d1e595c.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/rest-network.e1f7927d3b.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.264,
+     "settle": 0.689,
+     "av1": "/media/shell/deep-water-dark/rest-notifications.3680bee43c.av1.mp4",
+     "h264": "/media/shell/deep-water-dark/rest-notifications.d2c9b07fe4.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/deep-water-dark/rest.f49ad805cc.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/deep-water-dark/rest.f49ad805cc.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/deep-water-dark/rest.f49ad805cc.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/deep-water-dark/rest.f49ad805cc.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/deep-water-dark/rest.f49ad805cc.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/deep-water-dark/dashboard.c5d4c2449a.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/deep-water-dark/dashboard.c5d4c2449a.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/deep-water-dark/dashboard.c5d4c2449a.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/deep-water-dark/dashboard.c5d4c2449a.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/deep-water-dark/dashboard.c5d4c2449a.1920.jpg"
+   }
+  },
+  "deep-water-light": {
+   "scene": "deep-water",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.656,
+     "settle": 0.587,
+     "av1": "/media/shell/deep-water-light/dashboard-rest.52488a1ecc.av1.mp4",
+     "h264": "/media/shell/deep-water-light/dashboard-rest.3fed19015a.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.288,
+     "settle": 0.472,
+     "av1": "/media/shell/deep-water-light/network-notifications.501409ad29.av1.mp4",
+     "h264": "/media/shell/deep-water-light/network-notifications.c48b7ddab5.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.643,
+     "settle": 0.574,
+     "av1": "/media/shell/deep-water-light/network-rest.b02806562c.av1.mp4",
+     "h264": "/media/shell/deep-water-light/network-rest.027ed4e7c4.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.282,
+     "settle": 0.553,
+     "av1": "/media/shell/deep-water-light/notifications-network.24dd5ce10e.av1.mp4",
+     "h264": "/media/shell/deep-water-light/notifications-network.de9bbbe39a.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.561,
+     "settle": 0.561,
+     "av1": "/media/shell/deep-water-light/notifications-rest.bf77a2f788.av1.mp4",
+     "h264": "/media/shell/deep-water-light/notifications-rest.4aa86be1a4.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.232,
+     "settle": 0.813,
+     "av1": "/media/shell/deep-water-light/rest-dashboard.3e135fb857.av1.mp4",
+     "h264": "/media/shell/deep-water-light/rest-dashboard.31800c7ca6.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.276,
+     "settle": 0.73,
+     "av1": "/media/shell/deep-water-light/rest-network.adfc951b75.av1.mp4",
+     "h264": "/media/shell/deep-water-light/rest-network.4355a2dd4d.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.264,
+     "settle": 0.692,
+     "av1": "/media/shell/deep-water-light/rest-notifications.a8b64aa2b7.av1.mp4",
+     "h264": "/media/shell/deep-water-light/rest-notifications.2a8adbf6df.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/deep-water-light/rest.1bc7fddfd5.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/deep-water-light/rest.1bc7fddfd5.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/deep-water-light/rest.1bc7fddfd5.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/deep-water-light/rest.1bc7fddfd5.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/deep-water-light/rest.1bc7fddfd5.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/deep-water-light/dashboard.aec65460b4.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/deep-water-light/dashboard.aec65460b4.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/deep-water-light/dashboard.aec65460b4.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/deep-water-light/dashboard.aec65460b4.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/deep-water-light/dashboard.aec65460b4.1920.jpg"
+   }
+  },
+  "ember-dark": {
+   "scene": "ember",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.634,
+     "settle": 0.568,
+     "av1": "/media/shell/ember-dark/dashboard-rest.6c4c4ffa77.av1.mp4",
+     "h264": "/media/shell/ember-dark/dashboard-rest.7d83a26735.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.273,
+     "settle": 0.467,
+     "av1": "/media/shell/ember-dark/network-notifications.35081e43d4.av1.mp4",
+     "h264": "/media/shell/ember-dark/network-notifications.800d36da23.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.64,
+     "settle": 0.576,
+     "av1": "/media/shell/ember-dark/network-rest.57ff2aebdd.av1.mp4",
+     "h264": "/media/shell/ember-dark/network-rest.b3fa22277f.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.272,
+     "settle": 0.539,
+     "av1": "/media/shell/ember-dark/notifications-network.89a5b2a991.av1.mp4",
+     "h264": "/media/shell/ember-dark/notifications-network.4954671fb6.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.553,
+     "settle": 0.545,
+     "av1": "/media/shell/ember-dark/notifications-rest.688d58b3d7.av1.mp4",
+     "h264": "/media/shell/ember-dark/notifications-rest.31db939df0.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.193,
+     "settle": 0.814,
+     "av1": "/media/shell/ember-dark/rest-dashboard.36035be9c1.av1.mp4",
+     "h264": "/media/shell/ember-dark/rest-dashboard.edcbdcc2a7.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.258,
+     "settle": 0.708,
+     "av1": "/media/shell/ember-dark/rest-network.ee049b1a49.av1.mp4",
+     "h264": "/media/shell/ember-dark/rest-network.dbeb3a4f60.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.25,
+     "settle": 0.694,
+     "av1": "/media/shell/ember-dark/rest-notifications.3f7362b2b1.av1.mp4",
+     "h264": "/media/shell/ember-dark/rest-notifications.48021d2334.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/ember-dark/rest.71fcee8ea2.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/ember-dark/rest.71fcee8ea2.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/ember-dark/rest.71fcee8ea2.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/ember-dark/rest.71fcee8ea2.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/ember-dark/rest.71fcee8ea2.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/ember-dark/dashboard.250a698c5b.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/ember-dark/dashboard.250a698c5b.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/ember-dark/dashboard.250a698c5b.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/ember-dark/dashboard.250a698c5b.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/ember-dark/dashboard.250a698c5b.1920.jpg"
+   }
+  },
+  "ember-light": {
+   "scene": "ember",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.61,
+     "settle": 0.542,
+     "av1": "/media/shell/ember-light/dashboard-rest.d1ebf52114.av1.mp4",
+     "h264": "/media/shell/ember-light/dashboard-rest.e78f1dae8e.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.284,
+     "settle": 0.477,
+     "av1": "/media/shell/ember-light/network-notifications.5aad788524.av1.mp4",
+     "h264": "/media/shell/ember-light/network-notifications.4659177b7b.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.658,
+     "settle": 0.589,
+     "av1": "/media/shell/ember-light/network-rest.f1db20935d.av1.mp4",
+     "h264": "/media/shell/ember-light/network-rest.e2618ac758.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.27,
+     "settle": 0.563,
+     "av1": "/media/shell/ember-light/notifications-network.537612a238.av1.mp4",
+     "h264": "/media/shell/ember-light/notifications-network.0f32857662.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.559,
+     "settle": 0.559,
+     "av1": "/media/shell/ember-light/notifications-rest.79ae444254.av1.mp4",
+     "h264": "/media/shell/ember-light/notifications-rest.abab61d925.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.313,
+     "settle": 0.825,
+     "av1": "/media/shell/ember-light/rest-dashboard.b04ac47c7a.av1.mp4",
+     "h264": "/media/shell/ember-light/rest-dashboard.deefeca065.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.247,
+     "settle": 0.696,
+     "av1": "/media/shell/ember-light/rest-network.b2fad8980e.av1.mp4",
+     "h264": "/media/shell/ember-light/rest-network.59a1f47b88.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.228,
+     "settle": 0.675,
+     "av1": "/media/shell/ember-light/rest-notifications.1a2fea82b6.av1.mp4",
+     "h264": "/media/shell/ember-light/rest-notifications.4bf8bd7585.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/ember-light/rest.1ecccadeca.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/ember-light/rest.1ecccadeca.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/ember-light/rest.1ecccadeca.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/ember-light/rest.1ecccadeca.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/ember-light/rest.1ecccadeca.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/ember-light/dashboard.ae4d158298.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/ember-light/dashboard.ae4d158298.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/ember-light/dashboard.ae4d158298.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/ember-light/dashboard.ae4d158298.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/ember-light/dashboard.ae4d158298.1920.jpg"
+   }
+  },
+  "fern-dark": {
+   "scene": "fern",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.653,
+     "settle": 0.569,
+     "av1": "/media/shell/fern-dark/dashboard-rest.8644c41d23.av1.mp4",
+     "h264": "/media/shell/fern-dark/dashboard-rest.a526c2e51c.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.287,
+     "settle": 0.48,
+     "av1": "/media/shell/fern-dark/network-notifications.4dba713d96.av1.mp4",
+     "h264": "/media/shell/fern-dark/network-notifications.3573cac81a.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.648,
+     "settle": 0.584,
+     "av1": "/media/shell/fern-dark/network-rest.19cc831fec.av1.mp4",
+     "h264": "/media/shell/fern-dark/network-rest.16946455e3.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.284,
+     "settle": 0.537,
+     "av1": "/media/shell/fern-dark/notifications-network.ea952c6572.av1.mp4",
+     "h264": "/media/shell/fern-dark/notifications-network.749ff24116.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.557,
+     "settle": 0.557,
+     "av1": "/media/shell/fern-dark/notifications-rest.48361714e8.av1.mp4",
+     "h264": "/media/shell/fern-dark/notifications-rest.fc9e6dbea6.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.217,
+     "settle": 0.803,
+     "av1": "/media/shell/fern-dark/rest-dashboard.5a35a4b59e.av1.mp4",
+     "h264": "/media/shell/fern-dark/rest-dashboard.25ddbcaeea.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.275,
+     "settle": 0.734,
+     "av1": "/media/shell/fern-dark/rest-network.4ad8cccc93.av1.mp4",
+     "h264": "/media/shell/fern-dark/rest-network.3ef0fc8513.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.263,
+     "settle": 0.697,
+     "av1": "/media/shell/fern-dark/rest-notifications.5f8bd95869.av1.mp4",
+     "h264": "/media/shell/fern-dark/rest-notifications.840232071c.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/fern-dark/rest.158272963b.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/fern-dark/rest.158272963b.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/fern-dark/rest.158272963b.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/fern-dark/rest.158272963b.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/fern-dark/rest.158272963b.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/fern-dark/dashboard.b4b81fe3b0.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/fern-dark/dashboard.b4b81fe3b0.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/fern-dark/dashboard.b4b81fe3b0.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/fern-dark/dashboard.b4b81fe3b0.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/fern-dark/dashboard.b4b81fe3b0.1920.jpg"
+   }
+  },
+  "fern-light": {
+   "scene": "fern",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.644,
+     "settle": 0.579,
+     "av1": "/media/shell/fern-light/dashboard-rest.326bef165f.av1.mp4",
+     "h264": "/media/shell/fern-light/dashboard-rest.0ac1d77de3.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.275,
+     "settle": 0.472,
+     "av1": "/media/shell/fern-light/network-notifications.399023b153.av1.mp4",
+     "h264": "/media/shell/fern-light/network-notifications.7dcaae0596.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.633,
+     "settle": 0.566,
+     "av1": "/media/shell/fern-light/network-rest.5b2404ef80.av1.mp4",
+     "h264": "/media/shell/fern-light/network-rest.18588bccf4.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.294,
+     "settle": 0.532,
+     "av1": "/media/shell/fern-light/notifications-network.b00b06813f.av1.mp4",
+     "h264": "/media/shell/fern-light/notifications-network.01d1a75d46.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.556,
+     "settle": 0.556,
+     "av1": "/media/shell/fern-light/notifications-rest.f4dc5070ba.av1.mp4",
+     "h264": "/media/shell/fern-light/notifications-rest.f6d0b6a98b.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.211,
+     "settle": 0.788,
+     "av1": "/media/shell/fern-light/rest-dashboard.16152577f9.av1.mp4",
+     "h264": "/media/shell/fern-light/rest-dashboard.492e675fc2.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.252,
+     "settle": 0.711,
+     "av1": "/media/shell/fern-light/rest-network.59036235ea.av1.mp4",
+     "h264": "/media/shell/fern-light/rest-network.2d57544b97.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.26,
+     "settle": 0.707,
+     "av1": "/media/shell/fern-light/rest-notifications.c7957b2594.av1.mp4",
+     "h264": "/media/shell/fern-light/rest-notifications.96ae0809ac.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/fern-light/rest.cd5da6d265.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/fern-light/rest.cd5da6d265.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/fern-light/rest.cd5da6d265.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/fern-light/rest.cd5da6d265.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/fern-light/rest.cd5da6d265.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/fern-light/dashboard.d50c53008a.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/fern-light/dashboard.d50c53008a.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/fern-light/dashboard.d50c53008a.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/fern-light/dashboard.d50c53008a.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/fern-light/dashboard.d50c53008a.1920.jpg"
+   }
+  },
+  "harbour-dusk-dark": {
+   "scene": "harbour-dusk",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.629,
+     "settle": 0.565,
+     "av1": "/media/shell/harbour-dusk-dark/dashboard-rest.5edd1f200e.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/dashboard-rest.9ef70dd95d.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.3,
+     "settle": 0.472,
+     "av1": "/media/shell/harbour-dusk-dark/network-notifications.b119bfdcd5.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/network-notifications.5a4c6eb3d3.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.654,
+     "settle": 0.586,
+     "av1": "/media/shell/harbour-dusk-dark/network-rest.89a4e345fc.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/network-rest.b930cc8ec5.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.258,
+     "settle": 0.545,
+     "av1": "/media/shell/harbour-dusk-dark/notifications-network.dec2fe9cf1.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/notifications-network.329ea3dd90.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.554,
+     "settle": 0.554,
+     "av1": "/media/shell/harbour-dusk-dark/notifications-rest.ce27f3168c.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/notifications-rest.d792fd1472.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.174,
+     "settle": 0.796,
+     "av1": "/media/shell/harbour-dusk-dark/rest-dashboard.ecdd60a7ad.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/rest-dashboard.bc7639ee2e.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.249,
+     "settle": 0.701,
+     "av1": "/media/shell/harbour-dusk-dark/rest-network.f5ae2268b4.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/rest-network.e7b36d07ba.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.258,
+     "settle": 0.695,
+     "av1": "/media/shell/harbour-dusk-dark/rest-notifications.f71aa524c9.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-dark/rest-notifications.df4c036ad7.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/harbour-dusk-dark/rest.1d16ff886a.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/harbour-dusk-dark/rest.1d16ff886a.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/harbour-dusk-dark/rest.1d16ff886a.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/harbour-dusk-dark/rest.1d16ff886a.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/harbour-dusk-dark/rest.1d16ff886a.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/harbour-dusk-dark/dashboard.8d1c2d3d59.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/harbour-dusk-dark/dashboard.8d1c2d3d59.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/harbour-dusk-dark/dashboard.8d1c2d3d59.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/harbour-dusk-dark/dashboard.8d1c2d3d59.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/harbour-dusk-dark/dashboard.8d1c2d3d59.1920.jpg"
+   }
+  },
+  "harbour-dusk-light": {
+   "scene": "harbour-dusk",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.652,
+     "settle": 0.58,
+     "av1": "/media/shell/harbour-dusk-light/dashboard-rest.0411e96779.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/dashboard-rest.f217b7883e.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.289,
+     "settle": 0.478,
+     "av1": "/media/shell/harbour-dusk-light/network-notifications.4e5d99ddbd.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/network-notifications.c2988ea66d.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.643,
+     "settle": 0.579,
+     "av1": "/media/shell/harbour-dusk-light/network-rest.11f365db8c.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/network-rest.6d29aee4c7.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.268,
+     "settle": 0.546,
+     "av1": "/media/shell/harbour-dusk-light/notifications-network.5897f8355b.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/notifications-network.18a36cb274.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.559,
+     "settle": 0.559,
+     "av1": "/media/shell/harbour-dusk-light/notifications-rest.8308f11933.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/notifications-rest.aac51ad55c.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.243,
+     "settle": 0.799,
+     "av1": "/media/shell/harbour-dusk-light/rest-dashboard.313ab88840.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/rest-dashboard.cffa8f36de.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.268,
+     "settle": 0.71,
+     "av1": "/media/shell/harbour-dusk-light/rest-network.28366c571c.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/rest-network.a5cea607a5.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.262,
+     "settle": 0.692,
+     "av1": "/media/shell/harbour-dusk-light/rest-notifications.4470e329ca.av1.mp4",
+     "h264": "/media/shell/harbour-dusk-light/rest-notifications.d8ffaa42a4.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/harbour-dusk-light/rest.1ef1efd0e9.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/harbour-dusk-light/rest.1ef1efd0e9.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/harbour-dusk-light/rest.1ef1efd0e9.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/harbour-dusk-light/rest.1ef1efd0e9.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/harbour-dusk-light/rest.1ef1efd0e9.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/harbour-dusk-light/dashboard.326aa57b1f.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/harbour-dusk-light/dashboard.326aa57b1f.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/harbour-dusk-light/dashboard.326aa57b1f.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/harbour-dusk-light/dashboard.326aa57b1f.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/harbour-dusk-light/dashboard.326aa57b1f.1920.jpg"
+   }
+  },
+  "rime-default-dark": {
+   "scene": "rime-default",
+   "scheme": "dark",
+   "reduced": false,
+   "clips": {
+    "dashboard-network": {
+     "from": "dashboard",
+     "to": "network",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.273,
+     "settle": 0.701,
+     "av1": "/media/shell/rime-default-dark/dashboard-network.94db24a02b.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/dashboard-network.3a87562745.h264.mp4"
+    },
+    "dashboard-notifications": {
+     "from": "dashboard",
+     "to": "notifications",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.264,
+     "settle": 0.676,
+     "av1": "/media/shell/rime-default-dark/dashboard-notifications.03a6109733.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/dashboard-notifications.fefa9a679a.h264.mp4"
+    },
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.624,
+     "settle": 0.559,
+     "av1": "/media/shell/rime-default-dark/dashboard-rest.2079f3d3ac.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/dashboard-rest.b9e0961e00.h264.mp4"
+    },
+    "network-dashboard": {
+     "from": "network",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.216,
+     "settle": 0.823,
+     "av1": "/media/shell/rime-default-dark/network-dashboard.1a79c2db34.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/network-dashboard.aa3a1d9b34.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.288,
+     "settle": 0.469,
+     "av1": "/media/shell/rime-default-dark/network-notifications.6e534c0613.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/network-notifications.aea00d4082.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.632,
+     "settle": 0.567,
+     "av1": "/media/shell/rime-default-dark/network-rest.374126464a.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/network-rest.d3ac91fc66.h264.mp4"
+    },
+    "notifications-dashboard": {
+     "from": "notifications",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.258,
+     "settle": 0.819,
+     "av1": "/media/shell/rime-default-dark/notifications-dashboard.fa42114bb9.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/notifications-dashboard.1023b86886.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.265,
+     "settle": 0.532,
+     "av1": "/media/shell/rime-default-dark/notifications-network.d886d21355.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/notifications-network.3889f1c790.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.554,
+     "settle": 0.554,
+     "av1": "/media/shell/rime-default-dark/notifications-rest.afa7669b70.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/notifications-rest.208906b30d.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.291,
+     "settle": 0.812,
+     "av1": "/media/shell/rime-default-dark/rest-dashboard.f7106597fd.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/rest-dashboard.9f6702091d.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.337,
+     "settle": 0.706,
+     "av1": "/media/shell/rime-default-dark/rest-network.1731c354b1.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/rest-network.0ad85401bd.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.282,
+     "settle": 0.68,
+     "av1": "/media/shell/rime-default-dark/rest-notifications.f04a35cc2f.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/rest-notifications.b27f33d92a.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-dark/rest.f32b0b9e98.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-dark/rest.f32b0b9e98.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-dark/rest.f32b0b9e98.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-dark/rest.f32b0b9e98.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-dark/rest.f32b0b9e98.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-dark/dashboard.69460b269b.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-dark/dashboard.69460b269b.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-dark/dashboard.69460b269b.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-dark/dashboard.69460b269b.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-dark/dashboard.69460b269b.1920.jpg"
+   }
+  },
+  "rime-default-dark-reduced": {
+   "scene": "rime-default",
+   "scheme": "dark",
+   "reduced": true,
+   "clips": {
+    "dashboard-network": {
+     "from": "dashboard",
+     "to": "network",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.265,
+     "settle": 0.199,
+     "av1": "/media/shell/rime-default-dark-reduced/dashboard-network.c33284cb4f.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/dashboard-network.b5b11c8e02.h264.mp4"
+    },
+    "dashboard-notifications": {
+     "from": "dashboard",
+     "to": "notifications",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.273,
+     "settle": 0.177,
+     "av1": "/media/shell/rime-default-dark-reduced/dashboard-notifications.05833ef8fa.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/dashboard-notifications.2782278854.h264.mp4"
+    },
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.168,
+     "settle": 0.168,
+     "av1": "/media/shell/rime-default-dark-reduced/dashboard-rest.af907d1ac8.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/dashboard-rest.2849997acb.h264.mp4"
+    },
+    "network-dashboard": {
+     "from": "network",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.274,
+     "settle": 0.212,
+     "av1": "/media/shell/rime-default-dark-reduced/network-dashboard.10988d685f.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/network-dashboard.7b7583e8d0.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.272,
+     "settle": 0.298,
+     "av1": "/media/shell/rime-default-dark-reduced/network-notifications.8e7aa772fc.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/network-notifications.39991479b3.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.184,
+     "settle": 0.17,
+     "av1": "/media/shell/rime-default-dark-reduced/network-rest.061a79fd31.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/network-rest.25d0570c5f.h264.mp4"
+    },
+    "notifications-dashboard": {
+     "from": "notifications",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.276,
+     "settle": 0.214,
+     "av1": "/media/shell/rime-default-dark-reduced/notifications-dashboard.0d56bcb414.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/notifications-dashboard.70236ecf0f.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.309,
+     "settle": 0.301,
+     "av1": "/media/shell/rime-default-dark-reduced/notifications-network.22ba97a5b9.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/notifications-network.d879e36d90.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.176,
+     "settle": 0.176,
+     "av1": "/media/shell/rime-default-dark-reduced/notifications-rest.f716398b50.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/notifications-rest.aa757be668.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.288,
+     "settle": 0.207,
+     "av1": "/media/shell/rime-default-dark-reduced/rest-dashboard.6911bb06d6.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/rest-dashboard.9afdbfd89f.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.276,
+     "settle": 0.184,
+     "av1": "/media/shell/rime-default-dark-reduced/rest-network.0db1a66c7e.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/rest-network.e1e2b16fdc.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 1.283,
+     "settle": 0.172,
+     "av1": "/media/shell/rime-default-dark-reduced/rest-notifications.368838a315.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/rest-notifications.9354ea6047.h264.mp4"
+    }
+   },
+   "restFrom": "rime-default-dark"
+  },
+  "rime-default-light": {
+   "scene": "rime-default",
+   "scheme": "light",
+   "reduced": false,
+   "clips": {
+    "dashboard-network": {
+     "from": "dashboard",
+     "to": "network",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.263,
+     "settle": 0.698,
+     "av1": "/media/shell/rime-default-light/dashboard-network.06e0cddc27.av1.mp4",
+     "h264": "/media/shell/rime-default-light/dashboard-network.3ccc4a46d6.h264.mp4"
+    },
+    "dashboard-notifications": {
+     "from": "dashboard",
+     "to": "notifications",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.273,
+     "settle": 0.707,
+     "av1": "/media/shell/rime-default-light/dashboard-notifications.b0bf1d0177.av1.mp4",
+     "h264": "/media/shell/rime-default-light/dashboard-notifications.3611cc4674.h264.mp4"
+    },
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.631,
+     "settle": 0.565,
+     "av1": "/media/shell/rime-default-light/dashboard-rest.7fceede92b.av1.mp4",
+     "h264": "/media/shell/rime-default-light/dashboard-rest.3d8ef8b527.h264.mp4"
+    },
+    "network-dashboard": {
+     "from": "network",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.239,
+     "settle": 0.864,
+     "av1": "/media/shell/rime-default-light/network-dashboard.16b3cdc427.av1.mp4",
+     "h264": "/media/shell/rime-default-light/network-dashboard.f3874a092a.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.291,
+     "settle": 0.461,
+     "av1": "/media/shell/rime-default-light/network-notifications.e2758e13ec.av1.mp4",
+     "h264": "/media/shell/rime-default-light/network-notifications.190c9cbf0a.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.648,
+     "settle": 0.576,
+     "av1": "/media/shell/rime-default-light/network-rest.0e3994acca.av1.mp4",
+     "h264": "/media/shell/rime-default-light/network-rest.9b48d4eb7a.h264.mp4"
+    },
+    "notifications-dashboard": {
+     "from": "notifications",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.255,
+     "settle": 0.802,
+     "av1": "/media/shell/rime-default-light/notifications-dashboard.c57fced543.av1.mp4",
+     "h264": "/media/shell/rime-default-light/notifications-dashboard.4952c1b50b.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.257,
+     "settle": 0.53,
+     "av1": "/media/shell/rime-default-light/notifications-network.8fb837ac6d.av1.mp4",
+     "h264": "/media/shell/rime-default-light/notifications-network.248e0ef170.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.551,
+     "settle": 0.548,
+     "av1": "/media/shell/rime-default-light/notifications-rest.19a0dd78c7.av1.mp4",
+     "h264": "/media/shell/rime-default-light/notifications-rest.d4a948578f.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.292,
+     "settle": 0.809,
+     "av1": "/media/shell/rime-default-light/rest-dashboard.bda0aeb354.av1.mp4",
+     "h264": "/media/shell/rime-default-light/rest-dashboard.e26e4e4207.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2752,
+      0,
+      1088,
+      944
+     ],
+     "duration": 1.311,
+     "settle": 0.701,
+     "av1": "/media/shell/rime-default-light/rest-network.3eddb51b4e.av1.mp4",
+     "h264": "/media/shell/rime-default-light/rest-network.1547206f81.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2912,
+      0,
+      928,
+      880
+     ],
+     "duration": 1.291,
+     "settle": 0.685,
+     "av1": "/media/shell/rime-default-light/rest-notifications.1a762b16e3.av1.mp4",
+     "h264": "/media/shell/rime-default-light/rest-notifications.37b07ffa17.h264.mp4"
+    }
+   },
+   "rest": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-light/rest.94224ba2a1.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-light/rest.94224ba2a1.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-light/rest.94224ba2a1.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-light/rest.94224ba2a1.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-light/rest.94224ba2a1.1920.jpg"
+   },
+   "dashboard": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-light/dashboard.be26ebdfb1.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-light/dashboard.be26ebdfb1.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-light/dashboard.be26ebdfb1.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-light/dashboard.be26ebdfb1.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-light/dashboard.be26ebdfb1.1920.jpg"
+   }
+  },
+  "rime-default-light-reduced": {
+   "scene": "rime-default",
+   "scheme": "light",
+   "reduced": true,
+   "clips": {
+    "dashboard-network": {
+     "from": "dashboard",
+     "to": "network",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.264,
+     "settle": 0.191,
+     "av1": "/media/shell/rime-default-light-reduced/dashboard-network.e661132b18.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/dashboard-network.828ce003bd.h264.mp4"
+    },
+    "dashboard-notifications": {
+     "from": "dashboard",
+     "to": "notifications",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.267,
+     "settle": 0.167,
+     "av1": "/media/shell/rime-default-light-reduced/dashboard-notifications.97e931cf7a.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/dashboard-notifications.0b5775ecb4.h264.mp4"
+    },
+    "dashboard-rest": {
+     "from": "dashboard",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.187,
+     "settle": 0.142,
+     "av1": "/media/shell/rime-default-light-reduced/dashboard-rest.ac8318103a.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/dashboard-rest.9becb16651.h264.mp4"
+    },
+    "network-dashboard": {
+     "from": "network",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.273,
+     "settle": 0.231,
+     "av1": "/media/shell/rime-default-light-reduced/network-dashboard.c288fc44b0.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/network-dashboard.67db5a47e0.h264.mp4"
+    },
+    "network-notifications": {
+     "from": "network",
+     "to": "notifications",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.268,
+     "settle": 0.297,
+     "av1": "/media/shell/rime-default-light-reduced/network-notifications.8b4e3ccdbd.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/network-notifications.e211f2aba1.h264.mp4"
+    },
+    "network-rest": {
+     "from": "network",
+     "to": "rest",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 0.177,
+     "settle": 0.177,
+     "av1": "/media/shell/rime-default-light-reduced/network-rest.83cab0ae74.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/network-rest.381da53b65.h264.mp4"
+    },
+    "notifications-dashboard": {
+     "from": "notifications",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2928,
+      1184
+     ],
+     "duration": 1.274,
+     "settle": 0.219,
+     "av1": "/media/shell/rime-default-light-reduced/notifications-dashboard.d22d96cb0e.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/notifications-dashboard.4e702132df.h264.mp4"
+    },
+    "notifications-network": {
+     "from": "notifications",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.317,
+     "settle": 0.294,
+     "av1": "/media/shell/rime-default-light-reduced/notifications-network.4886858441.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/notifications-network.a1b5b9c03a.h264.mp4"
+    },
+    "notifications-rest": {
+     "from": "notifications",
+     "to": "rest",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 0.173,
+     "settle": 0.173,
+     "av1": "/media/shell/rime-default-light-reduced/notifications-rest.b675121dbf.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/notifications-rest.52d7b800a9.h264.mp4"
+    },
+    "rest-dashboard": {
+     "from": "rest",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.29,
+     "settle": 0.196,
+     "av1": "/media/shell/rime-default-light-reduced/rest-dashboard.1e2e6f694b.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/rest-dashboard.3e0dd18e25.h264.mp4"
+    },
+    "rest-network": {
+     "from": "rest",
+     "to": "network",
+     "box": [
+      2768,
+      0,
+      1072,
+      928
+     ],
+     "duration": 1.276,
+     "settle": 0.189,
+     "av1": "/media/shell/rime-default-light-reduced/rest-network.72bcce17aa.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/rest-network.55bbf6e442.h264.mp4"
+    },
+    "rest-notifications": {
+     "from": "rest",
+     "to": "notifications",
+     "box": [
+      2928,
+      0,
+      912,
+      880
+     ],
+     "duration": 1.283,
+     "settle": 0.17,
+     "av1": "/media/shell/rime-default-light-reduced/rest-notifications.795a38b3b9.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/rest-notifications.17ff26b78c.h264.mp4"
+    }
+   },
+   "restFrom": "rime-default-light"
+  }
+ },
+ "shell": "9161e30c4c2928919d5ec4bfdefd0582869a4f8b",
+ "size": [
+  3840,
+  2400
+ ],
+ "logical": [
+  1920,
+  1200
+ ],
+ "recording": {
+  "dilation": 3.125,
+  "fps": 60
+ }
+}

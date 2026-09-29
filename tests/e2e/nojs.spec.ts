@@ -7,8 +7,9 @@ test("home works without JavaScript", async ({ page }) => {
   await expect(page.locator("h1")).toContainText("A Linux desktop");
   await expect(page.locator(".frame-trigger")).toHaveAttribute("href", "/sitemap");
   await expect(page.locator(".frame-download")).toHaveAttribute("href", "/download");
-  // the stage's no-JS still: the Dashboard, open
-  await expect(page.locator('#hero-stage [data-surface="dashboard"]')).toBeVisible();
+  // the stage's no-JS still: the recorded Dashboard, open
+  await expect(page.locator("#hero-stage .stage-nojs:visible")).toHaveCount(1);   // the page's scheme picks dark or light
+  await expect(page.locator("#hero-stage .stage-base:visible")).toHaveCount(0);
   await expect(page.locator(".reveal").first()).toBeVisible();
 });
 test("download links straight to the published ISO", async ({ page }) => {
