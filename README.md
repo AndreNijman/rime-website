@@ -172,8 +172,10 @@ What someone using Rime notices, in a sentence or two.
 
 Without that section the change is listed by its title, and the rest of the
 body is never used: it is written for a reviewer, not for the site. `docs`,
-`chore`, `ci`, `test`, `build` and `style` pull requests, and any labelled
-`skip-release-notes`, are left off. A record on main is never overwritten, so
+`chore`, `ci`, `test`, `build` and `style` pull requests, any labelled
+`skip-release-notes`, and any whose release note is `none`, are left off. The
+section's `<!-- -->` guidance (both repositories' pull request templates
+carry one) is never copied. A record on main is never overwritten, so
 a hand-written one (or a generated one polished and committed) always wins.
 `node scripts/sync-releases.mjs --dry-run` prints what it would write.
 

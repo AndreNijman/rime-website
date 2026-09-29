@@ -61,6 +61,7 @@ function sentenceCase(s) {
 
 export function plainText(md) {
   return md
+    .replace(/<!--[\s\S]*?-->/g, " ")  // the pull request template's guidance
     .replace(/```[\s\S]*?```/g, " ")
     .replace(/`([^`]*)`/g, "$1")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
@@ -107,8 +108,10 @@ export function changeFrom(repo, pr) {
   if ((pr.labels || []).some((l) => /^(skip-release-notes?|no-release-notes?)$/i.test(l.name || l))) return null;
   const t = parseTitle(pr.title);
   if (t.type && QUIET.has(t.type)) return null;
+  const note = summaryFrom(pr.body);
+  if (note && /^(none|n\/a|-)\.?$/i.test(note)) return null;  // "## Release note: none" keeps it off the page
   const title = sentenceCase(t.text);
-  const summary = summaryFrom(pr.body) || `From ${repo} pull request #${pr.number}.`;
+  const summary = note || `From ${repo} pull request #${pr.number}.`;
   return {
     id: slug(t.text),
     area: areaOf(repo, t.scope, t.text),

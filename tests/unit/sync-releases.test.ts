@@ -21,6 +21,9 @@ test("a summary comes only from a Release note section, never from the rest of t
     .toBe("Logging in unlocks your keyring.");
   expect(summaryFrom("## Release notes\nText at the end")).toBe("Text at the end");
   expect(summaryFrom("## Release note\n\n")).toBeNull();
+  // The template's guidance comment is never page copy, filled in or not.
+  expect(summaryFrom("## Release note\n\n<!-- What someone using Rime notices. -->\n")).toBeNull();
+  expect(summaryFrom("## Release note\n\n<!-- guidance -->\nAlt+Tab works again.")).toBe("Alt+Tab works again.");
   expect(summaryFrom(null)).toBeNull();
 });
 
@@ -28,6 +31,8 @@ test("changes nobody running Rime would notice are left off the page", () => {
   for (const t of ["docs: x", "chore(deps): y", "ci: z", "test: w", "build: v", "style: u"])
     expect(changeFrom("rime-os", pr(t))).toBeNull();
   expect(changeFrom("rime-os", pr("fix: a", "", { labels: [{ name: "skip-release-notes" }] }))).toBeNull();
+  expect(changeFrom("rime-os", pr("fix: a", "## Release note\n\nnone\n"))).toBeNull();
+  expect(changeFrom("rime-os", pr("fix: a", "## Release note\n\nN/A."))).toBeNull();
 });
 
 test("kind and area follow the title and the repository", () => {
