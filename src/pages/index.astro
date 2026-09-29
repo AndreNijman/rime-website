@@ -12,6 +12,8 @@ import LatestRelease from "../components/LatestRelease.astro";
 import GetRime from "../components/GetRime.astro";
 import { latestRelease } from "../lib/releases";
 import { SITE } from "../data/site";
+import downloads from "../../content/downloads.json";
+const remote = (downloads as { remote?: { versionName: string } | null }).remote;
 const latest = (await latestRelease())!;
 const src = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
 const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
@@ -111,7 +113,7 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
           <li><strong>No root, ever.</strong> A closed list of eight requests, each approved with your password, never from inside the agent's terminal.</li>
           <li><strong>Credentials it can use, never read.</strong> Git pushes and deploys run through a broker that has no way to hand a credential back.</li>
           <li><strong>Close the lid, keep working.</strong> A laptop with live sessions stays awake with the lid shut, VPN included, and still suspends if it gets too hot or too low.</li>
-          <li><strong>Rime Remote</strong> puts the sessions on your Android phone: watch, reply, pause, stop, start. The app is finished but not yet released.</li>
+          <li><strong>Rime Remote</strong> puts the sessions on your Android phone: watch, reply, pause, stop, start. {remote ? <a href="/agents#remote">Get it for Android</a> : "The app is finished but not yet released."}</li>
         </ul>
         <p><a href="/agents" class="more">Everything about agents on Rime <Icon name="arrow-right" size={16} /></a></p>
       </div>

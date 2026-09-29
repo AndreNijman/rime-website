@@ -1,6 +1,7 @@
 ---
 // /agents (spec §6.4): the agent runtime, its permission model, the Agent
-// Center and Rime Remote — only what rime-os@2d9c5438a and the Shell the site
+// Center and Rime Remote (released 2026-09-29, the download read from
+// content/downloads.json) — only what rime-os@2d9c5438a and the Shell the site
 // pins actually do. Where rime-os's own README says more (phone "approvals",
 // "off until you turn it on", "no server of ours in the middle"), the code
 // wins and this page says what the code does.
@@ -9,6 +10,7 @@ import ProductStage from "../components/ProductStage.astro";
 import CommandChip from "../components/CommandChip.astro";
 import Evidence from "../components/Evidence.astro";
 import Icon from "../components/Icon.astro";
+import RemoteDownload from "../components/RemoteDownload.astro";
 import { SITE } from "../data/site";
 const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
 const sh = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
@@ -187,7 +189,7 @@ issue-221  agent/issue-221  2f +19/-3    1 file(s)  failed  would conflict</code
         <Evidence links={[{ label: "docs/remote.md", href: os("docs/remote.md") }, { label: "android/", href: `${SITE.repos.os}/tree/${SITE.pinned.os}/android` }, { label: "relay/src/", href: `${SITE.repos.os}/tree/${SITE.pinned.os}/relay/src` }]}>
           The relay is run by the Rime project. In Rime's own words, it "carries encrypted bytes it cannot read but does see both addresses, when you connect and how much data moves". <code>rime remote devices</code> lists paired phones; <code>rime remote revoke</code> ends one immediately.
         </Evidence>
-        <p class="avail"><Icon name="info" size={16} /> <span><strong>Not released yet.</strong> The app is finished in the repository and CI builds and signs it, but no APK has been published. Until one is, it can only be built from source. When it is, it will be linked here and in <a href="/updates">Updates</a>.</span></p>
+        <RemoteDownload />
       </div>
     </div>
   </section>

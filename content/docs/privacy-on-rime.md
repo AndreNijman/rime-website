@@ -55,9 +55,9 @@ no phone is paired. It reconnects if the connection drops.
   mDNS (`_rime-remote._tcp`).
 - It opens no inbound port. LAN access needs `sudo rime firewall allow
   rime-remote`.
-- The Android app, which is not released yet, asks GitHub's API for Rime
-  Remote's releases each time it starts, to offer an update. Nothing else on
-  the phone contacts anyone but your paired computers and the relay.
+- The Android app asks GitHub's API for Rime Remote's releases each time it
+  starts, to offer an update. Apart from that and a UnifiedPush distributor if
+  you install one, the phone contacts only your paired computers and the relay.
 
 The phone app has not been released, so nobody can pair a phone yet without
 building the app themselves.
