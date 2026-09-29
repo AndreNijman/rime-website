@@ -33,6 +33,35 @@ const hasIso = (r) => r.assets.some((a) => /\.iso$/.test(a.name));
 const current = tagArg ? published.find((r) => r.tag_name === tagArg) : published.find(hasIso);
 if (!current) { console.error("no published release found"); process.exit(1); }
 
+// GitHub's build-provenance attestation for a file, if there is one: the
+// SLSA statement names the workflow, ref and run that built it. Recorded only
+// when the statement's subject is this exact digest and it was made in this
+// repository, so the page never offers `gh attestation verify` for a file it
+// would fail on.
+function provenanceOf(sha256) {
+  let res;
+  // stderr ignored: GitHub answers 404 for a file with no attestation, which is the expected answer for older ISOs.
+  try {
+    res = JSON.parse(execFileSync("gh", ["api", `repos/${REPO}/attestations/sha256:${sha256}`], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }));
+  } catch { return null; }
+  for (const att of res.attestations || []) {
+    const payload = att.bundle?.dsseEnvelope?.payload;
+    if (!payload) continue;
+    const st = JSON.parse(Buffer.from(payload, "base64").toString("utf8"));
+    if (!(st.subject || []).some((s) => s.digest?.sha256 === sha256)) continue;
+    const wf = st.predicate?.buildDefinition?.externalParameters?.workflow;
+    if (!wf || wf.repository !== `https://github.com/${REPO}`) continue;
+    return {
+      predicateType: st.predicateType,
+      workflow: wf.path,
+      ref: wf.ref,
+      commit: st.predicate?.buildDefinition?.resolvedDependencies?.[0]?.digest?.gitCommit ?? null,
+      run: st.predicate?.runDetails?.metadata?.invocationId ?? null,
+    };
+  }
+  return null;
+}
+
 function artifactsOf(rel) {
   const out = [];
   for (const a of rel.assets) {
@@ -43,6 +72,8 @@ function artifactsOf(rel) {
     const text = execFileSync("curl", ["-fsSL", sum.browser_download_url], { encoding: "utf8" }).trim();
     const listed = text.split(/\s+/)[0];
     if (digest && listed !== digest) { console.error(`✗ ${a.name}: checksum file says ${listed}, GitHub says ${digest} — left out`); continue; }
+    const provenance = provenanceOf(listed);
+    if (!provenance) console.warn(`! ${rel.tag_name}/${a.name}: no build-provenance attestation on GitHub — the page will not offer that check`);
     out.push({
       kind: "iso",
       flavour: /netinstall/.test(a.name) ? "netinstall" : "offline",
@@ -54,6 +85,7 @@ function artifactsOf(rel) {
       checksumUrl: sum.browser_download_url,
       checksumFile: text,
       signature: null,
+      provenance,
     });
   }
   return out;

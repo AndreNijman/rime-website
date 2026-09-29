@@ -1,6 +1,6 @@
 ---
 // Get Rime (spec §12 row 8): requirements and one clear action. The facts come
-// from the published release (content/downloads.json, the v2.1.0 notes).
+// from the published release (content/downloads.json and its notes).
 import Icon from "./Icon.astro";
 import downloads from "../../content/downloads.json";
 interface Props { headingId?: string }
@@ -12,7 +12,6 @@ const gb = (iso.bytes / 1e9).toFixed(1);
   <div class="get-copy">
     <h2 id={headingId}>Get Rime.</h2>
     <p class="lead">A network installer for 64-bit PCs. It downloads the signed system image while it installs.</p>
-    <p class="caption get-note">The current installer predates the rename, so its first update needs <a href="/download#first-update">one manual step</a>.</p>
     <div class="get-actions">
       <a class="btn btn-primary btn-lg" href="/download"><Icon name="download" /> Download · {gb} GB</a>
       <a class="btn btn-lg" href="/docs/install">Install guide</a>

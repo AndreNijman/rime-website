@@ -11,31 +11,48 @@ sources:
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/files/system/trust/enforcement.conf"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/Containerfile.core"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/README.md"
-  - "https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"
+  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0"
+  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/.github/workflows/build-installer-iso.yml"
 verified: "rime-os@2d9c5438a"
 ---
 
 ## The installer download
 
-The published installer is `apex-os-netinstall-x86_64.iso` (APEX-OS v2.1.0),
-1,902,344,192 bytes, SHA-256
-`7208b6fd5c2641e3e1bb035eac0d1c642f4f7eda85b1ba3295993b8ec0227248`.
+The published installer is `rime-os-netinstall-x86_64.iso` (Rime OS v3.0.0),
+1,869,484,032 bytes, SHA-256
+`d186e2781f535f93dec4b5b3b04a4243b63b623d26d29f4188c5190788efb2c8`.
 
 ```sh
-sha256sum -c apex-os-netinstall-x86_64.iso.sha256
+sha256sum -c rime-os-netinstall-x86_64.iso.sha256
 ```
 
-**The ISO is not signed.** The checksum sits on the same release page as the
-file, so it proves the download is complete and uncorrupted, not who made it.
+The checksum sits on the same release page as the file, so it proves the
+download is complete and uncorrupted, not who made it.
 
-You can check what the ISO installs. It downloads the system image by digest,
-`sha256:148f57de20e1db04ee672037791d10d6d6d02a188784b6f213255c7d50153a92`, pinned
-in the registry as `ghcr.io/andrenijman/apex-os:netinstall-v2.1.0`. The
-workflow that gives a release image that permanent tag checks its signature
-first. You can check the signature yourself:
+**Where it came from.** The ISO is built by GitHub Actions
+(`.github/workflows/build-installer-iso.yml` in `rime-os`), which boots it in a
+virtual machine, installs from it and checks the installed system before a
+release can be drafted. GitHub signs a build-provenance attestation for the
+file: a record, in Sigstore's public log, of the repository, workflow, commit
+and run that produced these exact bytes. Check it with the
+[GitHub CLI](https://cli.github.com/):
 
 ```sh
-cosign verify ghcr.io/andrenijman/apex-os:netinstall-v2.1.0 \
+gh attestation verify rime-os-netinstall-x86_64.iso -R AndreNijman/rime-os
+```
+
+The ISO itself is not signed the way the system image is: nothing on your
+machine checks it before it boots. Secure Boot checks the boot chain on the
+stick (Fedora's signed shim and kernel), not the rest of the ISO.
+
+**What it installs.** The ISO downloads the system image by digest,
+`sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23`, pinned in the registry as
+`ghcr.io/andrenijman/rime-os:netinstall-v3.0.0`. The workflow that gives a
+release image that permanent tag checks its signature first. You can check the
+signature yourself:
+
+```sh
+cosign verify ghcr.io/andrenijman/rime-os:netinstall-v3.0.0 \
   --certificate-identity-regexp '^https://github\.com/AndreNijman/(apex|rime)-os/\.github/workflows/build-image\.yml@' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
@@ -168,9 +185,11 @@ file and line, so a typo never turns the check off. An unreadable file falls
 back to the defaults. The full decision table is on
 [Updating](/docs/updating).
 
-## On a machine installed from the v2.1.0 ISO
+## On a machine installed from an APEX-OS ISO
 
-Until its first update, such a machine runs an older APEX-OS image. The same
-commands start with `apex` (`apex trust --gate`), the settings file is
-`/etc/apex/trust.conf`, and the client trusts only the old `apex-os` signer.
-[Install Rime](/docs/install) covers the first update.
+Until its first update, a machine installed from an APEX-OS ISO (v2.1.0 or
+older) runs an older APEX-OS image. The same commands start with `apex`
+(`apex trust --gate`), the settings file is `/etc/apex/trust.conf`, and the
+client trusts only the old `apex-os` signer.
+[Installed from an APEX-OS ISO](/docs/install#installed-from-an-apex-os-iso)
+covers the first update.

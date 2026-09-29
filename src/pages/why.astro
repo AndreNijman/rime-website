@@ -138,7 +138,6 @@ const n = (i: number) => `<a href="#src-${i}" class="fn" aria-label="source ${i}
       <li><strong>One update channel.</strong> Every build of Rime's main branch that passes CI is what every machine updates to. There is no slower stable channel yet.</li>
       <li><strong>No automatic rollback.</strong> Going back is one command and a reboot; nothing notices a bad boot and does it for you yet.</li>
       <li><strong>Secure Boot and encryption.</strong> Rime's kernel does not enforce module signatures or lockdown under Secure Boot; Fedora's kernel does. TPM unlock is offered only with Secure Boot enforcing, and an encrypted install on real hardware has not been verified end to end. Ubuntu 26.04 ships TPM-backed encryption as a supported feature <Fragment set:html={n(25)} />.</li>
-      <li><strong>The installer still says APEX-OS.</strong> Machines installed from it need one extra step before their first update; <a href="/docs/install#the-first-update">Install</a> explains it.</li>
       {remote ? <li><strong>Rime Remote is at its first release.</strong> Version {remote.versionName.split("+")[0]}, for Android only; there is no iPhone app.</li> : <li><strong>Rime Remote is not released.</strong> The phone app is finished but has no public build yet.</li>}
     </ul>
     <Evidence links={[{ label: "docs/update-channels.md", href: os("docs/update-channels.md") }, { label: "docs/rollback.md", href: os("docs/rollback.md") }, { label: "docs/disk-encryption.md", href: os("docs/disk-encryption.md") }]}>
