@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 test.use({ javaScriptEnabled: false });
 test("home works without JavaScript", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("h1")).toContainText("A Linux desktop");
+  await expect(page.locator("h1")).toContainText("A Linux system");
   await expect(page.locator(".frame-trigger")).toHaveAttribute("href", "/sitemap");
   await expect(page.locator(".frame-download")).toHaveAttribute("href", "/download");
   // the stage's no-JS still: the recorded Dashboard, open

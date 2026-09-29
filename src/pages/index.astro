@@ -16,7 +16,7 @@ const latest = (await latestRelease())!;
 const src = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
 const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
 ---
-<Base description="Rime is a Linux desktop and operating system: a fluid shell coloured by your wallpaper, on a signed, image-based system that updates in one piece and can always go back.">
+<Base description="Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and never get root.">
   <!-- 0 — Entry -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container-wide hero-grid">
@@ -26,74 +26,59 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
           <span class="mono">{latest.name}</span><span>{latest.title}</span><Icon name="arrow-right" size={15} />
         </a>
         <h1 id="hero-title" class="display hero-title">
-          <span class="hero-line">A Linux desktop</span>
+          <span class="hero-line">A Linux system</span>
           <span class="hero-line">that moves as one.</span>
         </h1>
-        <p class="lead hero-lead">Fluid by design. Image-based underneath. Coloured by your world.</p>
+        <p class="lead hero-lead">One signed image that updates in one step and can always go back. A desktop that grows from its own notches. Agents that work for you, fenced in.</p>
         <div class="hero-actions">
           <a href="/download" class="btn btn-primary btn-lg"><Icon name="download" /> Download Rime</a>
-          <a href="/shell" class="btn btn-lg">Explore the Shell <Icon name="arrow-right" /></a>
+          <a href="/why" class="btn btn-lg">Why Rime <Icon name="arrow-right" /></a>
         </div>
       </div>
     </div>
     <div class="container-wide hero-stage">
-      <ProductStage id="hero-stage" tour eager caption="The real Rime Shell, recorded at 3840 × 2400 and played back as you use it. Click the centre notch, the Wi-Fi icon or the bell." />
+      <ProductStage id="hero-stage" tour eager acts={["dashboard", "agents", "network", "notifications"]} caption="The real Rime Shell, recorded at 3840 × 2400 and played back as you use it. Click the centre notch, the Wi-Fi icon or the bell." />
     </div>
   </section>
 
-  <!-- 1 — Shell -->
-  <section class="section" id="shell" aria-labelledby="shell-title">
-    <div class="container split split-text">
-      <div class="section-head">
-        <h2 id="shell-title">Everything grows from where it belongs.</h2>
-      </div>
-      <div class="stack">
-        <p class="lead">The Dashboard is the centre notch, grown. Wi-Fi and notifications pour out of the right notch and share one surface, so switching between them reshapes it instead of closing and reopening it. Close either and it folds back into the notch it came from.</p>
-        <Evidence links={[
-          { label: "SurfaceLifecycle.qml", href: src("src/components/SurfaceLifecycle.qml") },
-          { label: "geometry.js", href: src("src/shapes/fluid/geometry.js") },
-          { label: "RightPanel.qml", href: src("src/popups/RightPanel.qml") },
-        ]}>
-          Surfaces run on springs that keep their velocity. Reverse one halfway and it bends back instead of restarting from rest.
-        </Evidence>
-        <p><a href="/shell" class="more">Every surface, on the Shell page <Icon name="arrow-right" size={16} /></a></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2 — Personalise -->
-  <section class="section personalise" id="colour" aria-labelledby="colour-title">
+  <!-- 1 — Why Rime -->
+  <section class="section" id="why" aria-labelledby="why-title">
     <div class="container-wide">
       <div class="section-head">
-        <h2 id="colour-title">Your wallpaper becomes the palette.</h2>
-        <p class="lead">Rime reads your wallpaper with matugen and derives every surface, text and accent role from it. Change the wallpaper and the desktop retunes: bar, panels, lock screen, window borders, terminal prompt.</p>
+        <h2 id="why-title">One operating system, not a pile of parts.</h2>
+        <p class="lead">Most distributions hand you a base and leave the rest to you. Rime builds the system, the desktop, the agent runtime and the gaming stack as one image, tests them together, signs the result, and updates it in one step.</p>
       </div>
-      <div class="pers-grid">
-        <PaletteRail stage="colour-stage" />
-        <ProductStage id="colour-stage" controls={false} label="The desktop in the chosen wallpaper's palette" caption="Pick a wallpaper: the stage switches to the real shell recorded in its palette, and this page follows." />
+      <div class="pillars">
+        <a class="pillar" href="/system#updates">
+          <h3>One image, staged and reversible</h3>
+          <p>An update is staged beside the running system and takes over at your next reboot. The previous one stays, one command away.</p>
+        </a>
+        <a class="pillar" href="/security#updates">
+          <h3>Checked before it's installed</h3>
+          <p><code>rime update</code> refuses an image that Rime's own build workflow did not sign. <code>rime trust --gate</code> says why before you commit.</p>
+        </a>
+        <a class="pillar" href="/agents">
+          <h3>Agents, built in and fenced in</h3>
+          <p>Claude Code, Codex and others run as sessions the system tracks: sandboxed, never root, using credentials they can never read.</p>
+        </a>
+        <a class="pillar" href="/system#packages">
+          <h3>Software that doesn't block updates</h3>
+          <p>Packages from Fedora, COPR, <code>.deb</code> files and AppImages go into an extension beside the image. Flathub and dev capsules cover the rest.</p>
+        </a>
+        <a class="pillar" href="/system#gaming">
+          <h3>Games on any machine</h3>
+          <p>Rime builds its own CachyOS kernel. Gaming Mode loads a latency scheduler wherever it runs, and the NVIDIA driver ships signed in the image.</p>
+        </a>
+        <a class="pillar" href="/shell">
+          <h3>One desktop, designed as a whole</h3>
+          <p>The same Shell, palette and motion on tiling, scrolling and floating sessions, from the login screen to the lock screen.</p>
+        </a>
       </div>
-      <Evidence links={[
-        { label: "scripts/build-scenes.mjs", href: "/source#palettes" },
-        { label: "roles.js", href: src("src/theme/roles.js") },
-        { label: "WallpaperService.qml", href: src("src/services/WallpaperService.qml") },
-      ]}>
-        These palettes are what Rime's own command produced — <code>matugen image … --type scheme-content</code> — resolved by the Shell's <code>roles.js</code> and checked for contrast before this page was built. For Rime's default wallpaper the result matches the Shell's test fixture byte for byte. The first wallpaper ships with Rime; the other five were generated for this site.
-      </Evidence>
+      <p class="why-more"><a href="/why" class="more">How Rime compares with other distributions <Icon name="arrow-right" size={16} /></a></p>
     </div>
   </section>
 
-  <!-- 3 — Motion -->
-  <section class="section" id="motion" aria-labelledby="motion-title">
-    <div class="container-wide">
-      <div class="section-head">
-        <h2 id="motion-title">Motion has an origin.</h2>
-        <p class="lead">Nothing fades up out of the middle of the screen. A surface starts as the notch or edge it grows from, and its outline is rebuilt every frame from a few named measurements — width, depth, shoulder, corner — each carried by its own spring.</p>
-      </div>
-      <MotionLab />
-    </div>
-  </section>
-
-  <!-- 4 — System -->
+  <!-- 2 — System -->
   <section class="section" id="system" aria-labelledby="system-title">
     <div class="container-wide">
       <div class="section-head">
@@ -114,7 +99,78 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     </div>
   </section>
 
-  <!-- 5 — Work and play -->
+  <!-- 3 — Agents -->
+  <section class="section" id="agents" aria-labelledby="agents-title">
+    <div class="container split split-text">
+      <div class="section-head">
+        <h2 id="agents-title">Agents that answer to you.</h2>
+      </div>
+      <div class="stack">
+        <p class="lead">Rime runs coding agents as sessions the system keeps track of. Type <code>a</code> and Claude Code, Codex, OpenCode, Gemini or Kimi starts in a sandbox that holds your project and nothing else. The Agent Center puts every session that needs you at the top. When an agent needs the system changed, it asks, and you approve it at the machine.</p>
+        <ul class="agent-facts">
+          <li><strong>No root, ever.</strong> A closed list of eight requests, each approved with your password, never from inside the agent's terminal.</li>
+          <li><strong>Credentials it can use, never read.</strong> Git pushes and deploys run through a broker that has no way to hand a credential back.</li>
+          <li><strong>Close the lid, keep working.</strong> A laptop with live sessions stays awake with the lid shut, VPN included, and still suspends if it gets too hot or too low.</li>
+          <li><strong>Rime Remote</strong> puts the sessions on your Android phone: watch, reply, pause, stop, start. The app is finished but not yet released.</li>
+        </ul>
+        <p><a href="/agents" class="more">Everything about agents on Rime <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 — Shell -->
+  <section class="section" id="shell" aria-labelledby="shell-title">
+    <div class="container split split-text">
+      <div class="section-head">
+        <h2 id="shell-title">Everything grows from where it belongs.</h2>
+      </div>
+      <div class="stack">
+        <p class="lead">The Dashboard is the centre notch, grown. Wi-Fi and notifications pour out of the right notch and share one surface, so switching between them reshapes it instead of closing and reopening it. Close either and it folds back into the notch it came from.</p>
+        <Evidence links={[
+          { label: "SurfaceLifecycle.qml", href: src("src/components/SurfaceLifecycle.qml") },
+          { label: "geometry.js", href: src("src/shapes/fluid/geometry.js") },
+          { label: "RightPanel.qml", href: src("src/popups/RightPanel.qml") },
+        ]}>
+          Surfaces run on springs that keep their velocity. Reverse one halfway and it bends back instead of restarting from rest.
+        </Evidence>
+        <p><a href="/shell" class="more">Every surface, on the Shell page <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 — Personalise -->
+  <section class="section personalise" id="colour" aria-labelledby="colour-title">
+    <div class="container-wide">
+      <div class="section-head">
+        <h2 id="colour-title">Your wallpaper becomes the palette.</h2>
+        <p class="lead">Rime reads your wallpaper with matugen and derives every surface, text and accent role from it. Change the wallpaper and the desktop retunes: bar, panels, lock screen, window borders, terminal prompt.</p>
+      </div>
+      <div class="pers-grid">
+        <PaletteRail stage="colour-stage" />
+        <ProductStage id="colour-stage" controls={false} label="The desktop in the chosen wallpaper's palette" caption="Pick a wallpaper: the stage switches to the real shell recorded in its palette, and this page follows." />
+      </div>
+      <Evidence links={[
+        { label: "scripts/build-scenes.mjs", href: "/source#palettes" },
+        { label: "roles.js", href: src("src/theme/roles.js") },
+        { label: "WallpaperService.qml", href: src("src/services/WallpaperService.qml") },
+      ]}>
+        These palettes are what Rime's own command produced — <code>matugen image … --type scheme-content</code> — resolved by the Shell's <code>roles.js</code> and checked for contrast before this page was built. For Rime's default wallpaper the result matches the Shell's test fixture byte for byte. The first wallpaper ships with Rime; the other five were generated for this site.
+      </Evidence>
+    </div>
+  </section>
+
+  <!-- 6 — Motion -->
+  <section class="section" id="motion" aria-labelledby="motion-title">
+    <div class="container-wide">
+      <div class="section-head">
+        <h2 id="motion-title">Motion has an origin.</h2>
+        <p class="lead">Nothing fades up out of the middle of the screen. A surface starts as the notch or edge it grows from, and its outline is rebuilt every frame from a few named measurements — width, depth, shoulder, corner — each carried by its own spring.</p>
+      </div>
+      <MotionLab />
+    </div>
+  </section>
+
+  <!-- 7 — Work and play -->
   <section class="section" id="work" aria-labelledby="work-title">
     <div class="container">
       <div class="section-head">
@@ -141,22 +197,27 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
           <CommandChip cmd="sudo rime install steam gamescope mangohud gamemode" />
         </article>
         <article class="work-row">
-          <h3>Close the lid, keep working</h3>
-          <p>While an agent session is running, closing a laptop's lid keeps it awake — and the VPN up — with battery and temperature guards that suspend it anyway if they need to. With nothing running, it sleeps as usual.</p>
+          <h3>Ready when you log in</h3>
+          <p>Firefox, Zed, mpv and the codecs, the compilers and runtimes for C, Rust, Go, Node, Python, Java and Ruby, and Claude Code, all in the image. The Claude and ChatGPT desktop apps too, with their own updaters removed: they move forward with <code>rime update</code>, like everything else.</p>
+        </article>
+        <article class="work-row">
+          <h3>A firewall with named doors</h3>
+          <p>Incoming connections are dropped by default, apart from replies, ping, DHCP, local discovery and SSH. You open one named service at a time, and <code>sudo rime firewall status</code> lists what you have opened.</p>
+          <CommandChip cmd="sudo rime firewall allow sunshine" />
         </article>
       </div>
       <p class="work-more"><a href="/system" class="more">The system in detail <Icon name="arrow-right" size={16} /></a></p>
     </div>
   </section>
 
-  <!-- 7 — Latest update -->
+  <!-- 8 — Latest update -->
   <section class="section" id="latest" aria-labelledby="latest-title">
     <div class="container-wide">
       <LatestRelease release={latest} headingId="latest-title" />
     </div>
   </section>
 
-  <!-- 8 — Get Rime -->
+  <!-- 9 — Get Rime -->
   <section class="section" id="get" aria-labelledby="get-title">
     <div class="container">
       <GetRime headingId="get-title" />
@@ -185,7 +246,7 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
   .hero-release .mono { color: var(--rime-accent-text); font-size: 0.78rem; }
   .hero-title { position: relative; display: grid; }
   .hero-line { display: block; }
-  .hero-lead { max-width: 44ch; font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.55rem); }
+  .hero-lead { max-width: 60ch; font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.55rem); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
   .hero-stage { margin-top: clamp(32px, 4.5vw, 64px); }
 
@@ -203,4 +264,19 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
   .work-row p { color: var(--rime-text-secondary); max-width: 58ch; }
   @media (max-width: 760px) { .work-row { grid-template-columns: 1fr; } .work-row h3 { grid-row: auto; } }
   .work-more { margin-top: 28px; }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; margin-top: clamp(28px, 4vw, 48px); }
+  .pillar {
+    display: grid; align-content: start; gap: 10px; padding: clamp(20px, 2.4vw, 28px); border-radius: 22px; text-decoration: none; color: inherit;
+    background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline);
+    transition: background-color var(--dur-hover) var(--ease-effects);
+  }
+  @media (hover: hover) { .pillar:hover { background: var(--rime-surface-high); } }
+  .pillar h3 { font-size: 1.12rem; }
+  .pillar p { color: var(--rime-text-secondary); }
+  .pillar code { font-size: 0.84em; }
+  .why-more { margin-top: 28px; }
+  .agent-facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .agent-facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); max-width: 62ch; }
+  .agent-facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  .agent-facts strong { color: var(--rime-text-primary); }
 </style>

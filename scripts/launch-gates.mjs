@@ -38,8 +38,10 @@ gate("every shipped wallpaper on the site has a recorded licence", walls.filter(
 gate("vendored Shell files match rime-shell upstream", run("node", ["scripts/sync-shell.mjs", "--check-upstream"]), "npm run vendor:shell -- --ref <rev>, then review");
 gate("committed palettes match a fresh matugen run", run("node", ["scripts/build-scenes.mjs", "--check"]), "npm run scenes");
 
-const agentsOff = /agentsPublished:\s*false/.test(readFileSync("src/data/site.ts", "utf8"));
-gate("/agents stays unpublished until Rime Remote ships (spec §6.4)", agentsOff, "Keep SITE.agentsPublished false until the Android app is released.");
+// /agents is published (Andre, 2026-09-29); it calls Rime Remote unreleased
+// until the app has a public, signed build.
+const remote = (gh("api", "repos/AndreNijman/rime-os/releases?per_page=30") ?? []).find((r) => (r.assets ?? []).some((a) => /\.apk$/.test(a.name)));
+gate("Rime Remote has a published, signed APK", remote, "Run release-android.yml on main (dry_run false), then change the Rime Remote availability note on /agents.");
 
 let open = 0;
 for (const g of gates) {

@@ -1,0 +1,232 @@
+---
+// /agents (spec §6.4): the agent runtime, its permission model, the Agent
+// Center and Rime Remote — only what rime-os@2d9c5438a and the Shell the site
+// pins actually do. Where rime-os's own README says more (phone "approvals",
+// "off until you turn it on", "no server of ours in the middle"), the code
+// wins and this page says what the code does.
+import Base from "../layouts/Base.astro";
+import ProductStage from "../components/ProductStage.astro";
+import CommandChip from "../components/CommandChip.astro";
+import Evidence from "../components/Evidence.astro";
+import Icon from "../components/Icon.astro";
+import { SITE } from "../data/site";
+const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
+const sh = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
+const AGENTS = ["Claude Code", "Codex", "OpenCode", "Gemini CLI", "Kimi CLI"];
+---
+<Base title="Agents" description="Rime runs command-line coding agents as sessions the system tracks: sandboxed by default, never root, with the ones that need you first, credentials they can use but never read, and Rime Remote on your phone.">
+  <header class="container page-hero">
+    <p class="eyebrow">Agents</p>
+    <h1>Coding agents, run by the system.</h1>
+    <p class="lead">Claude Code, Codex, OpenCode, Gemini and Kimi run on Rime as sessions the operating system keeps track of. Each one starts in a sandbox, none of them can become root, and the ones waiting for you are always at the top of the list.</p>
+  </header>
+
+  <section class="container-wide agents-stage" aria-label="The Agent Center">
+    <ProductStage id="agents-stage" tour acts={["dashboard", "agents"]} still="agents" label="Recording of the Rime Shell Agent Center"
+      caption="The real Agent Center, the Dashboard's Agents tab, recorded from Rime Shell. Click Agents, or the Dashboard's tabs. The sessions are a fixture; everything drawn is the Shell's." />
+  </section>
+
+  <section class="container section-tight" id="sessions" aria-labelledby="s-h">
+    <div class="split-2">
+      <div>
+        <h2 id="s-h" class="h2s">A session, not a stray terminal</h2>
+        <p class="muted">Type <code>a</code> in any terminal and Rime starts your agent in a terminal it owns. The agent itself is unchanged: the real <code>claude</code> or <code>codex</code>, in a real terminal. The difference is that Rime now knows it is there. It can tell you what the agent is doing, keep it running when the terminal window closes, and let you attach from another terminal, or from your phone.</p>
+        <p class="muted">Rime only tracks sessions it starts. Typing <code>codex</code> on its own still works exactly as it always did.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd={`a "fix the failing tests"`} />
+        <ul class="facts">
+          <li><strong><code>a</code></strong> starts one, <strong><code>al</code></strong> lists them, <strong><code>aa</code></strong> reattaches, <strong><code>ad</code></strong> shows what it changed. <kbd>Ctrl</kbd> + <kbd>]</kbd> detaches without stopping it.</li>
+          <li>Six adapters: {AGENTS.join(", ")}, and any other terminal program. <code>rime agent default codex</code> picks the one <code>a</code> runs.</li>
+          <li>Every session has a state: starting, working, waiting for you, needs permission, complete, failed or exited. Claude reports its own through hooks; the others are read from the terminal.</li>
+        </ul>
+        <Evidence links={[{ label: "docs/agent-runtime.md", href: os("docs/agent-runtime.md") }, { label: "shell/agent.sh", href: os("files/desktop/shell/agent.sh") }]}>
+          On a fresh install the runtime, <code>rime-agentd</code>, runs unprivileged in every account. Rime Remote starts it; <code>rime agent enable</code> keeps it on if you turn Remote off.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="center" aria-labelledby="c-h">
+    <div class="split-2">
+      <div>
+        <h2 id="c-h" class="h2s">What needs you comes first</h2>
+        <p class="muted">The Agents tab of the Dashboard is the Agent Center. A privilege request waiting for your decision sits at the top, then every session that is waiting for you or needs a permission, then the rest, most recently active first. Each row says which project and worktree the agent is in, how long it has been running, what it started, and, for Claude, the model, how much context is used, and how much of your five-hour and seven-day allowance is left.</p>
+      </div>
+      <div class="stack">
+        <ul class="facts">
+          <li>A notification when an agent is waiting for you, needs a permission decision, finishes or fails, with <strong>Focus terminal</strong> and <strong>View output</strong>.</li>
+          <li>Pause, resume and stop from the row; the terminal opens where the session really is.</li>
+          <li>Rime Search finds sessions by agent, project or state: <em>Attach to claude · rime-os</em>.</li>
+        </ul>
+        <Evidence links={[{ label: "AgentCenter.qml", href: sh("src/services/agents/AgentCenter.qml") }, { label: "AgentService.qml", href: sh("src/services/AgentService.qml") }]}>
+          The Shell reads everything from <code>rime agent list --json</code> and <code>rime request pending --json</code>; it holds no state of its own about your agents.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="sandbox" aria-labelledby="sb-h">
+    <div class="split-2">
+      <div>
+        <h2 id="sb-h" class="h2s">A sandbox by default</h2>
+        <p class="muted">Every session starts in a bubblewrap sandbox. The system is read-only, and your home directory is empty except for the project the agent was started in. Nothing else is there to read or to break. Your SSH keys, other projects, the camera and sound devices and every other process are outside it.</p>
+        <p class="muted">The environment is cleared too; only the variables the agent itself needs, such as its own API key, come through. If the sandbox cannot be built, the session does not start.</p>
+      </div>
+      <div class="stack">
+        <div class="measure" role="group" aria-label="Measured inside and outside a session">
+          <div><span class="mono big">408 → 4</span><span class="small muted">processes visible</span></div>
+          <div><span class="mono big">4 → 0</span><span class="small muted">video device nodes</span></div>
+          <div><span class="mono big">14 → 0</span><span class="small muted">sound device nodes</span></div>
+        </div>
+        <ul class="facts">
+          <li><strong>Network is open by default</strong>, because most agents talk to their provider's API. <code>--network allowlist</code>, <code>brokered</code> and <code>offline</code> narrow it. An allowlist decides where traffic may go; it does not stop a leak to an allowed host.</li>
+          <li><code>--sandbox unrestricted</code> exists, is drawn in red wherever the session appears, and confines nothing.</li>
+        </ul>
+        <Evidence links={[{ label: "docs/agent-runtime.md § sandbox", href: os("docs/agent-runtime.md") }]}>
+          The sandbox is built for a cooperating but fallible agent, one that makes a mistake. It is not a defence against a determined attacker with a kernel exploit, and Rime does not claim it is.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="privilege" aria-labelledby="p-h">
+    <div class="split-2">
+      <div>
+        <h2 id="p-h" class="h2s">Never root. You decide, at the machine.</h2>
+        <p class="muted">Inside a session <code>sudo</code> does not work: no process in it can gain privileges. When an agent needs something from the system, it asks, in a closed vocabulary of eight requests (install, remove, upgrade, rebuild or roll back packages, pin, roll back the system, update). There is no request that runs a command. The agent waits, the request appears at the top of the Agent Center, and you approve it with your own password.</p>
+      </div>
+      <div class="stack">
+        <CommandChip wrap prompt="agent $" cmd={`rime request ask install clang --reason "Needed to build the tests"`} />
+        <CommandChip cmd="sudo rime request approve 3" />
+        <ul class="facts">
+          <li>A session cannot approve its own request, and nothing on a phone can approve any.</li>
+          <li>Longer trust is time-limited: <code>--system-access session</code> lasts 30 minutes by default and 8 hours at most, and the password prompt appears on your desktop, never inside the agent's terminal.</li>
+          <li>Locking the screen revokes root grants. Agents keep working.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="secrets" aria-labelledby="k-h">
+    <div class="split-2">
+      <div>
+        <h2 id="k-h" class="h2s">Credentials an agent can use, but never read</h2>
+        <p class="muted">An agent that deploys a site or pushes a branch needs a credential. On Rime it never gets one. The credential lives in <code>rime-secretd</code>, a root service, which does the operation itself and hands back only the result. It has no way to return a credential at all, so there is nothing for the agent to leak.</p>
+      </div>
+      <div class="stack">
+        <CommandChip wrap cmd="rime secret grant cloudflare cloudflare.wrangler.deploy" />
+        <ul class="facts">
+          <li>Git push and fetch, Cloudflare (DNS, Workers, R2, D1, KV, deploys), S3, WebDAV, Google Drive, Microsoft Graph and MCP servers.</li>
+          <li>Granted per project and per operation. A production deploy can require a one-time approval.</li>
+          <li>For Cloudflare, each operation runs on a short-lived token scoped to that one operation.</li>
+        </ul>
+        <Evidence links={[{ label: "docs/agent-runtime.md § secrets", href: os("docs/agent-runtime.md") }]}>
+          The limit, stated: a program running as you, outside the sandbox, can use any capability you have granted. It still cannot read the credential behind it.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="worktrees" aria-labelledby="w-h">
+    <div class="split-2">
+      <div>
+        <h2 id="w-h" class="h2s">Parallel work you can take back</h2>
+        <p class="muted">Give each agent its own git worktree and several can work on one project at once without touching each other. Rime tells you, per worktree, whether it has changes, whether it would merge cleanly, what happened to the tests it saw run, and whether it is ready to hand over. A checkpoint captures the project before the agent starts, so <code>rime agent undo</code> can put it back. When one agent gets stuck, a handoff writes down where it got to and starts another on it.</p>
+      </div>
+      <div class="stack">
+        <CommandChip wrap cmd={`rime agent run "fix issue 217" --worktree issue-217 --checkpoint`} />
+        <pre class="term" aria-label="rime agent worktrees"><code>WORKTREE   BRANCH           DIFF         CONFLICTS  TESTS   READY
+issue-217  agent/issue-217  4f +81/-12   clean      passed  yes
+issue-221  agent/issue-221  2f +19/-3    1 file(s)  failed  would conflict</code></pre>
+        <CommandChip cmd="rime agent handoff 4 --to codex" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="lid" aria-labelledby="l-h">
+    <div class="split-2">
+      <div>
+        <h2 id="l-h" class="h2s">Close the lid. The work carries on.</h2>
+        <p class="muted">While a session is running, closing a laptop's lid keeps it awake with the screen, keyboard light and Bluetooth off, and Wi-Fi power saving off so a VPN holds. If it gets too hot, or the battery reaches 20 %, Rime checkpoints the sessions and suspends anyway. With nothing running, the lid sleeps the laptop as it always did.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime lid status" />
+        <p class="small muted"><a href="/docs/lid">Closing the lid</a>: what counts as live work, the guards, and <code>rime lid report</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="hosts" aria-labelledby="h-h">
+    <div class="split-2">
+      <div>
+        <h2 id="h-h" class="h2s">On the machine next door, too</h2>
+        <p class="muted">Rime reaches your other machines over your own SSH configuration. Run a build on the desktop from the laptop, or start, list and attach to agent sessions on another Rime machine as if they were local. The Agent Center lists them under Remote devices.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime host run katana -- make -j20" />
+        <CommandChip cmd="rime agent list --host katana" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="remote" aria-labelledby="r-h">
+    <div class="split-2">
+      <div>
+        <h2 id="r-h" class="h2s">Rime Remote, on your phone</h2>
+        <p class="muted">Rime Remote is the Android app for your agents. It lists every session on each paired computer, needs-you first. You can watch a session's live terminal and reply when it is waiting, from the keyboard, by voice, or with a photo or file dropped into its inbox. You can also pause, resume, interrupt or stop it, and start a new one in any project, with its own worktree. Nothing runs on the phone: an agent started from it runs on the computer and keeps going when you put the phone away.</p>
+        <p class="muted"><strong>It cannot approve anything that needs root.</strong> By design, and with no setting to change that: the phone shows what is waiting at the machine, and can revoke permissions already given.</p>
+      </div>
+      <div class="stack">
+        <ul class="facts">
+          <li><strong>Pairing:</strong> Settings › Devices › Pair a device shows a code on the computer. It works once, for three minutes, and pins that computer's key on the phone. The phone makes a new key for each computer and keeps it in Android's keystore behind your fingerprint or screen lock.</li>
+          <li><strong>On the phone:</strong> the list of paired computers and their keys, and nothing else. No transcripts, no scrollback, no history, no backup.</li>
+          <li><strong>The connection:</strong> end-to-end encrypted (Noise, X25519 and ChaCha20-Poly1305), direct on your network when it can, otherwise through a relay.</li>
+          <li><strong>Notifications</strong> come through UnifiedPush (ntfy, for instance), with no Google services. Each carries a few encrypted numbers; the text is written on the phone.</li>
+        </ul>
+        <Evidence links={[{ label: "docs/remote.md", href: os("docs/remote.md") }, { label: "android/", href: `${SITE.repos.os}/tree/${SITE.pinned.os}/android` }, { label: "relay/src/", href: `${SITE.repos.os}/tree/${SITE.pinned.os}/relay/src` }]}>
+          The relay is run by the Rime project. In Rime's own words, it "carries encrypted bytes it cannot read but does see both addresses, when you connect and how much data moves". <code>rime remote devices</code> lists paired phones; <code>rime remote revoke</code> ends one immediately.
+        </Evidence>
+        <p class="avail"><Icon name="info" size={16} /> <span><strong>Not released yet.</strong> The app is finished in the repository and CI builds and signs it, but no APK has been published. Until one is, it can only be built from source. When it is, it will be linked here and in <a href="/updates">Updates</a>.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-tight" id="limits" aria-labelledby="x-h">
+    <h2 id="x-h" class="h2s">What agents on Rime don't get</h2>
+    <ul class="limits">
+      <li><strong>Root.</strong> Not by asking, not from a phone. A person approves each privileged operation, at the machine.</li>
+      <li><strong>Your credentials.</strong> They can use the ones you grant through the broker; they can never read them.</li>
+      <li><strong>Your home directory.</strong> Only the project they were started in.</li>
+      <li><strong>A guarantee against a kernel exploit.</strong> The sandbox is for mistakes, and Rime says so.</li>
+    </ul>
+    <p class="sys-end"><a class="btn btn-primary" href="/download"><Icon name="download" /> Download Rime</a> <a class="btn" href="/security#agents">Security</a> <a class="btn" href="/docs/lid">Closing the lid</a></p>
+  </section>
+</Base>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(24px, 3vw, 40px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 62ch; }
+  .agents-stage { padding-bottom: clamp(24px, 4vw, 56px); }
+  .h2s { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: minmax(0, 1fr); } }
+  section.section-tight { border-top: 1px solid var(--rime-hairline); }
+  .split-2 > div > p + p { margin-top: 12px; }
+  .stack > * + * { margin-top: 14px; }
+  .facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); }
+  .facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  .facts strong { color: var(--rime-text-primary); }
+  .measure { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .measure > div { display: grid; gap: 4px; padding: 14px 16px; border-radius: 16px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  .measure .big { font-size: clamp(1.1rem, 0.9rem + 0.8vw, 1.5rem); color: var(--rime-text-primary); }
+  .term { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); overflow-x: auto; font-size: 0.7rem; line-height: 1.6; color: var(--rime-text-secondary); }
+  .avail { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); color: var(--rime-text-secondary); }
+  .avail strong { color: var(--rime-text-primary); }
+  .avail :global(.icon) { flex: none; margin-top: 3px; }
+  .limits { margin: 0 0 28px; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .limits li { padding: 18px; border-radius: 18px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); color: var(--rime-text-secondary); }
+  .limits strong { display: block; color: var(--rime-text-primary); margin-bottom: 6px; }
+  @media (max-width: 520px) { .measure { grid-template-columns: 1fr; } }
+</style>
