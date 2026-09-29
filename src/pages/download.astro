@@ -8,6 +8,7 @@ import Icon from "../components/Icon.astro";
 import CommandChip from "../components/CommandChip.astro";
 import downloads from "../../content/downloads.json";
 import { SITE } from "../data/site";
+import RemoteDownload from "../components/RemoteDownload.astro";
 const cur = downloads.current, iso = cur.artifacts[0];
 const prev = downloads.previous;
 const gb = (b: number) => (b / 1e9).toFixed(2) + " GB";
@@ -100,6 +101,12 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
     </ol>
     <p><a class="btn" href="/docs/install">Full install guide <Icon name="arrow-right" /></a></p>
     <p class="caption measure">Installing beside Windows: shrink Windows yourself first, then choose the installer's option to install into an existing partition. The installer does not shrink Windows for you. There is no Windows-based installer yet.</p>
+  </section>
+
+  <section class="container section-tight" id="remote" aria-labelledby="remote-h">
+    <h2 id="remote-h">Rime Remote for Android</h2>
+    <p class="measure muted">The phone app for your agent sessions: watch them, reply, pause, stop and start them from anywhere. Pair it from a Rime machine's Settings once it's installed. <a href="/agents#remote">What it does, and what it can't</a>.</p>
+    <RemoteDownload heading={false} />
   </section>
 
   {prev && (

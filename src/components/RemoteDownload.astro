@@ -1,0 +1,54 @@
+---
+// Rime Remote for Android, as published: the newest android-v<code> release of
+// rime-os, read by scripts/fetch-downloads.mjs into content/downloads.json with
+// its APK checked against the checksum file, the release's metadata and
+// GitHub's own digest. Nothing here is typed by hand.
+import CommandChip from "./CommandChip.astro";
+import Icon from "./Icon.astro";
+import downloads from "../../content/downloads.json";
+interface Props { headingId?: string; heading?: boolean }
+const { headingId = "remote-dl-h", heading = true } = Astro.props;
+type Remote = {
+  tag: string; name: string; publishedAt: string; url: string; versionName: string; versionCode: number; minSdk: number | null;
+  signingCertificates: string[]; apk: { name: string; url: string; bytes: number; sha256: string }; checksumUrl: string;
+};
+const r = (downloads as unknown as { remote: Remote | null }).remote;
+const ANDROID: Record<number, string> = { 26: "8", 27: "8.1", 28: "9", 29: "10", 30: "11", 31: "12", 32: "12L", 33: "13", 34: "14", 35: "15", 36: "16" };
+const version = r ? r.versionName.split("+")[0] : "";
+const date = r ? new Date(r.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" }) : "";
+const mb = r ? (r.apk.bytes / 1e6).toFixed(1) + " MB" : "";
+---
+{r ? (
+  <div class="remote-dl" aria-labelledby={heading ? headingId : undefined}>
+    <div class="rd-head">
+      <Icon name="download" size={20} />
+      <div>
+        {heading && <h3 id={headingId}>Rime Remote {version} for Android</h3>}
+        <p class="caption">Published {date} · Android {r.minSdk ? (ANDROID[r.minSdk] ?? `API ${r.minSdk}`) : "?"} or later · {mb} · build {r.versionCode}</p>
+      </div>
+    </div>
+    <p class="rd-actions"><a class="btn btn-primary" href={r.apk.url}><Icon name="download" /> Download the APK</a> <a class="btn" href="/docs/remote">Install and pair</a> <a class="btn" href={r.url}>Release notes</a></p>
+    <dl class="rd-facts">
+      <div><dt>SHA-256</dt><dd class="mono">{r.apk.sha256}</dd></div>
+      <div><dt>Signed by</dt><dd class="mono">{r.signingCertificates.join(" ")}</dd></div>
+    </dl>
+    <CommandChip wrap cmd={`apksigner verify --print-certs ${r.apk.name}`} />
+    <p class="small muted">The certificate's SHA-256 digest must match "Signed by". Android will only ever update the app from an APK signed by the same key, and the app checks Rime's releases for updates itself.</p>
+  </div>
+) : (
+  <p class="remote-none"><Icon name="info" size={16} /> <span><strong>Not released yet.</strong> The app is finished in the repository, but no APK has been published.</span></p>
+)}
+
+<style>
+  .remote-dl { display: grid; gap: 14px; padding: clamp(18px, 2.4vw, 26px); border-radius: 20px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); }
+  .rd-head { display: flex; gap: 12px; align-items: flex-start; }
+  .rd-head :global(.icon) { flex: none; margin-top: 4px; color: var(--rime-accent-text); }
+  .rd-head h3 { font-size: 1.1rem; margin-bottom: 2px; }
+  .rd-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+  .rd-facts { display: grid; gap: 8px; margin: 0; }
+  .rd-facts dt { font-size: 0.76rem; font-weight: 600; color: var(--rime-text-secondary); }
+  .rd-facts dd { margin: 0; font-size: 0.78rem; overflow-wrap: anywhere; color: var(--rime-text-primary); }
+  .remote-none { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); color: var(--rime-text-secondary); }
+  .remote-none :global(.icon) { flex: none; margin-top: 3px; }
+  .remote-none strong { color: var(--rime-text-primary); }
+</style>

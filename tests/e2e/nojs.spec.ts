@@ -17,6 +17,12 @@ test("download links straight to the published ISO", async ({ page }) => {
   const href = await page.locator("[data-download-start]").first().getAttribute("href");
   expect(href).toMatch(/^https:\/\/github\.com\/AndreNijman\/rime-os\/releases\/download\/v\d+\.\d+\.\d+\/.+\.iso$/);
 });
+test("the Android app links straight to its published, signed release", async ({ page }) => {
+  await page.goto("/download#remote");
+  const href = await page.locator("#remote a", { hasText: "Download the APK" }).getAttribute("href");
+  expect(href).toMatch(/^https:\/\/github\.com\/AndreNijman\/rime-os\/releases\/download\/android-v\d+\/rime-remote-.+\.apk$/);
+  await expect(page.locator("#remote")).toContainText("9b2418f3cd37ba2ae83cdaeec5068280e02dc64135fdb1bb9fcb247326a66c67");
+});
 test("release notes are complete", async ({ page }) => {
   await page.goto("/updates/2026.09.28.4");
   await expect(page.locator("#known-issues li").first()).toBeVisible();
