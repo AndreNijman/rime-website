@@ -1615,6 +1615,48 @@
    "scheme": "dark",
    "reduced": false,
    "clips": {
+    "agents-dashboard": {
+     "from": "agents",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.276,
+     "settle": 0.374,
+     "av1": "/media/shell/rime-default-dark/agents-dashboard.3a88f9d1e2.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/agents-dashboard.6765582e19.h264.mp4"
+    },
+    "agents-rest": {
+     "from": "agents",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.646,
+     "settle": 0.58,
+     "av1": "/media/shell/rime-default-dark/agents-rest.2abdd485be.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/agents-rest.b8c584a7aa.h264.mp4"
+    },
+    "dashboard-agents": {
+     "from": "dashboard",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.281,
+     "settle": 0.268,
+     "av1": "/media/shell/rime-default-dark/dashboard-agents.08be4b03e5.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/dashboard-agents.0bf5636664.h264.mp4"
+    },
     "dashboard-network": {
      "from": "dashboard",
      "to": "network",
@@ -1741,6 +1783,20 @@
      "av1": "/media/shell/rime-default-dark/notifications-rest.afa7669b70.av1.mp4",
      "h264": "/media/shell/rime-default-dark/notifications-rest.208906b30d.h264.mp4"
     },
+    "rest-agents": {
+     "from": "rest",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.211,
+     "settle": 0.809,
+     "av1": "/media/shell/rime-default-dark/rest-agents.48ddcef67f.av1.mp4",
+     "h264": "/media/shell/rime-default-dark/rest-agents.68ab5fd826.h264.mp4"
+    },
     "rest-dashboard": {
      "from": "rest",
      "to": "dashboard",
@@ -1825,6 +1881,27 @@
      }
     ],
     "jpg": "/media/shell/rime-default-dark/dashboard.69460b269b.1920.jpg"
+   },
+   "agents": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-dark/agents.a2ce27c66d.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-dark/agents.a2ce27c66d.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-dark/agents.a2ce27c66d.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-dark/agents.a2ce27c66d.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-dark/agents.a2ce27c66d.1920.jpg"
    }
   },
   "rime-default-dark-reduced": {
@@ -1832,6 +1909,48 @@
    "scheme": "dark",
    "reduced": true,
    "clips": {
+    "agents-dashboard": {
+     "from": "agents",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.283,
+     "settle": 0.156,
+     "av1": "/media/shell/rime-default-dark-reduced/agents-dashboard.214812948f.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/agents-dashboard.79357c68ea.h264.mp4"
+    },
+    "agents-rest": {
+     "from": "agents",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.215,
+     "settle": 0.15,
+     "av1": "/media/shell/rime-default-dark-reduced/agents-rest.73ad0281a2.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/agents-rest.49a6bdbf9f.h264.mp4"
+    },
+    "dashboard-agents": {
+     "from": "dashboard",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.287,
+     "settle": 0.172,
+     "av1": "/media/shell/rime-default-dark-reduced/dashboard-agents.53c084e432.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/dashboard-agents.7cd1e2e64f.h264.mp4"
+    },
     "dashboard-network": {
      "from": "dashboard",
      "to": "network",
@@ -1958,6 +2077,20 @@
      "av1": "/media/shell/rime-default-dark-reduced/notifications-rest.f716398b50.av1.mp4",
      "h264": "/media/shell/rime-default-dark-reduced/notifications-rest.aa757be668.h264.mp4"
     },
+    "rest-agents": {
+     "from": "rest",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.261,
+     "settle": 0.159,
+     "av1": "/media/shell/rime-default-dark-reduced/rest-agents.4dcac145e7.av1.mp4",
+     "h264": "/media/shell/rime-default-dark-reduced/rest-agents.1fdf54782a.h264.mp4"
+    },
     "rest-dashboard": {
      "from": "rest",
      "to": "dashboard",
@@ -2008,6 +2141,48 @@
    "scheme": "light",
    "reduced": false,
    "clips": {
+    "agents-dashboard": {
+     "from": "agents",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.284,
+     "settle": 0.308,
+     "av1": "/media/shell/rime-default-light/agents-dashboard.df84ef6c58.av1.mp4",
+     "h264": "/media/shell/rime-default-light/agents-dashboard.a1be3bf821.h264.mp4"
+    },
+    "agents-rest": {
+     "from": "agents",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1168
+     ],
+     "duration": 0.623,
+     "settle": 0.556,
+     "av1": "/media/shell/rime-default-light/agents-rest.a889eb8fdc.av1.mp4",
+     "h264": "/media/shell/rime-default-light/agents-rest.bbb109008d.h264.mp4"
+    },
+    "dashboard-agents": {
+     "from": "dashboard",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.278,
+     "settle": 0.284,
+     "av1": "/media/shell/rime-default-light/dashboard-agents.a0b0aff531.av1.mp4",
+     "h264": "/media/shell/rime-default-light/dashboard-agents.9216a16c38.h264.mp4"
+    },
     "dashboard-network": {
      "from": "dashboard",
      "to": "network",
@@ -2134,6 +2309,20 @@
      "av1": "/media/shell/rime-default-light/notifications-rest.19a0dd78c7.av1.mp4",
      "h264": "/media/shell/rime-default-light/notifications-rest.d4a948578f.h264.mp4"
     },
+    "rest-agents": {
+     "from": "rest",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.239,
+     "settle": 0.579,
+     "av1": "/media/shell/rime-default-light/rest-agents.2dd6cec963.av1.mp4",
+     "h264": "/media/shell/rime-default-light/rest-agents.9c92126451.h264.mp4"
+    },
     "rest-dashboard": {
      "from": "rest",
      "to": "dashboard",
@@ -2218,6 +2407,27 @@
      }
     ],
     "jpg": "/media/shell/rime-default-light/dashboard.be26ebdfb1.1920.jpg"
+   },
+   "agents": {
+    "avif": [
+     {
+      "w": 1280,
+      "src": "/media/shell/rime-default-light/agents.e57bdcc7fd.1280.avif"
+     },
+     {
+      "w": 1920,
+      "src": "/media/shell/rime-default-light/agents.e57bdcc7fd.1920.avif"
+     },
+     {
+      "w": 2560,
+      "src": "/media/shell/rime-default-light/agents.e57bdcc7fd.2560.avif"
+     },
+     {
+      "w": 3840,
+      "src": "/media/shell/rime-default-light/agents.e57bdcc7fd.3840.avif"
+     }
+    ],
+    "jpg": "/media/shell/rime-default-light/agents.e57bdcc7fd.1920.jpg"
    }
   },
   "rime-default-light-reduced": {
@@ -2225,6 +2435,48 @@
    "scheme": "light",
    "reduced": true,
    "clips": {
+    "agents-dashboard": {
+     "from": "agents",
+     "to": "dashboard",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.289,
+     "settle": 0.817,
+     "av1": "/media/shell/rime-default-light-reduced/agents-dashboard.acbf217373.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/agents-dashboard.de7064ce3f.h264.mp4"
+    },
+    "agents-rest": {
+     "from": "agents",
+     "to": "rest",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 0.217,
+     "settle": 0.148,
+     "av1": "/media/shell/rime-default-light-reduced/agents-rest.ae9cca1407.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/agents-rest.f545583e6e.h264.mp4"
+    },
+    "dashboard-agents": {
+     "from": "dashboard",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.275,
+     "settle": 0.183,
+     "av1": "/media/shell/rime-default-light-reduced/dashboard-agents.f57e701828.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/dashboard-agents.be56e00397.h264.mp4"
+    },
     "dashboard-network": {
      "from": "dashboard",
      "to": "network",
@@ -2350,6 +2602,20 @@
      "settle": 0.173,
      "av1": "/media/shell/rime-default-light-reduced/notifications-rest.b675121dbf.av1.mp4",
      "h264": "/media/shell/rime-default-light-reduced/notifications-rest.52d7b800a9.h264.mp4"
+    },
+    "rest-agents": {
+     "from": "rest",
+     "to": "agents",
+     "box": [
+      912,
+      0,
+      2016,
+      1184
+     ],
+     "duration": 1.257,
+     "settle": 0.157,
+     "av1": "/media/shell/rime-default-light-reduced/rest-agents.a73fba8282.av1.mp4",
+     "h264": "/media/shell/rime-default-light-reduced/rest-agents.42148c0558.h264.mp4"
     },
     "rest-dashboard": {
      "from": "rest",

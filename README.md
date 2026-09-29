@@ -87,7 +87,9 @@ node scripts/build-stage.mjs /var/tmp/rime-capture                              
 - **What is real:** the Shell's code and a fresh install's settings, the fonts
   and icons installed on the machine, and each scene's palette (the `source`
   block of `src/data/scenes.json`, i.e. matugen through the Shell's template).
-- **What is canned:** Wi-Fi (rime-shell's `fake-nmcli`), Bluetooth, brightness,
+- **What is canned:** agent sessions for the Agent Center (`fakes/rime` answers
+  `rime agent list --json` and `rime request pending --json` from
+  `fakes/agents.json`, in rime-os's own shapes), Wi-Fi (rime-shell's `fake-nmcli`), Bluetooth, brightness,
   uptime and the account name (`scripts/capture/fakes/`), the NetworkManager and
   UPower the bar reads for its Wi-Fi and battery icons (a private system bus,
   `fakes/system-bus.py`, on the real interfaces' introspection XML), three notifications
@@ -105,6 +107,9 @@ node scripts/build-stage.mjs /var/tmp/rime-capture                              
   start of the next (so clips chain on the same frame), crops it to what differs
   from the resting desktop, and encodes AV1 and H.264. The page shows the rest
   still and plays clips over it, feathered at their inner edges (`stage.ts`).
+  A working agent's badge breathes for as long as it works, so the Agent Center
+  takes are marked `ambient`: pixels that move while a state is at rest are left
+  out when `cut.py` looks for a transition's start and settle.
 
 ## Palettes
 

@@ -36,6 +36,13 @@ describe("recorded stage", () => {
     expect(V["rime-default-dark-reduced"].restFrom).toBe("rime-default-dark");
   });
 
+  it("has the Agent Center for the default scene: in and out, and to and from the Dashboard's first tab", () => {
+    for (const k of ["rime-default-dark", "rime-default-light", "rime-default-dark-reduced", "rime-default-light-reduced"])
+      for (const c of ["rest-agents", "agents-rest", "dashboard-agents", "agents-dashboard"]) expect(V[k]?.clips[c], `${k} ${c}`).toBeTruthy();
+    for (const k of ["rime-default-dark", "rime-default-light"])
+      expect((V[k] as Variant & { agents?: unknown }).agents, `${k} Agent Center still`).toBeTruthy();
+  });
+
   it("keeps every clip inside the frame, settling within its length, with both codecs on disk", () => {
     const [W, H] = stage.size;
     for (const [k, v] of Object.entries(V))

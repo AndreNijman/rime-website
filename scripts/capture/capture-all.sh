@@ -6,8 +6,10 @@
 #  The default scene (the wallpaper a fresh install starts with), dark and
 #  light, with full motion and with Reduce Motion: every transition between
 #  rest, the Dashboard, Wi-Fi and the notification centre, cross edges
-#  included. The five other scenes, dark and light: each surface opening and
-#  closing, and Wi-Fi <-> notifications. Takes already recorded are kept.
+#  included, and the Agent Center (the Dashboard's Agents tab) in and out and
+#  to and from the Dashboard's first tab. The five other scenes, dark and
+#  light: each surface opening and closing, and Wi-Fi <-> notifications. Takes
+#  already recorded are kept.
 #  Then cut.py makes the clips; build-stage.mjs publishes them.
 # ─────────────────────────────────────────────────────────────────────────────
 set -uo pipefail
@@ -18,7 +20,7 @@ walls="$here/../../assets/wallpapers"
 mkdir -p "$work"
 python3 "$here/palettes.py" "$work/palettes" >/dev/null
 
-ALL=(dash network notifications dash-network network-dash dash-notifications notifications-dash)
+ALL=(dash network notifications dash-network network-dash dash-notifications notifications-dash agents dash-agents agents-dash)
 BASIC=(dash network notifications)
 
 wall_of() { [ "$1" = rime-default ] && echo "$walls/rime-wallpaper-default.jpg" || echo "$walls/scene-$1.jpg"; }

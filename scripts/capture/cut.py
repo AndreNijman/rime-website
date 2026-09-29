@@ -59,6 +59,8 @@ def main(take_dir, out_dir):
     # the latency between the first request and the motion it caused.
     rec_t0 = meta["rec_t0_ns"] / 1e9
     events = meta["events"]            # [{"t_ns", "from", "to"}]
+    if meta.get("ambient"):
+        diff = without_ambient(frames, pts, diff, events, rec_t0, speed)
     # The first request finds the recorder's own latency (nothing moves for
     # seconds before it); later ones are looked for just after their request,
     # so the Dashboard's ticking seconds (requests are made mid-second) are
@@ -144,6 +146,42 @@ def main(take_dir, out_dir):
     manifest.update({"size": [FULL_W, FULL_H], "shell": meta["shell"], "speed": speed,
                      "scene": meta["scene"], "scheme": meta["scheme"], "reduced": meta["reduced"]})
     json.dump(manifest, open(manifest_path, "w"), indent=1, sort_keys=True)
+
+
+def without_ambient(frames, pts, diff, events, rec_t0, speed):
+    """The frame differences with a state's own resting motion taken out.
+
+    Some states never stop moving: a working agent's badge breathes for as long
+    as it works. Every pixel that changes at all while a state is at rest (from
+    HOLD after its request until just before the next; the timetable is in real
+    seconds, four apart) is ambient; the differences are counted again without
+    those pixels, so a transition's start, its lead-in and its settle are found
+    as in any other take. Clips still carry the motion.
+    """
+    n = len(frames)
+    first = next(k for k in range(n) if diff[k] > ONSET)      # the first request's motion
+    lat = pts[first] - (events[0]["t_ns"] / 1e9 - rec_t0)
+    hold = 2.6                                                  # real seconds: a transition has settled by then
+    ambient = np.zeros(frames.shape[1:3], bool)
+    for k, ev in enumerate(events[:-1]):
+        if ev["to"] == "rest":
+            continue
+        w0 = events[k]["t_ns"] / 1e9 - rec_t0 + lat + hold
+        w1 = events[k + 1]["t_ns"] / 1e9 - rec_t0 + lat - 0.15
+        idx = [i for i in range(1, n) if w0 <= pts[i] <= w1]
+        for i in idx:
+            ambient |= np.abs(frames[i].astype(np.int16) - frames[i - 1]).max(axis=2) > 1   # a slow fade moves a level at a time
+    if not ambient.any():
+        return diff
+    # grow it by two analysis pixels: a fade's edge lands on its neighbours
+    grown = ambient.copy()
+    for dy in (-2, -1, 0, 1, 2):
+        for dx in (-2, -1, 0, 1, 2):
+            grown |= np.roll(np.roll(ambient, dy, 0), dx, 1)
+    keep = ~grown
+    print(f"ambient: {int(grown.sum())} of {grown.size} analysis pixels move at rest")
+    return [0.0] + [float(((np.abs(frames[i].astype(np.int16) - frames[i - 1]).max(axis=2) > 3) & keep).mean())
+                    for i in range(1, n)]
 
 
 def decode_frame(path, t):
