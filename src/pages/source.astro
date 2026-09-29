@@ -10,7 +10,7 @@ const files = Object.entries(source.files);
   <header class="container page-hero">
     <p class="eyebrow">Source</p>
     <h1>Built in the open.</h1>
-    <p class="lead">Rime is two repositories: the operating system and the desktop. Every release page links the exact revisions it was built from.</p>
+    <p class="lead">Rime is two repositories: the operating system and the desktop. This website is a third. Every release page links the exact revisions it was built from.</p>
   </header>
   <section class="container section-tight prose">
     <h2>Repositories</h2>
@@ -19,6 +19,7 @@ const files = Object.entries(source.files);
       <tbody>
         <tr><td><a href={SITE.repos.os}>AndreNijman/rime-os</a></td><td>The image, the <code>rime</code> command and its daemons, the installer, the package engine</td><td>Declared MIT in its metadata and image labels. A licence file is not committed yet.</td></tr>
         <tr><td><a href={SITE.repos.shell}>AndreNijman/rime-shell</a></td><td>Rime Shell, the Quickshell desktop</td><td>MIT. Rime Shell began as a fork of Brain_Shell by Brainitech (Venkat Saahit Kamu), used under the MIT licence.</td></tr>
+        <tr><td><a href={SITE.repos.website}>AndreNijman/rime-website</a></td><td>This website, rimeos.com</td><td>MIT. The Shell files it vendors keep the Shell's MIT notice.</td></tr>
       </tbody>
     </table>
     <h2>Third-party code the Shell carries</h2>
@@ -33,13 +34,13 @@ const files = Object.entries(source.files);
       <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
       <tbody>{files.map(([p, r]) => <tr><td><code>{p}</code></td><td class="mono">{(r as { sha256: string }).sha256}</td></tr>)}</tbody>
     </table>
-    <p>The frame at the top of every page is drawn by the Shell's <code>barSilhouette</code>; the site map blooms out of the centre notch and the download panel pours out of the right one on a port of <code>SurfaceLifecycle.qml</code>. The desktops on the home, Shell and Personalise pages are not drawn by the site: they are recordings of the real Rime Shell, <span class="mono">shell.qml</span> itself, run in a headless Hyprland at 3840 × 2400 with a fresh install's settings and the palette matugen makes from each wallpaper. Every transition was recorded as its own clip, and the page plays them over a still of the desktop as you click. The recorder is in the site's <span class="mono">scripts/capture/</span>.</p>
+    <p>The frame at the top of every page is drawn by the Shell's <code>barSilhouette</code>; the site map blooms out of the centre notch and the download panel pours out of the right one on a port of <code>SurfaceLifecycle.qml</code>. The desktops on the home, Shell and Personalise pages are not drawn by the site: they are recordings of the real Rime Shell, <span class="mono">shell.qml</span> itself, run in a headless Hyprland at 3840 × 2400 with a fresh install's settings and the palette matugen makes from each wallpaper. Every transition was recorded as its own clip, and the page plays them over a still of the desktop as you click. The recorder is in the site's <a href={`${SITE.repos.website}/tree/main/scripts/capture`} class="mono">scripts/capture/</a>.</p>
 
     <h2 id="palettes">Palettes</h2>
     <p>The site's scene script (<code>scripts/build-scenes.mjs</code>, its output committed and re-checkable with <code>npm run scenes:check</code>) runs each scene through {scenes.generator.matugen} with the command Rime Shell uses — <code>{scenes.generator.command}</code> — in an empty home directory, mapped as <code>{scenes.generator.mapping}</code> maps it, and resolved by <code>roles.js</code>. Before writing anything, it regenerates Rime's default wallpaper and compares the result with the Shell's own test fixture; if they differ by a single digit, it stops. It stops too if any role misses WCAG AA where the site uses it.</p>
     <p>The password shapes on the Shell page come from the same revision's <code>materialpath.js</code>, evaluated by <code>scripts/gen-shapes.mjs</code> ({shapes.order.length} shapes; {shapes.licence}).</p>
-    <h2>This site's own source</h2>
-    <p>The website's repository is not public yet. When it is, it will be linked here.</p>
+    <h2 id="this-site">This site's own source</h2>
+    <p>The website is open source too: <a href={SITE.repos.website} class="mono">AndreNijman/rime-website</a>, under the MIT licence. It holds everything this page describes: the vendored Shell files and the build step that checks their hashes, the scene and palette scripts, the recorder and the recordings it made, the release records behind every update page, and the tests that gate each build. Its README explains how to build and run it.</p>
   </section>
 </Base>
 <style>

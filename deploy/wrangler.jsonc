@@ -1,0 +1,22 @@
+{
+  // rimeos.com: the static site in dist/ served by one Worker with static assets.
+  // From the repository root:
+  //   npm run build && npx wrangler deploy -c deploy/wrangler.jsonc --env production
+  // Paths resolve relative to this file. The Worker is rimeos-production.
+  "name": "rimeos",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    // so www can be sent to the apex before any asset is served
+    "run_worker_first": true
+  },
+  // rimeos.com and www.rimeos.com are attached to rimeos-production as Workers
+  // Custom Domains (dashboard: the Worker → Settings → Domains & Routes), not
+  // declared here.
+  "observability": { "enabled": false },
+  "env": { "production": {} }
+}

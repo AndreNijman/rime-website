@@ -117,4 +117,6 @@ for (const [path, listed] of Object.entries(FILES)) {
   record.files[path] = { sha256: sha256(text), exports: names };
   console.log(`vendored ${path} @ ${ref.slice(0, 8)} (${names.length} exports)`);
 }
+// MIT: the notice travels with the copies.
+writeFileSync(join(OUT, "LICENSE"), execFileSync("git", ["-C", repo, "show", `${ref}:LICENSE`], { encoding: "utf8" }));
 writeFileSync(SOURCE, JSON.stringify(record, null, 2) + "\n");

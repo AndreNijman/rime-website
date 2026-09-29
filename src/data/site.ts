@@ -10,6 +10,7 @@ export const SITE = {
   repos: {
     os: "https://github.com/AndreNijman/rime-os",
     shell: "https://github.com/AndreNijman/rime-shell",
+    website: "https://github.com/AndreNijman/rime-website",
   },
   // The OS and Shell revisions this site's product claims were checked against.
   pinned: { os: "2d9c5438a", shell: "9161e30c" },

@@ -1,6 +1,7 @@
 {
   "name": "rimeos-web",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "version": "0.1.0",
   "description": "rimeos.com — the website for Rime",
