@@ -17,6 +17,11 @@
   // rimeos.com and www.rimeos.com are attached to rimeos-production as Workers
   // Custom Domains (dashboard: the Worker → Settings → Domains & Routes), not
   // declared here.
+  // rimeos.com is the only address: no <name>.<account>.workers.dev URL and no
+  // per-version preview URLs (the workers.dev name is the whole Cloudflare
+  // account's, shared with unrelated Workers).
+  "workers_dev": false,
+  "preview_urls": false,
   "observability": { "enabled": false },
   "env": { "production": {} }
 }

@@ -215,8 +215,8 @@ rimeos.com is `dist/` served by one Cloudflare Worker with static assets
 (`deploy/`). The asset server applies `public/_headers` and `public/_redirects`
 as Cloudflare Pages would. The Worker sends `http://` and `www.` to
 `https://rimeos.com`, answers byte ranges for the stage's clips (the asset
-server ignores `Range`, and Safari will not play a video without `206`), and
-marks the `workers.dev` preview host `noindex`.
+server ignores `Range`, and Safari will not play a video without `206`).
+rimeos.com is its only address: `workers_dev` and `preview_urls` are off.
 
 ```sh
 npm run build
