@@ -229,10 +229,11 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
       background: var(--rime-surface-base); border-radius: 0 0 14px 14px; box-shadow: 0 1px 0 var(--rime-hairline);
     }
   }
-  /* A phone has no Esc key: the hint becomes a close button in its place. */
+  /* A phone or tablet has no Esc key: the hint becomes a close button in its
+   * place, and the keyboard hints go. */
   .lens-close { display: none; }
-  @media (max-width: 760px) {
-    .lens kbd { display: none; }
+  @media (max-width: 760px), (pointer: coarse) {
+    .lens kbd, .bloom-hint { display: none; }
     .lens { padding-right: 4px; }
     .lens-close {
       display: inline-flex; align-items: center; justify-content: center; flex: none; width: 44px; height: 44px;
@@ -334,12 +335,25 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   }
   .status-capsule[hidden] { display: none; }
 
+  /* A short screen caps the download panel (frame.ts pourH): scroll inside it
+   * rather than clip it. */
+  @media (max-height: 600px), (max-width: 760px), (pointer: coarse) {
+    .pour-content { overflow-y: auto; overscroll-behavior: contain; }
+  }
+  /* Touch on the full bar (tablets, phones in landscape): the bar is 34 px
+   * inside, so each control's hit area reaches past its pill to 44 px. */
+  @media (pointer: coarse) and (min-width: 761px) {
+    .frame-home, .frame-trigger, .frame-link, .frame-download { position: relative; }
+    .frame-home::before, .frame-trigger::before, .frame-link::before, .frame-download::before {
+      content: ""; position: absolute; inset: -7px -3px;
+    }
+  }
+
   /* phones: the surfaces' own targets, after the rules they override */
   @media (max-width: 760px) {
-    /* A short phone caps the sheet (frame.ts pourH): its content scrolls
-     * inside it rather than being clipped, and neither surface lets a swipe
+    /* The sheet clears the home indicator; neither surface lets a swipe
      * scroll the page behind. */
-    .pour-content { padding-bottom: calc(24px + env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; }
+    .pour-content { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
     .bloom-nav, .lens-results { overscroll-behavior: contain; }
     .fluid-backdrop { touch-action: none; }
     .pour-actions .btn { flex: 1 1 100%; }
