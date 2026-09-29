@@ -48,7 +48,7 @@ export function initFrame(): void {
   // ── the bar ────────────────────────────────────────────────────────────────
   function drawBar() {
     svg.setAttribute("viewBox", `0 0 ${W} ${NH}`);
-    strip.toggleAttribute("hidden", !mobile);
+    strip.toggleAttribute("data-on", mobile);
     if (!mobile) {
       const g = { w: W, strip: B, h: NH, shoulder: SH, bottom: NB, leftW: L_W, centerW: C_W, rightW: R_W, rightBottomL: NB };
       fill.setAttribute("d", Geo.barSilhouette(g).path);
