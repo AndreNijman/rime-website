@@ -1,0 +1,54 @@
+# Image build: build-image run 36566531655 (push to main, merge of rime-os #74,
+# which vendored rime-shell main 10326c97 = #33). date = when the run finished
+# (2026-09-29 20:54:35 AWST). Published under ghcr.io/andrenijman/rime-os AND
+# ghcr.io/andrenijman/apex-os, every channel tag; core reused.
+# Add as rime-website content/updates/2026.09.29.2/release.yaml.
+schema: 1
+id: "2026.09.29.2"
+product: rime
+name: "Rime 2026.09.29.2"
+title: "Images paste into agents, and Super+Tab and the workspace dots stay put"
+date: "2026-09-29T12:54:35Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia", "platform-rime", "rime"]
+summary: "Pasting a screenshot into an agent works, a compositor setting in Settings can no longer hide the workspace dots, the layout button and Super+Tab, and on a new install, logging in unlocks the keyring."
+predecessor: "2026.09.29"
+provenance:
+  osRevision: "970de58f5ec3976833496af734faabe3c810fb95"
+  shellRevision: "10326c977a854f326f22bbb73b0c649a9ae65ac8"
+  imageDigest: "sha256:fd9008d5462b6a76cee588499ad8f56a824b29223dc55fbdddcc4737ef8062b1"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36566531655"
+  iso: null
+highlights: ["agent-image-paste", "compositor-pin", "keyring-at-login"]
+changes:
+  - id: "keyring-at-login"
+    area: system
+    kind: fixed
+    title: "On a new install, logging in unlocks the keyring"
+    summary: "The password you type at the login screen never reached the keyring, so the first app that needed it asked for the password again. A new install now opens its keyring at login."
+    detail: "A computer that already has a keyring may still be asked once more after this update. The next update moves an existing keyring over as well."
+    source: ["https://github.com/AndreNijman/rime-os/pull/74"]
+    breaking: false
+  - id: "agent-image-paste"
+    area: agents
+    kind: fixed
+    title: "Pasting an image into an agent works"
+    summary: "Pasting a screenshot into Claude Code did nothing: agent sessions could not reach your desktop's clipboard. Sessions without a sandbox now can. Sandboxed sessions still cannot, by design."
+    source: ["https://github.com/AndreNijman/rime-os/pull/74"]
+    breaking: false
+  - id: "compositor-pin"
+    area: shell
+    kind: fixed
+    title: "A compositor setting can no longer hide the workspace dots, the layout button and Super+Tab"
+    summary: "Choosing Scrolling under Settings → Misc → Compositor while on the Tiling desktop made the shell talk to a compositor that was not running. The bar lost its workspace dots and layout button, and Super+Tab did nothing. That setting now only applies while its compositor is the one running, and Settings says when it is being ignored."
+    detail: "This setting never changed how windows are arranged. That is the layout button in the bar, or the desktop you pick at login."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/33"]
+    breaking: false
+  - id: "repository-name"
+    area: shell
+    kind: fixed
+    title: "Settings → Misc links to the rime-shell repository"
+    summary: "The About section still named the repository by its old APEX name."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/33"]
+    breaking: false
+knownIssues: []
+rollback: null
