@@ -3,6 +3,7 @@
 // running text are exempt (WCAG 2.5.8), as are the visually hidden radios
 // whose label is the target. Chromium and WebKit; Firefox has no mobile mode.
 import { test, expect } from "@playwright/test";
+import sharp from "sharp";
 import { PAGES } from "./pages";
 
 const EXTRA = ["/docs/updating", "/docs/shortcuts", "/journal/springs-on-the-wall-clock"];
@@ -30,6 +31,29 @@ for (const [w, h] of [[390, 844], [320, 640]] as const)
         expect(r.small, r.small.join("\n")).toEqual([]);
       });
   });
+
+test.describe("phone frame", () => {
+  test.skip(({ browserName }) => browserName === "firefox", "no isMobile in Firefox");
+  for (const scheme of ["dark", "light"] as const)
+    test(`the capsule hangs from a solid strip (${scheme})`, async ({ page }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto("/download");
+      await page.waitForTimeout(300);
+      // The strip above the capsule's middle, the capsule itself, and the strip
+      // beside it must be one colour: a shape whose parts cancel out left a
+      // band of page showing through above the capsule.
+      const png = await page.screenshot({ clip: { x: 0, y: 0, width: 390, height: 50 } });
+      const { data, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
+      const px = (x: number, y: number) => { const i = (y * info.width + x) * info.channels; return [data[i], data[i + 1], data[i + 2]]; };
+      const s = info.width / 390;
+      const capsule = px(Math.round(120 * s), Math.round(40 * s));
+      for (const [x, y] of [[195, 2], [120, 3], [3, 2], [387, 3]]) {
+        const got = px(Math.round(x * s), Math.round(y * s));
+        expect(Math.max(...got.map((v, i) => Math.abs(v - capsule[i]))), `strip at ${x},${y}`).toBeLessThanOrEqual(3);
+      }
+    });
+});
 
 test.describe("phone surfaces", () => {
   test.skip(({ browserName }) => browserName === "firefox", "no isMobile in Firefox");

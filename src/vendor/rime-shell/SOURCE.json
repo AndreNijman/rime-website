@@ -1,7 +1,7 @@
 {
   "repo": "https://github.com/AndreNijman/rime-shell",
-  "ref": "6289d1f89916d3432ca3bd1f4ca68db7141559d9",
-  "vendoredAt": "2026-09-28T14:30:21.097Z",
+  "ref": "9161e30c4c2928919d5ec4bfdefd0582869a4f8b",
+  "vendoredAt": "2026-09-29T03:25:32.569Z",
   "files": {
     "src/theme/motion.js": {
       "sha256": "2164dad00e08a599125082908aa772461b280d898bb6edb8cce3927c02d76326",
@@ -49,7 +49,7 @@
       ]
     },
     "src/shapes/fluid/geometry.js": {
-      "sha256": "6abf92d813429885ab5aeb5e291275e704182e766cb84402d8500bf50dc6eafc",
+      "sha256": "067f3e5a35c5efb7f97d61d901ba63439e1de388ecd8e8d580f1c45cec671d3b",
       "exports": [
         "KAPPA",
         "Path",

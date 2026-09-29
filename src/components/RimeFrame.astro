@@ -35,6 +35,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
 <header class="rime-frame" data-frame data-section={section}>
   <a class="skip-link" href="#main">Skip to content</a>
   <svg class="frame-bar" viewBox={`0 0 ${W0} ${T1.notchHeight}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <rect class="bar-strip" x="0" y="0" width="100%" height={T1.borderWidth} data-bar-strip hidden />
     <path class="bar-fill" d={ssr.path} />
     <path class="bar-line" d={ssrLine.path} />
   </svg>
@@ -158,7 +159,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
     pointer-events: none; color: var(--rime-text-primary);
   }
   .frame-bar { position: absolute; inset: 0; width: 100%; height: var(--notch-h); overflow: visible; }
-  .bar-fill { fill: var(--rime-surface-base); transition: fill var(--dur-state) var(--ease-effects); }
+  .bar-fill, .bar-strip { fill: var(--rime-surface-base); transition: fill var(--dur-state) var(--ease-effects); }
   .bar-line { fill: none; stroke: var(--rime-hairline); stroke-width: 1; vector-effect: non-scaling-stroke; }
   :root[data-scheme="light"] .bar-line, :root:not([data-scheme]) .bar-line { stroke: var(--rime-outline-soft); }
   .frame-zones { position: absolute; inset: 0; pointer-events: none; }

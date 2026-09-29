@@ -36,6 +36,7 @@ export function initFrame(): void {
   document.documentElement.classList.add("js");
   const svg = frame.querySelector<SVGSVGElement>(".frame-bar")!;
   const fill = svg.querySelector<SVGPathElement>(".bar-fill")!;
+  const strip = svg.querySelector<SVGRectElement>("[data-bar-strip]")!;
   const line = svg.querySelector<SVGPathElement>(".bar-line")!;
 
   let W = frame.clientWidth, VH = window.innerHeight;
@@ -47,6 +48,7 @@ export function initFrame(): void {
   // ── the bar ────────────────────────────────────────────────────────────────
   function drawBar() {
     svg.setAttribute("viewBox", `0 0 ${W} ${NH}`);
+    strip.toggleAttribute("hidden", !mobile);
     if (!mobile) {
       const g = { w: W, strip: B, h: NH, shoulder: SH, bottom: NB, leftW: L_W, centerW: C_W, rightW: R_W, rightBottomL: NB };
       fill.setAttribute("d", Geo.barSilhouette(g).path);
@@ -55,10 +57,13 @@ export function initFrame(): void {
       frame.style.setProperty("--c-w", `${C_W}px`);
       frame.style.setProperty("--r-w", `${R_W}px`);
     } else {
-      // One capsule: the strip and the centre notch, as barNotch draws it.
+      // One capsule: the strip and the centre notch, as barNotch draws it. The
+      // strip is its own rect: barNotch's outline also covers the strip above
+      // the notch (rime-shell e541c0f1), and as two sub-paths of one shape the
+      // overlap would cancel out wherever their windings disagree.
       const x = Math.round(W / 2) - Math.round(capsuleW / 2);
       const n = Geo.barNotch({ x, w: Math.round(capsuleW), strip: B, h: NH, shoulder: SH, bottomL: NB, bottomR: NB });
-      fill.setAttribute("d", `M 0 0 L ${W} 0 L ${W} ${B} L 0 ${B} Z ${n.path}`);
+      fill.setAttribute("d", n.path);
       const i = 0.5, x0 = x, x1 = x + Math.round(capsuleW);
       const P = `M 0 ${B - i} L ${x0 - SH} ${B - i} C ${x0 - SH + SH * Geo.KAPPA} ${B - i} ${x0 + i} ${B + SH - SH * Geo.KAPPA} ${x0 + i} ${B + SH}` +
         ` L ${x0 + i} ${NH - NB} C ${x0 + i} ${NH - NB + NB * Geo.KAPPA} ${x0 + NB - NB * Geo.KAPPA} ${NH - i} ${x0 + NB} ${NH - i}` +
