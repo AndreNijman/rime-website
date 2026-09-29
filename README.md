@@ -154,6 +154,31 @@ line from the first release to the newest (a unit test holds it to that), so
 image tag users receive is promoted. `npm run build` fails if any release in
 the index lacks its page or JSON, or if they disagree.
 
+**Every release gets a page without anyone writing one.** Rime Shell holds an
+updated machine's what's-new page until `/updates/<id>` answers, so a release
+with no record was a page that never opened. `scripts/sync-releases.mjs`
+writes the record for any release newer than the newest one here: the release
+id, Shell revision and digest come from the published image's labels
+(`rime-os:daily-<commit>`), the build and date from the rime-os build-image
+run, and the changes from the pull requests merged into rime-os and rime-shell
+since the release before. A pull request that should read well on the page
+says so in its body:
+
+```md
+## Release note
+
+What someone using Rime notices, in a sentence or two.
+```
+
+Without that section the change is listed by its title, and the rest of the
+body is never used: it is written for a reviewer, not for the site. `docs`,
+`chore`, `ci`, `test`, `build` and `style` pull requests, any labelled
+`skip-release-notes`, and any whose release note is `none`, are left off. The
+section's `<!-- -->` guidance (both repositories' pull request templates
+carry one) is never copied. A record on main is never overwritten, so
+a hand-written one (or a generated one polished and committed) always wins.
+`node scripts/sync-releases.mjs --dry-run` prints what it would write.
+
 ### The OS side (spec §7, Phase 6 — not in this repository)
 
 For the "open what changed after an update" hand-off, the image needs
@@ -222,6 +247,15 @@ as Cloudflare Pages would. The Worker sends `http://` and `www.` to
 `https://rimeos.com`, answers byte ranges for the stage's clips (the asset
 server ignores `Range`, and Safari will not play a video without `206`).
 rimeos.com is its only address: `workers_dev` and `preview_urls` are off.
+
+**`.github/workflows/deploy.yml` deploys it**: on every push to main, and every
+15 minutes if rimeos.com lacks a published release (the site looks, because
+rime-os holds no credential for this repository). A missing release gets its
+record written (see Releases), kept on the `release-records` branch so it is
+written once, built through the same gates as CI, deployed, and then asked for
+on rimeos.com. It needs the repository secret `CLOUDFLARE_API_TOKEN` (a
+Cloudflare API token with Account → Workers Scripts → Edit) and the variable
+`CLOUDFLARE_ACCOUNT_ID`. By hand, from a checkout:
 
 ```sh
 npm run build
