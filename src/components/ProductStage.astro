@@ -12,7 +12,8 @@
 // Dashboard out of the centre notch, Wi-Fi and the notification centre out of
 // the right one, and between them) is a clip of the part of the screen it
 // changes, played over the still: stage.ts. Without JavaScript the stage shows
-// the settled Dashboard (spec §10.4: never an empty stage).
+// a settled surface, the Dashboard or the Agent Center (spec §10.4: never an
+// empty stage).
 // ────────────────────────────────────────────────────────────────────────────
 import Icon from "./Icon.astro";
 import stage from "../data/stage.json";
@@ -26,10 +27,15 @@ interface Props {
   label?: string;
   eager?: boolean;          // the page's hero asset (spec §14.1: prioritise one)
   reduced?: boolean;        // play this stage's Reduce Motion recordings whatever the visitor's setting
+  acts?: Act[];             // the surfaces its buttons open, in order
+  still?: "dashboard" | "agents";   // the settled surface shown without JavaScript
 }
-const { id, tour = false, controls = true, scene: sceneId = "rime-default", caption, label = "Recording of the Rime Shell desktop", eager = false, reduced = false } = Astro.props;
+type Act = "dashboard" | "agents" | "network" | "notifications";
+const ACT_LABEL: Record<Act, string> = { dashboard: "Dashboard", agents: "Agents", network: "Wi-Fi", notifications: "Notifications" };
+const { id, tour = false, controls = true, scene: sceneId = "rime-default", caption, label = "Recording of the Rime Shell desktop", eager = false, reduced = false,
+        acts = ["dashboard", "network", "notifications"], still = "dashboard" } = Astro.props;
 type Still = { avif: { w: number; src: string }[]; jpg: string };
-const variants = stage.variants as Record<string, { rest?: Still; dashboard?: Still }>;
+const variants = stage.variants as Record<string, { rest?: Still; dashboard?: Still; agents?: Still }>;
 const scene = variants[`${sceneId}-dark`] ? sceneId : "rime-default";
 const set = (s: Still) => s.avif.map((x) => `${x.src} ${x.w}w`).join(", ");
 // The desk is 1920 logical px; on a phone stage.ts shows a 960 px cut of it at
@@ -49,10 +55,10 @@ const stills = (["dark", "light"] as const).map((m) => ({ m, v: variants[`${scen
           <img src={v.rest.jpg} alt="" width="3840" height="2400" loading="lazy" decoding="async" fetchpriority={eager ? "high" : "auto"} />
         </picture>
       ))}
-      {stills.map(({ m, v }) => v?.dashboard && (
+      {stills.map(({ m, v }) => v?.[still] && (
         <picture class:list={["stage-nojs", `stage-nojs--${m}`]}>
-          <source type="image/avif" srcset={set(v.dashboard)} sizes={SIZES} />
-          <img src={v.dashboard.jpg} alt="" width="3840" height="2400" loading="lazy" decoding="async" />
+          <source type="image/avif" srcset={set(v[still]!)} sizes={SIZES} />
+          <img src={v[still]!.jpg} alt="" width="3840" height="2400" loading="lazy" decoding="async" />
         </picture>
       ))}
       <div class="stage-clips" data-clips aria-hidden="true"></div>
@@ -60,14 +66,16 @@ const stills = (["dark", "light"] as const).map((m) => ({ m, v: variants[`${scen
       <button type="button" class="stage-hot hot-dashboard" data-act="dashboard" tabindex="-1" aria-hidden="true"></button>
       <button type="button" class="stage-hot hot-network" data-act="network" tabindex="-1" aria-hidden="true"></button>
       <button type="button" class="stage-hot hot-notifications" data-act="notifications" tabindex="-1" aria-hidden="true"></button>
+      {acts.includes("agents") && <>
+        <button type="button" class="stage-hot hot-tab hot-tab-home" data-tab="dashboard" tabindex="-1" aria-hidden="true"></button>
+        <button type="button" class="stage-hot hot-tab hot-tab-agents" data-tab="agents" tabindex="-1" aria-hidden="true"></button>
+      </>}
     </div>
   </div>
   {controls && (
     <div class="stage-controls" data-controls>
       <div class="stage-acts" role="group" aria-label="Open a Shell surface">
-        <button type="button" class="stage-act" data-act="dashboard" aria-pressed="false">Dashboard</button>
-        <button type="button" class="stage-act" data-act="network" aria-pressed="false">Wi-Fi</button>
-        <button type="button" class="stage-act" data-act="notifications" aria-pressed="false">Notifications</button>
+        {acts.map((a) => <button type="button" class="stage-act" data-act={a} aria-pressed="false">{ACT_LABEL[a]}</button>)}
       </div>
       {tour && (
         <button type="button" class="stage-tour" data-tour-toggle aria-pressed="true">
@@ -123,6 +131,11 @@ const stills = (["dark", "light"] as const).map((m) => ({ m, v: variants[`${scen
   .hot-dashboard { left: 42.2%; width: 15.6%; }
   .hot-network { left: 91.55%; width: 1.5%; }
   .hot-notifications { left: 98.05%; width: 1.5%; }
+  /* The open Dashboard's Home and Agents tabs (1920 × 1200: 555-630 and 848-927). */
+  .hot-tab { display: none; top: 1.4%; height: 2.8%; border-radius: 999px; z-index: 2; }
+  .stage[data-open="dashboard"] .hot-tab, .stage[data-open="agents"] .hot-tab { display: block; }
+  .hot-tab-home { left: 28.9%; width: 3.9%; }
+  .hot-tab-agents { left: 44.2%; width: 4.1%; }
   .stage-dismiss { position: absolute; inset: 0; display: none; }
   .stage[data-open] .stage-dismiss { display: block; }
   /* Phones: a 4:5 cut of the desktop (stage.ts), at a size you can read. */

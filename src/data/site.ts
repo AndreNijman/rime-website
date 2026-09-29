@@ -4,9 +4,9 @@ export const SITE = {
   name: "Rime",
   domain: "rimeos.com",
   url: "https://rimeos.com",
-  tagline: "A Linux desktop that moves as one.",
+  tagline: "A Linux system that moves as one.",
   description:
-    "Rime is a Linux desktop and operating system: a fluid shell coloured by your wallpaper, on an image-based system that updates in one piece and can always go back.",
+    "Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and never get root.",
   repos: {
     os: "https://github.com/AndreNijman/rime-os",
     shell: "https://github.com/AndreNijman/rime-shell",
@@ -14,8 +14,10 @@ export const SITE = {
   },
   // The OS and Shell revisions this site's product claims were checked against.
   pinned: { os: "2d9c5438a", shell: "9161e30c" },
-  // Spec §6.4: the Agents page ships only when the product does.
-  agentsPublished: false,
+  // Spec §6.4 held /agents back until the product was ready; Andre published it
+  // on 2026-09-29. Rime Remote (the phone app) is described as unreleased until
+  // it has a public build.
+  agentsPublished: true,
 };
 
 export type NavItem = { label: string; href: string; note?: string };
@@ -26,6 +28,7 @@ export const NAV: NavGroup[] = [
     label: "Rime", href: "/",
     items: [
       { label: "Overview", href: "/" },
+      { label: "Why Rime", href: "/why" },
       { label: "Journal", href: "/journal" },
       { label: "Source", href: "/source" },
     ],
@@ -49,7 +52,19 @@ export const NAV: NavGroup[] = [
       { label: "Rollback", href: "/system#rollback" },
       { label: "Packages", href: "/system#packages" },
       { label: "Recovery", href: "/system#recovery" },
+      { label: "Firewall", href: "/system#firewall" },
       { label: "Security", href: "/security" },
+    ],
+  },
+  {
+    label: "Agents", href: "/agents",
+    items: [
+      { label: "Sessions", href: "/agents#sessions" },
+      { label: "Agent Center", href: "/agents#center" },
+      { label: "Sandbox", href: "/agents#sandbox" },
+      { label: "Privilege", href: "/agents#privilege" },
+      { label: "Credentials", href: "/agents#secrets" },
+      { label: "Rime Remote", href: "/agents#remote" },
     ],
   },
   {
@@ -90,6 +105,8 @@ export const NAV: NavGroup[] = [
 export const FOOTER: NavItem[][] = [
   [
     { label: "Download", href: "/download" },
+    { label: "Why Rime", href: "/why" },
+    { label: "Agents", href: "/agents" },
     { label: "Docs", href: "/docs" },
     { label: "Updates", href: "/updates" },
     { label: "Journal", href: "/journal" },
@@ -108,7 +125,7 @@ export function sectionFor(path: string): string {
   if (p === "/") return "Overview";
   const top = "/" + p.split("/")[1];
   const map: Record<string, string> = {
-    "/shell": "Shell", "/system": "System", "/personalise": "Personalise", "/security": "Security",
+    "/shell": "Shell", "/system": "System", "/agents": "Agents", "/why": "Why Rime", "/personalise": "Personalise", "/security": "Security",
     "/download": "Download", "/install": "Install", "/docs": "Docs", "/updates": "Updates",
     "/journal": "Journal", "/source": "Source", "/privacy": "Privacy", "/brand": "Brand", "/sitemap": "Site map",
   };

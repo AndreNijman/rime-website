@@ -1,0 +1,67 @@
+{
+  "$comment": "The agent sessions the recordings show (fakes/rime serves them). Shapes are rime-os SessionInfo and PrivilegeRequest; \"E±n\" is seconds from the session's 09:41:00 (milliseconds for *_ms fields). One of each thing the Agent Center draws: a privilege request waiting for a person, two sessions that need you, one working with subagents and usage telemetry, one finished, one failed.",
+  "sessions": [
+    {
+      "id": 12, "agent": "claude", "program": "claude", "args": [],
+      "cwd": "/home/rime/Projects/rime-os/.rime/worktrees/overview", "project": "/home/rime/Projects/rime-os", "project_name": "rime-os",
+      "worktree": "overview", "state": "working", "detail": null, "paused": false,
+      "sandbox": "project", "native": "inherit", "native_observed": null, "system": "none",
+      "request_origin": "local-terminal", "grant": null, "grant_expires_ms": null,
+      "telemetry": { "model": "Opus 5.5", "context_pct": 41.0, "branch": "agent/overview",
+        "five_hour_pct": 62.0, "five_hour_reset": "E+7980", "seven_day_pct": 19.0, "seven_day_reset": "E+298800", "observed_at": "E+10" },
+      "children": [
+        { "id": "agent-a", "kind": "subagent", "label": "Explore", "started": "E-900", "ended": "E-700", "ended_by": "reported", "parent": null, "pid": null, "rss_kb": null },
+        { "id": "agent-b", "kind": "subagent", "label": "Test runner", "started": "E-140", "ended": null, "ended_by": null, "parent": null, "pid": null, "rss_kb": null },
+        { "id": "pid:4101", "kind": "process", "label": "claude", "started": "E-2830", "ended": null, "ended_by": null, "parent": null, "pid": 4101, "rss_kb": 410000 }
+      ],
+      "pid": 4100, "started": "E-2830", "last_activity": "E-3", "exit_code": null, "exit_signal": null,
+      "attached": 1, "checkpoint": null, "cols": 120, "rows": 40
+    },
+    {
+      "id": 15, "agent": "claude", "program": "claude", "args": [],
+      "cwd": "/home/rime/Projects/rime-os", "project": "/home/rime/Projects/rime-os", "project_name": "rime-os",
+      "worktree": null, "state": "permission_request", "detail": null, "paused": false,
+      "sandbox": "project", "native": "inherit", "native_observed": null, "system": "none",
+      "request_origin": "local-terminal", "grant": null, "grant_expires_ms": null,
+      "telemetry": null, "children": [],
+      "pid": 4210, "started": "E-1510", "last_activity": "E-62", "exit_code": null, "exit_signal": null,
+      "attached": 0, "checkpoint": null, "cols": 120, "rows": 40
+    },
+    {
+      "id": 14, "agent": "codex", "program": "codex", "args": [],
+      "cwd": "/home/rime/Projects/rime-website", "project": "/home/rime/Projects/rime-website", "project_name": "rime-website",
+      "worktree": null, "state": "waiting_for_user", "detail": null, "paused": false,
+      "sandbox": "project", "native": "inherit", "native_observed": null, "system": "none",
+      "request_origin": "claude-remote-control", "grant": null, "grant_expires_ms": null,
+      "telemetry": null, "children": [],
+      "pid": 4190, "started": "E-1250", "last_activity": "E-40", "exit_code": null, "exit_signal": null,
+      "attached": 0, "checkpoint": null, "cols": 120, "rows": 40
+    },
+    {
+      "id": 9, "agent": "opencode", "program": "opencode", "args": [],
+      "cwd": "/home/rime/Projects/rime-shell", "project": "/home/rime/Projects/rime-shell", "project_name": "rime-shell",
+      "worktree": null, "state": "complete", "detail": null, "paused": false,
+      "sandbox": "project", "native": "inherit", "native_observed": null, "system": "none",
+      "request_origin": "local-terminal", "grant": null, "grant_expires_ms": null,
+      "telemetry": null, "children": [],
+      "pid": null, "started": "E-3400", "last_activity": "E-600", "exit_code": 0, "exit_signal": null,
+      "attached": 0, "checkpoint": null, "cols": 120, "rows": 40
+    },
+    {
+      "id": 7, "agent": "gemini", "program": "gemini", "args": [],
+      "cwd": "/home/rime/Notes", "project": "/home/rime/Notes", "project_name": "Notes",
+      "worktree": null, "state": "failed", "detail": null, "paused": false,
+      "sandbox": "project", "native": "inherit", "native_observed": null, "system": "none",
+      "request_origin": "local-terminal", "grant": null, "grant_expires_ms": null,
+      "telemetry": null, "children": [],
+      "pid": null, "started": "E-2100", "last_activity": "E-1300", "exit_code": 3, "exit_signal": null,
+      "attached": 0, "checkpoint": null, "cols": 120, "rows": 40
+    }
+  ],
+  "requests": [
+    { "id": 3, "verb": "install", "packages": ["clang"], "reason": "Needed to build rime-agentd's tests",
+      "session": 15, "agent": "claude", "project": "rime-os", "request_origin": "local-terminal",
+      "decision": "pending", "created_ms": "E-60" }
+  ],
+  "hosts": {}
+}

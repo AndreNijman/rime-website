@@ -14,7 +14,8 @@
 #  them), the image's Hyprland appearance (/usr/share/rime/hypr/rime/
 #  appearance.lua: gaps, borders, the no_anim layer rule), a fresh install's
 #  settings, and the palette matugen makes from the wallpaper shown.
-#  What is canned: Wi-Fi (rime-shell's fake-nmcli), Bluetooth, NetworkManager
+#  What is canned: agent sessions (fakes/rime + agents.json: the Shell asks the
+#  `rime` command for them), Wi-Fi (rime-shell's fake-nmcli), Bluetooth, NetworkManager
 #  and UPower on a private system bus (fakes/system-bus.py, so neither this
 #  machine's networks, signal nor battery is recorded), notifications
 #  (sent on the private bus), brightness, uptime and the account name
@@ -60,7 +61,12 @@ cap_begin() {
     headless_unstub hyprctl
     ln -sf "$SHELL_ROOT/tests/lib/fake-nmcli" "$HEADLESS_W/bin/nmcli"
     local f
-    for f in bluetoothctl brightnessctl uptime; do ln -sf "$CAP_HERE/fakes/$f" "$HEADLESS_W/bin/$f"; done
+    for f in bluetoothctl brightnessctl uptime rime; do ln -sf "$CAP_HERE/fakes/$f" "$HEADLESS_W/bin/$f"; done
+    # The Agent Center's sessions and requests (fakes/rime reads them); the
+    # guide's first-run card is dismissed, as it is after anyone's first look.
+    export CAP_AGENTS="${CAP_AGENTS:-$CAP_HERE/fakes/agents.json}"
+    mkdir -p "$XDG_STATE_HOME/rime-shell"
+    printf '{"onboardingDismissed":true}' > "$XDG_STATE_HOME/rime-shell/agent-help.json"
     local n
     for n in nmtui blueman-manager rfkill sing-box; do ln -sf "$HEADLESS_W/bin/_stub" "$HEADLESS_W/bin/$n"; done
 

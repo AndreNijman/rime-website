@@ -1,0 +1,220 @@
+---
+// /why: what Rime puts together, how it compares topic by topic, and where it
+// is still young. The TRUTH RULE holds for other distributions too: every
+// claim about one is linked to its own documentation or code, checked
+// 2026-09-29, and where another distribution is ahead this page says so.
+import Base from "../layouts/Base.astro";
+import CommandChip from "../components/CommandChip.astro";
+import Evidence from "../components/Evidence.astro";
+import Icon from "../components/Icon.astro";
+import { SITE } from "../data/site";
+const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
+
+// Sources for what other distributions do, numbered as the table cites them.
+const SRC = [
+  ["Fedora Atomic Desktops: updates, upgrades and rollbacks", "https://docs.fedoraproject.org/en-US/fedora-silverblue/updates-upgrades-rollbacks/"],
+  ["Bazzite: updates, rollbacks and rebasing", "https://docs.bazzite.gg/Installing_and_Managing_Software/Updates_Rollbacks_and_Rebasing/"],
+  ["NixOS manual", "https://nixos.org/manual/nixos/stable/"],
+  ["openSUSE: system recovery and snapshot management with Snapper", "https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-snapper.html"],
+  ["Universal Blue: uupd", "https://github.com/ublue-os/uupd"],
+  ["Bazzite: image build workflow (signing, SBOM, provenance)", "https://github.com/ublue-os/bazzite/blob/main/.github/workflows/build.yml"],
+  ["Universal Blue: container signature policy", "https://github.com/ublue-os/packages/blob/main/packages/ublue-os-signing/src/usr/etc/containers/policy.json"],
+  ["containers/image: default policy", "https://github.com/containers/image/blob/main/default-policy.json"],
+  ["NixOS: reproducibility of the minimal ISO", "https://reproducible.nixos.org/nixos-iso-minimal-runtime/"],
+  ["Vanilla OS: desktop image build workflow", "https://github.com/Vanilla-OS/desktop-image/blob/main/.github/workflows/vib-build.yml"],
+  ["fedora-sysexts", "https://github.com/travier/fedora-sysexts"],
+  ["KDE Linux: updates", "https://linux.kde.org/docs/updates/"],
+  ["Bluefin: AI tools Brewfile", "https://github.com/projectbluefin/common/blob/main/system_files/shared/usr/share/ublue-os/homebrew/ai-tools.Brewfile"],
+  ["CachyOS wiki: sched-ext", "https://wiki.cachyos.org/configuration/sched-ext/"],
+  ["Bazzite: handheld scheduler configuration", "https://github.com/ublue-os/bazzite/blob/main/system_files/deck/shared/etc/scx_loader/config.toml"],
+  ["GamingOnLinux: SteamOS 3.8", "https://www.gamingonlinux.com/2026/06/steamos-3-8-is-out-with-initial-steam-machine-support-desktop-mode-upgrades-new-graphics-drivers/"],
+  ["Fedora 43 packages: scx_rustland", "https://mdapi.fedoraproject.org/f43/pkg/scx_rustland"],
+  ["Fedora Magazine: the Linux MCP server", "https://fedoramagazine.org/find-out-how-your-fedora-system-really-feels-with-the-linux-mcp-server/"],
+  ["Ubuntu 26.04 LTS release notes", "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/"],
+  ["KDE Connect", "https://kdeconnect.kde.org/"],
+  ["OMG! Ubuntu: Pop!_OS 24.04 LTS with COSMIC", "https://www.omgubuntu.co.uk/2025/12/pop_os-24-04-lts-stable-release"],
+  ["Universal Blue: Bazzite device count", "https://github.com/ublue-os/countme/blob/main/badge-endpoints/bazzite.json"],
+  ["Framework: Linux on Framework laptops", "https://frame.work/linux"],
+  ["Ubuntu Certified hardware", "https://ubuntu.com/certified"],
+  ["Ubuntu 26.04 LTS: security", "https://ubuntu.com/blog/ubuntu-26-04-lts-security-updates"],
+] as const;
+const n = (i: number) => `<a href="#src-${i}" class="fn" aria-label="source ${i}">${i}</a>`;
+---
+<Base title="Why Rime" description="What Rime puts together that other Linux distributions leave to you, how it compares topic by topic with Fedora Atomic, Universal Blue, NixOS, Ubuntu and CachyOS, and where Rime is still young.">
+  <header class="container page-hero">
+    <p class="eyebrow">Why Rime</p>
+    <h1>What Rime puts together.</h1>
+    <p class="lead">Other distributions do parts of what Rime does, and some do those parts better. What Rime offers is all of it as one system: the image, the desktop, the agents and the games are built together, checked before they arrive, and updated in one step. Here is what that means, how it compares, and where Rime is still young.</p>
+  </header>
+
+  <section class="container section-tight" id="one" aria-labelledby="one-h">
+    <h2 id="one-h" class="h2s">What only works as one system</h2>
+    <div class="grid-2">
+      <article>
+        <h3>The desktop moves with the system</h3>
+        <p class="muted">Rime Shell is built into the image, not installed on top of it. An update that changes the desktop and the system changes both at once, and a rollback takes both back together.</p>
+      </article>
+      <article>
+        <h3>One command updates everything</h3>
+        <p class="muted"><code>sudo rime update</code> checks the next image's signature, stages it, rebuilds your extra packages against it, and updates Flatpaks and firmware. Nothing updates on its own while you work.</p>
+      </article>
+      <article>
+        <h3>The agents know the machine</h3>
+        <p class="muted">The agent runtime is part of the OS, so the rest of the system accounts for it. The lid stays open for live sessions, privilege requests map onto the same <code>rime</code> commands you would run, the credential broker is a system service, and the firewall has a named door for Rime Remote.</p>
+      </article>
+      <article>
+        <h3>Gaming Mode knows the hardware</h3>
+        <p class="muted">Rime's own kernel carries the schedulers and Rime's power manager knows the machine's profiles. Gaming Mode sets up the latency scheduler itself, <code>rime game</code> pins a game to its cores, and <code>rime gaming</code> says whether Gaming Mode would start, and why not.</p>
+      </article>
+    </div>
+    <div class="cmds">
+      <CommandChip cmd="sudo rime update" />
+      <CommandChip cmd="rime trust --gate" />
+    </div>
+  </section>
+
+  <section class="container-wide section-tight" id="compare" aria-labelledby="cmp-h">
+    <div class="container-inner">
+      <h2 id="cmp-h" class="h2s">How it compares</h2>
+      <p class="muted cmp-lead">Topic by topic, against the distributions people usually weigh Rime against. Every statement about another distribution links to its own documentation or code; numbers in the table are the sources at the end of the page, checked on 29 September 2026.</p>
+    </div>
+    <table class="compare" role="table">
+      <thead><tr role="row"><th scope="col" role="columnheader">Topic</th><th scope="col" role="columnheader">Rime</th><th scope="col" role="columnheader">Elsewhere</th><th scope="col" role="columnheader">Where that leaves Rime</th></tr></thead>
+      <tbody>
+        <tr role="row">
+          <th scope="row" role="rowheader">Updates and rollback</th>
+          <td role="cell" data-label="Rime">One image, staged beside the running one; the previous image is kept, and <code>rime pin</code> keeps more. Updates only when you start them.</td>
+          <td role="cell" data-label="Elsewhere">Fedora Atomic keeps the previous deployment to roll back to <Fragment set:html={n(1)} />. Bazzite can rebase to any build from the last 90 days <Fragment set:html={n(2)} />. NixOS lists every generation in the boot menu <Fragment set:html={n(3)} />, and openSUSE rolls back through snapshots <Fragment set:html={n(4)} />. Universal Blue updates automatically, and waits when the battery is low or the machine is busy <Fragment set:html={n(5)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">Level with Fedora Atomic. NixOS and openSUSE keep more points to go back to; Universal Blue automates more.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">Checking what you install</th>
+          <td role="cell" data-label="Rime">A keyless cosign signature tied to Rime's own build workflow, a signed bill of materials, and a gate in <code>rime update</code> that refuses an unsigned image and says why.</td>
+          <td role="cell" data-label="Elsewhere">Universal Blue signs its images, publishes a bill of materials and SLSA build provenance, and enforces signatures through the container policy <Fragment set:html={n(6)} /> <Fragment set:html={n(7)} />. Fedora's own container images are unsigned, and the default policy accepts any image <Fragment set:html={n(8)} />. NixOS and Vanilla OS work on reproducible images <Fragment set:html={n(9)} /> <Fragment set:html={n(10)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">Universal Blue is ahead on the supply chain, NixOS and Vanilla OS on reproducibility. Rime's addition is the readout before you update.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">Installing more software</th>
+          <td role="cell" data-label="Rime">A system extension, built on your machine, from Fedora, RPM Fusion and COPR packages or a local <code>.rpm</code>, <code>.deb</code> or AppImage, whose install scripts never run. Flathub apps by ID. <code>rime resolve</code> says which way fits.</td>
+          <td role="cell" data-label="Elsewhere">Fedora Atomic layers packages with rpm-ostree, alongside Toolbox and Flatpak <Fragment set:html={n(1)} />. System extensions are not new: fedora-sysexts and KDE Linux use them <Fragment set:html={n(11)} /> <Fragment set:html={n(12)} />. Universal Blue images add Homebrew <Fragment set:html={n(13)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">Not a new mechanism. Rime adds <code>.deb</code> and AppImage files to the same extension, and one command that tells you how to install something.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">Gaming</th>
+          <td role="cell" data-label="Rime">Rime's own build of the CachyOS kernel with sched-ext. Gaming Mode asks for the LAVD latency scheduler on every machine. The NVIDIA driver and CUDA are in every image, with its kernel modules signed for Secure Boot.</td>
+          <td role="cell" data-label="Elsewhere">CachyOS builds kernels tuned for newer CPUs and offers a scheduler switcher, with no sched-ext scheduler by default <Fragment set:html={n(14)} />. Bazzite turns LAVD on by default only on its handheld images <Fragment set:html={n(15)} />, and SteamOS 3.8 makes it opt-in <Fragment set:html={n(16)} />. Fedora's kernel supports sched-ext, but few schedulers are packaged <Fragment set:html={n(17)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">CachyOS tunes its kernel further, and Bazzite has far more players. Rime's claim is narrower: Gaming Mode sets up a latency scheduler for you, on any machine.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">Coding agents and AI</th>
+          <td role="cell" data-label="Rime">An agent runtime in every install: sandboxed sessions, privilege requests approved at the machine, a credential broker, the lid kept open for live work. Claude Code and the Claude and ChatGPT desktop apps are preinstalled and move only with the image.</td>
+          <td role="cell" data-label="Elsewhere">Bluefin installs AI tools when you ask <Fragment set:html={n(13)} />. Fedora packages an MCP server for looking into the system <Fragment set:html={n(18)} />. Ubuntu 26.04 turns nothing on by default <Fragment set:html={n(19)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">Of the distributions checked, only Rime ships an agent runtime with a permission model. It is also the newest part of Rime.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">Your phone</th>
+          <td role="cell" data-label="Rime">Rime Remote: agent sessions on an Android phone, end-to-end encrypted. Finished, not yet released.</td>
+          <td role="cell" data-label="Elsewhere">KDE Connect and GSConnect link a phone to the desktop for files, notifications and input <Fragment set:html={n(20)} />.</td>
+          <td role="cell" data-label="Where that leaves Rime">Nothing to compare until the app is out.</td>
+        </tr>
+        <tr role="row">
+          <th scope="row" role="rowheader">The desktop</th>
+          <td role="cell" data-label="Rime">One Shell on Hyprland, niri and labwc, and the same design on the login screen, lock screen and boot splash, coloured from your wallpaper.</td>
+          <td role="cell" data-label="Elsewhere">GNOME, KDE Plasma and COSMIC (in Pop!_OS 24.04 <Fragment set:html={n(21)} />) are complete desktops with years of work behind them and far more users.</td>
+          <td role="cell" data-label="Where that leaves Rime">Rime's desktop is more of a single design, and much younger.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="container section-tight" id="younger" aria-labelledby="y-h">
+    <h2 id="y-h" class="h2s">Where Rime is younger</h2>
+    <p class="muted y-lead">These are real, and worth knowing before you install.</p>
+    <ul class="facts">
+      <li><strong>It is new and small.</strong> Rime OS's history starts in July 2026, and it has been tested on a handful of machines. Bazzite alone reports tens of thousands of active devices <Fragment set:html={n(22)} />.</li>
+      <li><strong>No certified hardware.</strong> Framework and the Ubuntu Certified programme test specific laptops with Ubuntu and Fedora <Fragment set:html={n(23)} /> <Fragment set:html={n(24)} />. Rime has no such list yet.</li>
+      <li><strong>One update channel.</strong> Every build of Rime's main branch that passes CI is what every machine updates to. There is no slower stable channel yet.</li>
+      <li><strong>No automatic rollback.</strong> Going back is one command and a reboot; nothing notices a bad boot and does it for you yet.</li>
+      <li><strong>Secure Boot and encryption.</strong> Rime's kernel does not enforce module signatures or lockdown under Secure Boot; Fedora's kernel does. TPM unlock is offered only with Secure Boot enforcing, and an encrypted install on real hardware has not been verified end to end. Ubuntu 26.04 ships TPM-backed encryption as a supported feature <Fragment set:html={n(25)} />.</li>
+      <li><strong>The installer still says APEX-OS.</strong> Machines installed from it need one extra step before their first update; <a href="/docs/install#the-first-update">Install</a> explains it.</li>
+      <li><strong>Rime Remote is not released.</strong> The phone app is finished but has no public build yet.</li>
+    </ul>
+    <Evidence links={[{ label: "docs/update-channels.md", href: os("docs/update-channels.md") }, { label: "docs/rollback.md", href: os("docs/rollback.md") }, { label: "docs/disk-encryption.md", href: os("docs/disk-encryption.md") }]}>
+      Each of these is in Rime's own documentation, not only on this page.
+    </Evidence>
+  </section>
+
+  <section class="container section-tight" id="who" aria-labelledby="w-h">
+    <h2 id="w-h" class="h2s">Who Rime is for</h2>
+    <div class="grid-2">
+      <article class="for">
+        <h3>A good fit if you</h3>
+        <ul class="facts">
+          <li>want a desktop designed as one thing, on a system that updates in one piece and can go back;</li>
+          <li>work with coding agents every day, and want them sandboxed, tracked and kept away from root;</li>
+          <li>play on a laptop or desktop, NVIDIA or AMD, and want the scheduler and drivers already sorted;</li>
+          <li>are comfortable with a young project, and read what an update says before you reboot into it.</li>
+        </ul>
+      </article>
+      <article class="for">
+        <h3>Not yet, if you</h3>
+        <ul class="facts">
+          <li>need certified hardware, long-term support or a security advisory feed;</li>
+          <li>run machines you can't afford to troubleshoot;</li>
+          <li>manage a fleet: Rime is built for your own machines, one at a time.</li>
+        </ul>
+      </article>
+    </div>
+    <p class="why-end"><a class="btn btn-primary" href="/download"><Icon name="download" /> Download Rime</a> <a class="btn" href="/system">The system</a> <a class="btn" href="/agents">Agents</a></p>
+  </section>
+
+  <section class="container section-tight" id="sources" aria-labelledby="src-h">
+    <h2 id="src-h" class="h3s">Sources</h2>
+    <ol class="sources">
+      {SRC.map(([label, href], i) => <li id={`src-${i + 1}`}><a href={href}>{label}</a></li>)}
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .page-hero { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(24px, 3vw, 40px); display: grid; gap: 18px; }
+  .page-hero .lead { max-width: 64ch; }
+  .h2s { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
+  .h3s { font-size: 1.2rem; margin-bottom: 12px; }
+  section.section-tight { border-top: 1px solid var(--rime-hairline); }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+  @media (max-width: 800px) { .grid-2 { grid-template-columns: minmax(0, 1fr); } }
+  .grid-2 h3 { font-size: 1.12rem; margin-bottom: 8px; }
+  .cmds { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .container-inner { max-width: 900px; }
+  .cmp-lead { max-width: 70ch; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .compare th, .compare td { text-align: left; vertical-align: top; padding: 16px 14px; border-bottom: 1px solid var(--rime-hairline); }
+  .compare thead th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--rime-text-secondary); }
+  .compare tbody th { width: 14%; color: var(--rime-text-primary); }
+  .compare td { color: var(--rime-text-secondary); }
+  .compare td:nth-child(2) { color: var(--rime-text-primary); }
+  .compare td:last-child { width: 24%; }
+  /* Phones: each topic becomes a block, each cell labelled with its column. */
+  @media (max-width: 760px) {
+    .compare, .compare tbody, .compare tr, .compare th, .compare td { display: block; width: auto; }
+    .compare thead { display: none; }
+    .compare tr { padding: 16px 0; border-bottom: 1px solid var(--rime-hairline); }
+    .compare th, .compare td { padding: 4px 0; border: 0; }
+    .compare tbody th { width: auto; font-size: 1.08rem; margin-bottom: 6px; }
+    .compare td::before { content: attr(data-label); display: block; font-size: 0.76rem; font-weight: 600; color: var(--rime-text-secondary); margin-bottom: 2px; }
+    .compare td:last-child { width: auto; }
+  }
+  :global(.fn) { display: inline; padding: 0 5px; border-radius: 6px; font-size: 0.72rem; text-align: center; text-decoration: none; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); color: var(--rime-text-secondary); vertical-align: 1px; }
+  @media (hover: hover) { :global(.fn:hover) { color: var(--rime-text-primary); } }
+  .y-lead { margin-bottom: 18px; }
+  .facts { margin: 0 0 20px; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .facts li { padding-left: 18px; position: relative; color: var(--rime-text-secondary); max-width: 72ch; }
+  .facts li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--rime-accent); }
+  .facts strong { color: var(--rime-text-primary); }
+  .for { padding: clamp(20px, 2.4vw, 28px); border-radius: 22px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+  .why-end { margin-top: 28px; }
+  .sources { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; font-size: 0.88rem; color: var(--rime-text-secondary); }
+  .sources a { color: var(--rime-text-secondary); overflow-wrap: anywhere; }
+  .sources li:target { color: var(--rime-text-primary); }
+</style>

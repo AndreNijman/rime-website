@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""fakes/rime — the `rime` command, as far as the Shell's agent pages ask it.
+
+Rime Shell draws its Agent Center from the `rime` command, not from a bus:
+`rime agent list --all --json` (the sessions) and `rime request pending --json`
+(privilege requests waiting for a person), polled every two seconds while the
+page is on screen, and `rime host list --json` for remote machines
+(rime-shell src/services/AgentService.qml, RemoteAgentService.qml). This
+answers those three from CAP_AGENTS (fakes/agents.json) in the shapes rime-os
+prints them (rimed/rime-agent-core/src/protocol.rs SessionInfo, request.rs
+PrivilegeRequest), and everything else as the harness's own stub does: `{}`
+when JSON is asked for, then exit 0.
+
+Times in the fixture are offsets in seconds from the session's clock origin.
+Every process the shell starts inherits clockshift.so and reads 09:41:00 at
+its own start, so they are resolved against CLOCKSHIFT_EPOCH, not the clock.
+"""
+import json, os, re, sys
+
+args = sys.argv[1:]
+E = int(os.environ.get("CLOCKSHIFT_EPOCH", "0"))
+
+
+def resolve(v, key=""):
+    if isinstance(v, dict):
+        return {k: resolve(x, k) for k, x in v.items()}
+    if isinstance(v, list):
+        return [resolve(x, key) for x in v]
+    m = re.fullmatch(r"E([+-]\d+)?", v) if isinstance(v, str) else None
+    if m:                                          # "E-2830", "E+7980", "E": seconds from the origin
+        s = E + int(m.group(1) or 0)
+        return s * 1000 if key.endswith("_ms") else s
+    return v
+
+
+def fixture():
+    with open(os.environ["CAP_AGENTS"]) as f:
+        return resolve(json.load(f))
+
+
+def out(v):
+    print(json.dumps(v, separators=(",", ":")))
+    sys.exit(0)
+
+
+if args[:2] == ["agent", "list"]:
+    out(fixture()["sessions"])
+if args[:2] == ["request", "pending"]:
+    out(fixture()["requests"])
+if args[:2] == ["host", "list"]:
+    out(fixture().get("hosts", {}))
+if args[:2] == ["host", "run"]:
+    sys.exit(255)                        # no remote machine in the fixture
+if any("json" in a or a == "-j" for a in args):
+    out({})
+sys.exit(0)                              # pause, resume, kill, …: accepted, nothing printed

@@ -19,7 +19,7 @@ import { Follower } from "../motion/spring";
 import { BASE, effect, isReduced, motionMode, onMotionChange, springRole } from "../motion/policy";
 import { currentScheme, onSchemeChange } from "./prefs";
 
-type Act = "dashboard" | "network" | "notifications";
+type Act = "dashboard" | "agents" | "network" | "notifications";
 type State = Act | "rest";
 type Clip = { from: State; to: State; box: number[]; duration: number; settle?: number; av1: string; h264: string };
 type Still = { avif: { w: number; src: string }[]; jpg: string };
@@ -106,6 +106,8 @@ function setup(fig: HTMLElement): StageHandle {
   const clipsEl = fig.querySelector<HTMLElement>("[data-clips]")!;
   const dismiss = fig.querySelector<HTMLElement>("[data-dismiss]")!;
   const acts = [...fig.querySelectorAll<HTMLElement>("[data-act]")];
+  const tabs = [...fig.querySelectorAll<HTMLElement>("[data-tab]")];   // the open Dashboard's own tab bar
+  const offered = new Set(acts.map((b) => b.dataset.act));
   const tourBtn = fig.querySelector<HTMLElement>("[data-tour-toggle]");
   const forceReduced = fig.dataset.motion === "reduced";
 
@@ -291,6 +293,13 @@ function setup(fig: HTMLElement): StageHandle {
       const a = b.dataset.act as Act;
       void go(state === a ? "rest" : a);
     });
+  // The Dashboard's tabs, while it is open: the recorded page slide to that tab.
+  for (const b of tabs)
+    b.addEventListener("click", () => {
+      stopTour();
+      const t = b.dataset.tab as Act;
+      if (state !== t) void go(t);
+    });
   // A click on the desktop outside the open surface closes it, as on the desk.
   dismiss.addEventListener("click", (e) => {
     const c = VARIANTS[variantKey()].clips[`rest-${state}`];
@@ -305,7 +314,10 @@ function setup(fig: HTMLElement): StageHandle {
   });
 
   // ── the tour ───────────────────────────────────────────────────────────────
-  const STEPS: [number, State][] = [[1100, "dashboard"], [3400, "rest"], [1300, "network"], [2300, "notifications"], [2600, "rest"], [2000, "dashboard"]];
+  // Only what the stage offers: the Agents step (the Dashboard's tab slide)
+  // where the stage has an Agents button.
+  const STEPS = ([[1100, "dashboard"], [2400, "agents"], [3400, "rest"], [1300, "network"], [2300, "notifications"], [2600, "rest"], [2000, "dashboard"]] as [number, State][])
+    .filter(([, s]) => s === "rest" || offered.has(s));
   let touring = !!tourBtn && !reduced(), visible = false, step = 0, timer = 0;
   function kick() {
     clearTimeout(timer);
@@ -332,12 +344,12 @@ function setup(fig: HTMLElement): StageHandle {
     step = state === "dashboard" ? 1 : 0;
     kick();
   });
-  // The surfaces open from the stage's top edge, so a fifth of it on screen
+  // The surfaces open from the stage's top edge, so its top sixth on screen
   // (the hero on a 1440 × 900 laptop) is enough to watch the tour.
   new IntersectionObserver(([en]) => {
-    visible = en.isIntersecting && en.intersectionRatio >= 0.2;
+    visible = en.isIntersecting && en.intersectionRatio >= 0.15;
     if (visible) kick(); else clearTimeout(timer);
-  }, { threshold: [0, 0.2, 0.5] }).observe(stage);
+  }, { threshold: [0, 0.15, 0.5] }).observe(stage);
   // Fetch the clips that can come next a little before the stage is reached.
   new IntersectionObserver(([en]) => { if (en.isIntersecting) preload(); }, { rootMargin: "300px 0px" }).observe(stage);
 

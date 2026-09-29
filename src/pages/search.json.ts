@@ -4,7 +4,9 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { allReleases } from "../lib/releases";
 const PAGES = [
-  { title: "Rime", url: "/", text: "A Linux desktop that moves as one. Fluid shell, image-based system, colours from your wallpaper.", tags: "home overview" },
+  { title: "Rime", url: "/", text: "A Linux system that moves as one. One signed image that updates in one step and can go back, a fluid shell coloured by your wallpaper, sandboxed coding agents.", tags: "home overview" },
+  { title: "Why Rime", url: "/why", text: "What Rime puts together, how it compares with Fedora Atomic, Universal Blue, Bazzite, NixOS, openSUSE, Ubuntu, CachyOS and SteamOS, and where Rime is still young.", tags: "compare comparison distro distribution alternative fedora silverblue bazzite nixos ubuntu cachyos arch why" },
+  { title: "Agents", url: "/agents", text: "Coding agents as system sessions: the a command, the Agent Center, a bubblewrap sandbox, privilege requests approved at the machine, a credential broker, worktrees and checkpoints, the lid, other machines, Rime Remote.", tags: "ai agent claude codex opencode gemini kimi sandbox remote phone android sudo secret" },
   { title: "Rime Shell", url: "/shell", text: "The frame, the Dashboard, Rime Search, the right panel, notifications, settings (the Nexus), the lock screen, motion families, Reduce Motion.", tags: "desktop bar notch dashboard launcher lock screen password shapes nexus settings" },
   { title: "System", url: "/system", text: "Image-based updates with bootc, signature checks, rollback, channels, packages as system extensions, Flatpak, capsules, recovery, sessions, gaming, lid.", tags: "update rollback bootc packages flatpak sysext recovery gaming kernel lid" },
   { title: "Personalise", url: "/personalise", text: "Wallpaper to palette with matugen; what follows the wallpaper; light or dark; contrast rules.", tags: "colour color wallpaper matugen theme dark light palette" },

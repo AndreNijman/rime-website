@@ -7,7 +7,7 @@ import { FOOTER, SITE } from "../data/site";
   <div class="container-wide footer-grid">
     <div class="footer-brand">
       <a href="/" class="footer-home"><RimeMark size={18} tone="role" /><span>Rime</span></a>
-      <p class="caption">A Linux desktop that moves as one.</p>
+      <p class="caption">{SITE.tagline}</p>
     </div>
     <nav class="footer-links" aria-label="Footer">
       {FOOTER.map((col) => (
@@ -17,6 +17,7 @@ import { FOOTER, SITE } from "../data/site";
         <li><a href="/updates/feed.xml" class="link-quiet">Updates feed</a></li>
         <li><a href={SITE.repos.os} class="link-quiet">rime-os on GitHub</a></li>
         <li><a href={SITE.repos.shell} class="link-quiet">rime-shell on GitHub</a></li>
+        <li><a href={SITE.repos.website} class="link-quiet">rime-website on GitHub</a></li>
       </ul>
     </nav>
     <div class="footer-prefs" data-prefs>

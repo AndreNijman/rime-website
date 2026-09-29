@@ -44,6 +44,28 @@ test.describe("recorded stage", () => {
     expect(src).toMatch(/-reduced\//);
   });
 
+  test("the Agents page opens the real Agent Center, and the Dashboard's tabs slide between pages", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/agents");
+    const stage = page.locator("#agents-stage");
+    await stage.scrollIntoViewIfNeeded();
+    // The stage tours on its own; pause it, let a transition in flight finish, then open Agents.
+    await stage.locator("[data-tour-toggle]").click();
+    await expect(stage.locator("[data-tour-toggle]")).toHaveAttribute("aria-pressed", "false");
+    await page.waitForTimeout(2000);
+    if ((await stage.locator(".stage").getAttribute("data-open")) !== "agents") await stage.locator('.stage-act[data-act="agents"]').click();
+    await expect(stage.locator(".stage")).toHaveAttribute("data-open", "agents");
+    await expect.poll(async () => (await visibleClip(page, "agents-stage"))[0]?.src ?? "", { timeout: 10_000 }).toMatch(/^(rest|dashboard)-agents\./);
+    await expect.poll(async () => (await visibleClip(page, "agents-stage"))[0]?.ended, { timeout: 10_000 }).toBe(true);
+    // The recorded Dashboard's Home tab: one recorded page slide, not a close and reopen.
+    await stage.locator(".hot-tab-home").click();
+    await expect.poll(async () => (await visibleClip(page, "agents-stage"))[0]?.src ?? "", { timeout: 10_000 }).toMatch(/^agents-dashboard\./);
+    await expect(stage.locator(".stage")).toHaveAttribute("data-open", "dashboard");
+    await expect.poll(async () => (await visibleClip(page, "agents-stage"))[0]?.ended, { timeout: 10_000 }).toBe(true);
+    await stage.locator(".hot-tab-agents").click();
+    await expect.poll(async () => (await visibleClip(page, "agents-stage"))[0]?.src ?? "", { timeout: 10_000 }).toMatch(/^dashboard-agents\./);
+  });
+
   test("the hero tour runs on its own when motion is full", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto("/");

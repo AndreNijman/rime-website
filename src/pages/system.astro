@@ -165,6 +165,51 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     </div>
   </section>
 
+  <section class="section-tight container" id="image" aria-labelledby="i-h">
+    <div class="split-2">
+      <div>
+        <h2 id="i-h">Ready when you log in.</h2>
+        <p class="muted">The image carries what most people install first: Firefox, Zed, Thunar and mpv with the RPM Fusion codecs, printing, input methods and the Orca screen reader; the compilers and runtimes for C and C++, Rust, Go, Node, Python, Java and Ruby, with <code>gh</code> and buildah; Claude Code; and the Claude and ChatGPT desktop apps. Their own updaters are removed, so they move forward with <code>rime update</code> like everything else, checked against signing keys pinned in Rime's repository.</p>
+      </div>
+      <div class="stack">
+        <Evidence links={[{ label: "Containerfile.core", href: os("Containerfile.core") }]}>
+          Everything in the image is rolled back with it, apps included.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="firewall" aria-labelledby="f-h">
+    <div class="split-2">
+      <div>
+        <h2 id="f-h">A firewall with named doors.</h2>
+        <p class="muted">Incoming connections are dropped by default. Replies, loopback, ping, DHCP, local discovery (mDNS) and SSH are always let through. Anything else is opened by name, one service at a time: ssh, http, https, samba, nfs, printer sharing, Steam Remote Play, Sunshine, Ollama, Syncthing and Rime Remote.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="sudo rime firewall allow sunshine" />
+        <CommandChip cmd="sudo rime firewall status" />
+        <Evidence links={[{ label: "rime.nft", href: os("files/system/nftables/rime.nft") }, { label: "firewall/services", href: os("files/system/firewall/services") }]}>
+          <code>rime firewall list</code> shows every service you can open, with its port.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight container" id="power" aria-labelledby="pw-h">
+    <div class="split-2">
+      <div>
+        <h2 id="pw-h">It knows the machine it runs on.</h2>
+        <p class="muted"><code>rimed</code>, Rime's hardware daemon, switches power tiers between mains and battery, sets battery charge limits, runs the fans and, on AMD laptops, the processor's power limits. It keeps named modes for daily use, gaming and development, and tells <code>rime</code> what the machine is doing and how hot it is.</p>
+      </div>
+      <div class="stack">
+        <CommandChip cmd="rime status" />
+        <Evidence links={[{ label: "docs/rimed-dbus.md", href: os("docs/rimed-dbus.md") }, { label: "docs/modes-and-workloads.md", href: os("docs/modes-and-workloads.md") }]}>
+          <code>rime tier</code>, <code>rime battery</code>, <code>rime fan</code> and <code>rime mode</code> set each part; <code>rime perf</code> shows clocks, power and temperatures.
+        </Evidence>
+      </div>
+    </div>
+  </section>
+
   <section class="section-tight container sys-end">
     <p><a class="btn btn-primary" href="/download"><Icon name="download" /> Download Rime</a> <a class="btn" href="/docs">Read the docs</a></p>
   </section>
@@ -179,7 +224,7 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
   .page-toc a:active { background: var(--rime-surface-high); }
   @media (max-width: 760px), (pointer: coarse) { .page-toc a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; } }
   .split-2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
-  @media (max-width: 900px) { .split-2 { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .split-2 { grid-template-columns: minmax(0, 1fr); } }
   .split-2 h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); margin-bottom: 16px; }
   .stack > * + * { margin-top: 12px; }
   .plain-steps { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; color: var(--rime-text-secondary); }

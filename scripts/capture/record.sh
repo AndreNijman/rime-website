@@ -54,6 +54,18 @@ take() {
     cap_begin || return 1
     cap_seed "$palette" "$wall" "$settings" "$scheme"
     cap_shell_start || return 1
+    local ambient=false
+    case "$name" in
+        *agents*)
+            # The Agent Center's service starts on the page's first open and
+            # draws nothing until its first answer: open it once, unrecorded,
+            # so the recorded open is the one a person sees every day after.
+            cap_at 5; cap_ipc dashboard-agents toggle
+            cap_at 8; cap_ipc dashboard-agents toggle
+            # A working session's badge breathes for as long as it works, so
+            # cut.py must not take it for a transition (take.json "ambient").
+            ambient=true ;;
+    esac
     cap_at 14
     cap_grab "$dir/before.png"
     local rec_t0; rec_t0="$(date +%s%N)"
@@ -83,6 +95,17 @@ take() {
         notifications-dash) ev $A rest notifications notification-toggle toggle
                      ev $D1 notifications dashboard dashboard-home toggle
                      ev $D2 dashboard rest dashboard-home toggle ;;
+        # the Agent Center (the Dashboard's Agents tab): straight in and out,
+        # and the tab slide both ways, with the Dashboard entered at D1 and
+        # left at D2 as in every other take, so its ticking seconds join
+        agents)      ev $A  rest agents dashboard-agents toggle
+                     ev $D1 agents rest dashboard-agents toggle ;;
+        dash-agents) ev $D1 rest dashboard dashboard-home toggle
+                     ev $D2 dashboard agents dashboard-agents toggle
+                     ev $B  agents rest dashboard-agents toggle ;;
+        agents-dash) ev $A  rest agents dashboard-agents toggle
+                     ev $D1 agents dashboard dashboard-home toggle
+                     ev $D2 dashboard rest dashboard-home toggle ;;
         *) echo "unknown take $name"; return 1 ;;
     esac
     cap_at "$(python3 -c "print($last_at + 4.5)")"
@@ -90,9 +113,9 @@ take() {
     cp "$CAP_LOG" "$dir/shell.log"
     local errs; errs="$(grep -E 'TypeError|ReferenceError|is not a type' "$CAP_LOG" | head -5)"
     [ -n "$errs" ] && { echo "shell errors in $variant/$name:"; echo "$errs"; }
-    printf '{"variant":"%s","take":"%s","scene":"%s","scheme":"%s","reduced":%s,"speed":%s,"shell":"%s","rec_t0_ns":%s,"events":[%s]}\n' \
+    printf '{"variant":"%s","take":"%s","scene":"%s","scheme":"%s","reduced":%s,"speed":%s,"shell":"%s","rec_t0_ns":%s,"ambient":%s,"events":[%s]}\n' \
         "$variant" "$name" "$scene" "$scheme" "$reduced" "$speed" "$(cat "$SHELL_ROOT/.rime-shell-commit" 2>/dev/null || echo unknown)" \
-        "$rec_t0" "${events%,}" > "$dir/take.json"
+        "$rec_t0" "$ambient" "${events%,}" > "$dir/take.json"
     cap_end
     echo "recorded $variant/$name"
 }
