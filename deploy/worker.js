@@ -1,5 +1,5 @@
-// rimeos.com: www goes to the apex; everything else is the static site, with
-// its own _headers and _redirects applied by the asset server. The workers.dev
+// rimeos.com: http and www go to https://rimeos.com; everything else is the
+// static site, with its own _headers and _redirects applied by the asset server. The workers.dev
 // preview host serves the same site but asks not to be indexed, so search
 // engines only ever list rimeos.com.
 //
@@ -11,7 +11,9 @@ const MEDIA = /\.(mp4|webm)$/;
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname === "www.rimeos.com") {
+    const ours = url.hostname === "rimeos.com" || url.hostname === "www.rimeos.com";
+    if (ours && (url.protocol === "http:" || url.hostname === "www.rimeos.com")) {
+      url.protocol = "https:";
       url.hostname = "rimeos.com";
       return Response.redirect(url.toString(), 301);
     }
