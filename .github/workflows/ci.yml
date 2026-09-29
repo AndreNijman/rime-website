@@ -1,0 +1,87 @@
+name: rimeos.com CI
+
+# The same gates a deploy goes through, on every pull request and on main.
+# Not here: `npm run launch-gates` (facts about GitHub and the registry, not
+# this code), `npm run scenes:check` (needs matugen 4.2, which only a Rime
+# machine has) and `npm run verify:vendor` (compares with rime-shell's moving
+# main, so it would fail on upstream work rather than on this repository).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Type check (astro check)
+        run: npm run check
+
+      # Vendored Shell hashes, generated tokens, astro build, then the postbuild
+      # gate: release pages and JSON, links and anchors, alt text, CSP-safe
+      # markup, the JS budget.
+      - name: Build
+        run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 3
+
+  browsers:
+    name: Browser tests
+    needs: build
+    runs-on: ubuntu-latest
+    # The Playwright release the lockfile pins, with its three browsers and
+    # their system libraries. --user 1001 is Playwright's advice for Actions:
+    # Firefox refuses to run as root under another user's HOME.
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: npm ci
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Chromium, Firefox and WebKit: every e2e suite, the recorded stage and
+      # axe included. The visual baselines stay local (see playwright.config.ts).
+      - name: Playwright
+        run: npx playwright test --reporter=line
+        env:
+          RIME_SKIP_VISUAL: "1"
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7

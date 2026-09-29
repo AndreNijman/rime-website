@@ -1,7 +1,5 @@
 // rimeos.com: http and www go to https://rimeos.com; everything else is the
-// static site, with its own _headers and _redirects applied by the asset server. The workers.dev
-// preview host serves the same site but asks not to be indexed, so search
-// engines only ever list rimeos.com.
+// static site, with its own _headers and _redirects applied by the asset server.
 //
 // The asset server answers every request with the whole file, Range or not.
 // Safari will not play a <video> without 206 responses, so byte ranges of the
@@ -17,12 +15,8 @@ export default {
       url.hostname = "rimeos.com";
       return Response.redirect(url.toString(), 301);
     }
-    let res = await env.ASSETS.fetch(request);
-    if (MEDIA.test(url.pathname) && res.status === 200) res = await ranged(request, res);
-    if (url.hostname.endsWith(".workers.dev")) {
-      res = new Response(res.body, res);
-      res.headers.set("X-Robots-Tag", "noindex");
-    }
+    const res = await env.ASSETS.fetch(request);
+    if (MEDIA.test(url.pathname) && res.status === 200) return ranged(request, res);
     return res;
   },
 };
