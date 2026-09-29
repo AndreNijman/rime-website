@@ -7,3 +7,4 @@ tests/visual/__diff__/
 *.log
 .DS_Store
 tests/tools/dbg.mjs
+.wrangler/
