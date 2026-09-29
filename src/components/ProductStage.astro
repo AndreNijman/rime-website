@@ -29,6 +29,8 @@ interface Props {
   reduced?: boolean;        // run this stage under Reduce Motion whatever the visitor's setting
 }
 const { id, tour = false, controls = true, scene: sceneId, caption, label = "Interactive reconstruction of the Rime Shell desktop", eager = false, reduced = false } = Astro.props;
+// "Click" in a caption reads "Tap" on a touch screen (global.css .w-touch).
+const capParts = (caption ?? "Reconstructed from Rime Shell's source, not recorded: its geometry, springs and tokens, running in your browser.").split(/\bClick\b/);
 const scene = scenes.scenes.find((s) => s.id === sceneId) ?? scenes.scenes.find((s) => s.default)!;
 
 const W = 1440, H = 900, B = T1.borderWidth, NH = T1.notchHeight, SH = T1.notchShoulder, NB = T1.notchBottom;
@@ -75,9 +77,9 @@ const tiles = [
   <div class="stage" role="group" aria-roledescription="interactive demo" aria-label={label}>
     <div class="stage-desk" data-desk>
       <picture class="stage-wall" data-wall>
-        <source type="image/avif" srcset={srcset("avif")} sizes="(min-width: 1500px) 1400px, 94vw" />
-        <source type="image/webp" srcset={srcset("webp")} sizes="(min-width: 1500px) 1400px, 94vw" />
-        <img src={img.sources.jpg[1]?.src ?? img.sources.jpg[0].src} srcset={srcset("jpg")} sizes="(min-width: 1500px) 1400px, 94vw"
+        <source type="image/avif" srcset={srcset("avif")} sizes="(max-width: 652px) 260vw, (min-width: 1500px) 1400px, 94vw" />
+        <source type="image/webp" srcset={srcset("webp")} sizes="(max-width: 652px) 260vw, (min-width: 1500px) 1400px, 94vw" />
+        <img src={img.sources.jpg[1]?.src ?? img.sources.jpg[0].src} srcset={srcset("jpg")} sizes="(max-width: 652px) 260vw, (min-width: 1500px) 1400px, 94vw"
           width={img.width} height={img.height} alt="" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={eager ? "high" : "auto"} />
       </picture>
 
@@ -203,7 +205,7 @@ const tiles = [
     </div>
   )}
   <figcaption class="stage-caption caption">
-    {caption ?? "Reconstructed from Rime Shell's source, not recorded: its geometry, springs and tokens, running in your browser."}
+    {capParts.map((part, i) => <>{i > 0 && <><span class="w-point">Click</span><span class="w-touch">Tap</span></>}{part}</>)}
     {" "}<a href="https://github.com/AndreNijman/rime-shell/tree/6289d1f8/src/shapes/fluid" class="mono">rime-shell@6289d1f8</a>
   </figcaption>
 </figure>
@@ -269,7 +271,7 @@ const tiles = [
   .stage[data-open="dashboard"] .sb-title { opacity: 0; }
   .sb-right { right: 0; justify-content: flex-end; gap: 8px; padding-right: 14px; }
   .sb-ic { width: 24px; height: 24px; display: grid; place-items: center; border: 0; background: none; padding: 0; color: var(--rime-icon-default); border-radius: 12px; cursor: pointer; }
-  button.sb-ic:hover { color: var(--rime-text-primary); }
+  @media (hover: hover) { button.sb-ic:hover { color: var(--rime-text-primary); } }
   .sb-ic[aria-expanded="true"] { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
   .sb-clock { font: 600 14px/1 var(--font-ui); margin: 0 2px; }
 
@@ -366,7 +368,10 @@ const tiles = [
     box-shadow: inset 0 0 0 1px var(--rime-hairline);
     transition: background-color var(--dur-hover) var(--ease-effects), transform var(--dur-press-out) var(--ease-spring);
   }
-  .stage-act:hover, .stage-tour:hover { background: var(--rime-surface-high); }
+  @media (hover: hover) { .stage-act:hover, .stage-tour:hover { background: var(--rime-surface-high); } }
+  @media (max-width: 760px), (pointer: coarse) {
+    .stage-act, .stage-tour { min-height: 44px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  }
   .stage-act:active, .stage-tour:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-hover), var(--dur-press-in); }
   .stage-act[aria-pressed="true"] { background: var(--rime-surface-selected); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); }
   .stage-act .fam { font-size: 0.68rem; color: var(--rime-text-secondary); font-weight: 500; }

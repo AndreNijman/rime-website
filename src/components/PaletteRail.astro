@@ -66,7 +66,8 @@ const def = list.find((s) => s.default)!;
     transition: background-color var(--dur-hover) var(--ease-effects);
   }
   .rail--row .rail-item { grid-template-columns: 1fr; gap: 8px; }
-  .rail-item:hover { background: var(--rime-hover); }
+  @media (hover: hover) { .rail-item:hover { background: var(--rime-hover); } }
+  .rail-item { -webkit-tap-highlight-color: transparent; }
   .rail-item input { position: absolute; opacity: 0; width: 1px; height: 1px; }
   .rail-thumb { display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 9; box-shadow: 0 0 0 1px var(--rime-hairline); transition: box-shadow var(--dur-state) var(--ease-effects); }
   .rail-thumb img { width: 100%; height: 100%; object-fit: cover; }

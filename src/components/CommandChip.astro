@@ -26,6 +26,15 @@ const { cmd, prompt = "$", label, wrap = false } = Astro.props;
     background: transparent; color: var(--rime-text-secondary); cursor: pointer;
     transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-hover) var(--ease-effects);
   }
-  .cmd-copy:hover { background: var(--rime-hover); color: var(--rime-text-primary); }
+  @media (hover: hover) { .cmd-copy:hover { background: var(--rime-hover); color: var(--rime-text-primary); } }
+  .cmd-copy:active { background: var(--rime-hover); }
+  /* Touch: a 44 px copy target, and the prompt and button stay on the first
+   * line when a long command wraps. */
+  @media (max-width: 760px), (pointer: coarse) {
+    .cmd { align-items: flex-start; }
+    .cmd-prompt { padding-top: 12px; line-height: 1.6; }
+    .cmd-text { padding: 12px 0; }
+    .cmd-copy { width: 44px; height: 44px; }
+  }
   html:not(.js) .cmd-copy { display: none; }
 </style>

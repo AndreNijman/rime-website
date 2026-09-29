@@ -86,6 +86,10 @@ const notch = Geo.barNotch({ x: W / 2 - g.notchW / 2, w: g.notchW, strip: B, h: 
   .lab-scrub label { display: flex; justify-content: space-between; }
   .lab-scrub output { color: var(--rime-text-primary); }
   .lab-scrub input[type="range"] { width: 100%; accent-color: var(--rime-accent); height: 28px; }
+  @media (max-width: 760px), (pointer: coarse) {
+    .lab-scrub input[type="range"] { height: 44px; }
+    .lab-play .btn, .lab .segmented-opt span { min-height: 44px; }
+  }
   .lab-play { display: flex; gap: 8px; flex-wrap: wrap; }
   .lab-read { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0; }
   .lab-read div { background: var(--rime-surface-raised); border-radius: var(--radius-s); padding: 8px 10px; box-shadow: inset 0 0 0 1px var(--rime-hairline); }

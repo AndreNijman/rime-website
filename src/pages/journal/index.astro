@@ -26,5 +26,6 @@ const posts = (await getCollection("journal")).sort((a, b) => b.data.date.getTim
   .jr-item { padding: 28px 0; border-bottom: 1px solid var(--rime-hairline); display: grid; gap: 8px; }
   .jr-item h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
   .jr-item h2 a { text-decoration: none; }
-  .jr-item h2 a:hover { text-decoration: underline; text-decoration-color: var(--rime-accent); }
+  @media (hover: hover) { .jr-item h2 a:hover { text-decoration: underline; text-decoration-color: var(--rime-accent); } }
+  @media (max-width: 760px), (pointer: coarse) { .jr-item h2 a { display: inline-flex; align-items: center; min-height: 44px; } }
 </style>

@@ -30,6 +30,12 @@ const toc = headings.filter((h) => h.depth === 2);
       {toc.length > 2 && (
         <nav class="docs-toc" aria-label="On this page"><p class="caption">On this page</p><ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul></nav>
       )}
+      {toc.length > 2 && (
+        <details class="docs-toc-m">
+          <summary>On this page <span class="caption">{toc.length} sections</span></summary>
+          <nav aria-label="On this page"><ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul></nav>
+        </details>
+      )}
       <div class="prose"><Content /></div>
       {(d.data.sources.length > 0 || d.data.verified) && (
         <footer class="docs-src caption">
@@ -42,15 +48,43 @@ const toc = headings.filter((h) => h.depth === 2);
 </Base>
 <style>
   .docs { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); padding-top: calc(var(--notch-h) + clamp(32px, 5vw, 72px)); padding-bottom: var(--section-pad); }
-  @media (max-width: 900px) { .docs { grid-template-columns: 1fr; } .docs-nav { order: 2; } }
+  @media (max-width: 900px) { .docs { grid-template-columns: minmax(0, 1fr); } .docs-nav { order: 2; } }
   .docs-nav { position: sticky; top: calc(var(--notch-h) + 24px); align-self: start; display: grid; gap: 18px; font-size: 0.92rem; }
   @media (max-width: 900px) { .docs-nav { position: static; } }
   .docs-nav-h { font-size: 0.78rem; font-weight: 600; color: var(--rime-text-secondary); margin-bottom: 6px; }
   .docs-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
   .docs-nav a { display: block; padding: 6px 10px; border-radius: var(--radius-s); text-decoration: none; color: var(--rime-text-secondary); }
-  .docs-nav a:hover { background: var(--rime-hover); color: var(--rime-text-primary); }
+  @media (hover: hover) { .docs-nav a:hover { background: var(--rime-hover); color: var(--rime-text-primary); } }
+  @media (max-width: 760px), (pointer: coarse) {
+    .docs-nav a { display: flex; align-items: center; min-height: 44px; padding-block: 0; }
+    .docs-nav { padding-top: 28px; border-top: 1px solid var(--rime-hairline); }
+    .docs-src a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+  }
+  .docs-toc-m { display: none; }
+  @media (max-width: 760px) {
+    .docs-toc { display: none; }
+    .docs-toc-m {
+      display: block; border-radius: var(--radius-m); background: var(--rime-surface-raised);
+      box-shadow: inset 0 0 0 1px var(--rime-hairline);
+    }
+    .docs-toc-m summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px;
+      font-weight: 600; -webkit-tap-highlight-color: transparent;
+    }
+    .docs-toc-m summary::-webkit-details-marker { display: none; }
+    .docs-toc-m summary .caption { font-weight: 400; }
+    .docs-toc-m summary::after {
+      content: ""; margin-left: auto; width: 9px; height: 9px; flex: none;
+      border-right: 2px solid var(--rime-text-secondary); border-bottom: 2px solid var(--rime-text-secondary);
+      transform: translateY(-3px) rotate(45deg); transition: transform var(--dur-state) var(--ease-standard);
+    }
+    .docs-toc-m[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+    .docs-toc-m ul { list-style: none; margin: 0; padding: 0 8px 8px; display: grid; }
+    .docs-toc-m a { display: flex; align-items: center; min-height: 44px; padding: 0 8px; border-radius: var(--radius-s); text-decoration: none; }
+    .docs-toc-m a:active { background: var(--rime-hover); }
+  }
   .docs-nav a[aria-current="page"] { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
-  .docs-main { min-width: 0; display: grid; gap: 14px; align-content: start; }
+  .docs-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; }
   .docs-main h1 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); }
   .docs-main .lead { max-width: 60ch; }
   .docs-toc { padding: 14px 16px; border-radius: var(--radius-m); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); max-width: var(--measure); }

@@ -70,7 +70,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
 </header>
 
 <!-- CENTER_BLOOM: the site map and search, out of the centre notch -->
-<div class="fluid-layer" id="site-bloom" role="dialog" aria-modal="true" aria-label="Site map and search" hidden inert data-bloom>
+<div class="fluid-layer" id="site-bloom" role="dialog" aria-modal="true" aria-label="Site map and search" tabindex="-1" hidden inert data-bloom>
   <div class="fluid-backdrop" data-close></div>
   <svg class="fluid-shape" aria-hidden="true" focusable="false"><path data-path fill-rule="evenodd" /></svg>
   <div class="fluid-hole" data-hole aria-hidden="true"></div>
@@ -83,6 +83,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
           placeholder="Search docs, features and updates" data-lens-input
           aria-controls="lens-results" aria-autocomplete="list" />
         <kbd aria-hidden="true">Esc</kbd>
+        <button type="button" class="lens-close" data-close aria-label="Close"><Icon name="x" size={20} /></button>
       </form>
       <div class="bloom-nav" data-bloom-nav>
         {NAV.map((g) => (
@@ -110,7 +111,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
 </div>
 
 <!-- RIGHT_POUR: the download surface, out of the right notch -->
-<div class="fluid-layer" id="download-pour" role="dialog" aria-modal="true" aria-label="Download Rime" hidden inert data-pour>
+<div class="fluid-layer" id="download-pour" role="dialog" aria-modal="true" aria-label="Download Rime" tabindex="-1" hidden inert data-pour>
   <div class="fluid-backdrop" data-close></div>
   <svg class="fluid-shape" aria-hidden="true" focusable="false"><path data-path /></svg>
   <div class="fluid-reveal" data-reveal>
@@ -170,7 +171,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   .zone-right { right: 0; width: var(--r-w, 244px); justify-content: flex-end; padding-right: 10px; gap: 6px; }
 
   .frame-home { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; height: 30px; padding: 0 8px; border-radius: 999px; }
-  .frame-home:hover { background: var(--rime-hover); }
+  @media (hover: hover) { .frame-home:hover { background: var(--rime-hover); } }
   .wordmark { font-weight: 650; font-size: 1.02rem; letter-spacing: -0.01em; }
   .frame-home--capsule, .frame-search, .frame-get { display: none; }
 
@@ -179,7 +180,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
     border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
     transition: background-color var(--dur-hover) var(--ease-effects);
   }
-  .frame-trigger:hover, .frame-trigger[aria-expanded="true"] { background: var(--rime-hover); }
+  @media (hover: hover) { .frame-trigger:hover { background: var(--rime-hover); } }
   .frame-trigger[aria-expanded="true"] { background: var(--rime-surface-selected); }
   .frame-section { transition: opacity var(--dur-fade-out) var(--ease-effects); }
   .frame-chev { color: var(--rime-text-secondary); transition: transform var(--dur-state) var(--ease-standard); }
@@ -190,27 +191,70 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
     font-weight: 600; font-size: 0.9rem; text-decoration: none; white-space: nowrap;
     transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-state) var(--ease-effects);
   }
-  .frame-link:hover { background: var(--rime-hover); }
+  @media (hover: hover) { .frame-link:hover { background: var(--rime-hover); } }
   .frame-link[aria-current="page"] { background: var(--rime-surface-selected); }
   .frame-download { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
-  .frame-download:hover { background: color-mix(in srgb, var(--rime-accent-container) 88%, var(--rime-text-primary)); }
+  @media (hover: hover) { .frame-download:hover { background: color-mix(in srgb, var(--rime-accent-container) 88%, var(--rime-text-primary)); } }
   .frame-download[aria-expanded="true"] { background: var(--rime-surface-selected); color: var(--rime-text-primary); }
 
-  /* phones: one centre capsule (spec §4.4); every control 44 px */
+  /* phones: one centre capsule (spec §4.4); every control 44 px. The notch is
+   * 50 px here (global.css), so the capsule's inside is exactly one target
+   * tall; the transparent border keeps each drawn pill 4 px inside it. */
   @media (max-width: 760px) {
     .zone-left, .zone-right { display: none; }
-    .zone-center { width: var(--c-w, min(100vw - 24px, 340px)); justify-content: space-between; padding-inline: 8px; }
-    .frame-home--capsule, .frame-search, .frame-get { display: inline-flex; align-items: center; justify-content: center; }
-    .frame-home--capsule, .frame-search, .frame-get { width: 40px; height: 34px; border-radius: 999px; color: var(--rime-text-primary); background: none; border: 0; }
-    .frame-home--capsule:hover, .frame-search:hover, .frame-get:hover { background: var(--rime-hover); }
-    .frame-get { background: var(--rime-accent-container); color: var(--rime-on-accent-container); }
-    .frame-trigger { flex: 1; justify-content: center; height: 34px; }
+    .zone-center { width: var(--c-w, min(100vw - 38px, 340px)); justify-content: space-between; padding-inline: 4px; gap: 0; }
+    .frame-home--capsule, .frame-search, .frame-get, .frame-trigger {
+      height: 44px; border: 4px solid transparent; background-clip: padding-box; border-radius: 999px;
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .frame-home--capsule, .frame-search, .frame-get {
+      display: inline-flex; align-items: center; justify-content: center; flex: none;
+      width: 44px; padding: 0; color: var(--rime-text-primary); background-color: transparent;
+    }
+    @media (hover: hover) { .frame-home--capsule:hover, .frame-search:hover { background-color: var(--rime-hover); } }
+    .frame-home--capsule:active, .frame-search:active, .frame-trigger:active { background-color: var(--rime-hover); }
+    .frame-get { background-color: var(--rime-accent-container); color: var(--rime-on-accent-container); }
+    .frame-get[aria-expanded="true"] { background-color: var(--rime-surface-selected); color: var(--rime-text-primary); }
+    .frame-trigger { flex: 1; min-width: 0; justify-content: center; padding: 0 8px 0 12px; font-size: 0.98rem; }
+    .frame-section { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+  /* The server drew the bar for 1440 px, which means nothing on a phone:
+   * until frame.ts draws the capsule (or without JavaScript), CSS draws it. */
+  @media (max-width: 760px) {
+    .rime-frame:not([data-drawn]) .frame-bar { display: none; }
+    .rime-frame:not([data-drawn])::before {
+      content: ""; position: absolute; inset: 0 0 auto 0; height: var(--strip); background: var(--rime-surface-base);
+    }
+    .rime-frame:not([data-drawn]) .zone-center {
+      background: var(--rime-surface-base); border-radius: 0 0 14px 14px; box-shadow: 0 1px 0 var(--rime-hairline);
+    }
+  }
+  /* A phone has no Esc key: the hint becomes a close button in its place. */
+  .lens-close { display: none; }
+  @media (max-width: 760px) {
+    .lens kbd { display: none; }
+    .lens { padding-right: 4px; }
+    .lens-close {
+      display: inline-flex; align-items: center; justify-content: center; flex: none; width: 44px; height: 44px;
+      border: 0; border-radius: var(--radius-m); background: none; color: var(--rime-text-secondary); cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lens-close:active { background: var(--rime-hover); }
+    .lens input { font-size: 1.0625rem; }
   }
 
   /* ── fluid surfaces ── */
   .fluid-layer { position: fixed; inset: 0; z-index: 60; }
   .fluid-layer[hidden] { display: none; }
+  .fluid-layer:focus-visible { outline: none; box-shadow: none; }
   .fluid-backdrop { position: absolute; inset: 0; }
+  /* On a phone the surface covers most of the page: a light scrim says the
+   * page behind is not live while it is open. */
+  @media (max-width: 760px) {
+    .fluid-backdrop { background: rgb(0 0 0 / 0.32); transition: opacity var(--dur-state) var(--ease-effects); }
+    @starting-style { .fluid-backdrop { opacity: 0; } }
+    .rime-frame:not([data-open]) ~ .fluid-layer .fluid-backdrop { opacity: 0; }
+  }
   .fluid-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .fluid-shape path { fill: var(--rime-surface-base); pointer-events: visiblePainted; }
   .fluid-hole { position: absolute; background: var(--rime-surface-base); pointer-events: none; }
@@ -234,13 +278,13 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   }
   .bloom-group h2 { font-size: 0.8rem; font-weight: 600; color: var(--rime-text-secondary); letter-spacing: 0; margin-bottom: 8px; }
   .bloom-group h2 a { text-decoration: none; }
-  .bloom-group h2 a:hover { color: var(--rime-text-primary); }
+  @media (hover: hover) { .bloom-group h2 a:hover { color: var(--rime-text-primary); } }
   .bloom-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
   .bloom-group li a {
     display: block; padding: 7px 10px; margin-inline: -10px; border-radius: var(--radius-s);
     text-decoration: none; font-size: 0.98rem; transition: background-color var(--dur-hover) var(--ease-effects);
   }
-  .bloom-group li a:hover { background: var(--rime-hover); }
+  @media (hover: hover) { .bloom-group li a:hover { background: var(--rime-hover); } }
   .lens-results { flex: 1; min-height: 0; overflow: auto; padding: 0 4px; }
   .bloom-nav[hidden], .lens-results[hidden] { display: none; }
   .lens-group + .lens-group { margin-top: 14px; }
@@ -251,14 +295,15 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   }
   .lens-row strong { display: block; font-weight: 600; }
   .lens-row span { display: block; font-size: 0.88rem; color: var(--rime-text-secondary); margin-top: 2px; }
-  .lens-row:hover, .lens-row[aria-selected="true"] { background: var(--rime-surface-selected); }
+  .lens-row[aria-selected="true"] { background: var(--rime-surface-selected); }
+  @media (hover: hover) { .lens-row:hover { background: var(--rime-surface-selected); } }
   .lens-empty { padding: 18px 12px; color: var(--rime-text-secondary); }
   .bloom-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 0 6px; flex: none; }
   .bloom-latest {
     display: inline-flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-m);
     background: var(--rime-surface-raised); text-decoration: none; font-size: 0.92rem;
   }
-  .bloom-latest:hover { background: var(--rime-surface-high); }
+  @media (hover: hover) { .bloom-latest:hover { background: var(--rime-surface-high); } }
   .bloom-latest .mono { color: var(--rime-accent-text); font-size: 0.8rem; }
   .bloom-hint kbd { font-size: 0.75rem; }
   @media (max-width: 760px) { .bloom-hint { display: none; } .bloom-nav { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; } }
@@ -276,7 +321,7 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
     display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; min-height: 36px;
     padding: 0 12px; border-radius: var(--radius-s); background: var(--rime-surface-high); font-size: 0.78rem;
   }
-  .sha-chip:hover { background: color-mix(in srgb, var(--rime-surface-high) 85%, var(--rime-text-primary)); }
+  @media (hover: hover) { .sha-chip:hover { background: color-mix(in srgb, var(--rime-surface-high) 85%, var(--rime-text-primary)); } }
   .pour-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
 
   /* CAPSULE: tiny transient feedback, out of the top centre */
@@ -288,4 +333,25 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
     display: inline-flex; align-items: center; gap: 8px; pointer-events: none;
   }
   .status-capsule[hidden] { display: none; }
+
+  /* phones: the surfaces' own targets, after the rules they override */
+  @media (max-width: 760px) {
+    /* A short phone caps the sheet (frame.ts pourH): its content scrolls
+     * inside it rather than being clipped, and neither surface lets a swipe
+     * scroll the page behind. */
+    .pour-content { padding-bottom: calc(24px + env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; }
+    .bloom-nav, .lens-results { overscroll-behavior: contain; }
+    .fluid-backdrop { touch-action: none; }
+    .pour-actions .btn { flex: 1 1 100%; }
+    .bloom-group li a { display: flex; align-items: center; min-height: 44px; padding-block: 0; }
+    .bloom-group h2 { margin-bottom: 0; }
+    .bloom-group h2 a { display: flex; align-items: center; min-height: 44px; }
+    .bloom-latest { min-height: 44px; }
+    .sha-chip { min-height: 44px; }
+    .pour-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
+    .pour-facts div:first-child { grid-column: 1 / -1; }
+    .pour-sha { flex-direction: column; align-items: stretch; gap: 6px; }
+    .sha-chip { justify-content: space-between; }
+    .bloom-group li a:active, .bloom-latest:active, .sha-chip:active { background: var(--rime-hover); }
+  }
 </style>

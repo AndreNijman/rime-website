@@ -125,6 +125,11 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
   .dl-facts dt { font-size: 0.78rem; color: var(--rime-text-secondary); }
   .dl-facts dd { margin: 2px 0 0; font-weight: 600; }
   .dl-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  @media (max-width: 720px) {
+    .dl-actions .btn, .dl-issue-links .btn, #install > p > .btn { flex: 1 1 100%; }
+    #install > p:has(> .btn) { display: flex; }
+    .dl-card { padding: 22px 18px; }
+  }
   .dl-sha { display: grid; gap: 10px; align-content: start; }
   .dl-name { margin-top: 8px; max-width: 80ch; }
   .dl-name h2, .h4 { font-size: 1.05rem; margin-bottom: 6px; }

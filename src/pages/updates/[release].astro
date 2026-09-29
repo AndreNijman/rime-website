@@ -209,7 +209,7 @@ const desc = r.summary.split(/(?<=\.)\s+/)[0];
   @media (max-width: 900px) { .rel-body { grid-template-columns: 1fr; } .rel-toc { display: none; } }
   .rel-toc ul { position: sticky; top: calc(var(--notch-h) + 28px); list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 0.9rem; }
   .rel-toc a { display: block; padding: 6px 10px; border-radius: var(--radius-s); color: var(--rime-text-secondary); text-decoration: none; }
-  .rel-toc a:hover { background: var(--rime-hover); color: var(--rime-text-primary); }
+  @media (hover: hover) { .rel-toc a:hover { background: var(--rime-hover); color: var(--rime-text-primary); } }
   .rel-main { display: grid; gap: clamp(40px, 5vw, 64px); min-width: 0; }
   .rel-sec h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin-bottom: 18px; }
   .hl-list { display: grid; gap: 14px; }
@@ -246,7 +246,18 @@ const desc = r.summary.split(/(?<=\.)\s+/)[0];
   #help { display: grid; gap: 14px; }
   .rel-pager { display: flex; justify-content: space-between; gap: 16px; padding-top: 24px; border-top: 1px solid var(--rime-hairline); }
   .rel-pager a { display: grid; gap: 4px; max-width: 46%; text-decoration: none; padding: 12px 14px; border-radius: var(--radius-m); }
-  .rel-pager a:hover { background: var(--rime-hover); }
+  @media (hover: hover) { .rel-pager a:hover { background: var(--rime-hover); } }
+  .rel-pager a:active { background: var(--rime-hover); }
+  @media (max-width: 760px), (pointer: coarse) {
+    .rel-crumbs a, .src a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+    .src { gap: 0 16px; }
+    .rel-crumbs { margin-block: -10px; }
+  }
+  @media (max-width: 560px) {
+    .rel-pager { flex-direction: column; gap: 8px; }
+    .rel-pager a { max-width: none; box-shadow: inset 0 0 0 1px var(--rime-hairline); }
+    .pager-next { text-align: left; margin-left: 0; }
+  }
   .pager-next { text-align: right; margin-left: auto; }
   .rel-pager .mono { font-size: 0.8rem; color: var(--rime-accent-text); }
   .rel-crossed { padding: 20px 22px; border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }

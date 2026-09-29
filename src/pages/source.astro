@@ -29,7 +29,7 @@ const files = Object.entries(source.files);
 
     <h2 id="website">How this website is built</h2>
     <p>rimeos.com doesn't reimplement the Shell's motion, colour or geometry. It runs the Shell's own files, copied byte for byte from <a href={`${SITE.repos.shell}/tree/${source.ref}`} class="mono">rime-shell@{source.ref.slice(0, 8)}</a> and checked against these hashes on every build:</p>
-    <table class="hashes">
+    <table class="hashes" data-stack>
       <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
       <tbody>{files.map(([p, r]) => <tr><td><code>{p}</code></td><td class="mono">{(r as { sha256: string }).sha256}</td></tr>)}</tbody>
     </table>

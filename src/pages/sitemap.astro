@@ -32,5 +32,11 @@ const q = Astro.url.searchParams?.get?.("q");
   .sm ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
   .sm a { text-decoration: none; }
   .sm li a { color: var(--rime-text-secondary); }
-  .sm li a:hover { color: var(--rime-text-primary); text-decoration: underline; }
+  @media (hover: hover) { .sm li a:hover { color: var(--rime-text-primary); text-decoration: underline; } }
+  @media (max-width: 760px), (pointer: coarse) {
+    .sm ul { gap: 0; }
+    .sm a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+    .sm h2 { margin-bottom: 2px; }
+  }
+  @media (max-width: 560px) { .sm { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; } }
 </style>

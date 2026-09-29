@@ -16,8 +16,14 @@ import { springRole, onMotionChange } from "../motion/policy";
 import { initSearch } from "./search";
 import { showCapsule, initCopy } from "./capsule";
 
-const NH = T1.notchHeight, B = T1.borderWidth, SH = T1.notchShoulder, NB = T1.notchBottom;
-const MOBILE = 760;
+const B = T1.borderWidth, SH = T1.notchShoulder, NB = T1.notchBottom;
+// The same test the stylesheet makes, so JS and CSS never disagree about which
+// frame is showing (clientWidth leaves out a desktop scrollbar; media queries
+// don't). On phones the notch is taller (--notch-h, global.css): the capsule's
+// inside is one 44 px touch target.
+const PHONE = window.matchMedia("(max-width: 760px)");
+const COARSE = window.matchMedia("(pointer: coarse)");
+const notchH = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--notch-h")) || T1.notchHeight;
 const L_W = 128, C_W = T1.cNotchMinWidth, R_W = 244;
 const BLOOM_W = 880, LENS_W = 640, POUR_W = 420;
 
@@ -33,8 +39,9 @@ export function initFrame(): void {
   const line = svg.querySelector<SVGPathElement>(".bar-line")!;
 
   let W = frame.clientWidth, VH = window.innerHeight;
-  let mobile = W < MOBILE;
-  let capsuleW = Math.min(W - 24, 340);
+  let mobile = PHONE.matches;
+  let NH = notchH();
+  let capsuleW = Math.min(W - 2 * (SH + 4), 340);
   let rightAttached = false;
 
   // ── the bar ────────────────────────────────────────────────────────────────
@@ -73,7 +80,9 @@ export function initFrame(): void {
 
   const bloomWidth = () => (mobile ? W - 16 : Math.min(BLOOM_W, W - 32));
   const lensWidth = () => (mobile ? W - 16 : Math.min(LENS_W, W - 32));
-  const bloomHeight = () => Math.round(mobile ? Math.min(VH * 0.8, 640) : Math.min(470, VH - 96));
+  // Phones: nearly the whole screen (a strip of scrim stays below it), since
+  // the lens row carries its own close button.
+  const bloomHeight = () => Math.round(mobile ? Math.min(VH - NH - 40, 640) : Math.min(470, VH - 96));
   let searching = false;
   const targetW = new Follower(bloomWidth(), springRole("page"), () => bloom.render());
   const bloomNotchW = () => (mobile ? Math.round(capsuleW) : C_W);
@@ -178,13 +187,20 @@ export function initFrame(): void {
     for (const o of surfaces) if (o !== s && o.fluid.isOpen) o.fluid.close();
     if (trigger) s.trigger = trigger;
     lastFocus = (document.activeElement as HTMLElement) ?? s.trigger;
-    s.fluid.open();
+    s.fluid.open();   // maps the layer synchronously, so it can take focus now
     s.trigger?.setAttribute("aria-expanded", "true");
     frame.dataset.open = s.name;
+    const lens = bloomEl.querySelector<HTMLInputElement>("[data-lens-input]");
+    // On a touch screen, focusing the field raises the keyboard: only the
+    // search button does that (and synchronously, inside the tap, or iOS
+    // won't show it). The site map takes focus as a dialog instead.
+    if (COARSE.matches) {
+      if (s === bloomS && trigger === searchTrigger) lens?.focus({ preventScroll: true });
+      else (s === bloomS ? bloomEl : pourEl).focus({ preventScroll: true });
+      return;
+    }
     requestAnimationFrame(() => {
-      const first = s === bloomS
-        ? bloomEl.querySelector<HTMLInputElement>("[data-lens-input]")
-        : pourEl.querySelector<HTMLElement>("a, button");
+      const first = s === bloomS ? lens : pourEl.querySelector<HTMLElement>("a, button");
       first?.focus({ preventScroll: true });
     });
   }
@@ -211,9 +227,9 @@ export function initFrame(): void {
       pour.isOpen ? closeSurface(pourS) : openSurface(pourS, t);
     });
   for (const el of [bloomEl, pourEl])
-    el.querySelector("[data-close]")?.addEventListener("click", () => {
+    el.querySelectorAll("[data-close]").forEach((c) => c.addEventListener("click", () => {
       for (const s of surfaces) closeSurface(s, false);
-    });
+    }));
 
   document.addEventListener("keydown", (e) => {
     const open = surfaces.find((s) => s.fluid.isOpen);
@@ -241,20 +257,29 @@ export function initFrame(): void {
     bloom.render();
   });
 
+  // The desktop placeholder does not fit a phone's field.
+  const lensInput = bloomEl.querySelector<HTMLInputElement>("[data-lens-input]");
+  const wide = lensInput?.placeholder ?? "";
+  const fitPlaceholder = () => { if (lensInput) lensInput.placeholder = mobile ? "Search the site" : wide; };
+
   // ── resize ────────────────────────────────────────────────────────────────
   const onResize = () => {
     W = frame.clientWidth; VH = window.innerHeight;
-    mobile = W < MOBILE;
-    capsuleW = Math.min(W - 24, 340);
+    mobile = PHONE.matches;
+    NH = notchH();
+    capsuleW = Math.min(W - 2 * (SH + 4), 340);
     drawBar();
     layoutSurfaces();
+    fitPlaceholder();
   };
   new ResizeObserver(onResize).observe(frame);
   window.addEventListener("resize", onResize, { passive: true });
   onMotionChange(() => { targetW.spring.response = springRole("page").response; });
 
   drawBar();
+  frame.dataset.drawn = "";
   layoutSurfaces();
+  fitPlaceholder();
   initCopy();
   document.querySelectorAll<HTMLAnchorElement>("[data-download-start]").forEach((a) =>
     a.addEventListener("click", () => showCapsule("Download started")));

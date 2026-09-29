@@ -13,4 +13,5 @@ import Icon from "../components/Icon.astro";
 <style>
   .nf { padding-top: calc(var(--notch-h) + clamp(64px, 12vw, 160px)); padding-bottom: var(--section-pad); display: grid; gap: 18px; }
   .nf-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  @media (max-width: 720px) { .nf { justify-items: stretch; } .nf-links .btn { flex: 1 1 auto; } }
 </style>

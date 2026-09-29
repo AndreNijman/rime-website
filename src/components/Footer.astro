@@ -52,7 +52,12 @@ import { FOOTER, SITE } from "../data/site";
   .footer-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
   .footer-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .footer-links a { font-size: 0.95rem; color: var(--rime-text-secondary); }
-  .footer-links a:hover { color: var(--rime-text-primary); }
+  @media (hover: hover) { .footer-links a:hover { color: var(--rime-text-primary); } }
+  @media (max-width: 760px), (pointer: coarse) {
+    .footer-links ul { gap: 0; }
+    .footer-links a { display: flex; align-items: center; min-height: 44px; }
+    .footer-home { min-height: 44px; }
+  }
   .footer-prefs { display: grid; gap: 16px; justify-items: start; }
   :global(html:not(.js)) .footer-prefs { display: none; }
   .footer-base { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--rime-hairline); }

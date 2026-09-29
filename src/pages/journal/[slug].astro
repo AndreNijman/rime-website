@@ -20,7 +20,7 @@ const { Content } = await render(p);
   </article>
 </Base>
 <style>
-  .post { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: var(--section-pad); display: grid; gap: 16px; max-width: 820px; }
+  .post { padding-top: calc(var(--notch-h) + clamp(40px, 6vw, 88px)); padding-bottom: var(--section-pad); display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; max-width: 820px; }
   .post h1 { font-size: clamp(2.1rem, 1.4rem + 2.4vw, 3.4rem); }
   .post .lead { max-width: 60ch; margin-bottom: 12px; }
   .post-src { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rime-hairline); }

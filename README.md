@@ -133,6 +133,25 @@ informational only; nothing here is consulted by an update.
 - **launch** (`npm run launch-gates`): facts outside this repo that must hold
   before going public.
 
+### Phones
+
+`tests/e2e/phone.spec.ts` holds every page to no sideways scroll at 390 and
+320 px and 44 × 44 px touch targets (inline links in running text excepted),
+and checks the site map and download sheet on a touch screen. Tools for a
+closer look, all against a running site (default `http://127.0.0.1:8788`):
+
+| | |
+|---|---|
+| `node tests/tools/mobile-audit.mjs <dir>` | overflow, small targets and side-scrollers at 390/360/320; full-page shots |
+| `node tests/tools/mobile-ix.mjs <dir>` | the frame's menu, search, download sheet and stage with motion on |
+| `node tests/tools/iphone-check.mjs <dir>` | the same checks in WebKit as an iPhone (run it in the Playwright container) |
+| `node tests/tools/desk-shots.mjs <dir>` | full-page desktop shots of every page, to diff before and after a phone change |
+| `node tests/tools/hidden-leaks.mjs` | elements with `hidden` that still display |
+
+Phone layout lives in each component's own `@media (max-width: 760px)` and
+`(pointer: coarse)` rules; the phone notch is 50 px (`--notch-h`), so the
+capsule's inside is one 44 px target tall.
+
 WebKit needs system libraries an immutable host may lack; run it in
 Playwright's container:
 

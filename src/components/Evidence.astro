@@ -20,5 +20,9 @@ const { links = [], label = "Evidence" } = Astro.props;
   .evidence :global(code) { font-size: 0.82rem; color: var(--rime-text-primary); }
   .evidence-links { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
   .evidence-links a { font-size: 0.76rem; color: var(--rime-text-secondary); }
-  .evidence-links a:hover { color: var(--rime-text-primary); }
+  @media (hover: hover) { .evidence-links a:hover { color: var(--rime-text-primary); } }
+  @media (max-width: 760px), (pointer: coarse) {
+    .evidence-links { gap: 0 18px; margin-top: 4px; }
+    .evidence-links a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+  }
 </style>

@@ -120,12 +120,27 @@ const text = (r: (typeof all)[number]) => [r.name, r.title, r.summary, ...r.chan
   .f-chip span { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); font-size: 0.88rem; font-weight: 600; color: var(--rime-text-secondary); transition: background-color var(--dur-hover) var(--ease-effects), color var(--dur-state) var(--ease-effects); }
   .f-chip input:checked + span { background: var(--rime-surface-selected); color: var(--rime-text-primary); box-shadow: inset 0 0 0 1px var(--rime-outline-strong); }
   .f-chip input:focus-visible + span { outline: 2px solid var(--rime-text-primary); outline-offset: 2px; }
+  @media (max-width: 760px), (pointer: coarse) {
+    .f-chip span { height: 44px; padding: 0 16px; }
+    .f-chip { -webkit-tap-highlight-color: transparent; }
+    .f-search { height: 48px; }
+  }
+  @media (max-width: 760px) {
+    .upd-head { align-items: stretch; }
+    .filters { width: 100%; }
+    .f-search { flex: 1 1 100%; padding: 0 16px; }
+    .f-search input { width: 100%; min-width: 0; font-size: 1.0625rem; }
+    .upd-item { padding: 20px 18px; }
+    .upd-changes li { grid-template-columns: 74px minmax(0, 1fr); }
+    .upd-changes li span:last-child { overflow-wrap: break-word; min-width: 0; }
+    .feeds a { min-height: 44px; }
+  }
   .upd-channels { margin-bottom: 28px; max-width: 80ch; }
   .upd-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   .upd-item { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px 32px; padding: 22px 24px; border-radius: var(--radius-xl); background: var(--rime-surface-raised); box-shadow: inset 0 0 0 1px var(--rime-hairline); }
   @media (max-width: 800px) { .upd-item { grid-template-columns: 1fr; } }
   .upd-link { display: grid; gap: 6px; align-content: start; text-decoration: none; }
-  .upd-link:hover .upd-title { text-decoration: underline; text-decoration-color: var(--rime-accent); }
+  @media (hover: hover) { .upd-link:hover .upd-title { text-decoration: underline; text-decoration-color: var(--rime-accent); } }
   .upd-id { font-size: 0.8rem; color: var(--rime-accent-text); }
   .upd-title { font-size: 1.2rem; font-weight: 600; line-height: 1.3; }
   .upd-changes { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.94rem; }
