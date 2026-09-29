@@ -1,0 +1,32 @@
+# Image build: build-image run 36574004699 (push to main, merge of rime-os #75;
+# rime-shell main 10326c97 unchanged since .2). date = when the run finished
+# (2026-09-29 21:59:56 AWST). Published under ghcr.io/andrenijman/rime-os AND
+# ghcr.io/andrenijman/apex-os, every channel tag; core reused.
+# Add as rime-website content/updates/2026.09.29.3/release.yaml.
+schema: 1
+id: "2026.09.29.3"
+product: rime
+name: "Rime 2026.09.29.3"
+title: "Your login password opens your keyring"
+date: "2026-09-29T13:59:56Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia", "platform-rime", "rime"]
+summary: "The keyring you already have becomes your login keyring, so logging in unlocks it and apps stop asking for its password."
+predecessor: "2026.09.29.2"
+provenance:
+  osRevision: "e776145c68ff0899bf6349a33b6fa96a2e53914a"
+  shellRevision: "10326c977a854f326f22bbb73b0c649a9ae65ac8"
+  imageDigest: "sha256:d23fbb4e5575b5f13693c604a36b0486b403590ed23f8819a00867a88d32c916"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36574004699"
+  iso: null
+highlights: ["keyring-login-master"]
+changes:
+  - id: "keyring-login-master"
+    area: security
+    kind: fixed
+    title: "Logging in unlocks the keyring you already have"
+    summary: "Rime computers kept saved passwords in a keyring that logging in never opened, so the first app to need one asked for the keyring's password. At your first login after this update, if your login password opens that keyring, it becomes your login keyring, with nothing in it changed, and every login from then on unlocks it."
+    detail: "If you gave the keyring a different password, it asks one more time. Tick \"Automatically unlock this keyring whenever I'm logged in\" in that prompt, and your login opens it from then on. To see what happened at your login, run: journalctl -t rime-keyring-login"
+    source: ["https://github.com/AndreNijman/rime-os/pull/75"]
+    breaking: false
+knownIssues: []
+rollback: null
