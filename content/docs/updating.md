@@ -31,9 +31,10 @@ The OS, the kernel, the graphics drivers, Rime Shell, the login screen and the
 boot splash all ship in that image, so they update together and roll back
 together. Rime Shell has no updater of its own.
 
-On a machine installed from the v2.1.0 ISO that has not taken its first update
-yet, the command is `apex`, and that first update needs extra steps. See
-[Install Rime](/docs/install). `apex` keeps working on Rime as another name for
+On a machine installed from an APEX-OS ISO (v2.1.0 or older) that has not
+taken its first update yet, the command is `apex`, and that first update needs
+extra steps. See
+[Installed from an APEX-OS ISO](/docs/install#installed-from-an-apex-os-iso). `apex` keeps working on Rime as another name for
 `rime`, and prints a one-line note when you use it.
 
 ## Before you update

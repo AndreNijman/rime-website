@@ -30,5 +30,7 @@ test("release JSON matches its page", async ({ request }) => {
   expect(j.id).toBe("2026.09.28.4");
   expect(j.notes).toBe("https://rimeos.com/updates/2026.09.28.4");
   const idx = await (await request.get("/updates/index.json")).json();
-  expect(idx.latest).toBe("2026.09.28.4");
+  expect(idx.latest).toBe("2026.09.29");
+  const latest = await (await request.get("/updates/2026.09.29.json")).json();
+  expect(latest.provenance.imageDigest).toBe("sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23");
 });

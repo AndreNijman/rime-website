@@ -1,9 +1,13 @@
 ---
 title: "Install Rime"
-description: "Download and check the installer, write it to a USB stick, install, and get the first update through."
+description: "Download and check the installer, write it to a USB stick, and install. Plus the one extra step for machines installed from the old APEX-OS ISO."
 section: "Start"
 order: 10
 sources:
+  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0"
+  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/installer/build-live-iso.sh"
+  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/installer/rime-installer-gui"
+  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/.github/workflows/build-installer-iso.yml"
   - "https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/README.md"
   - "https://github.com/AndreNijman/rime-os/blob/1672d059/README.md"
@@ -12,20 +16,15 @@ sources:
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/rimed/rime/src/trust.rs"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/rimed/rime/src/ops.rs"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/files/system/libexec/rime-migrate-from-apex"
-verified: "rime-os@2d9c5438a"
+verified: "rime-os@f639de2fa"
 ---
 
-## The installer still says APEX-OS
+The installer is a network installer: a small ISO that boots a live
+installer and downloads the signed Rime OS image while it installs. There is
+no Windows-based installer yet.
 
-Until 2026-09-28, Rime was APEX-OS. The only installer published so far is
-the **APEX-OS v2.1.0** network installer. There is no Rime-named ISO yet, no
-Windows installer and no Android app.
-
-The v2.1.0 ISO installs an APEX-OS image. Your first update moves the machine to
-Rime. Until then the screens say APEX, and the command is `apex`, not `rime`.
-
-That first update has a known problem. Read **The first update**, at the end of
-this page, before you run it.
+Already running a machine installed from the old **APEX-OS** ISO (v2.1.0 or
+older)? Skip to [Installed from an APEX-OS ISO](#installed-from-an-apex-os-iso).
 
 ## What you need
 
@@ -50,32 +49,40 @@ The installer cannot handle three things yet:
 ## Download and check it
 
 Take both files from the [download page](/download) or the
-[v2.1.0 release](https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0):
+[v3.0.0 release](https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0):
 
 | File | Size | SHA-256 |
 |---|---|---|
-| `apex-os-netinstall-x86_64.iso` | 1,902,344,192 bytes | `7208b6fd5c2641e3e1bb035eac0d1c642f4f7eda85b1ba3295993b8ec0227248` |
-| `apex-os-netinstall-x86_64.iso.sha256` | | |
+| `rime-os-netinstall-x86_64.iso` | 1,869,484,032 bytes | `d186e2781f535f93dec4b5b3b04a4243b63b623d26d29f4188c5190788efb2c8` |
+| `rime-os-netinstall-x86_64.iso.sha256` | | |
 
 Check the download before you write it. A truncated ISO fails much later, in
 ways that look like hardware faults.
 
 ```sh
-sha256sum -c apex-os-netinstall-x86_64.iso.sha256
+sha256sum -c rime-os-netinstall-x86_64.iso.sha256
 # macOS:
-shasum -a 256 -c apex-os-netinstall-x86_64.iso.sha256
+shasum -a 256 -c rime-os-netinstall-x86_64.iso.sha256
 ```
 
 On Windows, in PowerShell, compare the output with the contents of the
 `.sha256` file:
 
 ```powershell
-Get-FileHash .\apex-os-netinstall-x86_64.iso -Algorithm SHA256
+Get-FileHash .\rime-os-netinstall-x86_64.iso -Algorithm SHA256
 ```
 
-The ISO itself carries no signature. The checksum tells you the file arrived
-intact. [Verify what you run](/docs/verify) covers what else you can check,
-including the image the ISO downloads.
+The checksum tells you the file arrived intact, not who made it. The ISO was
+built by GitHub Actions from the `rime-os` repository, and GitHub signed a
+record of that build. With the [GitHub CLI](https://cli.github.com/):
+
+```sh
+gh attestation verify rime-os-netinstall-x86_64.iso -R AndreNijman/rime-os
+```
+
+It names the workflow and commit that built the file.
+[Verify what you run](/docs/verify) covers what else you can check, including
+the image the ISO downloads.
 
 ## Write it to a USB stick
 
@@ -98,7 +105,7 @@ the drive, Flash.
 
 ```sh
 lsblk        # find the stick by its SIZE, not only its name
-sudo dd if=apex-os-netinstall-x86_64.iso of=/dev/sdX bs=4M oflag=direct status=progress
+sudo dd if=rime-os-netinstall-x86_64.iso of=/dev/sdX bs=4M oflag=direct status=progress
 sync
 ```
 
@@ -109,7 +116,7 @@ Write to the whole disk (`/dev/sdX`), never to a partition (`/dev/sdX1`).
 ```sh
 diskutil list                  # find the disk, for example /dev/disk4
 diskutil unmountDisk /dev/diskN
-sudo dd if=apex-os-netinstall-x86_64.iso of=/dev/rdiskN bs=4m
+sudo dd if=rime-os-netinstall-x86_64.iso of=/dev/rdiskN bs=4m
 ```
 
 ## Keeping Windows on the same disk
@@ -144,16 +151,16 @@ F10 or Esc (ThinkPad F12, Dell F12, HP F9, Acer F12, MSI F11, ASUS Esc). Pick
 the USB entry. If the stick is not listed, turn off **Fast Boot** in the
 firmware setup.
 
-The stick boots with Secure Boot on or off: it starts through Fedora's signed
-shim and kernel.
+The stick boots with Secure Boot on or off, on UEFI or legacy BIOS: it starts
+through Fedora's signed shim and kernel.
 
-The v2.1.0 menu has three entries:
+The menu has three entries:
 
 | Entry | Use it when |
 |---|---|
-| **Install APEX-OS** | Start here. |
-| **Install APEX-OS (safe graphics …)** | The screen goes black after the menu. |
-| **Install APEX-OS (troubleshoot …)** | The stick is not found. It drops to a debug shell. |
+| **Install Rime OS** | Start here. |
+| **Install Rime OS (safe graphics …)** | The screen goes black after the menu. |
+| **Install Rime OS (troubleshoot …)** | The stick is not found. It drops to a debug shell. |
 
 The graphical installer appears after 30 to 60 seconds.
 
@@ -175,8 +182,8 @@ apply: choosing a partition, disk encryption and Secure Boot.
    booted from. An empty list usually means the drive is in RAID or RST mode in
    the firmware; switch it to **AHCI** and rescan.
 5. **Use.** The whole disk, or the partition you prepared from Windows.
-6. **Account.** The username must be lowercase, start with a letter or an
-   underscore, and contain no spaces. Set a password and a computer name.
+6. **Account.** Choose a username: lowercase, starting with a letter or an
+   underscore, no spaces. Set a password and a computer name.
    - **Encrypt this disk** (whole-disk installs only). LUKS2 over the whole
      system, ticked by default. You can say no. Use the eye icon to check the
      passphrase as you type it, because you will type it again at a boot prompt
@@ -206,9 +213,10 @@ travels with the laptop, so move the key somewhere else and delete that file.
 The installer prints what failed and drops to a root shell. A photo of the
 screen is usually enough to diagnose it.
 
-- Ctrl+Alt+F2 gives a login prompt: user `root`, password `apex`.
-- The logs are `/var/log/apex-install.log` and
-  `/var/log/apex-installer-launch.log`.
+- Ctrl+Alt+F2 gives a login prompt: user `root`, password `rime`. That
+  password belongs to the live installer only, never to the installed system.
+- The logs are `/var/log/rime-install.log` and
+  `/var/log/rime-installer-launch.log`.
 - Nothing is written to any disk before you type `ERASE`, so a failure before
   that point has changed nothing.
 
@@ -231,10 +239,25 @@ is enrolled. Turn Secure Boot off in the firmware settings to boot it.
 [Verify what you run](/docs/verify) says what Secure Boot does and does not
 cover on Rime.
 
-Log in with the account you created. On the v2.1.0 image the desktop finishes
-its setup at first login and needs the network for it.
+Log in with the account you created.
 
-## The first update
+## Updates
+
+The installed machine follows `ghcr.io/andrenijman/rime-os:rime`. It starts on
+the exact build the installer was tested with, and `sudo rime update` brings it
+current. Every update, the first one included, is checked against the image's
+signature before it is staged. `rime trust --gate` shows what the next update
+would do without doing it. See [Updating](/docs/updating).
+
+## Installed from an APEX-OS ISO
+
+Until 2026-09-28, Rime was APEX-OS, and the installers published before v3.0.0
+(APEX-OS v2.1.0, v2.0.0 and older) install an APEX-OS image. A machine
+installed from one of them says APEX until its first update, and its command is
+`apex`, not `rime`. That first update needs the steps below. Machines installed
+from the Rime installer skip all of this.
+
+### The first update
 
 This account comes from reading the source code. Nobody has reproduced it on a
 real v2.1.0 install yet.
@@ -247,9 +270,9 @@ Machines installed from v2.0.0 are in the same position. A machine that ran
 `apex update` between 03:37 and 13:45 UTC on 2026-09-28 received an in-between
 release that trusts both names, and is not affected.
 
-**The cautious choice is to wait** for an installer published under the Rime
-name: it records the new image name and ships an update client that trusts the
-new signer, so none of this applies.
+**If the machine has nothing on it yet**, the simplest route is to reinstall
+from the Rime installer, which records the new image name and ships an update
+client that trusts the new signer.
 
 **Why not `apex update --allow-unverified`.** That would get past the check, but
 it runs the rest of the old client too, including its boot-migration step. On a
@@ -257,7 +280,7 @@ machine with Secure Boot off, that step can try to move the machine from GRUB to
 systemd-boot using a version of the helper that could leave a machine unable to
 update if the trial boot failed. The steps below skip the old client entirely.
 
-### 1. Ask what the update would do
+#### 1. Ask what the update would do
 
 This needs no root and changes nothing:
 
@@ -268,7 +291,7 @@ apex trust --gate
 If it says the update would deploy, run `sudo apex update`, reboot, and skip to
 step 5. If it refuses and names the `rime-os` signer, continue.
 
-### 2. Verify the image on another computer
+#### 2. Verify the image on another computer
 
 cosign is not in the package sources Rime uses, so run this on a computer that
 has it:
@@ -282,7 +305,7 @@ cosign verify ghcr.io/andrenijman/rime-os:rime \
 cosign prints the digest it verified (the `docker-manifest-digest` field). Note
 it.
 
-### 3. Switch to the Rime image
+#### 3. Switch to the Rime image
 
 ```sh
 sudo bootc switch ghcr.io/andrenijman/rime-os:rime
@@ -293,7 +316,7 @@ acceptable here, once, because you verified the image in step 2 and check the
 result in step 4. Afterwards, use `rime update` as normal: it is the command that
 checks signatures.
 
-### 4. Check what was staged, then restart
+#### 4. Check what was staged, then restart
 
 The tag can move between your check and the download, because every build
 republishes it. Confirm that the staged image is the digest you verified:
@@ -311,7 +334,7 @@ you boot it. Otherwise:
 sudo systemctl reboot
 ```
 
-### 5. After the restart
+#### 5. After the restart
 
 The machine now runs Rime and tracks `ghcr.io/andrenijman/rime-os:rime`. At this
 first boot it moves its state from the old APEX paths to the new ones, and leaves
@@ -328,7 +351,7 @@ every image itself. See [Updating](/docs/updating).
 If anything is wrong after the restart, `sudo rime rollback` and a reboot take
 you back to the v2.1.0 image. See [Rollback](/docs/rollback).
 
-### Don't turn the check off
+#### Don't turn the check off
 
 Setting `signature=off` in `/etc/apex/trust.conf` also gets an update through,
 but it stays off: the first Rime boot moves `/etc/apex` to `/etc/rime`, so every

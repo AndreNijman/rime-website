@@ -173,8 +173,9 @@ metadata refresh timer.
   nothing uploads it.
 - **Agent handoff packets** stay on the machine.
 
-## On a machine installed from the v2.1.0 ISO
+## On a machine installed from an APEX-OS ISO
 
-This page describes current Rime images. A machine installed from the v2.1.0
-ISO runs an older APEX-OS image, with the `apex` command, until its first
-update. See [Install Rime](/docs/install).
+This page describes current Rime images. A machine installed from an APEX-OS
+ISO (v2.1.0 or older) runs an older APEX-OS image, with the `apex` command,
+until its first update. See
+[Installed from an APEX-OS ISO](/docs/install#installed-from-an-apex-os-iso).

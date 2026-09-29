@@ -1,0 +1,81 @@
+# Image build: build-image run 36533645486 (push to main, merge of rime-os #72),
+# the first release whose image says which release it is
+# (/usr/share/rime/release.json) — so the first one Rime Shell opens this page
+# for, after the update. date = when the run's last tag moved (2026-09-29
+# 15:35:38 AWST, the apex-os publish).
+# Published under ghcr.io/andrenijman/rime-os AND ghcr.io/andrenijman/apex-os,
+# every channel tag. The core layer was reused (a small download).
+#
+# Two images were published earlier on 2026-09-29 without a page of their own:
+# sha256:66bfacc2297a… (build 36513091350, shell 9161e30c) and
+# sha256:269e58babadc… (build 36519566121, shell 3f7e9f07). Neither carried
+# release.json and both are superseded by this one; their changes are listed
+# here.
+schema: 1
+id: "2026.09.29"
+product: rime
+name: "Rime 2026.09.29"
+title: "Every workspace at once, and a layout button that says what it does"
+date: "2026-09-29T07:35:38Z"
+channels: ["apex", "daily", "edge", "gaming-mesa", "gaming-nvidia", "platform-apex", "platform-daily", "platform-gaming-mesa", "platform-gaming-nvidia", "platform-rime", "rime"]
+summary: "Super+Tab now shows all your workspaces with live pictures of their windows, the window-layout button in the bar is a picture with a menu that says what each layout does, Alt+Tab works again, and from now on Rime opens this page after every update."
+predecessor: "2026.09.28.4"
+provenance:
+  osRevision: "df44d93949903bacf513564d3a2226a3909b14b9"
+  shellRevision: "3ab44b2938d58dc887b3550df649e7926a117a92"
+  imageDigest: "sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36533645486"
+  iso:
+    name: "rime-os-netinstall-x86_64.iso"
+    bytes: 1869484032
+    sha256: "d186e2781f535f93dec4b5b3b04a4243b63b623d26d29f4188c5190788efb2c8"
+    url: "https://github.com/AndreNijman/rime-os/releases/download/v3.0.0/rime-os-netinstall-x86_64.iso"
+highlights: ["workspace-overview", "layout-menu", "whats-new", "alt-tab"]
+changes:
+  - id: "workspace-overview"
+    area: shell
+    kind: new
+    title: "Super+Tab shows every workspace at once"
+    summary: "A card comes off the top notch with workspaces 1 to 10, each showing your wallpaper and live pictures of its windows where they actually sit. Click a window to go to it, middle-click to close it, or drag it onto another workspace to move it there."
+    detail: "Click an empty part of a workspace to switch to it. Arrow keys, Return and the digits 1–0 work from the keyboard; Escape, a click outside or Super+Tab again closes it. The line at the top says what the pointer is on, or where a dragged window will land. It is Hyprland's own window pictures, captured only while the overview is open."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/31"]
+    breaking: false
+  - id: "layout-menu"
+    area: shell
+    kind: improved
+    title: "The window-layout button shows the layout and asks before changing it"
+    summary: "The button beside the workspaces used to show `><` and change the layout on every click. It is now a small picture of the current layout, and a click opens a menu that names each layout — Split, Main + stack, One at a time, Scrolling — with a line on what it does."
+    detail: "One at a time says that Alt+Tab is how you reach the other windows (Super+arrows do nothing in that layout). The layout you choose is remembered across a reload and a login, and applies to every workspace."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/30"]
+    breaking: false
+  - id: "whats-new"
+    area: system
+    kind: new
+    title: "After an update, Rime opens the page that says what changed"
+    summary: "The first time you log in after an update, Rime opens this page in your default browser — once, and with the releases you skipped included. A rollback shows a small notice instead, and a fresh install shows nothing."
+    detail: "If the page is not up yet, or the computer is offline, it waits and opens it later. Turn it off in Settings → Misc → Updates (\"Open what's new after an update\"); you then get a notification with a \"See what changed\" button instead. Nothing is sent anywhere: the only request is for the page itself."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/32", "https://github.com/AndreNijman/rime-os/pull/72"]
+    breaking: false
+  - id: "alt-tab"
+    area: shell
+    kind: fixed
+    title: "Alt+Tab switches windows again"
+    summary: "The window switcher did nothing when you pressed Alt+Tab: the shell's handler could not reach the switcher. It has been broken since the switcher was added."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/30"]
+    breaking: false
+  - id: "window-close-move"
+    area: shell
+    kind: fixed
+    title: "Closing a window from the launcher, and moving windows between workspaces, work"
+    summary: "Both used Hyprland commands that its current version no longer has, so they did nothing."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/31"]
+    breaking: false
+  - id: "frame-corners"
+    area: shell
+    kind: fixed
+    title: "The frame's top corners meet the notches without a bump"
+    summary: "Where the screen frame curves down from each top notch there was a one-pixel ledge, most visible after a fullscreen game or video. The curve now runs cleanly out of the notch's edge."
+    source: ["https://github.com/AndreNijman/rime-shell/pull/30"]
+    breaking: false
+knownIssues: []
+rollback: null

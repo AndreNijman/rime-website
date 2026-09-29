@@ -7,20 +7,18 @@ import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import CommandChip from "../components/CommandChip.astro";
 import downloads from "../../content/downloads.json";
-import { SITE } from "../data/site";
 import RemoteDownload from "../components/RemoteDownload.astro";
 const cur = downloads.current, iso = cur.artifacts[0];
 const prev = downloads.previous;
 const gb = (b: number) => (b / 1e9).toFixed(2) + " GB";
 const date = new Date(cur.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" });
 const shortName = cur.name.split(" — ")[0];
-const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/main`;
 ---
 <Base title="Download" description={`Download the Rime network installer (${iso.arch}, ${gb(iso.bytes)}), check it, and install.`}>
   <section class="container dl-hero">
     <p class="eyebrow">Download</p>
     <h1>Get Rime.</h1>
-    <p class="lead">A network installer for 64-bit PCs. It downloads the signed system image while it installs. The first update afterwards needs one manual step, below.</p>
+    <p class="lead">A network installer for 64-bit PCs. It downloads the signed system image while it installs. After that, <code>sudo rime update</code> takes each new release, checked against its signature first.</p>
 
     <div class="dl-card">
       <div class="dl-main">
@@ -41,21 +39,6 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
         <CommandChip cmd={iso.sha256} prompt="" label="SHA-256 copied" wrap />
         <p class="caption">From GitHub's own record of the file, and it matches the published <code>.sha256</code>.</p>
       </div>
-    </div>
-
-    <aside class="callout dl-name" data-tone="caution">
-      <h2 class="h4">Why the file says APEX-OS</h2>
-      <p>Rime was called APEX-OS until 28 September 2026, and no installer has been published under the new name yet. This one is the current installer. The system it installs is the same one, and it takes the Rime name as it updates.</p>
-    </aside>
-  </section>
-
-  <section class="container section-tight" id="first-update" aria-labelledby="fu-h">
-    <div class="callout dl-issue" data-tone="caution">
-      <p class="eyebrow">Known issue · worked out from the source, not yet reproduced on a fresh install</p>
-      <h2 id="fu-h">The first update after installing needs a manual step.</h2>
-      <p>This installer predates the rename. The update tool it installs trusts only images signed by the old <code>apex-os</code> build, and new images are signed by <code>rime-os</code>, so its first update is expected to stop at the signature check. The way through is to verify the current image yourself with cosign, switch to it once with <code>bootc</code>, check what was staged, and reboot. After that, <code>sudo rime update</code> checks every image itself.</p>
-      <p>Don't use <code>--allow-unverified</code> or turn the signature check off to get past it: both run parts of the old tool you don't want, or leave the check off for good. Machines already on 2026.09.28.3 or later are not affected.</p>
-      <p class="dl-issue-links"><a class="btn btn-primary" href="/docs/install#the-first-update">The exact steps <Icon name="arrow-right" /></a> <a class="btn" href="/updates/2026.09.28.4#known-issues">Release notes</a></p>
     </div>
   </section>
 
@@ -88,7 +71,14 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
     <h2 id="ver-h">Check the download</h2>
     <p class="muted measure">Put the ISO and its checksum file in one folder and run:</p>
     <CommandChip cmd={`sha256sum -c ${iso.name}.sha256`} />
-    <p class="muted measure">It prints <code>{iso.name}: OK</code>. Or compare the file's SHA-256 with the one above by eye. The ISO itself carries no signature. The system image it downloads is signed, and <code>rime update</code> checks that signature on every update. <a href="/docs/verify">How verification works</a></p>
+    <p class="muted measure">It prints <code>{iso.name}: OK</code>. Or compare the file's SHA-256 with the one above by eye.</p>
+    {iso.provenance && (
+      <>
+        <p class="muted measure">The checksum proves the file arrived whole, not who made it. GitHub signed a record of that: the ISO was built by <code>{iso.provenance.workflow}</code> on <code>{iso.provenance.ref.replace("refs/heads/", "")}</code>. With the GitHub CLI:</p>
+        <CommandChip cmd={`gh attestation verify ${iso.name} -R ${downloads.repo.replace("https://github.com/", "")}`} />
+      </>
+    )}
+    <p class="muted measure">The system image the ISO downloads is signed too, and <code>rime update</code> checks that signature on every update. <a href="/docs/verify">How verification works</a></p>
   </section>
 
   <section class="container section-tight" id="install" aria-labelledby="inst-h">
@@ -97,7 +87,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
       <li><strong>Write the ISO to a USB stick</strong> with a USB image writer. Everything on the stick is replaced.</li>
       <li><strong>Boot from the stick</strong> from your firmware's boot menu.</li>
       <li><strong>Follow the installer.</strong> Keyboard and time zone come first. The disk you pick is erased only after you type ERASE for that exact disk. Whole-disk encryption is on by default; write down the recovery key it shows you.</li>
-      <li><strong>Reboot</strong>, then take the first update (<a href="#first-update">above</a>).</li>
+      <li><strong>Reboot into Rime.</strong> Encrypted disks ask for the passphrase before anything else. Updates come with <code>sudo rime update</code>, which checks each image's signature first.</li>
     </ol>
     <p><a class="btn" href="/docs/install">Full install guide <Icon name="arrow-right" /></a></p>
     <p class="caption measure">Installing beside Windows: shrink Windows yourself first, then choose the installer's option to install into an existing partition. The installer does not shrink Windows for you. There is no Windows-based installer yet.</p>
@@ -107,6 +97,11 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
     <h2 id="remote-h">Rime Remote for Android</h2>
     <p class="measure muted">The phone app for your agent sessions: watch them, reply, pause, stop and start them from anywhere. Pair it from a Rime machine's Settings once it's installed. <a href="/agents#remote">What it does, and what it can't</a>.</p>
     <RemoteDownload heading={false} />
+  </section>
+
+  <section class="container section-tight" id="first-update" aria-labelledby="fu-h">
+    <h2 id="fu-h" class="h4">Installed from the APEX-OS installer?</h2>
+    <p class="caption measure">Machines installed from an APEX-OS ISO (v2.1.0 or older) run an APEX-OS image until their first update, and that first update needs one manual step, because the old update tool trusts only the old signer. Machines installed from this installer are not affected. <a href="/docs/install#the-first-update">The steps</a></p>
   </section>
 
   {prev && (
@@ -133,17 +128,12 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
   .dl-facts dd { margin: 2px 0 0; font-weight: 600; }
   .dl-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
   @media (max-width: 720px) {
-    .dl-actions .btn, .dl-issue-links .btn, #install > p > .btn { flex: 1 1 100%; }
+    .dl-actions .btn, #install > p > .btn { flex: 1 1 100%; }
     #install > p:has(> .btn) { display: flex; }
     .dl-card { padding: 22px 18px; }
   }
   .dl-sha { display: grid; gap: 10px; align-content: start; }
-  .dl-name { margin-top: 8px; max-width: 80ch; }
-  .dl-name h2, .h4 { font-size: 1.05rem; margin-bottom: 6px; }
-  .dl-issue { padding: clamp(22px, 3vw, 36px); display: grid; gap: 14px; }
-  .dl-issue h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
-  .dl-issue p { max-width: 76ch; }
-  .dl-issue-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .h4 { font-size: 1.05rem; margin-bottom: 6px; }
   .steps { margin: 4px 0; padding-left: 1.3em; display: grid; gap: 16px; }
   .steps li > p { margin-bottom: 8px; }
   .steps--plain { gap: 10px; max-width: 76ch; margin-bottom: 18px; }
@@ -156,7 +146,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
   .req-list dd { margin: 0; }
   .hw { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
   .measure { max-width: 76ch; margin-block: 12px; }
-  #verify .cmd, #first-update .cmd { max-width: 900px; }
+  #verify .cmd { max-width: 900px; }
   .dl-prev { padding-bottom: var(--section-pad); }
   .prev-a { overflow-wrap: anywhere; margin-top: 6px; }
 </style>
