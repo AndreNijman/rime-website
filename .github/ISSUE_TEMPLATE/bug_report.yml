@@ -1,0 +1,32 @@
+name: Site problem
+description: A page on rimeos.com is broken, looks wrong, or does not work in your browser.
+labels: ["bug"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      description: The address of the page.
+      placeholder: https://rimeos.com/…
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead. A screenshot helps.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Firefox 150 on Linux, Safari on an iPhone 16
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: Anything in the browser's developer console, if you can open it.
+      render: text
