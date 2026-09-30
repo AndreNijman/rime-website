@@ -4,7 +4,7 @@
 // whose label is the target. Chromium and WebKit; Firefox has no mobile mode.
 import { test, expect } from "@playwright/test";
 import sharp from "sharp";
-import { PAGES } from "./pages";
+import { PAGES, useScheme } from "./pages";
 
 const EXTRA = ["/docs/updating", "/docs/shortcuts", "/journal/springs-on-the-wall-clock"];
 for (const [w, h] of [[390, 844], [320, 640]] as const)
@@ -37,7 +37,7 @@ test.describe("phone frame", () => {
   for (const scheme of ["dark", "light"] as const)
     test(`the capsule hangs from a solid strip (${scheme})`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.emulateMedia({ colorScheme: scheme });
+      await useScheme(page, scheme);
       await page.goto("/download");
       await page.waitForTimeout(300);
       // The strip above the capsule's middle, the capsule itself, and the strip

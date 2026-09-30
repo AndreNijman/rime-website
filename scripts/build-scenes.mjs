@@ -227,7 +227,9 @@ writeFileSync(OUT_JSON, JSON.stringify({ generator, scenes }, null, 2) + "\n");
 
 // ── CSS ──────────────────────────────────────────────────────────────────────
 // A palette can sit on any element (the demo stage carries its own); the
-// scheme is the document's. Without JS, prefers-color-scheme picks it.
+// scheme is the document's. Dark unless the visitor chose otherwise: no
+// data-scheme (nothing stored, or no JS) is dark, data-scheme="light" is light,
+// and data-scheme="auto" follows prefers-color-scheme.
 const ROLE_VARS = ["surfaceBase", "surfaceRaised", "surfaceOverlay", "surfaceHigh", "surfaceSelected", "surfaceOnSelected",
   "accent", "accentContainer", "onAccentContainer", "accentText", "textPrimary", "textSecondary", "textTertiary",
   "outlineSoft", "outlineStrong", "hairline", "iconDefault", "iconActive", "hover", "pressed"];
@@ -245,7 +247,7 @@ for (const s of scenes) {
   const sel = (extra) => `${extra}[data-palette="${s.id}"]`;
   css += `\n${s.default ? ":root,\n" : ""}${sel("")} {\n${block(s, "dark")}\n}\n`;
   css += `:root[data-scheme="light"]${sel("")},\n:root[data-scheme="light"] ${sel("")}${s.default ? `,\n:root[data-scheme="light"]:not([data-palette])` : ""} {\n${block(s, "light")}\n}\n`;
-  css += `@media (prefers-color-scheme: light) {\n  :root:not([data-scheme])${sel("")},\n  :root:not([data-scheme]) ${sel("")}${s.default ? `,\n  :root:not([data-scheme]):not([data-palette])` : ""} {\n${block(s, "light").replace(/^/gm, "  ")}\n  }\n}\n`;
+  css += `@media (prefers-color-scheme: light) {\n  :root[data-scheme="auto"]${sel("")},\n  :root[data-scheme="auto"] ${sel("")}${s.default ? `,\n  :root[data-scheme="auto"]:not([data-palette])` : ""} {\n${block(s, "light").replace(/^/gm, "  ")}\n  }\n}\n`;
 }
 writeFileSync(OUT_CSS, css);
 console.log(`wrote ${scenes.length} scenes → src/data/scenes.json, src/styles/generated/scenes.css, public/media/scenes/`);
