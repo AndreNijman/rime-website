@@ -13,6 +13,8 @@ is also the contact rimeos.com's
 [security.txt](https://rimeos.com/.well-known/security.txt) names, and
 problems in the desktop go to
 [rime-shell](https://github.com/AndreNijman/rime-shell/security/advisories/new).
+security.txt names rime-os because it is the one contact for all of Rime; a
+website report filed there reaches the same person and is not lost.
 
 Examples of what is in scope here:
 
