@@ -1,0 +1,25 @@
+name: Wrong or outdated content
+description: Something the site says is not true, is out of date, or is unclear.
+labels: ["documentation"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      placeholder: https://rimeos.com/…
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: What it says
+      description: Quote the text.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What is actually true
+      description: Link to the code, a release or a command's output that shows it, if you can.
+    validations:
+      required: true
