@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.09.30.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.09.30.3"
+product: "rime"
+name: "Rime 2026.09.30.3"
+title: "Linux kernel 7.2.8, with the security fixes from 7.2.7 and 7.2.8"
+date: "2026-09-30T10:43:45Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime now runs Linux kernel 7.2.8, which brings the security and stability fixes from the 7.2.7 and 7.2.8 stable releases."
+predecessor: "2026.09.30.2"
+provenance:
+  osRevision: "d62855c09f46015c67e716defa58099c4bb4b8fd"
+  shellRevision: "7bbc05f6d0487562ef5c1ca1e4aec9dca70b48c9"
+  imageDigest: "sha256:586400e57e188009deec79027b4376c1454b0b254668cbcf38539c11f2d5a607"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36694726284"
+  iso: null
+  reissues: []
+highlights:
+  - "linux-kernel-7-2-8-with-the-security-fixes-from"
+changes:
+  - id: "linux-kernel-7-2-8-with-the-security-fixes-from"
+    area: "security"
+    kind: "improved"
+    title: "Linux kernel 7.2.8, with the security fixes from 7.2.7 and 7.2.8"
+    summary: "Rime now runs Linux kernel 7.2.8, which brings the security and stability fixes from the 7.2.7 and 7.2.8 stable releases."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/80"
+    breaking: false
+knownIssues: []
+rollback: null
