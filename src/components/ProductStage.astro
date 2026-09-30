@@ -110,13 +110,14 @@ const stills = (["dark", "light"] as const).map((m) => ({ m, v: variants[`${scen
   :root.js .stage-desk { inset: auto; left: 0; top: 0; width: 1920px; height: 1200px; transform: scale(var(--k, 0.7)); }
   .stage-base, .stage-nojs, .stage-base img, .stage-nojs img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .stage-base img, .stage-nojs img { object-fit: cover; }
-  /* The page's scheme picks the recording: dark or light. */
+  /* The page's scheme picks the recording: dark unless light was chosen, or
+   * Auto was chosen and the system is light. */
   .stage-base--light, .stage-nojs--light { display: none; }
   :root[data-scheme="light"] .stage-base--dark, :root[data-scheme="light"] .stage-nojs--dark { display: none; }
   :root[data-scheme="light"] .stage-base--light, :root[data-scheme="light"] .stage-nojs--light { display: block; }
   @media (prefers-color-scheme: light) {
-    :root:not([data-scheme]) .stage-base--dark, :root:not([data-scheme]) .stage-nojs--dark { display: none; }
-    :root:not([data-scheme]) .stage-base--light, :root:not([data-scheme]) .stage-nojs--light { display: block; }
+    :root[data-scheme="auto"] .stage-base--dark, :root[data-scheme="auto"] .stage-nojs--dark { display: none; }
+    :root[data-scheme="auto"] .stage-base--light, :root[data-scheme="auto"] .stage-nojs--light { display: block; }
   }
   :root.js .stage-nojs { display: none !important; }
   html:not(.js) .stage-base { display: none !important; }

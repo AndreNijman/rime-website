@@ -1,12 +1,12 @@
 // axe-core on the main pages, dark and light: no serious or critical issues.
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { PAGES } from "./pages";
+import { PAGES, useScheme } from "./pages";
 for (const scheme of ["dark", "light"] as const)
   for (const path of PAGES.slice(0, 10))
     test(`axe ${scheme}: ${path}`, async ({ page, browserName }) => {
       test.skip(browserName !== "chromium", "one engine is enough for axe");
-      await page.emulateMedia({ colorScheme: scheme });
+      await useScheme(page, scheme);
       await page.goto(path);
       await page.waitForTimeout(300);
       const r = await new AxeBuilder({ page }).exclude(".stage-desk").analyze();

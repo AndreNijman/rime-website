@@ -24,7 +24,9 @@ const def = scenes.scenes.find((s) => s.default)!;
 const ids = scenes.scenes.map((s) => s.id);
 // The boot script runs before first paint so a returning visitor's scheme,
 // palette and motion choice never flash. It is inline and hashed into the CSP.
-const boot = `(function(){var d=document.documentElement;d.classList.add("js");try{var s=localStorage.getItem("rime.scheme");if(s==="dark"||s==="light")d.dataset.scheme=s;var p=localStorage.getItem("rime.palette");if(p&&${JSON.stringify(ids)}.indexOf(p)>=0)d.dataset.palette=p;var m=localStorage.getItem("rime.motion");if(m==="full"||m==="reduced"||m==="off")d.dataset.motion=m;}catch(e){}})();`;
+// The site is dark until the visitor picks Light or Auto (follow the system),
+// so a missing or unreadable choice leaves data-scheme unset, which is dark.
+const boot = `(function(){var d=document.documentElement;d.classList.add("js");try{var s=localStorage.getItem("rime.scheme");if(s==="dark"||s==="light"||s==="auto")d.dataset.scheme=s;var p=localStorage.getItem("rime.palette");if(p&&${JSON.stringify(ids)}.indexOf(p)>=0)d.dataset.palette=p;var m=localStorage.getItem("rime.motion");if(m==="full"||m==="reduced"||m==="off")d.dataset.motion=m;}catch(e){}})();`;
 ---
 <!doctype html>
 <html lang="en" data-palette={palette ?? def.id}>
@@ -35,9 +37,8 @@ const boot = `(function(){var d=document.documentElement;d.classList.add("js");t
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={def.dark.roles.surfaceBase} />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content={def.light.roles.surfaceBase} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content={def.dark.roles.surfaceBase} data-dark={def.dark.roles.surfaceBase} data-light={def.light.roles.surfaceBase} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

@@ -59,9 +59,9 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="rime-default"],
-  :root:not([data-scheme]) [data-palette="rime-default"],
-  :root:not([data-scheme]):not([data-palette]) {
+  :root[data-scheme="auto"][data-palette="rime-default"],
+  :root[data-scheme="auto"] [data-palette="rime-default"],
+  :root[data-scheme="auto"]:not([data-palette]) {
     --rime-surface-base: #faf9fb;
     --rime-surface-raised: #efeef0;
     --rime-surface-overlay: #e8e7e9;
@@ -146,8 +146,8 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="harbour-dusk"],
-  :root:not([data-scheme]) [data-palette="harbour-dusk"] {
+  :root[data-scheme="auto"][data-palette="harbour-dusk"],
+  :root[data-scheme="auto"] [data-palette="harbour-dusk"] {
     --rime-surface-base: #fff8f8;
     --rime-surface-raised: #f4eded;
     --rime-surface-overlay: #ede6e6;
@@ -232,8 +232,8 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="deep-water"],
-  :root:not([data-scheme]) [data-palette="deep-water"] {
+  :root[data-scheme="auto"][data-palette="deep-water"],
+  :root[data-scheme="auto"] [data-palette="deep-water"] {
     --rime-surface-base: #f6fafc;
     --rime-surface-raised: #ebeff1;
     --rime-surface-overlay: #e4e8ea;
@@ -318,8 +318,8 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="fern"],
-  :root:not([data-scheme]) [data-palette="fern"] {
+  :root[data-scheme="auto"][data-palette="fern"],
+  :root[data-scheme="auto"] [data-palette="fern"] {
     --rime-surface-base: #fafaf2;
     --rime-surface-raised: #efefe7;
     --rime-surface-overlay: #e8e8e1;
@@ -404,8 +404,8 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="ember"],
-  :root:not([data-scheme]) [data-palette="ember"] {
+  :root[data-scheme="auto"][data-palette="ember"],
+  :root[data-scheme="auto"] [data-palette="ember"] {
     --rime-surface-base: #fff8f6;
     --rime-surface-raised: #f4edeb;
     --rime-surface-overlay: #eee6e4;
@@ -490,8 +490,8 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-scheme])[data-palette="chalk"],
-  :root:not([data-scheme]) [data-palette="chalk"] {
+  :root[data-scheme="auto"][data-palette="chalk"],
+  :root[data-scheme="auto"] [data-palette="chalk"] {
     --rime-surface-base: #fbf9fa;
     --rime-surface-raised: #f0eeef;
     --rime-surface-overlay: #e9e7e8;
