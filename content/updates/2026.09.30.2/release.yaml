@@ -1,0 +1,52 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.09.30. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.09.30.2"
+product: "rime"
+name: "Rime 2026.09.30.2"
+title: "Rime Remote connects fast and stays connected; live agent output, agent names, and replies that send"
+date: "2026-09-30T02:53:30Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "2 changes, to agents and Rime Shell."
+predecessor: "2026.09.30"
+provenance:
+  osRevision: "c683ade44660f2eb01d57789fb735ac5dc82d036"
+  shellRevision: "eb93f2654cb191d780e2caddb12e30baad35a9c6"
+  imageDigest: "sha256:5e83a34c2a967b36d9c47ebdcf36103a8f0b23bcdfcebc8b34ce6b4f3953d6dd"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36658300833"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-remote-connects-fast-and-stays-connected-li"
+  - "agents-have-names-in-the-agent-center"
+changes:
+  - id: "rime-remote-connects-fast-and-stays-connected-li"
+    area: "agents"
+    kind: "improved"
+    title: "Rime Remote connects fast and stays connected; live agent output, agent names, and replies that send"
+    summary: "Rime Remote connects much faster and stays connected while it's unlocked. The phone shows an agent's latest output without opening its terminal, a reply from the phone now actually sends, and the desktop terminal goes back to its own size after you've used it on the phone."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/77"
+    breaking: false
+  - id: "agents-have-names-in-the-agent-center"
+    area: "shell"
+    kind: "improved"
+    title: "Agents have names in the Agent Center"
+    summary: "Agents can have names. Click the pencil on an agent in the Agent Center to name it, or start one with a -n \"name\". The name is the same one the phone shows and sets."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/36"
+    breaking: false
+knownIssues: []
+rollback: null

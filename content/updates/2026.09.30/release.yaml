@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.09.29.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.09.30"
+product: "rime"
+name: "Rime 2026.09.30"
+title: "Steam game shortcuts start on the discrete GPU"
+date: "2026-09-30T02:13:52Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Games started from their Steam shortcuts now run on the discrete GPU on laptops with two GPUs, even when Steam wasn't already open."
+predecessor: "2026.09.29.3"
+provenance:
+  osRevision: "c7ef5eb27b7485d8c612f8c037903876d1c26223"
+  shellRevision: "606564484470de8092d47893a681b7873e4eb8af"
+  imageDigest: "sha256:202d06784c515be3354159b92d00e521079158a6bb46dde0af4a485f5e1f1c50"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/36655753965"
+  iso: null
+  reissues: []
+highlights:
+  - "steam-game-shortcuts-start-on-the-discrete-gpu"
+changes:
+  - id: "steam-game-shortcuts-start-on-the-discrete-gpu"
+    area: "shell"
+    kind: "improved"
+    title: "Steam game shortcuts start on the discrete GPU"
+    summary: "Games started from their Steam shortcuts now run on the discrete GPU on laptops with two GPUs, even when Steam wasn't already open."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/35"
+    breaking: false
+knownIssues: []
+rollback: null
