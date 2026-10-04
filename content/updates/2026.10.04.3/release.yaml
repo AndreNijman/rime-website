@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.04.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.04.3"
+product: "rime"
+name: "Rime 2026.10.04.3"
+title: "The volume and brightness panel opens when you mean it"
+date: "2026-10-04T16:28:52Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "The volume and brightness panel on the right edge no longer pops open when the pointer just passes by. Rest the pointer against the right edge of the screen for a moment, or click there, to open it."
+predecessor: "2026.10.04.2"
+provenance:
+  osRevision: "8830fb560d0396c55b6e182fa76f9e860dfb11aa"
+  shellRevision: "3490db2c122144679fd914442080a508d00260e6"
+  imageDigest: "sha256:2c34399d367854c1ba8a2f49d5c727e5b55f4ef31ce3ef6d8a7927b86d5ad343"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37214875531"
+  iso: null
+  reissues: []
+highlights:
+  - "the-volume-and-brightness-panel-opens-when-you-m"
+changes:
+  - id: "the-volume-and-brightness-panel-opens-when-you-m"
+    area: "shell"
+    kind: "improved"
+    title: "The volume and brightness panel opens when you mean it"
+    summary: "The volume and brightness panel on the right edge no longer pops open when the pointer just passes by. Rest the pointer against the right edge of the screen for a moment, or click there, to open it."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/38"
+    breaking: false
+knownIssues: []
+rollback: null
