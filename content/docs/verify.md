@@ -11,16 +11,16 @@ sources:
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/files/system/trust/enforcement.conf"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/Containerfile.core"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/README.md"
-  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0"
-  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/.github/workflows/build-installer-iso.yml"
+  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.1.0"
+  - "https://github.com/AndreNijman/rime-os/blob/7e125d2e0/.github/workflows/build-installer-iso.yml"
 verified: "rime-os@2d9c5438a"
 ---
 
 ## The installer download
 
-The published installer is `rime-os-netinstall-x86_64.iso` (Rime OS v3.0.0),
-1,869,484,032 bytes, SHA-256
-`d186e2781f535f93dec4b5b3b04a4243b63b623d26d29f4188c5190788efb2c8`.
+The published installer is `rime-os-netinstall-x86_64.iso` (Rime OS v3.1.0),
+1,893,881,856 bytes, SHA-256
+`5343270084faf45a2f7e962a52d3a8c8169bf1b3f412bbf071d06d106311d341`.
 
 ```sh
 sha256sum -c rime-os-netinstall-x86_64.iso.sha256
@@ -31,8 +31,9 @@ download is complete and uncorrupted, not who made it.
 
 **Where it came from.** The ISO is built by GitHub Actions
 (`.github/workflows/build-installer-iso.yml` in `rime-os`), which boots it in a
-virtual machine, installs from it and checks the installed system before a
-release can be drafted. GitHub signs a build-provenance attestation for the
+virtual machine from a USB stick with Secure Boot on, from a USB stick on
+legacy BIOS and from a CD, before a release can be drafted. Installing from it
+is tested by hand for each release; the release notes say how. GitHub signs a build-provenance attestation for the
 file: a record, in Sigstore's public log, of the repository, workflow, commit
 and run that produced these exact bytes. Check it with the
 [GitHub CLI](https://cli.github.com/):
@@ -46,13 +47,13 @@ machine checks it before it boots. Secure Boot checks the boot chain on the
 stick (Fedora's signed shim and kernel), not the rest of the ISO.
 
 **What it installs.** The ISO downloads the system image by digest,
-`sha256:4d6ab78de40e79e4111d899ff620e08b8039b91ad76e60da8efcca80a12ccd23`, pinned in the registry as
-`ghcr.io/andrenijman/rime-os:netinstall-v3.0.0`. The workflow that gives a
+`sha256:65c6d0a1d3f866c927cfc69e007b25fa9173fe7713dea68f61d147c4839e6afe`, pinned in the registry as
+`ghcr.io/andrenijman/rime-os:netinstall-v3.1.0`. The workflow that gives a
 release image that permanent tag checks its signature first. You can check the
 signature yourself:
 
 ```sh
-cosign verify ghcr.io/andrenijman/rime-os:netinstall-v3.0.0 \
+cosign verify ghcr.io/andrenijman/rime-os:netinstall-v3.1.0 \
   --certificate-identity-regexp '^https://github\.com/AndreNijman/(apex|rime)-os/\.github/workflows/build-image\.yml@' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```

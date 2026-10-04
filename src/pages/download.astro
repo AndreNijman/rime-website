@@ -48,7 +48,7 @@ const shortName = cur.name.split(" — ")[0];
         <h2 id="req-h">Requirements</h2>
         <dl class="req-list">
           <div><dt>Computer</dt><dd>A 64-bit PC with UEFI. Legacy BIOS can also boot the stick.</dd></div>
-          <div><dt>Disk</dt><dd>At least 16 GB. If the target is the machine's only drive, about 53 GB, because the download is staged on it. Otherwise a second drive or USB stick with 32 GB free is used as scratch space and is not erased.</dd></div>
+          <div><dt>Disk</dt><dd>At least 12 GB (a 10 GB partition beside Windows). 20 GB recommended: Rime keeps the previous version for rollback, and an update that replaces the whole system downloads about 5 GB before it can start.</dd></div>
           <div><dt>Network</dt><dd>A connection during the install.</dd></div>
           <div><dt>USB stick</dt><dd>One that holds {gb(iso.bytes)}. It is overwritten.</dd></div>
           <div><dt>Secure Boot</dt><dd>Optional. The installer offers to enrol Rime's Secure Boot key; with Secure Boot on, the Rime kernel boots only after that key is enrolled. You can skip it and leave Secure Boot off.</dd></div>

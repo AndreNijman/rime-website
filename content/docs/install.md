@@ -4,10 +4,11 @@ description: "Download and check the installer, write it to a USB stick, and ins
 section: "Start"
 order: 10
 sources:
-  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0"
-  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/installer/build-live-iso.sh"
-  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/installer/rime-installer-gui"
-  - "https://github.com/AndreNijman/rime-os/blob/f639de2fa/.github/workflows/build-installer-iso.yml"
+  - "https://github.com/AndreNijman/rime-os/releases/tag/v3.1.0"
+  - "https://github.com/AndreNijman/rime-os/blob/7e125d2e0/installer/rime-install"
+  - "https://github.com/AndreNijman/rime-os/blob/7e125d2e0/installer/build-live-iso.sh"
+  - "https://github.com/AndreNijman/rime-os/blob/7e125d2e0/installer/rime-installer-gui"
+  - "https://github.com/AndreNijman/rime-os/blob/7e125d2e0/.github/workflows/build-installer-iso.yml"
   - "https://github.com/AndreNijman/rime-os/releases/tag/v2.1.0"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/README.md"
   - "https://github.com/AndreNijman/rime-os/blob/1672d059/README.md"
@@ -30,11 +31,13 @@ older)? Skip to [Installed from an APEX-OS ISO](#installed-from-an-apex-os-iso).
 
 - A 64-bit PC with UEFI. Legacy BIOS machines can also boot the stick.
 - A USB stick of 4 GB or more. Writing the ISO erases it.
-- At least 16 GB of disk. The installer stages the download before it installs:
-  - with a second drive or USB stick that has 32 GB free, it stages there and
-    does not erase that drive;
-  - with nothing else plugged in, it stages on the disk you install to, which
-    then needs about 53 GB.
+- At least **12 GB** of disk. The installer refuses a smaller disk before it
+  erases anything. Rime takes 5.4 GB once installed.
+- **20 GB recommended.** Rime keeps the previous version for rollback, and an
+  update that replaces the whole system downloads about 5 GB before it can
+  start. After one such update the system and its rollback copy take about
+  9 GB, so on a smaller disk the next one can stop with "Insufficient free
+  space" until you free some.
 - A network connection for the whole install. The OS downloads during it.
 - About 30 minutes, most of it waiting.
 
@@ -49,11 +52,11 @@ The installer cannot handle three things yet:
 ## Download and check it
 
 Take both files from the [download page](/download) or the
-[v3.0.0 release](https://github.com/AndreNijman/rime-os/releases/tag/v3.0.0):
+[v3.1.0 release](https://github.com/AndreNijman/rime-os/releases/tag/v3.1.0):
 
 | File | Size | SHA-256 |
 |---|---|---|
-| `rime-os-netinstall-x86_64.iso` | 1,869,484,032 bytes | `d186e2781f535f93dec4b5b3b04a4243b63b623d26d29f4188c5190788efb2c8` |
+| `rime-os-netinstall-x86_64.iso` | 1,893,881,856 bytes | `5343270084faf45a2f7e962a52d3a8c8169bf1b3f412bbf071d06d106311d341` |
 | `rime-os-netinstall-x86_64.iso.sha256` | | |
 
 Check the download before you write it. A truncated ISO fails much later, in
@@ -133,9 +136,8 @@ Windows for you. Do that from Windows first:
    power buttons do*, untick **Turn on fast startup**. Fast Startup leaves the
    Windows partition half-hibernated, which is unsafe to resize.
 3. **Shrink C:.** Right-click Start, Disk Management, right-click `C:`,
-   *Shrink Volume*. Give Rime at least 53 GB, because with no second drive
-   plugged in the installer stages the download on this partition. With a
-   second drive or stick that has 32 GB free, 40 GB is enough.
+   *Shrink Volume*. Give Rime at least 10 GB; 18 GB leaves room for updates
+   (see [What you need](#what-you-need)).
 4. **Create a partition in the free space.** Right-click the unallocated space,
    *New Simple Volume*, accept the defaults. The installer lists partitions,
    not unallocated space.
