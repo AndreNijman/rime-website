@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.09.30.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.04"
+product: "rime"
+name: "Rime 2026.10.04"
+title: "Rime OS installs on a 12 GB disk"
+date: "2026-10-04T12:32:39Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime OS now installs on a 12 GB disk. The network installer streams the system straight onto the disk you install to and stores it compressed, so it no longer needs a spare drive or tens of gigabytes of free space; the installed system takes about 8 GB."
+predecessor: "2026.09.30.3"
+provenance:
+  osRevision: "93a98c5204daca6d9d23154d90255f69a3fe83ab"
+  shellRevision: "7bbc05f6d0487562ef5c1ca1e4aec9dca70b48c9"
+  imageDigest: "sha256:47eb3beb12eed40ec09b94885e877763e7b757f2584e8d20326024895f4f6470"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37200486874"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-os-installs-on-a-12-gb-disk"
+changes:
+  - id: "rime-os-installs-on-a-12-gb-disk"
+    area: "system"
+    kind: "improved"
+    title: "Rime OS installs on a 12 GB disk"
+    summary: "Rime OS now installs on a 12 GB disk. The network installer streams the system straight onto the disk you install to and stores it compressed, so it no longer needs a spare drive or tens of gigabytes of free space; the installed system takes about 8 GB."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/81"
+    breaking: false
+knownIssues: []
+rollback: null

@@ -1,0 +1,52 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.04. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.04.2"
+product: "rime"
+name: "Rime 2026.10.04.2"
+title: "Rime OS keeps itself compressed after every update"
+date: "2026-10-04T13:32:57Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "2 changes, to the system."
+predecessor: "2026.10.04"
+provenance:
+  osRevision: "7e125d2e0e4e6411af6a16af19fd57ee3711733f"
+  shellRevision: "7bbc05f6d0487562ef5c1ca1e4aec9dca70b48c9"
+  imageDigest: "sha256:65c6d0a1d3f866c927cfc69e007b25fa9173fe7713dea68f61d147c4839e6afe"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37201037592"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-os-keeps-itself-compressed-after-every-upda"
+  - "a-smaller-rime-os-the-ai-apps-and-developer-tool"
+changes:
+  - id: "rime-os-keeps-itself-compressed-after-every-upda"
+    area: "system"
+    kind: "improved"
+    title: "Rime OS keeps itself compressed after every update"
+    summary: "Rime OS now keeps itself compressed after every update, and clears out old system images it no longer uses. On machines installed before 2026-10-04 the first run, shortly after this update, typically frees several gigabytes."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/82"
+    breaking: false
+  - id: "a-smaller-rime-os-the-ai-apps-and-developer-tool"
+    area: "system"
+    kind: "improved"
+    title: "A smaller Rime OS: the AI apps and developer tools install on demand"
+    summary: "Rime OS is much smaller: ChatGPT, Claude Desktop, Claude Code, Zed and the developer toolchains are no longer part of the system, so this update is a large one-time download and every update after it is lighter."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/83"
+    breaking: false
+knownIssues: []
+rollback: null
