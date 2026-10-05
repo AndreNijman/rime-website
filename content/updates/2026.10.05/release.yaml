@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.04.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.05"
+product: "rime"
+name: "Rime 2026.10.05"
+title: "Linux kernel 7.2.9, and the system's packages brought up to date"
+date: "2026-10-05T03:17:42Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime now runs Linux kernel 7.2.9, with the latest stable security and stability fixes, and every package that comes with the system is brought up to Fedora's current updates. This update is a large download."
+predecessor: "2026.10.04.3"
+provenance:
+  osRevision: "579d18f47a12ad5ac35fc7c575ca874394180d43"
+  shellRevision: "3490db2c122144679fd914442080a508d00260e6"
+  imageDigest: "sha256:9cbfcd6b8e685a5f4896ee3d1c8e430b412b6e38d553eb64244fd9c502491503"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37253859834"
+  iso: null
+  reissues: []
+highlights:
+  - "linux-kernel-7-2-9-and-the-system-s-packages-bro"
+changes:
+  - id: "linux-kernel-7-2-9-and-the-system-s-packages-bro"
+    area: "system"
+    kind: "improved"
+    title: "Linux kernel 7.2.9, and the system's packages brought up to date"
+    summary: "Rime now runs Linux kernel 7.2.9, with the latest stable security and stability fixes, and every package that comes with the system is brought up to Fedora's current updates. This update is a large download."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/86"
+    breaking: false
+knownIssues: []
+rollback: null
