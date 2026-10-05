@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.05. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.05.2"
+product: "rime"
+name: "Rime 2026.10.05.2"
+title: "Rime OS on Fedora 45"
+date: "2026-10-05T14:29:53Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime OS now runs on Fedora 45, with Mesa 26.2, systemd 262 and Qt 6.11. Fedora finalizes Fedora 45 around 20 October; until then its packages are Fedora's pre-release builds. This update is a full-size download. NVIDIA graphics now use the 615 driver, which needs a GTX 16-series, RTX 20-series or newer card."
+predecessor: "2026.10.05"
+provenance:
+  osRevision: "8d298d565287134cedc0c334b22dcd13fc328081"
+  shellRevision: "3490db2c122144679fd914442080a508d00260e6"
+  imageDigest: "sha256:bb86a8bab65daa051bf031eb1efe1ab7e1b5edfc6ae8dd02411ec1ba459c5d94"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37315525913"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-os-on-fedora-45"
+changes:
+  - id: "rime-os-on-fedora-45"
+    area: "system"
+    kind: "improved"
+    title: "Rime OS on Fedora 45"
+    summary: "Rime OS now runs on Fedora 45, with Mesa 26.2, systemd 262 and Qt 6.11. Fedora finalizes Fedora 45 around 20 October; until then its packages are Fedora's pre-release builds. This update is a full-size download. NVIDIA graphics now use the 615 driver, which needs a GTX 16-series, RTX 20-series or newer card."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/88"
+    breaking: false
+knownIssues: []
+rollback: null
