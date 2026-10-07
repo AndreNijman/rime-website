@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.05.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.07"
+product: "rime"
+name: "Rime 2026.10.07"
+title: "Apps installed with rime install survive a Fedora upgrade"
+date: "2026-10-07T10:57:07Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "After a Rime OS update that moves to a new Fedora release, the apps you installed with rime install (Steam, Wine, OBS and the rest) are rebuilt even when Fedora already has newer builds of system packages than your Rime image. Before this fix, one such package could leave all of them missing until the next image."
+predecessor: "2026.10.05.2"
+provenance:
+  osRevision: "ab4b057bfa3f9fb4875b851a22a7d10c4fcf6039"
+  shellRevision: "3490db2c122144679fd914442080a508d00260e6"
+  imageDigest: "sha256:1ac2957693b0729f67db1cfd3111540dcd59c048e1d3173fe91a3e61ba26e52d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37607124099"
+  iso: null
+  reissues: []
+highlights:
+  - "apps-installed-with-rime-install-survive-a-fedor"
+changes:
+  - id: "apps-installed-with-rime-install-survive-a-fedor"
+    area: "system"
+    kind: "improved"
+    title: "Apps installed with rime install survive a Fedora upgrade"
+    summary: "After a Rime OS update that moves to a new Fedora release, the apps you installed with rime install (Steam, Wine, OBS and the rest) are rebuilt even when Fedora already has newer builds of system packages than your Rime image. Before this fix, one such package could leave all of them missing until the next image."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/89"
+    breaking: false
+knownIssues: []
+rollback: null
