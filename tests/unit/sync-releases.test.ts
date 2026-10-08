@@ -1,7 +1,7 @@
 // scripts/sync-releases.mjs: how a merged pull request becomes a line on a
 // public release page, without the network (the sources are read in CI).
 import { test, expect } from "vitest";
-import { parseTitle, summaryFrom, changeFrom, recordFor } from "../../scripts/sync-releases.mjs";
+import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit } from "../../scripts/sync-releases.mjs";
 
 const pr = (title: string, body = "", extra: Record<string, unknown> = {}) =>
   ({ number: 7, title, body, html_url: "https://github.com/AndreNijman/rime-os/pull/7", labels: [], ...extra });
@@ -75,3 +75,14 @@ test("a release with nothing user-facing still gets a page that says so", () => 
   expect(r.highlights).toEqual([]);
   expect(r.summary).toMatch(/same Rime code/);
 });
+
+test("a rebuild of the same commit is dated by the rebuild, not the first build", () => {
+  const run = (id: number, sha: string, at: string) => ({ id, head_sha: sha, created_at: at, updated_at: at });
+  const runs = [
+    run(3, "d4fbe14", "2026-10-08T11:51:36Z"),   // dispatched rebuild: newer Rime Shell
+    run(1, "aaaaaaa", "2026-10-08T10:00:00Z"),
+    run(2, "d4fbe14", "2026-10-08T11:27:29Z"),   // the push build of the same commit
+  ];
+  expect(latestRunPerCommit(runs).map((r) => r.id)).toEqual([1, 3]);
+});
+

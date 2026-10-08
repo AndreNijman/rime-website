@@ -232,6 +232,19 @@ export function knownRecords(dir = UPDATES) {
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// Successful builds, oldest first, keeping only the LAST build of each rime-os
+// commit. An image is looked up by `daily-<commit>`, and a rebuild of the same
+// commit (a dispatch that picks up a newer Rime Shell) moves that tag: the
+// labels then describe the last build, so only the last build can be dated by
+// them. Reading every run used to date the newer release by the OLDER run,
+// which gave 2026.10.08.8 the timestamp of 2026.10.08.7 and broke the chain.
+export function latestRunPerCommit(runs) {
+  const last = new Map();
+  for (const run of [...runs].sort((a, b) => a.created_at.localeCompare(b.created_at)))
+    last.set(run.head_sha, run);
+  return [...last.values()].sort((a, b) => a.created_at.localeCompare(b.created_at));
+}
+
 // Releases published after the newest record, oldest first, each with its
 // predecessor. Only runs from two days before that record on are looked at,
 // so a check every 15 minutes costs a few requests, not one per release ever.
@@ -244,11 +257,10 @@ export async function newReleases(known) {
     runs.push(...res.workflow_runs);
     if (res.workflow_runs.length < 100) break;
   }
-  runs.sort((a, b) => a.created_at.localeCompare(b.created_at));
   const knownIds = new Set(known.map((k) => k.id));
   const releases = [];
   const byId = new Map();
-  for (const run of runs) {
+  for (const run of latestRunPerCommit(runs)) {
     const img = await imageLabels(`daily-${run.head_sha}`);
     const id = img?.labels["org.rimeos.release.id"];
     if (!id || id === "dev" || knownIds.has(id)) continue;  // unpublished, pre-id, or already on the site
