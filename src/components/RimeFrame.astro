@@ -23,6 +23,7 @@ const path = Astro.url.pathname;
 const section = sectionFor(path);
 const latest = await latestRelease();
 const iso = downloads.current.artifacts.find((a) => a.kind === "iso")!;
+const win = downloads.current.artifacts.find((a) => a.kind === "windows-installer");
 const gb = (b: number) => (b / 1e9).toFixed(1).replace(/\.0$/, "") + " GB";
 
 // Server-rendered bar at a nominal 1440 px. frame.ts replaces it on load.
@@ -141,6 +142,14 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
         </a>
         <a class="btn" href="/download">Requirements &amp; verify</a>
       </div>
+      {win && (
+        <div class="pour-windows">
+          <p class="pour-note"><strong>No USB stick?</strong> Install beside Windows, from Windows, with a {(win.bytes / 1e6).toFixed(1)} MB app. <a href="/download#windows">How it works</a></p>
+          <div class="pour-actions">
+            <a class="btn" href={win.url}><Icon name="download" /> Download for Windows</a>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 </div>
@@ -326,6 +335,8 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   }
   @media (hover: hover) { .sha-chip:hover { background: color-mix(in srgb, var(--rime-surface-high) 85%, var(--rime-text-primary)); } }
   .pour-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+  .pour-windows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding-top: 16px; margin-top: 4px; border-top: 1px solid var(--rime-hairline); }
+  .pour-windows .btn { white-space: normal; text-align: center; }
 
   /* CAPSULE: tiny transient feedback, out of the top centre */
   .status-capsule {
