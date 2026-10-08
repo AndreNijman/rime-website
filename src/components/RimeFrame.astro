@@ -22,7 +22,7 @@ import { latestRelease } from "../lib/releases";
 const path = Astro.url.pathname;
 const section = sectionFor(path);
 const latest = await latestRelease();
-const iso = downloads.current.artifacts[0];
+const iso = downloads.current.artifacts.find((a) => a.kind === "iso")!;
 const gb = (b: number) => (b / 1e9).toFixed(1).replace(/\.0$/, "") + " GB";
 
 // Server-rendered bar at a nominal 1440 px. frame.ts replaces it on load.

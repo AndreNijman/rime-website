@@ -5,7 +5,7 @@ import Icon from "./Icon.astro";
 import downloads from "../../content/downloads.json";
 interface Props { headingId?: string }
 const { headingId } = Astro.props;
-const iso = downloads.current.artifacts[0];
+const iso = downloads.current.artifacts.find((a) => a.kind === "iso")!;
 const gb = (iso.bytes / 1e9).toFixed(1);
 ---
 <div class="get">

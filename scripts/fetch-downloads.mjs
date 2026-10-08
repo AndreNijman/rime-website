@@ -62,10 +62,13 @@ function provenanceOf(sha256) {
   return null;
 }
 
+// The ISO first, always: pages that show one installer read artifacts[0].
+// Then the Windows app, which is built pinned to that release's ISO
+// (rime-os build-installer-iso.yml) and so is only ever listed beside it.
 function artifactsOf(rel) {
   const out = [];
-  for (const a of rel.assets) {
-    if (!/\.iso$/.test(a.name)) continue;
+  const ordered = [...rel.assets.filter((a) => /\.iso$/.test(a.name)), ...rel.assets.filter((a) => /\.exe$/.test(a.name))];
+  for (const a of ordered) {
     const sum = rel.assets.find((x) => x.name === `${a.name}.sha256`);
     const digest = (a.digest || "").replace(/^sha256:/, "");
     if (!sum) { console.warn(`! ${rel.tag_name}/${a.name}: no .sha256 published beside it — left out`); continue; }
@@ -74,9 +77,10 @@ function artifactsOf(rel) {
     if (digest && listed !== digest) { console.error(`✗ ${a.name}: checksum file says ${listed}, GitHub says ${digest} — left out`); continue; }
     const provenance = provenanceOf(listed);
     if (!provenance) console.warn(`! ${rel.tag_name}/${a.name}: no build-provenance attestation on GitHub — the page will not offer that check`);
+    const exe = /\.exe$/.test(a.name);
     out.push({
-      kind: "iso",
-      flavour: /netinstall/.test(a.name) ? "netinstall" : "offline",
+      kind: exe ? "windows-installer" : "iso",
+      flavour: exe ? "windows" : /netinstall/.test(a.name) ? "netinstall" : "offline",
       arch: /x86_64|amd64/.test(a.name) ? "x86_64" : "unknown",
       name: a.name,
       url: a.browser_download_url,
