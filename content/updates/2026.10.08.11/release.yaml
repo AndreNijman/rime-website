@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.10. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.11"
+product: "rime"
+name: "Rime 2026.10.08.11"
+title: "The what's-new page is ready as soon as an update is"
+date: "2026-10-08T16:40:41Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "After an update, the page about what changed is ready within minutes, so it opens right away instead of hours later."
+predecessor: "2026.10.08.10"
+provenance:
+  osRevision: "7ac55824dbd4107ce60cba18762e9abd38c2b62f"
+  shellRevision: "3dd0eb6b6d38463a8994dc6c6122bbc38e21a1fa"
+  imageDigest: "sha256:ad4de550d691c04bc9a295fe648211945e4029ac40793924450f20f0f719965d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37799587597"
+  iso: null
+  reissues: []
+highlights:
+  - "the-what-s-new-page-is-ready-as-soon-as-an-updat"
+changes:
+  - id: "the-what-s-new-page-is-ready-as-soon-as-an-updat"
+    area: "system"
+    kind: "improved"
+    title: "The what's-new page is ready as soon as an update is"
+    summary: "After an update, the page about what changed is ready within minutes, so it opens right away instead of hours later."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/105"
+    breaking: false
+knownIssues: []
+rollback: null
