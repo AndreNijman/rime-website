@@ -1,7 +1,7 @@
 // scripts/sync-releases.mjs: how a merged pull request becomes a line on a
 // public release page, without the network (the sources are read in CI).
 import { test, expect } from "vitest";
-import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit } from "../../scripts/sync-releases.mjs";
+import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit, publishingRun } from "../../scripts/sync-releases.mjs";
 
 const pr = (title: string, body = "", extra: Record<string, unknown> = {}) =>
   ({ number: 7, title, body, html_url: "https://github.com/AndreNijman/rime-os/pull/7", labels: [], ...extra });
@@ -84,5 +84,12 @@ test("a rebuild of the same commit is dated by the rebuild, not the first build"
     run(2, "d4fbe14", "2026-10-08T11:27:29Z"),   // the push build of the same commit
   ];
   expect(latestRunPerCommit(runs).map((r) => r.id)).toEqual([1, 3]);
+});
+
+test("the build that asks for its page is still running, and counts", () => {
+  expect(publishingRun({ status: "in_progress", conclusion: null })).toBe(true);
+  expect(publishingRun({ status: "completed", conclusion: "success" })).toBe(true);
+  expect(publishingRun({ status: "completed", conclusion: "failure" })).toBe(false);
+  expect(publishingRun({ status: "completed", conclusion: "cancelled" })).toBe(false);
 });
 
