@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.4"
+product: "rime"
+name: "Rime 2026.10.08.4"
+title: "Gaming Mode no longer shows a garbled picture on NVIDIA"
+date: "2026-10-08T05:19:12Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Gaming Mode no longer shows a garbled, repeated picture on NVIDIA graphics. HDR is now off in Gaming Mode."
+predecessor: "2026.10.08.3"
+provenance:
+  osRevision: "52b4abcf251cb54d7f1a229a620d3a8854e22866"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:02a7c22e5531a7aed3ba4617b0673999dd511a32080a1d9522642f6bacc87558"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37729333371"
+  iso: null
+  reissues: []
+highlights:
+  - "gaming-mode-no-longer-shows-a-garbled-picture-on"
+changes:
+  - id: "gaming-mode-no-longer-shows-a-garbled-picture-on"
+    area: "gaming"
+    kind: "improved"
+    title: "Gaming Mode no longer shows a garbled picture on NVIDIA"
+    summary: "Gaming Mode no longer shows a garbled, repeated picture on NVIDIA graphics. HDR is now off in Gaming Mode."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/95"
+    breaking: false
+knownIssues: []
+rollback: null

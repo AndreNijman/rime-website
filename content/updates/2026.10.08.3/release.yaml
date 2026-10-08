@@ -1,0 +1,34 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.3"
+product: "rime"
+name: "Rime 2026.10.08.3"
+title: "A rebuild with nothing new in Rime itself"
+date: "2026-10-08T04:32:08Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "This release rebuilds the image from the same Rime code with newer packages underneath."
+predecessor: "2026.10.08.2"
+provenance:
+  osRevision: "39666a1fc5557a9f3aa5374781f2bc9c3ea13726"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:c2d8dd7df728bac4a03668cbff0498d8c3b86506f633fada8448bab84ff58532"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37720144176"
+  iso: null
+  reissues: []
+highlights: []
+changes: []
+knownIssues: []
+rollback: null

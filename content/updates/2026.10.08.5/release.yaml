@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.5"
+product: "rime"
+name: "Rime 2026.10.08.5"
+title: "Install Rime OS from Windows, beside Windows, without a USB stick"
+date: "2026-10-08T08:25:18Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime OS can be installed from Windows without a USB stick: shrink C:, run the Rime installer for Windows, pick the space and restart. Rime gets its own boot partition, and Windows is left as it was."
+predecessor: "2026.10.08.4"
+provenance:
+  osRevision: "f8a3d561f532d9f6f1f46f33b2bf3ceae5c58609"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:c21af73da35d92a45bcf300627b6668e381754a7b830ab57577602703673311b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37746130812"
+  iso: null
+  reissues: []
+highlights:
+  - "install-rime-os-from-windows-beside-windows-with"
+changes:
+  - id: "install-rime-os-from-windows-beside-windows-with"
+    area: "system"
+    kind: "improved"
+    title: "Install Rime OS from Windows, beside Windows, without a USB stick"
+    summary: "Rime OS can be installed from Windows without a USB stick: shrink C:, run the Rime installer for Windows, pick the space and restart. Rime gets its own boot partition, and Windows is left as it was."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/97"
+    breaking: false
+knownIssues: []
+rollback: null
