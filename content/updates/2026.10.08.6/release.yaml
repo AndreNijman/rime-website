@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.5. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.6"
+product: "rime"
+name: "Rime 2026.10.08.6"
+title: "Steam started from the desktop gets the same game settings as Gaming Mode"
+date: "2026-10-08T11:46:50Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Steam started from the desktop now gets the same game settings as Gaming Mode: a larger NVIDIA shader cache, so big games stop recompiling shaders at each launch, and the fix for the ray tracing hang on NVIDIA GPUs older than the RTX 40 series."
+predecessor: "2026.10.08.5"
+provenance:
+  osRevision: "2be53225d59b11939fa0d906b647dfb36e95df2e"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:edf636042eac0b07e4c93e50c5df1076b57c53ead4307dae69ade6c823c91e88"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37769095519"
+  iso: null
+  reissues: []
+highlights:
+  - "steam-started-from-the-desktop-gets-the-same-gam"
+changes:
+  - id: "steam-started-from-the-desktop-gets-the-same-gam"
+    area: "gaming"
+    kind: "improved"
+    title: "Steam started from the desktop gets the same game settings as Gaming Mode"
+    summary: "Steam started from the desktop now gets the same game settings as Gaming Mode: a larger NVIDIA shader cache, so big games stop recompiling shaders at each launch, and the fix for the ray tracing hang on NVIDIA GPUs older than the RTX 40 series."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/101"
+    breaking: false
+knownIssues: []
+rollback: null

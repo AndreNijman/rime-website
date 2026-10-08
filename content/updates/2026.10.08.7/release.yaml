@@ -1,0 +1,52 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.6. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.7"
+product: "rime"
+name: "Rime 2026.10.08.7"
+title: "MSI laptops switch to Turbo in Performance mode and Gaming Mode"
+date: "2026-10-08T12:19:15Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "2 changes, to gaming and the system."
+predecessor: "2026.10.08.6"
+provenance:
+  osRevision: "d4fbe14418d99c166303f8de484301b77a86099d"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:c4bc971872ecf1db08c3e26eabedbcb1fc5b55e65f485d3547098a7a26ffce0b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37770164010"
+  iso: null
+  reissues: []
+highlights:
+  - "msi-laptops-switch-to-turbo-in-performance-mode"
+  - "tell-owners-of-gtx-900-and-10-series-cards-that"
+changes:
+  - id: "msi-laptops-switch-to-turbo-in-performance-mode"
+    area: "gaming"
+    kind: "improved"
+    title: "MSI laptops switch to Turbo in Performance mode and Gaming Mode"
+    summary: "On MSI laptops, Rime's power modes now switch the laptop's own Turbo, Comfort and Eco modes. On a supported MSI gaming laptop, the Performance mode and Gaming Mode give CPU-heavy games higher frame rates."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/99"
+    breaking: false
+  - id: "tell-owners-of-gtx-900-and-10-series-cards-that"
+    area: "system"
+    kind: "improved"
+    title: "Tell owners of GTX 900 and 10 series cards that their NVIDIA GPU has no driver"
+    summary: "If your NVIDIA graphics card is a GeForce GTX 900 or 10 series (or similar), rime doctor and a one-time notification now tell you it has no driver on Rime OS and what your options are."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/102"
+    breaking: false
+knownIssues: []
+rollback: null
