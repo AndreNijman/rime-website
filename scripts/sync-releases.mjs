@@ -232,6 +232,16 @@ export function knownRecords(dir = UPDATES) {
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// A build that succeeded, or one still running. build-image asks for this
+// deploy from INSIDE its image job, right after it publishes, so at that moment
+// its own run is still in progress: counting only successful runs left the
+// release that asked for its page out (2026.10.08.11). A running build that has
+// not published yet has no image under its tag and is skipped by the label
+// lookup; a failed or cancelled one is not a release.
+export function publishingRun(run) {
+  return run.status !== "completed" || run.conclusion === "success";
+}
+
 // Successful builds, oldest first, keeping only the LAST build of each rime-os
 // commit. An image is looked up by `daily-<commit>`, and a rebuild of the same
 // commit (a dispatch that picks up a newer Rime Shell) moves that tag: the
@@ -253,14 +263,14 @@ export async function newReleases(known) {
   const since = newest ? new Date(Date.parse(newest.date) - 2 * 86400e3).toISOString() : FIRST_STAMPED;
   const runs = [];
   for (let page = 1; page <= 5; page++) {
-    const res = await github(`repos/${OWNER}/${OS}/actions/workflows/build-image.yml/runs?branch=main&status=success&per_page=100&page=${page}&created=%3E%3D${since.slice(0, 10)}`);
+    const res = await github(`repos/${OWNER}/${OS}/actions/workflows/build-image.yml/runs?branch=main&per_page=100&page=${page}&created=%3E%3D${since.slice(0, 10)}`);
     runs.push(...res.workflow_runs);
     if (res.workflow_runs.length < 100) break;
   }
   const knownIds = new Set(known.map((k) => k.id));
   const releases = [];
   const byId = new Map();
-  for (const run of latestRunPerCommit(runs)) {
+  for (const run of latestRunPerCommit(runs.filter(publishingRun))) {
     const img = await imageLabels(`daily-${run.head_sha}`);
     const id = img?.labels["org.rimeos.release.id"];
     if (!id || id === "dev" || knownIds.has(id)) continue;  // unpublished, pre-id, or already on the site
