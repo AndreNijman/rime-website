@@ -8,7 +8,9 @@ import Icon from "../components/Icon.astro";
 import CommandChip from "../components/CommandChip.astro";
 import downloads from "../../content/downloads.json";
 import RemoteDownload from "../components/RemoteDownload.astro";
-const cur = downloads.current, iso = cur.artifacts[0];
+const cur = downloads.current, iso = cur.artifacts.find((a) => a.kind === "iso")!;
+// Present only when the release carries a verified Windows app.
+const win = cur.artifacts.find((a) => a.kind === "windows-installer");
 const prev = downloads.previous;
 const gb = (b: number) => (b / 1e9).toFixed(2) + " GB";
 const date = new Date(cur.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" });
@@ -90,8 +92,42 @@ const shortName = cur.name.split(" — ")[0];
       <li><strong>Reboot into Rime.</strong> Encrypted disks ask for the passphrase before anything else. Updates come with <code>sudo rime update</code>, which checks each image's signature first.</li>
     </ol>
     <p><a class="btn" href="/docs/install">Full install guide <Icon name="arrow-right" /></a></p>
-    <p class="caption measure">Installing beside Windows: shrink Windows yourself first, then choose the installer's option to install into an existing partition. The installer does not shrink Windows for you. There is no Windows-based installer yet.</p>
+    <p class="caption measure">Installing beside Windows from a USB stick: shrink Windows yourself first, then choose the installer's option to install into an existing partition. Or skip the stick and use the Windows app below.</p>
   </section>
+
+  {win && (
+    <section class="container section-tight" id="windows" aria-labelledby="win-h">
+      <h2 id="win-h">Install from Windows, without a USB stick</h2>
+      <p class="measure muted">The Rime installer for Windows puts Rime OS beside Windows on the same disk. It gives Rime its own boot partition, so Windows' boot files are never touched, and it starts Rime's installer once, at the next restart.</p>
+      <div class="dl-card">
+        <div class="dl-main">
+          <p class="dl-kicker"><span class="chip">Windows 10 or 11</span><span class="caption">{shortName}</span></p>
+          <h3 class="dl-file mono">{win.name}</h3>
+          <dl class="dl-facts">
+            <div><dt>Size</dt><dd class="tnum">{(win.bytes / 1e6).toFixed(1)} MB</dd></div>
+            <div><dt>Needs</dt><dd>UEFI, administrator rights, internet</dd></div>
+            <div><dt>Installs</dt><dd>{iso.name}, checked against its SHA-256</dd></div>
+          </dl>
+          <div class="dl-actions">
+            <a class="btn btn-primary btn-lg" href={win.url}><Icon name="download" /> Download for Windows</a>
+            <a class="btn btn-lg" href={win.checksumUrl}>Checksum file</a>
+          </div>
+        </div>
+        <div class="dl-sha">
+          <p class="caption">SHA-256</p>
+          <CommandChip cmd={win.sha256} prompt="" label="SHA-256 copied" wrap />
+          {win.provenance && <p class="caption">Built by <code>{win.provenance.workflow}</code>, attested by GitHub like the ISO.</p>}
+        </div>
+      </div>
+      <ol class="steps steps--plain">
+        <li><strong>Make room.</strong> Right-click Start, open Disk Management, right-click C: and choose Shrink Volume. Shrink it by at least 30,000 MB and leave the new space Unallocated.</li>
+        <li><strong>Run the installer</strong> and choose that space. It names the disk by model and serial number; check it is the one you meant.</li>
+        <li><strong>Restart.</strong> Rime's installer starts once, by itself. Choose your keyboard, connect to the internet, create your account and confirm.</li>
+        <li><strong>Afterwards</strong> the computer starts Rime. Windows is in Rime's boot menu, or, if Windows uses BitLocker or Device encryption, in your firmware's boot menu (usually F12, F11, F9 or Esc), so BitLocker never asks for its recovery key.</li>
+      </ol>
+      <p class="caption measure">Windows may warn that the app is from an unknown publisher: it is not code-signed yet. The SHA-256 above, and <code>gh attestation verify {win.name} -R {downloads.repo.replace("https://github.com/", "")}</code>, prove it is the file GitHub built. Changed your mind before restarting? Run it again and choose Remove the prepared setup.</p>
+    </section>
+  )}
 
   <section class="container section-tight" id="remote" aria-labelledby="remote-h">
     <h2 id="remote-h">Rime Remote for Android</h2>

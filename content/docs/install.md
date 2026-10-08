@@ -21,8 +21,9 @@ verified: "rime-os@f639de2fa"
 ---
 
 The installer is a network installer: a small ISO that boots a live
-installer and downloads the signed Rime OS image while it installs. There is
-no Windows-based installer yet.
+installer and downloads the signed Rime OS image while it installs. To install
+beside Windows without a USB stick, use the
+[Rime installer for Windows](#from-windows-without-a-usb-stick) instead.
 
 Already running a machine installed from the old **APEX-OS** ISO (v2.1.0 or
 older)? Skip to [Installed from an APEX-OS ISO](#installed-from-an-apex-os-iso).
@@ -122,9 +123,33 @@ diskutil unmountDisk /dev/diskN
 sudo dd if=rime-os-netinstall-x86_64.iso of=/dev/rdiskN bs=4m
 ```
 
-## Keeping Windows on the same disk
+## From Windows, without a USB stick
 
-Skip this section if Rime gets the whole disk.
+`rime-windows-installer.exe` (on the [download page](/download#windows), from
+the same release as the ISO) does the Windows half of an install and lets Rime's
+own installer do the rest:
+
+1. **Shrink C:.** Right-click Start, Disk Management, right-click `C:`,
+   *Shrink Volume*, at least 30,000 MB. Leave the space **Unallocated**: do not
+   create a volume in it.
+2. **Run the installer** (it asks for administrator rights) and choose that
+   space. It downloads the ISO it was built for, checks its SHA-256, makes Rime
+   its own boot partition in the space, and asks the firmware to start Rime's
+   installer once. Windows' partitions and boot files are not changed.
+3. **Restart.** Rime's installer starts by itself, already pointed at that
+   space. Choose your keyboard, connect, create your account and confirm.
+
+BitLocker is handled for you: the app suspends it for one restart only when its
+settings would otherwise ask for the recovery key after the partition change.
+On a BitLocker machine, start Windows from the firmware's boot menu afterwards
+rather than from Rime's, which would make BitLocker ask for the key.
+
+Changed your mind before restarting? Run the app again and choose *Remove the
+prepared setup*.
+
+## Keeping Windows on the same disk, from a USB stick
+
+Skip this section if Rime gets the whole disk, or if you used the Windows app.
 
 The installer can install into an existing partition, but it does not shrink
 Windows for you. Do that from Windows first:
