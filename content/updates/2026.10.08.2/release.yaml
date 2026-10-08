@@ -1,0 +1,61 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.2"
+product: "rime"
+name: "Rime 2026.10.08.2"
+title: "Games run faster, and Gaming Mode switches to and from the desktop in about a second"
+date: "2026-10-08T04:01:58Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "3 changes, to gaming, the system and Rime Shell."
+predecessor: "2026.10.08"
+provenance:
+  osRevision: "5528b37c2d21ed7a5343d12ef330edaa29f28f4d"
+  shellRevision: "4aa938a0fe00979e3e7e01243ade00f1e223738f"
+  imageDigest: "sha256:621e645f0165e9cc79b080e68c72050b0d17a57a3c7027cf843f74c485fb168d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37718479672"
+  iso: null
+  reissues: []
+highlights:
+  - "games-run-faster-and-gaming-mode-switches-to-and"
+  - "cooler-boost-and-fan-control-on-msi-laptops"
+  - "gaming-mode-switches-to-and-from-the-desktop-wit"
+changes:
+  - id: "games-run-faster-and-gaming-mode-switches-to-and"
+    area: "gaming"
+    kind: "improved"
+    title: "Games run faster, and Gaming Mode switches to and from the desktop in about a second"
+    summary: "Games run faster on Rime. Windows games use the kernel's NT synchronisation driver. Gaming Mode switches off laptop power saving for the session. Laptops with a tuned Rime profile run the processor at its rated power instead of a lower firmware limit."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/92"
+    breaking: false
+  - id: "cooler-boost-and-fan-control-on-msi-laptops"
+    area: "system"
+    kind: "improved"
+    title: "Cooler Boost and fan control on MSI laptops"
+    summary: "Rime can now control the fans and Cooler Boost on many more MSI laptops (rime fan mode max / auto). On a laptop whose Rime profile sets a battery charge limit, the limit now takes effect, so the battery stops charging at 80 %."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/93"
+    breaking: false
+  - id: "gaming-mode-switches-to-and-from-the-desktop-wit"
+    area: "shell"
+    kind: "improved"
+    title: "Gaming Mode switches to and from the desktop without the login screen"
+    summary: "Switching to Gaming Mode from the power menu no longer goes through the login screen, and quitting Steam brings you back to the desktop you came from."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/39"
+    breaking: false
+knownIssues: []
+rollback: null

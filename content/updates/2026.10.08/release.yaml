@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.07. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08"
+product: "rime"
+name: "Rime 2026.10.08"
+title: "Apps you install show up in the launcher without logging out"
+date: "2026-10-08T02:53:22Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Apps you install with rime install, and apps rebuilt after a Fedora upgrade, now appear in the launcher right away instead of after your next login. The desktop also no longer risks starting without its bar when the Shell is restarted."
+predecessor: "2026.10.07"
+provenance:
+  osRevision: "6e35212dceb253d7c54cb68a022ef73b75ae5613"
+  shellRevision: "3490db2c122144679fd914442080a508d00260e6"
+  imageDigest: "sha256:486196219022fb92153ff835e68b7460fb75968e6258f5dcaf3c3f900713115b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37717560196"
+  iso: null
+  reissues: []
+highlights:
+  - "apps-you-install-show-up-in-the-launcher-without"
+changes:
+  - id: "apps-you-install-show-up-in-the-launcher-without"
+    area: "system"
+    kind: "improved"
+    title: "Apps you install show up in the launcher without logging out"
+    summary: "Apps you install with rime install, and apps rebuilt after a Fedora upgrade, now appear in the launcher right away instead of after your next login. The desktop also no longer risks starting without its bar when the Shell is restarted."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/90"
+    breaking: false
+knownIssues: []
+rollback: null
