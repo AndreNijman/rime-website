@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.7. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.8"
+product: "rime"
+name: "Rime 2026.10.08.8"
+title: "Installed apps never show a broken icon"
+date: "2026-10-08T12:50:21Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Apps you install yourself now show their own icon in notifications, the app launcher, the dock and the window switcher, instead of a broken placeholder."
+predecessor: "2026.10.08.7"
+provenance:
+  osRevision: "d4fbe14418d99c166303f8de484301b77a86099d"
+  shellRevision: "3dd0eb6b6d38463a8994dc6c6122bbc38e21a1fa"
+  imageDigest: "sha256:b24f18f22bf450b6b569a8108072568fcc03186ef8518b15e863daa7f0508384"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37772854750"
+  iso: null
+  reissues: []
+highlights:
+  - "installed-apps-never-show-a-broken-icon"
+changes:
+  - id: "installed-apps-never-show-a-broken-icon"
+    area: "shell"
+    kind: "improved"
+    title: "Installed apps never show a broken icon"
+    summary: "Apps you install yourself now show their own icon in notifications, the app launcher, the dock and the window switcher, instead of a broken placeholder."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/40"
+    breaking: false
+knownIssues: []
+rollback: null
