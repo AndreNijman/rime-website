@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.9. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.08.10"
+product: "rime"
+name: "Rime 2026.10.08.10"
+title: "Gaming Mode keeps your keyring unlocked too"
+date: "2026-10-08T15:38:56Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Gaming Mode now keeps your keyring unlocked after you log in, like the desktop does, so Steam and other apps no longer ask for your password a second time."
+predecessor: "2026.10.08.9"
+provenance:
+  osRevision: "06b0e972a26eeaefc419db7eaa29fa9c5ab0a71d"
+  shellRevision: "3dd0eb6b6d38463a8994dc6c6122bbc38e21a1fa"
+  imageDigest: "sha256:129cee2444f61d1f2fed7e1d394bc4e33659cf4f0e831d7e5b2cc5f90db11ba9"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37798269957"
+  iso: null
+  reissues: []
+highlights:
+  - "gaming-mode-keeps-your-keyring-unlocked-too"
+changes:
+  - id: "gaming-mode-keeps-your-keyring-unlocked-too"
+    area: "gaming"
+    kind: "improved"
+    title: "Gaming Mode keeps your keyring unlocked too"
+    summary: "Gaming Mode now keeps your keyring unlocked after you log in, like the desktop does, so Steam and other apps no longer ask for your password a second time."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/104"
+    breaking: false
+knownIssues: []
+rollback: null
