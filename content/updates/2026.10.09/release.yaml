@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.08.11. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.09"
+product: "rime"
+name: "Rime 2026.10.09"
+title: "Show what you play on Discord in Gaming Mode"
+date: "2026-10-09T15:40:36Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Gaming Mode can show what you play on Discord. Turn on \"Show what you play in Gaming Mode\" in Settings → Gaming: it needs Equibop with its Rich Presence on, and runs Equibop hidden and silent while you play."
+predecessor: "2026.10.08.11"
+provenance:
+  osRevision: "3b24b6271f4dd9c8b8a8d357ec1182c52c9c4355"
+  shellRevision: "eda05815c370eafd50c0970d2520edecb8f36bd7"
+  imageDigest: "sha256:ae989e519869be39f1730b8c1c1c653e1ebc0aa337f8bed12ff79c914251155f"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/37951545057"
+  iso: null
+  reissues: []
+highlights:
+  - "show-what-you-play-on-discord-in-gaming-mode"
+changes:
+  - id: "show-what-you-play-on-discord-in-gaming-mode"
+    area: "gaming"
+    kind: "improved"
+    title: "Show what you play on Discord in Gaming Mode"
+    summary: "Gaming Mode can show what you play on Discord. Turn on \"Show what you play in Gaming Mode\" in Settings → Gaming: it needs Equibop with its Rich Presence on, and runs Equibop hidden and silent while you play."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/106"
+    breaking: false
+knownIssues: []
+rollback: null
