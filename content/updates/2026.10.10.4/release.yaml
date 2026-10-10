@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.10.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.10.4"
+product: "rime"
+name: "Rime 2026.10.10.4"
+title: "Core image builds on Fedora 45 again, without Node.js docs"
+date: "2026-10-10T10:42:00Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "The system image no longer carries Node.js's HTML documentation, which saves about 50 MB. Nothing else changes for you."
+predecessor: "2026.10.10.3"
+provenance:
+  osRevision: "8d22997a0e65c5d9f4d15b465942df6e5bd7df73"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:73ecf6f2ead189caf1a0009b3b0f04f412113e3f25f46c894589d90e9edc43b4"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38040615908"
+  iso: null
+  reissues: []
+highlights:
+  - "core-image-builds-on-fedora-45-again-without-nod"
+changes:
+  - id: "core-image-builds-on-fedora-45-again-without-nod"
+    area: "system"
+    kind: "improved"
+    title: "Core image builds on Fedora 45 again, without Node.js docs"
+    summary: "The system image no longer carries Node.js's HTML documentation, which saves about 50 MB. Nothing else changes for you."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/110"
+    breaking: false
+knownIssues: []
+rollback: null
