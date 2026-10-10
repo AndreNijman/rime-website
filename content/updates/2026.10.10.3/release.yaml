@@ -1,0 +1,52 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.10.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.10.3"
+product: "rime"
+name: "Rime 2026.10.10.3"
+title: "Updates apply without a restart when they safely can"
+date: "2026-10-10T09:28:09Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.10.10.2"
+provenance:
+  osRevision: "f8b994a78e57979521252e9aedaa266ad8468cb3"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:a1ad370412e594757b87c69d3024c4ae6dde2be84e3dfa83f065c1636fb6d6a3"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38039722050"
+  iso: null
+  reissues: []
+highlights:
+  - "updates-apply-without-a-restart-when-they-safely"
+  - "updates-page-in-settings-and-the-shell-reports-i"
+changes:
+  - id: "updates-apply-without-a-restart-when-they-safely"
+    area: "system"
+    kind: "improved"
+    title: "Updates apply without a restart when they safely can"
+    summary: "sudo rime update now applies Rime Shell, rimed and Rime tool updates straight away when it is safe, never while the screen is locked or a game is running, and tells you whether anything still needs a restart. rime live status shows what changed."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/109"
+    breaking: false
+  - id: "updates-page-in-settings-and-the-shell-reports-i"
+    area: "shell"
+    kind: "improved"
+    title: "Updates page in Settings, and the shell reports its version and lock state for live updates"
+    summary: "Settings has a new Updates page that shows what the last update changed, what is already running, and whether a restart is still needed."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/42"
+    breaking: false
+knownIssues: []
+rollback: null
