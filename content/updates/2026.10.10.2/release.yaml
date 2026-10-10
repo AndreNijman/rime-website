@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.10. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.10.2"
+product: "rime"
+name: "Rime 2026.10.10.2"
+title: "Rime tells you when an update is available"
+date: "2026-10-10T04:27:55Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Rime now shows a notification when a new update is available, telling you to run sudo rime update."
+predecessor: "2026.10.10"
+provenance:
+  osRevision: "8f82dcd31375b0489203efaab89d2e08ca04bc25"
+  shellRevision: "eda05815c370eafd50c0970d2520edecb8f36bd7"
+  imageDigest: "sha256:2f95f21680bfb2687a2608a136a50d63cbcc3b5f86f34232aa67390687e536a1"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38023214776"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-tells-you-when-an-update-is-available"
+changes:
+  - id: "rime-tells-you-when-an-update-is-available"
+    area: "system"
+    kind: "improved"
+    title: "Rime tells you when an update is available"
+    summary: "Rime now shows a notification when a new update is available, telling you to run sudo rime update."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/108"
+    breaking: false
+knownIssues: []
+rollback: null
