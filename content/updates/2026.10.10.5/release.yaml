@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.10.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.10.5"
+product: "rime"
+name: "Rime 2026.10.10.5"
+title: "Agent sessions are recorded before their program starts"
+date: "2026-10-10T11:37:46Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "An agent session can no longer be taken for you in the moment after it starts, before Rime has recorded it."
+predecessor: "2026.10.10.4"
+provenance:
+  osRevision: "da614059f1f7a7a1e649ee6f69c37dc412f1ddfa"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:c08b791836907acc34c88301ad3ce1bb7fbac51f08b50f9a498230551607e5f4"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38048117356"
+  iso: null
+  reissues: []
+highlights:
+  - "agent-sessions-are-recorded-before-their-program"
+changes:
+  - id: "agent-sessions-are-recorded-before-their-program"
+    area: "agents"
+    kind: "improved"
+    title: "Agent sessions are recorded before their program starts"
+    summary: "An agent session can no longer be taken for you in the moment after it starts, before Rime has recorded it."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/111"
+    breaking: false
+knownIssues: []
+rollback: null
