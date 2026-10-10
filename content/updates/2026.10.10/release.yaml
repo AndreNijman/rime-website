@@ -1,0 +1,43 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.09. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.10"
+product: "rime"
+name: "Rime 2026.10.10"
+title: "Gaming stays on after a reboot, and Discord stays quiet in Gaming Mode"
+date: "2026-10-10T03:13:53Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+summary: "Choosing Gaming in Settings → Gaming now stays on until you choose Everyday, across reboots and after games quit. Discord no longer plays notification sounds in Gaming Mode."
+predecessor: "2026.10.09"
+provenance:
+  osRevision: "79f865fc2597aa878a1e11f6f6e5ba1d0a3d0638"
+  shellRevision: "eda05815c370eafd50c0970d2520edecb8f36bd7"
+  imageDigest: "sha256:fbc6f7027014ae0a43865be79887785490736aff1eca20e3dcd9444ad8b87d4c"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38018831562"
+  iso: null
+  reissues: []
+highlights:
+  - "gaming-stays-on-after-a-reboot-and-discord-stays"
+changes:
+  - id: "gaming-stays-on-after-a-reboot-and-discord-stays"
+    area: "gaming"
+    kind: "improved"
+    title: "Gaming stays on after a reboot, and Discord stays quiet in Gaming Mode"
+    summary: "Choosing Gaming in Settings → Gaming now stays on until you choose Everyday, across reboots and after games quit. Discord no longer plays notification sounds in Gaming Mode."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/107"
+    breaking: false
+knownIssues: []
+rollback: null
