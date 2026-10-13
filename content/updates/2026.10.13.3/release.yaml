@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.13.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.13.3"
+product: "rime"
+name: "Rime 2026.10.13.3"
+title: "Centre the open pill on its glyph"
+date: "2026-10-13T10:02:15Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "The highlight behind an open bar control (Wi-Fi, Bluetooth, VPN, notifications, volume, tray, layout) now sits centred on its icon at every display scale."
+predecessor: "2026.10.13.2"
+provenance:
+  osRevision: "aa102a606283d1645ee38094e78708cc3d362983"
+  shellRevision: "b1dae1e142d55776e59f02a0098ea8a3ac0089d8"
+  imageDigest: "sha256:9f8a871b6c2c3e5e56195dcac04b0e5e642ef9f0dea179c93b7de8dd0925a6bc"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38378619395"
+  iso: null
+  reissues: []
+highlights:
+  - "centre-the-open-pill-on-its-glyph"
+changes:
+  - id: "centre-the-open-pill-on-its-glyph"
+    area: "shell"
+    kind: "fixed"
+    title: "Centre the open pill on its glyph"
+    summary: "The highlight behind an open bar control (Wi-Fi, Bluetooth, VPN, notifications, volume, tray, layout) now sits centred on its icon at every display scale."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/44"
+    breaking: false
+knownIssues: []
+rollback: null
