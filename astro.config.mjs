@@ -1,6 +1,18 @@
 // rimeos.com — static site. See README.md for the architecture.
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import YAML from "yaml";
+
+// Maintenance builds have a page (an updated machine opens it) but it is
+// noindex, so the sitemap leaves it out too (src/lib/releases.ts isMaintenance).
+const maintenance = new Set(
+  (existsSync("content/updates") ? readdirSync("content/updates") : [])
+    .filter((id) => existsSync(`content/updates/${id}/release.yaml`))
+    .map((id) => YAML.parse(readFileSync(`content/updates/${id}/release.yaml`, "utf8")))
+    .filter((r) => r.maintenance || (r.changes ?? []).length === 0)
+    .map((r) => `https://rimeos.com/updates/${r.id}`),
+);
 
 export default defineConfig({
   site: "https://rimeos.com",
@@ -35,7 +47,7 @@ export default defineConfig({
   vite: { build: { assetsInlineLimit: 0 } },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes("/updates/latest") && !page.endsWith("/404") && !page.endsWith("/install"),
+      filter: (page) => !page.includes("/updates/latest") && !page.endsWith("/404") && !page.endsWith("/install") && !maintenance.has(page.replace(/\/$/, "")),
     }),
   ],
 });

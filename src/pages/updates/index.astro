@@ -3,9 +3,9 @@
 import Base from "../../layouts/Base.astro";
 import LatestRelease from "../../components/LatestRelease.astro";
 import Icon from "../../components/Icon.astro";
-import { allReleases, formatDate, AREA_LABEL, KIND_LABEL } from "../../lib/releases";
+import { listedReleases, formatDate, AREA_LABEL, KIND_LABEL } from "../../lib/releases";
 import { channelOf } from "../../lib/channels";
-const all = await allReleases();
+const all = await listedReleases();
 const latest = all[0];
 const rime = all.filter((r) => r.product === "rime");
 const apex = all.filter((r) => r.product === "apex");
@@ -16,7 +16,7 @@ const text = (r: (typeof all)[number]) => [r.name, r.title, r.summary, ...r.chan
   <section class="container upd-hero">
     <p class="eyebrow">Updates</p>
     <h1>What changed, release by release.</h1>
-    <p class="lead">Every release Rime has published, newest first. Each one has a permanent page: the changes, the known issues, the exact revisions it was built from, and how to go back.</p>
+    <p class="lead">Every Rime release with a change you would notice, newest first. Each one has a permanent page: the changes, the known issues, the exact revisions it was built from, and how to go back. Maintenance builds, which only bring newer packages, keep their pages but are not listed here.</p>
   </section>
 
   <section class="container-wide">

@@ -49,6 +49,16 @@ const KIND = { feat: "new", fix: "fixed", perf: "improved", refactor: "improved"
 // Changes nobody running Rime would notice.
 const QUIET = new Set(["docs", "chore", "ci", "test", "tests", "build", "style"]);
 
+// Rime's pull request TITLES are written for the release page, so they carry
+// no conventional type; the type is on the BRANCH (fix/…, feat/…). Reading only
+// the title labelled every generated change "Improved", 38 releases in a row.
+export function branchType(ref) {
+  const m = /^(\w+)[/-]/.exec(String(ref || "").replace(/^[^/:]+:/, ""));
+  if (!m) return null;
+  const t = m[1].toLowerCase();
+  return t === "feature" ? "feat" : t === "bugfix" || t === "hotfix" ? "fix" : t === "dependabot" || t === "renovate" ? "build" : t;
+}
+
 export function parseTitle(title) {
   const m = /^(\w+)(?:\(([^)]*)\))?(!)?:\s*(.+)$/.exec(title.trim());
   if (!m) return { type: null, scope: "", breaking: false, text: title.trim() };
@@ -110,12 +120,16 @@ export function changeFrom(repo, pr) {
   if (t.type && QUIET.has(t.type)) return null;
   const note = summaryFrom(pr.body);
   if (note && /^(none|n\/a|-)\.?$/i.test(note)) return null;  // "## Release note: none" keeps it off the page
+  // A chore/ or ci/ branch stays off the page unless its author wrote a note for it.
+  const branch = branchType(pr.branch ?? pr.head?.ref);
+  if (!t.type && branch && QUIET.has(branch) && !note) return null;
+  const type = t.type || branch;
   const title = sentenceCase(t.text);
   const summary = note || `From ${repo} pull request #${pr.number}.`;
   return {
     id: slug(t.text),
     area: areaOf(repo, t.scope, t.text),
-    kind: (t.type && KIND[t.type]) || "improved",
+    kind: (type && KIND[type]) || "improved",
     title,
     summary,
     source: [pr.html_url],
@@ -127,6 +141,10 @@ const AREA_WORDS = { shell: "Rime Shell", system: "the system", security: "secur
   agents: "agents", developer: "developer tools" };
 const andList = (xs) => xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
 
+// A release whose changes are all invisible to someone using Rime (dependency
+// bumps, CI, a rebuild for newer Fedora packages) still gets its page, because
+// an updated machine waits for /updates/<id>; but it is marked `maintenance`
+// and the release list, the feeds, the count and the home page leave it out.
 export function recordFor(rel, changes) {
   const seen = new Map();
   for (const c of changes) {
@@ -140,10 +158,11 @@ export function recordFor(rel, changes) {
     id: rel.id,
     product: "rime",
     name: `Rime ${rel.id}`,
-    title: lead ? lead.title : "A rebuild with nothing new in Rime itself",
+    title: lead ? lead.title : "Maintenance build",
     date: rel.date,
     channels: CHANNELS,
-    summary: changes.length === 0 ? "This release rebuilds the image from the same Rime code with newer packages underneath."
+    maintenance: changes.length === 0,
+    summary: changes.length === 0 ? "A maintenance build: newer packages and build fixes, with no change you would notice in Rime."
       : changes.length === 1 ? changes[0].summary
       : `${changes.length} changes, to ${andList([...new Set(changes.map((c) => AREA_WORDS[c.area]))])}.`,
     predecessor: rel.predecessor,
@@ -300,17 +319,18 @@ export async function newReleases(known) {
 async function mergedPulls(repo, base, head) {
   if (!base || !head || base === head) return [];
   const numbers = [];
+  const branches = new Map();  // "fix/foo", from the merge commit's "from Owner/fix/foo"
   for (let page = 1; page <= 3; page++) {
     const cmp = await github(`repos/${OWNER}/${repo}/compare/${base}...${head}?per_page=100&page=${page}`);
     for (const c of cmp.commits) {
       const first = c.commit.message.split("\n")[0];
-      const m = /^Merge pull request #(\d+) /.exec(first) || /\(#(\d+)\)$/.exec(first);
-      if (m && !numbers.includes(Number(m[1]))) numbers.push(Number(m[1]));
+      const m = /^Merge pull request #(\d+) from (\S+)/.exec(first) || /\(#(\d+)\)$/.exec(first);
+      if (m && !numbers.includes(Number(m[1]))) { numbers.push(Number(m[1])); if (m[2]) branches.set(Number(m[1]), m[2].replace(/^[^/]+\//, "")); }
     }
     if (cmp.commits.length < 100) break;
   }
   const pulls = [];
-  for (const n of numbers) pulls.push(await github(`repos/${OWNER}/${repo}/pulls/${n}`));
+  for (const n of numbers) pulls.push({ ...await github(`repos/${OWNER}/${repo}/pulls/${n}`), branch: branches.get(n) ?? null });
   return pulls.filter((p) => p.merged_at);
 }
 

@@ -1,7 +1,7 @@
 // scripts/sync-releases.mjs: how a merged pull request becomes a line on a
 // public release page, without the network (the sources are read in CI).
 import { test, expect } from "vitest";
-import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit, publishingRun } from "../../scripts/sync-releases.mjs";
+import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit, publishingRun, branchType } from "../../scripts/sync-releases.mjs";
 
 const pr = (title: string, body = "", extra: Record<string, unknown> = {}) =>
   ({ number: 7, title, body, html_url: "https://github.com/AndreNijman/rime-os/pull/7", labels: [], ...extra });
@@ -69,11 +69,38 @@ test("a record has the site's shape, unique change ids and highlights that exist
   expect(r.provenance).toMatchObject({ osRevision: rel.osRevision, imageDigest: rel.digest, iso: null, reissues: [] });
 });
 
-test("a release with nothing user-facing still gets a page that says so", () => {
+test("a release with nothing user-facing still gets a page, marked as maintenance", () => {
   const r = recordFor(rel, []);
   expect(r.changes).toEqual([]);
   expect(r.highlights).toEqual([]);
-  expect(r.summary).toMatch(/same Rime code/);
+  expect(r.maintenance).toBe(true);
+  expect(r.title).toBe("Maintenance build");
+  // Not "the same Rime code": a Dependabot merge changes the revision without changing anything you see.
+  expect(r.summary).not.toMatch(/same Rime code/);
+  expect(recordFor(rel, [changeFrom("rime-os", pr("fix: a"))]).maintenance).toBe(false);
+});
+
+test("a title written for users takes its kind from the branch", () => {
+  expect(branchType("fix/gaming-mode-volume-overlay")).toBe("fix");
+  expect(branchType("feat/live-update")).toBe("feat");
+  expect(branchType("AndreNijman:feature/x")).toBe("feat");
+  expect(branchType("dependabot/cargo/rustls")).toBe("build");
+  expect(branchType("main")).toBeNull();
+  expect(branchType(undefined)).toBeNull();
+  const title = "Gaming Mode: the volume keys work";
+  expect(changeFrom("rime-os", pr(title, "", { branch: "fix/volume" }))).toMatchObject({ kind: "fixed" });
+  expect(changeFrom("rime-os", pr(title, "", { head: { ref: "feat/volume" } }))).toMatchObject({ kind: "new" });
+  expect(changeFrom("rime-os", pr(title, "", { branch: "perf/volume" }))).toMatchObject({ kind: "improved" });
+  expect(changeFrom("rime-os", pr(title, "", { branch: "update/kernel" }))).toMatchObject({ kind: "improved" });
+  // A conventional title still wins over the branch.
+  expect(changeFrom("rime-os", pr("feat: volume", "", { branch: "fix/volume" }))).toMatchObject({ kind: "new" });
+});
+
+test("a quiet branch stays off the page unless its author wrote a release note", () => {
+  expect(changeFrom("rime-os", pr("Bump rustls", "", { branch: "dependabot/cargo/rustls" }))).toBeNull();
+  expect(changeFrom("rime-os", pr("Relay dependency", "", { branch: "chore/relay-sharp" }))).toBeNull();
+  const kept = changeFrom("rime-os", pr("Faster CI images", "## Release note\n\nUpdates download faster.", { branch: "ci/cache" }));
+  expect(kept).toMatchObject({ summary: "Updates download faster.", kind: "improved" });
 });
 
 test("a rebuild of the same commit is dated by the rebuild, not the first build", () => {

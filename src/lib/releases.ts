@@ -15,8 +15,28 @@ export async function allReleases(): Promise<Release[]> {
   return cache;
 }
 
+/** A maintenance build: it has a page, but it is not a release anyone would read about. */
+export function isMaintenance(r: Pick<Release, "maintenance" | "changes">): boolean {
+  return r.maintenance || r.changes.length === 0;
+}
+
+/** Newest first, without maintenance builds: what the list, feeds and home page show and count. */
+export async function listedReleases(): Promise<Release[]> {
+  return (await allReleases()).filter((r) => !isMaintenance(r));
+}
+
+/** The newest release with something in it. */
 export async function latestRelease(): Promise<Release | undefined> {
-  return (await allReleases())[0];
+  return (await listedReleases())[0];
+}
+
+/**
+ * What the home page's banner says about a release: its first new feature.
+ * A release of fixes alone is not a headline (the first thing a visitor read
+ * used to be what Gaming Mode had got wrong), so it gets a neutral line.
+ */
+export function releaseHeadline(r: Pick<Release, "changes">): string {
+  return r.changes.find((c) => c.kind === "new")?.title ?? "What's new in this release";
 }
 
 export async function releaseById(id: string): Promise<Release | undefined> {
@@ -64,6 +84,7 @@ export function releaseJson(r: Release, site: string) {
     changes: r.changes,
     knownIssues: r.knownIssues,
     rollback: r.rollback,
+    maintenance: isMaintenance(r),
   };
 }
 

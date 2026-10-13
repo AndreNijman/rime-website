@@ -4,10 +4,10 @@
 import Base from "../layouts/Base.astro";
 import { NAV } from "../data/site";
 import { getCollection } from "astro:content";
-import { allReleases } from "../lib/releases";
+import { listedReleases } from "../lib/releases";
 const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
 const journal = (await getCollection("journal")).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const releases = await allReleases();
+const releases = await listedReleases();
 const q = Astro.url.searchParams?.get?.("q");
 ---
 <Base title="Site map" description="Every page on rimeos.com.">

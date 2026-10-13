@@ -2,7 +2,7 @@
 // LENS_REVEAL search (src/scripts/search.ts). Static; queries never leave the page.
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { allReleases } from "../lib/releases";
+import { listedReleases } from "../lib/releases";
 const PAGES = [
   { title: "Rime", url: "/", text: "A Linux system that moves as one. One signed image that updates in one step and can go back, a fluid shell coloured by your wallpaper, sandboxed coding agents.", tags: "home overview" },
   { title: "Why Rime", url: "/why", text: "What Rime puts together, how it compares with Fedora Atomic, Universal Blue, Bazzite, NixOS, openSUSE, Ubuntu, CachyOS and SteamOS, and where Rime is still young.", tags: "compare comparison distro distribution alternative fedora silverblue bazzite nixos ubuntu cachyos arch why" },
@@ -21,7 +21,7 @@ const PAGES = [
 export const GET: APIRoute = async () => {
   const docs = await getCollection("docs");
   const journal = await getCollection("journal");
-  const releases = await allReleases();
+  const releases = await listedReleases();
   const strip = (s: string) => s.replace(/```[\s\S]*?```/g, " ").replace(/[#*_`>|\[\]()]/g, " ").replace(/\s+/g, " ").trim().slice(0, 1600);
   const out = [
     ...PAGES.map((p) => ({ k: "Page", ...p })),

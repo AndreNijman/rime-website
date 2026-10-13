@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.10.5. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.11"
+product: "rime"
+name: "Rime 2026.10.11"
+title: "Rebuild installed apps when the graphics driver changes"
+date: "2026-10-11T11:18:20Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "After an update that changes the graphics driver, your installed apps' 32-bit graphics libraries are now rebuilt to match, so Steam and Gaming Mode keep working instead of crashing back to the desktop."
+predecessor: "2026.10.10.5"
+provenance:
+  osRevision: "96d0978c4fbf15b7fa6cf09609a5e362e9716ecc"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:d6f70c802320836653ffd3b7c8cceb82397d7e9ab7c7a388f9fe450577f2b686"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38134120516"
+  iso: null
+  reissues: []
+highlights:
+  - "rebuild-installed-apps-when-the-graphics-driver"
+changes:
+  - id: "rebuild-installed-apps-when-the-graphics-driver"
+    area: "system"
+    kind: "fixed"
+    title: "Rebuild installed apps when the graphics driver changes"
+    summary: "After an update that changes the graphics driver, your installed apps' 32-bit graphics libraries are now rebuilt to match, so Steam and Gaming Mode keep working instead of crashing back to the desktop."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/113"
+    breaking: false
+knownIssues: []
+rollback: null

@@ -1,4 +1,4 @@
-import { allReleases, type Release } from "./releases";
+import { listedReleases, type Release } from "./releases";
 import { SITE } from "../data/site";
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const url = (r: Release) => `${SITE.url}/updates/${r.id}`;
@@ -7,7 +7,7 @@ const html = (r: Release) =>
   (r.knownIssues.length ? `<h3>Known issues</h3><ul>${r.knownIssues.map((k) => `<li>${esc(k.title)}: ${esc(k.summary)}</li>`).join("")}</ul>` : "");
 
 export async function atom() {
-  const all = await allReleases();
+  const all = await listedReleases();
   return `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Rime updates</title>
@@ -30,7 +30,7 @@ ${all.map((r) => `  <entry>
 }
 
 export async function rss() {
-  const all = await allReleases();
+  const all = await listedReleases();
   return `<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -52,7 +52,7 @@ ${all.map((r) => `    <item>
 }
 
 export async function jsonFeed() {
-  const all = await allReleases();
+  const all = await listedReleases();
   return JSON.stringify({
     version: "https://jsonfeed.org/version/1.1",
     title: "Rime updates",
