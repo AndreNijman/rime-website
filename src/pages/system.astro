@@ -1,6 +1,6 @@
 ---
 // /system — the operating system (spec §6.2). Every statement here was checked
-// against rime-os@2d9c5438a (the fact dossier behind this site); where a thing
+// against rime-os@a1128b8ba (the fact dossier behind this site); where a thing
 // is designed but not live, the page says so.
 import Base from "../layouts/Base.astro";
 import DeploymentFlow from "../components/DeploymentFlow.astro";
@@ -27,7 +27,7 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     <div class="split-2">
       <div>
         <h2 id="u-h">Updates are staged, not painted over the running system.</h2>
-        <p class="muted">An update downloads the next image and writes it beside the one you are using. Nothing you are running changes until you reboot into it. Updates never start on their own; the automatic update timer is masked.</p>
+        <p class="muted">An update downloads the next image and writes it beside the one you are using. When it can, Rime Shell, Rime's own tools and services, and the Hyprland configuration switch over at once: they are checked once they run, and put back if a check fails. The kernel, drivers and system libraries wait for your next reboot, and <code>rime update</code> says which restart is needed. Updates never start on their own; the automatic update timer is masked.</p>
       </div>
       <div class="stack">
         <CommandChip cmd="sudo rime update" />
@@ -142,7 +142,7 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     <div class="split-2">
       <div>
         <h2 id="g-h">Gaming, on demand.</h2>
-        <p class="muted">Rime builds its own kernel from CachyOS's tree, with sched-ext schedulers that Gaming Mode loads while a session runs. NVIDIA's driver is built into the image and signed. On hybrid laptops, apps that ask for the discrete GPU get it when you start them from the Shell.</p>
+        <p class="muted">Rime builds its own kernel from CachyOS's tree, with the BORE scheduler, and loads NTSYNC so Windows games through Proton can use it. NVIDIA's driver is built into the image and signed, for GTX 16 and RTX 20 cards and newer; older NVIDIA cards (GTX 750 to GTX 1080 Ti) get no driver. AMD and Intel GPUs run on Mesa. On hybrid laptops, apps that ask for the discrete GPU get it when you start them from the Shell.</p>
       </div>
       <div class="stack">
         <CommandChip cmd="sudo rime install steam gamescope mangohud gamemode" />
@@ -169,11 +169,11 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     <div class="split-2">
       <div>
         <h2 id="i-h">Ready when you log in.</h2>
-        <p class="muted">The image carries what most people install first: Firefox, Zed, Thunar and mpv with the RPM Fusion codecs, printing, input methods and the Orca screen reader; the compilers and runtimes for C and C++, Rust, Go, Node, Python, Java and Ruby, with <code>gh</code> and buildah; Claude Code; and the Claude and ChatGPT desktop apps. Their own updaters are removed, so they move forward with <code>rime update</code> like everything else, checked against signing keys pinned in Rime's repository.</p>
+        <p class="muted">The image carries what most people need first, and little else: Firefox, Thunar and mpv with the RPM Fusion codecs, printing, input methods and the Orca screen reader, plus Node and GCC. A project's toolchain comes from <code>rime env</code> or <code>rime install</code>. <code>sudo rime install claude-desktop</code> and <code>sudo rime install chatgpt</code> add the desktop apps, checked against their makers' signing keys pinned in Rime; <code>rime install claude-code</code> adds Claude Code.</p>
       </div>
       <div class="stack">
         <Evidence links={[{ label: "Containerfile.core", href: os("Containerfile.core") }]}>
-          Everything in the image is rolled back with it, apps included.
+          Everything in the image is rolled back with it.
         </Evidence>
       </div>
     </div>

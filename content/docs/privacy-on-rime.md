@@ -147,8 +147,8 @@ affects only the shell's check. OS updates are separate and never automatic.
 - **Rime Remote push notifications** go out only after a paired phone has
   registered a push endpoint. The message is a sealed envelope with no machine
   or project details in it.
-- **The Claude and ChatGPT desktop apps** talk to their vendors when you use
-  them. Neither updates itself on Rime.
+- **The Claude and ChatGPT desktop apps**, if you install them, talk to their
+  vendors when you use them. Neither updates itself on Rime.
 - **Firefox** keeps Mozilla's defaults. Rime's policy sets only dark mode and
   the home page.
 

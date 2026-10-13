@@ -10,7 +10,7 @@ import Icon from "../components/Icon.astro";
 import Convergence from "../components/Convergence.astro";
 import LatestRelease from "../components/LatestRelease.astro";
 import GetRime from "../components/GetRime.astro";
-import { latestRelease } from "../lib/releases";
+import { latestRelease, releaseHeadline } from "../lib/releases";
 import { SITE } from "../data/site";
 import downloads from "../../content/downloads.json";
 const remote = (downloads as { remote?: { versionName: string } | null }).remote;
@@ -18,14 +18,14 @@ const latest = (await latestRelease())!;
 const src = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
 const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
 ---
-<Base description="Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and never get root.">
+<Base description="Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and reach root only with your password.">
   <!-- 0 — Entry -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container-wide hero-grid">
       <div class="hero-copy">
         <Convergence />
         <a class="hero-release" href={`/updates/${latest.id}`}>
-          <span class="mono">{latest.name}</span><span>{latest.title}</span><Icon name="arrow-right" size={15} />
+          <span class="mono">{latest.name}</span><span>{releaseHeadline(latest)}</span><Icon name="arrow-right" size={15} />
         </a>
         <h1 id="hero-title" class="display hero-title">
           <span class="hero-line">A Linux system</span>
@@ -52,8 +52,8 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
       </div>
       <div class="pillars">
         <a class="pillar" href="/system#updates">
-          <h3>One image, staged and reversible</h3>
-          <p>An update is staged beside the running system and takes over at your next reboot. The previous one stays, one command away.</p>
+          <h3>One image, updated live or staged</h3>
+          <p>When it can, an update switches parts that can change in place, such as Rime Shell and Rime's own services, over while you work, and puts them back if a check fails. The kernel and system libraries wait for your next reboot. The previous image stays, one command away.</p>
         </a>
         <a class="pillar" href="/security#updates">
           <h3>Checked before it's installed</h3>
@@ -61,15 +61,15 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
         </a>
         <a class="pillar" href="/agents">
           <h3>Agents, built in and fenced in</h3>
-          <p>Claude Code, Codex and others run as sessions the system tracks: sandboxed, never root, using credentials they can never read.</p>
+          <p>Claude Code, Codex and others run as sessions the system tracks: sandboxed, root only with your password, using credentials they can never read.</p>
         </a>
         <a class="pillar" href="/system#packages">
           <h3>Software that doesn't block updates</h3>
           <p>Packages from Fedora, COPR, <code>.deb</code> files and AppImages go into an extension beside the image. Flathub and dev capsules cover the rest.</p>
         </a>
         <a class="pillar" href="/system#gaming">
-          <h3>Games on any machine</h3>
-          <p>Rime builds its own CachyOS kernel. Gaming Mode asks for a latency scheduler on any machine, and the NVIDIA driver ships signed in the image.</p>
+          <h3>Gaming, set up in the image</h3>
+          <p>Rime builds its own CachyOS kernel with the BORE scheduler and NTSYNC for Windows games. The NVIDIA driver ships signed for GTX 16, RTX 20 and newer; AMD and Intel run on Mesa.</p>
         </a>
         <a class="pillar" href="/shell">
           <h3>One desktop, designed as a whole</h3>
@@ -85,16 +85,17 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
     <div class="container-wide">
       <div class="section-head">
         <h2 id="system-title">A new system is staged beside the one you are using.</h2>
-        <p class="lead">Rime is one signed image. An update puts the next image next to the running one, and you move to it when you reboot. If it's wrong, the previous one is still there.</p>
+        <p class="lead">Rime is one signed image. An update puts the next image next to the running one. Rime Shell and Rime's own services can switch over at once; the rest moves when you reboot. If it's wrong, the previous one is still there.</p>
       </div>
       <DeploymentFlow from={latest.predecessor ?? "2026.09.28.3"} to={latest.id} />
       <div class="sys-foot">
         <Evidence links={[
           { label: "docs/trust-enforcement.md", href: osrc("docs/trust-enforcement.md") },
           { label: "docs/rollback.md", href: osrc("docs/rollback.md") },
+          { label: "docs/live-update.md", href: osrc("docs/live-update.md") },
           { label: "Containerfile.base", href: osrc("Containerfile.base") },
         ]}>
-          <code>rime update</code> checks the image's cosign signature against Rime's build identity before it deploys anything. The Shell is built into the image, so the desktop moves forward and back with the system. Updates never run on their own: you start them.
+          <code>rime update</code> checks the image's cosign signature against Rime's build identity before it deploys anything. The Shell is built into the image, so the desktop moves forward and back with the system. A part switched over live is checked once it runs, and put back if the check fails. Updates never run on their own: you start them.
         </Evidence>
         <a href="/system" class="more">How the system works <Icon name="arrow-right" size={16} /></a>
       </div>
@@ -110,10 +111,10 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
       <div class="stack">
         <p class="lead">Rime runs coding agents as sessions the system keeps track of. Type <code>a</code> and Claude Code, Codex, OpenCode, Gemini or Kimi starts in a sandbox that holds your project and nothing else. The Agent Center puts every session that needs you at the top. When an agent needs the system changed, it asks, and you approve it at the machine.</p>
         <ul class="agent-facts">
-          <li><strong>No root, ever.</strong> A closed list of eight requests, each approved with your password, never from inside the agent's terminal.</li>
-          <li><strong>Credentials it can use, never read.</strong> Git pushes and deploys run through a broker that has no way to hand a credential back.</li>
+          <li><strong>Root only when you say so.</strong> A closed list of eight requests, each approved with your password, never from inside the agent's terminal. Lifting a session's sandbox takes your administrator password too, and has a time limit.</li>
+          <li><strong>Credentials it can use, never read.</strong> Git pushes and deploys run through a root broker that does the work itself and returns only the result, never the credential.</li>
           <li><strong>Close the lid, keep working.</strong> A laptop with live sessions stays awake with the lid shut, VPN included, and still suspends if it gets too hot or too low.</li>
-          <li><strong>Rime Remote</strong> puts the sessions on your Android phone: watch, reply, pause, stop, start. {remote ? <a href="/agents#remote">Get it for Android</a> : "The app is finished but not yet released."}</li>
+          <li><strong>Rime Remote</strong> puts the sessions on your Android phone: watch, reply, pause, stop, start. It is end-to-end encrypted; the relay carries only ciphertext. {remote ? <a href="/agents#remote">Get it for Android</a> : "The app is finished but not yet released."}</li>
         </ul>
         <p><a href="/agents" class="more">Everything about agents on Rime <Icon name="arrow-right" size={16} /></a></p>
       </div>
@@ -195,12 +196,13 @@ const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
         </article>
         <article class="work-row">
           <h3>Gaming Mode</h3>
-          <p>Steam's big-screen interface in gamescope, on Rime's own build of the CachyOS kernel with sched-ext schedulers. Steam and gamescope install on demand; Gaming Mode appears at the login screen once they're there.</p>
+          <p>Steam's big-screen interface in gamescope, on Rime's own build of the CachyOS kernel with the BORE scheduler and NTSYNC. Steam and gamescope install on demand; Gaming Mode appears at the login screen once they're there.</p>
           <CommandChip cmd="sudo rime install steam gamescope mangohud gamemode" />
         </article>
         <article class="work-row">
           <h3>Ready when you log in</h3>
-          <p>Firefox, Zed, mpv and the codecs, the compilers and runtimes for C, Rust, Go, Node, Python, Java and Ruby, and Claude Code, all in the image. The Claude and ChatGPT desktop apps too, with their own updaters removed: they move forward with <code>rime update</code>, like everything else.</p>
+          <p>Firefox, Thunar, mpv and the codecs, printing, input methods and the Orca screen reader are in the image. Toolchains come per project from <code>rime env</code>. The Claude and ChatGPT desktop apps install with one command, checked against their makers' signing keys pinned in Rime.</p>
+          <CommandChip cmd="sudo rime install claude-desktop" />
         </article>
         <article class="work-row">
           <h3>A firewall with named doors</h3>

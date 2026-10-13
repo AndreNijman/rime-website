@@ -11,6 +11,7 @@ sources:
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/docs/update-channels.md"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/files/system/libexec/rime-boot-migrate"
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/Containerfile.core"
+  - "https://github.com/AndreNijman/rime-os/blob/a1128b8ba/docs/live-update.md"
 verified: "rime-os@2d9c5438a"
 ---
 
@@ -23,7 +24,9 @@ sudo rime rollback        # if something broke: go back to the previous image at
 ```
 
 Rime is one signed system image. An update downloads the new image beside the
-one you are running and stages it; you use it after a restart. Nothing updates
+one you are running and stages it; you use all of it after a restart. When it
+can, `rime update` also switches some parts over straight away (see
+[What changes without a restart](#what-changes-without-a-restart)). Nothing updates
 on its own: the image masks the automatic update timer it inherits from Fedora,
 so every update is one you started.
 
@@ -36,6 +39,36 @@ taken its first update yet, the command is `apex`, and that first update needs
 extra steps. See
 [Installed from an APEX-OS ISO](/docs/install#installed-from-an-apex-os-iso). `apex` keeps working on Rime as another name for
 `rime`, and prints a one-line note when you use it.
+
+## What changes without a restart
+
+After the new image is checked and staged, `rime update` works out which parts
+of it can run now, and switches only those over:
+
+- **Rime Shell**, in each logged-in session (a locked session, or one running
+  a game, waits);
+- **the Hyprland configuration**;
+- **Rime's own tools and services** (`rime`, `rimed`, `rime-remoted`) and Rime's
+  unit files.
+
+Each part is checked once it runs: a restarted service must be up on the new
+binary, the Shell must report the new revision, Hyprland must report no
+configuration errors. If a check fails, the previous files are put back and the
+command reports it. The kernel, the graphics drivers, system libraries,
+systemd and the compositor wait for a restart, and the command says which
+restart each one needs. Nothing is written to `/usr`: the switched parts sit in
+a layer under `/run` that disappears at the restart, when the staged image
+carries the same files.
+
+```sh
+rime live status          # what was switched over, and what waits for a restart
+rime live explain         # why each part did or did not switch
+sudo rime live apply      # switch over what waited for an unlock or a game
+sudo rime live rollback   # put the switched parts back
+```
+
+Machines installed with the composefs storage backend do not switch anything
+over yet; everything waits for the restart.
 
 ## Before you update
 

@@ -6,14 +6,14 @@ export const SITE = {
   url: "https://rimeos.com",
   tagline: "A Linux system that moves as one.",
   description:
-    "Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and never get root.",
+    "Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and reach root only with your password.",
   repos: {
     os: "https://github.com/AndreNijman/rime-os",
     shell: "https://github.com/AndreNijman/rime-shell",
     website: "https://github.com/AndreNijman/rime-website",
   },
   // The OS and Shell revisions this site's product claims were checked against.
-  pinned: { os: "2d9c5438a", shell: "9161e30c" },
+  pinned: { os: "a1128b8ba", shell: "9161e30c" },
   // Spec §6.4 held /agents back until the product was ready; Andre published it
   // on 2026-09-29. Rime Remote (the phone app) is described as unreleased until
   // it has a public build.

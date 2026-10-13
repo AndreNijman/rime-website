@@ -1,5 +1,5 @@
 ---
-// /security (spec §6.5). Only what rime-os@2d9c5438a actually does.
+// /security (spec §6.5). Only what rime-os@a1128b8ba actually does.
 import Base from "../layouts/Base.astro";
 import CommandChip from "../components/CommandChip.astro";
 import Evidence from "../components/Evidence.astro";
@@ -74,7 +74,7 @@ const identity = `${SITE.repos.os}/.github/workflows/build-image.yml@refs/heads/
     <div class="split-2">
       <div>
         <h2 id="ag-h" class="h2s">Agent sessions are sandboxed</h2>
-        <p class="muted">Rime can supervise command-line coding agents. A session runs in a default-deny bubblewrap sandbox, holds no root, and asks a person to approve privilege requests from a fixed list. Credentials are brokered: the API that hands out access has no verb that returns a secret.</p>
+        <p class="muted">Rime can supervise command-line coding agents. A session runs in a default-deny bubblewrap sandbox, holds no root, and asks a person to approve privilege requests from a fixed list. Only break-glass, approved with your administrator password and limited in time, lets a session become root. Credentials are brokered: the API that hands out access has no verb that returns a secret.</p>
       </div>
       <ul class="facts">
         <li>The sandbox is meant for a cooperating but fallible agent, not a determined kernel attacker.</li>

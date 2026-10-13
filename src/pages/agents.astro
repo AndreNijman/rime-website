@@ -1,7 +1,7 @@
 ---
 // /agents (spec §6.4): the agent runtime, its permission model, the Agent
 // Center and Rime Remote (released 2026-09-29, the download read from
-// content/downloads.json) — only what rime-os@2d9c5438a and the Shell the site
+// content/downloads.json) — only what rime-os@a1128b8ba and the Shell the site
 // pins actually do. Where rime-os's own README says more (phone "approvals",
 // "off until you turn it on", "no server of ours in the middle"), the code
 // wins and this page says what the code does.
@@ -16,11 +16,11 @@ const os = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
 const sh = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
 const AGENTS = ["Claude Code", "Codex", "OpenCode", "Gemini CLI", "Kimi CLI"];
 ---
-<Base title="Agents" description="Rime runs command-line coding agents as sessions the system tracks: sandboxed by default, never root, with the ones that need you first, credentials they can use but never read, and Rime Remote on your phone.">
+<Base title="Agents" description="Rime runs command-line coding agents as sessions the system tracks: sandboxed by default, root only with your password, with the ones that need you first, credentials they can use but never read, and Rime Remote on your phone.">
   <header class="container page-hero">
     <p class="eyebrow">Agents</p>
     <h1>Coding agents, run by the system.</h1>
-    <p class="lead">Claude Code, Codex, OpenCode, Gemini and Kimi run on Rime as sessions the operating system keeps track of. Each one starts in a sandbox, none of them can become root, and the ones waiting for you are always at the top of the list.</p>
+    <p class="lead">Claude Code, Codex, OpenCode, Gemini and Kimi run on Rime as sessions the operating system keeps track of. Each one starts in a sandbox, none of them can become root without your password, and the ones waiting for you are always at the top of the list.</p>
   </header>
 
   <section class="container-wide agents-stage" aria-label="The Agent Center">
@@ -95,8 +95,9 @@ const AGENTS = ["Claude Code", "Codex", "OpenCode", "Gemini CLI", "Kimi CLI"];
   <section class="container section-tight" id="privilege" aria-labelledby="p-h">
     <div class="split-2">
       <div>
-        <h2 id="p-h" class="h2s">Never root. You decide, at the machine.</h2>
+        <h2 id="p-h" class="h2s">Root only when you say so, at the machine.</h2>
         <p class="muted">Inside a session <code>sudo</code> does not work: no process in it can gain privileges. When an agent needs something from the system, it asks, in a closed vocabulary of eight requests (install, remove, upgrade, rebuild or roll back packages, pin, roll back the system, update). There is no request that runs a command. The agent waits, the request appears at the top of the Agent Center, and you approve it with your own password.</p>
+        <p class="muted">One thing sits outside the list, for when you need it: break-glass lifts one session's sandbox so it can become root. It takes your administrator password every time, cannot be granted from a remote or inactive session, and lasts an hour at most: when it runs out, the session ends.</p>
       </div>
       <div class="stack">
         <CommandChip wrap prompt="agent $" cmd={`rime request ask install clang --reason "Needed to build the tests"`} />
@@ -104,7 +105,7 @@ const AGENTS = ["Claude Code", "Codex", "OpenCode", "Gemini CLI", "Kimi CLI"];
         <ul class="facts">
           <li>A session cannot approve its own request, and nothing on a phone can approve any.</li>
           <li>Longer trust is time-limited: <code>--system-access session</code> lasts 30 minutes by default and 8 hours at most, and the password prompt appears on your desktop, never inside the agent's terminal.</li>
-          <li>Locking the screen revokes root grants. Agents keep working.</li>
+          <li>Locking the screen revokes root grants by default, and ends a session that holds break-glass. Other agents keep working.</li>
         </ul>
       </div>
     </div>
@@ -177,7 +178,7 @@ issue-221  agent/issue-221  2f +19/-3    1 file(s)  failed  would conflict</code
       <div>
         <h2 id="r-h" class="h2s">Rime Remote, on your phone</h2>
         <p class="muted">Rime Remote is the Android app for your agents. It lists every session on each paired computer, needs-you first. You can watch a session's live terminal and reply when it is waiting, from the keyboard, by voice, or with a photo or file dropped into its inbox. You can also pause, resume, interrupt or stop it, and start a new one in any project, with its own worktree. Nothing runs on the phone: an agent started from it runs on the computer and keeps going when you put the phone away. By default it pauses while the computer's screen is locked; <code>rime agent lock --remote continue</code> keeps it running.</p>
-        <p class="muted"><strong>It cannot approve anything that needs root.</strong> By design, and with no setting to change that: the phone shows what is waiting at the machine, and can revoke permissions already given.</p>
+        <p class="muted"><strong>It cannot approve anything that needs root.</strong> The phone shows what is waiting at the machine, and can revoke permissions already given.</p>
       </div>
       <div class="stack">
         <ul class="facts">
@@ -197,7 +198,7 @@ issue-221  agent/issue-221  2f +19/-3    1 file(s)  failed  would conflict</code
   <section class="container section-tight" id="limits" aria-labelledby="x-h">
     <h2 id="x-h" class="h2s">What agents on Rime don't get</h2>
     <ul class="limits">
-      <li><strong>Root.</strong> Not by asking, not from a phone. A person approves each privileged operation, at the machine.</li>
+      <li><strong>Root, unless you give it.</strong> Not by asking, not from a phone. You approve each privileged operation with your password, at the machine.</li>
       <li><strong>Your credentials.</strong> They can use the ones you grant through the broker; they can never read them.</li>
       <li><strong>Your home directory.</strong> Only the project they were started in.</li>
       <li><strong>A guarantee against a kernel exploit.</strong> The sandbox is for mistakes, and Rime says so.</li>
