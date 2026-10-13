@@ -14,6 +14,7 @@ sources:
   - "https://github.com/AndreNijman/rime-os/blob/2d9c5438a/files/system/libexec/rime-gaming-session"
   - "https://github.com/AndreNijman/rime-shell/blob/6289d1f8/src/scripts/desktop-launch.sh"
   - "https://github.com/AndreNijman/rime-shell/blob/6289d1f8/src/services/PowerMenu.qml"
+  - "https://github.com/AndreNijman/rime-os/blob/a1128b8ba/rimed/rimed-core/src/profile.rs"
 verified: "rime-os@2d9c5438a"
 ---
 
@@ -83,14 +84,14 @@ rime game stop                # restore everything game mode changed
 ```
 
 Game mode moves the game onto the performance cores, steers interrupts away
-from them, locks GPU clocks, selects the highest power tier and requests a
-sched-ext scheduler (below).
+from them, locks GPU clocks, selects the highest power tier. It leaves the CPU scheduler to the kernel's
+own (below).
 
 ## `rime mode`: named modes
 
 A mode is a named combination of the power tier, the AC/battery auto-switch and
-game mode. It needs no root and stores no state: the current mode is worked out
-from what the machine is doing.
+game mode. The mode you set is kept in `/var/lib/rimed/mode` and applied again at
+every start, so Gaming stays on across restarts until you set `daily`.
 
 ```sh
 rime mode list
@@ -175,17 +176,14 @@ discrete GPU. `switcheroo-control` is installed and enabled.
 ## The scheduler and the kernel
 
 Rime builds its own kernel from CachyOS's sources, with the BORE scheduler and
-sched-ext support. Game mode asks for `scx_lavd`, a sched-ext scheduler; no
-sched-ext scheduler loads at boot, only during game mode.
+sched-ext support. Game mode keeps the kernel's own scheduler, BORE: no
+sched-ext scheduler loads at boot or in game mode. Measured on a hybrid Intel
+laptop, `scx_lavd` put a busy game thread on the efficiency cores and cost about
+a third of the frame rate, so it is no longer the default. A machine profile can
+still ask for one with `scx`.
 
-The `scx_lavd` 1.1.3 in the upstream packages can stall a game thread until the
-kernel's watchdog removes the scheduler. Rime builds 1.1.3 with the upstream fix
-and installs it in place of the packaged one while the packages are still at
-1.1.3. `/usr/lib/rime-scx-versions` records which build shipped.
-
-Two known limits remain: after a watchdog stop, the scheduler loader restarts
-`scx_lavd`, and Rime checks that the scheduler loaded only once, when game mode
-starts.
+The kernel also loads NTSYNC at boot, which Wine and Proton use for
+Windows-style synchronisation.
 
 gamescope's realtime priority option needs a capability that no Rime machine
 grants today, so Gaming Mode does not pass it. `rime gaming` shows this as its

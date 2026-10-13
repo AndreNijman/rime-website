@@ -66,7 +66,7 @@ const n = (i: number) => `<a href="#src-${i}" class="fn" aria-label="source ${i}
       </article>
       <article>
         <h3>Gaming Mode knows the hardware</h3>
-        <p class="muted">Rime's own kernel carries the schedulers and Rime's power manager knows the machine's profiles. Gaming Mode sets up the latency scheduler itself, <code>rime game</code> pins a game to its cores, and <code>rime gaming</code> says whether Gaming Mode would start, and why not.</p>
+        <p class="muted">Rime's own kernel carries the BORE scheduler and NTSYNC, and Rime's power manager knows the machine's profiles. Switching the machine to Gaming stays on across restarts until you switch it back, and <code>rime gaming</code> says whether Gaming Mode would start, and why not.</p>
       </article>
     </div>
     <div class="cmds">
@@ -103,13 +103,13 @@ const n = (i: number) => `<a href="#src-${i}" class="fn" aria-label="source ${i}
         </tr>
         <tr role="row">
           <th scope="row" role="rowheader">Gaming</th>
-          <td role="cell" data-label="Rime">Rime's own build of the CachyOS kernel with sched-ext. Gaming Mode asks for the LAVD latency scheduler on every machine. The NVIDIA driver and CUDA are in every image, with its kernel modules signed for Secure Boot.</td>
+          <td role="cell" data-label="Rime">Rime's own build of the CachyOS kernel with the BORE scheduler, and NTSYNC loaded for Windows games. The NVIDIA driver is in every image, with its kernel modules signed for Secure Boot, for GTX 16 and RTX 20 cards and newer. AMD and Intel run on Mesa.</td>
           <td role="cell" data-label="Elsewhere">CachyOS builds kernels tuned for newer CPUs and offers a scheduler switcher, with no sched-ext scheduler by default <Fragment set:html={n(14)} />. Bazzite turns LAVD on by default only on its handheld images <Fragment set:html={n(15)} />, and SteamOS 3.8 makes it opt-in <Fragment set:html={n(16)} />. Fedora's kernel supports sched-ext, but few schedulers are packaged <Fragment set:html={n(17)} />.</td>
-          <td role="cell" data-label="Where that leaves Rime">CachyOS tunes its kernel further, and Bazzite has far more players. Rime's claim is narrower: Gaming Mode sets up a latency scheduler for you, on any machine.</td>
+          <td role="cell" data-label="Where that leaves Rime">CachyOS tunes its kernel further, and Bazzite has far more players. Rime's claim is narrower: the kernel, NTSYNC and a signed NVIDIA driver come set up in one image. NVIDIA cards older than the GTX 16 series get no driver on Rime.</td>
         </tr>
         <tr role="row">
           <th scope="row" role="rowheader">Coding agents and AI</th>
-          <td role="cell" data-label="Rime">An agent runtime in every install: sandboxed sessions, privilege requests approved at the machine, a credential broker, the lid kept open for live work. Claude Code and the Claude and ChatGPT desktop apps are preinstalled and move only with the image.</td>
+          <td role="cell" data-label="Rime">An agent runtime in every install: sandboxed sessions, privilege requests approved at the machine, a credential broker, the lid kept open for live work. Claude Code and the Claude and ChatGPT desktop apps install with one command, the desktop apps checked against their makers' signing keys pinned in Rime.</td>
           <td role="cell" data-label="Elsewhere">Bluefin installs AI tools when you ask <Fragment set:html={n(13)} />. Fedora packages an MCP server for looking into the system <Fragment set:html={n(18)} />. Ubuntu 26.04 turns nothing on by default <Fragment set:html={n(19)} />.</td>
           <td role="cell" data-label="Where that leaves Rime">Of the distributions checked, only Rime ships an agent runtime with a permission model. It is also the newest part of Rime.</td>
         </tr>
@@ -153,7 +153,7 @@ const n = (i: number) => `<a href="#src-${i}" class="fn" aria-label="source ${i}
         <ul class="facts">
           <li>want a desktop designed as one thing, on a system that updates in one piece and can go back;</li>
           <li>work with coding agents every day, and want them sandboxed, tracked and kept away from root;</li>
-          <li>play on a laptop or desktop, NVIDIA or AMD, and want the scheduler and drivers already sorted;</li>
+          <li>play on a laptop or desktop, NVIDIA or AMD, and want the kernel and drivers already sorted (on NVIDIA, a GTX 16 or RTX 20 card or newer);</li>
           <li>are comfortable with a young project, and read what an update says before you reboot into it.</li>
         </ul>
       </article>

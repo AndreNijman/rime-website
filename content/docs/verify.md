@@ -108,9 +108,8 @@ in place of the tag.
 
 Every build attaches a software bill of materials as a signed attestation. It is
 an SPDX document listing every package in the image (9,830 in a recent build), with
-name, version, purl and CPE identifiers: the RPMs, the npm trees inside the
-bundled Claude and ChatGPT desktop apps, and the Go and Rust modules inside
-binaries. It is signed by the same identity as the image and recorded in the
+name, version, purl and CPE identifiers: the RPMs, the npm packages in the
+image, and the Go and Rust modules inside binaries. It is signed by the same identity as the image and recorded in the
 public Sigstore transparency log; the build fails if no log entry is made.
 
 It is a flat package list. It carries no file inventory and no dependency

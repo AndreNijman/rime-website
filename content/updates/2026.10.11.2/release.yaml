@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.11. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.11.2"
+product: "rime"
+name: "Rime 2026.10.11.2"
+title: "Gaming Mode: the Steam overlay no longer shrinks your game, and the volume keys work"
+date: "2026-10-11T14:48:04Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "In Gaming Mode, a game no longer shrinks to a tiny picture in the top-left corner after you open the Steam overlay with Shift+Tab, and your keyboard's volume keys now change the volume."
+predecessor: "2026.10.11"
+provenance:
+  osRevision: "a1128b8ba9b50cfb09d83561a0bbaaad12e98217"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:4fa0c5a149b66ca34b24c454e6273429a1f918d93b49d385df5144413b936708"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38147575773"
+  iso: null
+  reissues: []
+highlights:
+  - "gaming-mode-the-steam-overlay-no-longer-shrinks"
+changes:
+  - id: "gaming-mode-the-steam-overlay-no-longer-shrinks"
+    area: "gaming"
+    kind: "fixed"
+    title: "Gaming Mode: the Steam overlay no longer shrinks your game, and the volume keys work"
+    summary: "In Gaming Mode, a game no longer shrinks to a tiny picture in the top-left corner after you open the Steam overlay with Shift+Tab, and your keyboard's volume keys now change the volume."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/114"
+    breaking: false
+knownIssues: []
+rollback: null

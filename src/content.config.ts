@@ -43,8 +43,17 @@ const updates = defineCollection({
     changes: z.array(change),
     knownIssues: z.array(z.object({ title: z.string(), summary: z.string(), source: z.array(z.string()).default([]) })).default([]),
     rollback: z.string().nullable().default(null),
+    // A build with no change someone using Rime would notice (dependency bumps,
+    // CI, newer Fedora packages). Its page exists, because an updated machine
+    // opens /updates/<id>, but it is not listed or counted as a release.
+    maintenance: z.boolean().default(false),
     // ISO releases carry the published Requirements section.
     requirements: z.array(z.string()).optional(),
+  }).refine((r) => !(r.maintenance && r.changes.length > 0), {
+    // A maintenance build is hidden from the list, so one with changes would
+    // hide a real release. Remove the flag, or the changes.
+    message: "maintenance: true needs an empty changes list",
+    path: ["maintenance"],
   }),
 });
 
