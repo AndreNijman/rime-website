@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.13.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.13.4"
+product: "rime"
+name: "Rime 2026.10.13.4"
+title: "Report a live /usr overlay that hides the package extension"
+date: "2026-10-13T12:10:48Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "From rime-os pull request #116."
+predecessor: "2026.10.13.3"
+provenance:
+  osRevision: "fa6b13ad1d0643e879cb47d03c6b74491aa97046"
+  shellRevision: "b1dae1e142d55776e59f02a0098ea8a3ac0089d8"
+  imageDigest: "sha256:d51e6742de1f3a3243a962c409dce1ab86ab4b7c47759345995686b75939803e"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38393572879"
+  iso: null
+  reissues: []
+highlights:
+  - "report-a-live-usr-overlay-that-hides-the-package"
+changes:
+  - id: "report-a-live-usr-overlay-that-hides-the-package"
+    area: "system"
+    kind: "new"
+    title: "Report a live /usr overlay that hides the package extension"
+    summary: "From rime-os pull request #116."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/116"
+    breaking: false
+knownIssues: []
+rollback: null
