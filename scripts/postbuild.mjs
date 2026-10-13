@@ -65,20 +65,52 @@ const roles = def.dark.roles;
 const field = join(ROOT, "public", def.dark.field.src);
 const MARK = "M256 82 L292 264 L384 298 L292 332 L256 430 L220 332 L128 298 L220 264 Z";
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-function wrap(text, max) {
-  const words = text.split(/\s+/), lines = [];
+// The title is laid out by MEASURING each line as the renderer draws it, with
+// whatever font this machine has: a character count let a wider fallback font
+// (CI's runners had no Noto Sans) run the headline off the card, and a fourth
+// line was silently dropped. Nothing is cut: the type steps down until every
+// word fits, and a title that still cannot fit fails the build.
+const TITLE_X = 84, TITLE_MAX_W = 1200 - 2 * TITLE_X, TITLE_TOP = 340, TITLE_FOOT = 500;
+const titleText = (s, size, x, y, fill) =>
+  `<text x="${x}" y="${y}" font-family="Noto Sans, sans-serif" font-weight="600" font-size="${size}" letter-spacing="${(-2 * size / 76).toFixed(2)}" fill="${fill}">${esc(s)}</text>`;
+const widths = new Map();
+async function lineWidth(s, size) {
+  const key = `${size}\u0000${s}`;
+  if (widths.has(key)) return widths.get(key);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="${Math.ceil(size * 1.6)}">${titleText(s, size, 0, Math.round(size * 1.2), "#fff")}</svg>`;
+  const { info } = await sharp(Buffer.from(svg)).trim().toBuffer({ resolveWithObject: true });
+  const w = info.width + Math.max(0, -(info.trimOffsetLeft ?? 0));
+  widths.set(key, w);
+  return w;
+}
+async function wrapMeasured(text, size) {
+  const lines = [];
   let cur = "";
-  for (const w of words) { if ((cur + " " + w).trim().length > max) { lines.push(cur.trim()); cur = w; } else cur += " " + w; }
-  if (cur.trim()) lines.push(cur.trim());
-  return lines.slice(0, 3);
+  for (const w of text.split(/\s+/).filter(Boolean)) {
+    const next = cur ? `${cur} ${w}` : w;
+    if (cur && await lineWidth(next, size) > TITLE_MAX_W) { lines.push(cur); cur = w; } else cur = next;
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+async function layoutTitle(text) {
+  for (const size of [76, 68, 60, 54, 48, 42]) {
+    const lines = await wrapMeasured(text, size);
+    const step = Math.round(size * 1.1);
+    const fits = (await Promise.all(lines.map((l) => lineWidth(l, size)))).every((w) => w <= TITLE_MAX_W);
+    if (fits && TITLE_TOP + (lines.length - 1) * step <= TITLE_FOOT) return { size, step, lines };
+  }
+  return null;
 }
 async function card(out, kicker, title) {
-  const lines = wrap(title, 26);
+  const layout = await layoutTitle(title);
+  if (!layout) { fail(`social card ${rel(out)}: "${title}" does not fit the card at any size`); return; }
+  const { size, step, lines } = layout;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
     <rect width="1200" height="630" fill="${roles.surfaceBase}"/>
     <g transform="translate(88 92) scale(0.16)"><path d="${MARK}" transform="translate(-108 -72)" fill="${roles.accent}"/></g>
     <text x="88" y="250" font-family="JetBrains Mono, monospace" font-size="30" fill="${roles.accentText}">${esc(kicker)}</text>
-    ${lines.map((l, i) => `<text x="84" y="${340 + i * 84}" font-family="Noto Sans, sans-serif" font-weight="600" font-size="76" letter-spacing="-2" fill="${roles.textPrimary}">${esc(l)}</text>`).join("")}
+    ${lines.map((l, i) => titleText(l, size, TITLE_X, TITLE_TOP + i * step, roles.textPrimary)).join("")}
     <text x="88" y="570" font-family="Noto Sans, sans-serif" font-size="28" fill="${roles.textSecondary}">rimeos.com</text>
   </svg>`;
   const bg = await sharp(field).resize(1200, 630, { fit: "cover" }).blur(30).toBuffer();
@@ -88,7 +120,9 @@ async function card(out, kicker, title) {
   // The field pre-blend already clears 7:1 for text; the card darkens it further.
   await sharp(base).composite([{ input: overlay }]).png({ compressionLevel: 9 }).toFile(out);
 }
-await card(join(DIST, "og/default.png"), "Rime", "A Linux desktop that moves as one.");
+// The site's own tagline (src/data/site.ts), so the card says what the page says.
+const tagline = /tagline:\s*"([^"]+)"/.exec(readFileSync(join(ROOT, "src/data/site.ts"), "utf8"))[1];
+await card(join(DIST, "og/default.png"), "Rime", tagline);
 for (const r of index.releases) await card(join(DIST, `og/updates/${r.id}.png`), r.name, r.title);
 
 // ── links, assets, alt text, CSP-safe markup, JS budget ───────────────────────
