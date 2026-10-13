@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.11.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.13"
+product: "rime"
+name: "Rime 2026.10.13"
+title: "Install apps from GitHub releases and keep them updated"
+date: "2026-10-13T01:43:07Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Software published as GitHub releases can now be installed with sudo rime install --allow-unsigned github:OWNER/REPO, and rime update keeps it on the latest release. The packages are not signed, so Rime asks you to accept the repository once and lists it in rime pkg list from then on."
+predecessor: "2026.10.11.2"
+provenance:
+  osRevision: "aa102a606283d1645ee38094e78708cc3d362983"
+  shellRevision: "a765bac79a8fa18dfb47c765599f0bc753047b9f"
+  imageDigest: "sha256:5bffd32df9997c99faf46abcf9e41c83ef8222e50e7716d41f8c0c29667c4a65"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38332179723"
+  iso: null
+  reissues: []
+highlights:
+  - "install-apps-from-github-releases-and-keep-them"
+changes:
+  - id: "install-apps-from-github-releases-and-keep-them"
+    area: "system"
+    kind: "new"
+    title: "Install apps from GitHub releases and keep them updated"
+    summary: "Software published as GitHub releases can now be installed with sudo rime install --allow-unsigned github:OWNER/REPO, and rime update keeps it on the latest release. The packages are not signed, so Rime asks you to accept the repository once and lists it in rime pkg list from then on."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/115"
+    breaking: false
+knownIssues: []
+rollback: null
