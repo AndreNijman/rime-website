@@ -18,7 +18,9 @@ interface Props {
 }
 const { title, description = SITE.description, canonical, og = "/og/default.png", noindex = false, bodyClass, palette } = Astro.props;
 const fullTitle = title ? `${title} — Rime` : `Rime — ${SITE.tagline}`;
-const path = (canonical ?? Astro.url.pathname).replace(/\.html$/, "").replace(/\/$/, "") || "/";
+// build.format "file" builds the home page as /index(.html), which the host
+// redirects to /: a canonical of /index pointed search engines at a redirect.
+const path = (canonical ?? Astro.url.pathname).replace(/\.html$/, "").replace(/(^|\/)index$/, "").replace(/\/$/, "") || "/";
 const canonicalUrl = SITE.url + (path === "/" ? "/" : path);
 const def = scenes.scenes.find((s) => s.default)!;
 const ids = scenes.scenes.map((s) => s.id);
