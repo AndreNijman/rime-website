@@ -49,6 +49,11 @@ const updates = defineCollection({
     maintenance: z.boolean().default(false),
     // ISO releases carry the published Requirements section.
     requirements: z.array(z.string()).optional(),
+  }).refine((r) => !(r.maintenance && r.changes.length > 0), {
+    // A maintenance build is hidden from the list, so one with changes would
+    // hide a real release. Remove the flag, or the changes.
+    message: "maintenance: true needs an empty changes list",
+    path: ["maintenance"],
   }),
 });
 

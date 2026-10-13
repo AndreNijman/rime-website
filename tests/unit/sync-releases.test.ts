@@ -11,6 +11,15 @@ test("a conventional title splits into type, scope and text", () => {
     { type: "fix", scope: "agentd", breaking: false, text: "pasting an image did nothing" });
   expect(parseTitle("feat!: a new layout").breaking).toBe(true);
   expect(parseTitle("Rime installer ISO: built in CI")).toMatchObject({ type: null });
+  // A one-word prefix written for users is part of the title, not a type.
+  expect(parseTitle("Shell: the dock keeps its icons")).toEqual(
+    { type: null, scope: "", breaking: false, text: "Shell: the dock keeps its icons" });
+});
+
+test("a user-facing prefix does not override the branch's type", () => {
+  const c = changeFrom("rime-shell", pr("Shell: the dock keeps its icons", "", { branch: "fix/dock-icons" }));
+  expect(c?.kind).toBe("fixed");
+  expect(c?.title).toBe("Shell: the dock keeps its icons");
 });
 
 test("a summary comes only from a Release note section, never from the rest of the body", () => {

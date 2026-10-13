@@ -61,7 +61,12 @@ export function branchType(ref) {
 
 export function parseTitle(title) {
   const m = /^(\w+)(?:\(([^)]*)\))?(!)?:\s*(.+)$/.exec(title.trim());
-  if (!m) return { type: null, scope: "", breaking: false, text: title.trim() };
+  // Only a real conventional type counts: "Shell: the dock…" is a title written
+  // for users, and reading "shell" as its type would both drop the word and
+  // override the branch's own type (fix/ → Fixed) with the Improved fallback.
+  if (!m || !(m[1].toLowerCase() in KIND || QUIET.has(m[1].toLowerCase()))) {
+    return { type: null, scope: "", breaking: false, text: title.trim() };
+  }
   return { type: m[1].toLowerCase(), scope: (m[2] || "").toLowerCase(), breaking: !!m[3], text: m[4].trim() };
 }
 

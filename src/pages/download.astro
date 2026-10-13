@@ -62,7 +62,7 @@ const shortName = cur.name.split(" — ")[0];
           <li>Wi-Fi networks with a captive portal (sign-in page) don't work in the installer. Use a normal network or Ethernet.</li>
           <li>USB Wi-Fi adapters that need out-of-tree drivers don't work in the installer.</li>
           <li>Tablets without a keyboard can't complete the account page.</li>
-          <li>NVIDIA's driver is part of the image and signed with Rime's key, so it loads with Secure Boot on once that key is enrolled.</li>
+          <li>NVIDIA's driver is part of the image and signed with Rime's key, so it loads with Secure Boot on once that key is enrolled. It supports GTX 16 and RTX 20 cards and newer; older NVIDIA cards (GTX 750 to GTX 1080 Ti) get no driver, so a desktop with only such a card runs without graphics acceleration.</li>
           <li>Xbox wireless dongles need their firmware fetched once after install; it can't be redistributed.</li>
         </ul>
       </div>
