@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.13. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.13.2"
+product: "rime"
+name: "Rime 2026.10.13.2"
+title: "The app launcher takes your typing on every open"
+date: "2026-10-13T05:50:56Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "The app launcher (Alt+Space) now takes your typing on every open, including when you open it again right after closing it."
+predecessor: "2026.10.13"
+provenance:
+  osRevision: "aa102a606283d1645ee38094e78708cc3d362983"
+  shellRevision: "b1e8c9ac659f7769ea8c6c02e85e45a8f2dd54ed"
+  imageDigest: "sha256:3300ac7095500bc41d0a485a64c10450887936e78696064c8ec2b6dd78a2d537"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38352257829"
+  iso: null
+  reissues: []
+highlights:
+  - "the-app-launcher-takes-your-typing-on-every-open"
+changes:
+  - id: "the-app-launcher-takes-your-typing-on-every-open"
+    area: "shell"
+    kind: "fixed"
+    title: "The app launcher takes your typing on every open"
+    summary: "The app launcher (Alt+Space) now takes your typing on every open, including when you open it again right after closing it."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/43"
+    breaking: false
+knownIssues: []
+rollback: null
