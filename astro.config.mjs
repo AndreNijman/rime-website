@@ -14,6 +14,15 @@ const maintenance = new Set(
     .map((r) => `https://rimeos.com/updates/${r.id}`),
 );
 
+// A release page's lastmod is its release date; no other page gets one, since
+// a made-up lastmod teaches crawlers to ignore the field.
+const released = new Map(
+  (existsSync("content/updates") ? readdirSync("content/updates") : [])
+    .filter((id) => existsSync(`content/updates/${id}/release.yaml`))
+    .map((id) => YAML.parse(readFileSync(`content/updates/${id}/release.yaml`, "utf8")))
+    .map((r) => [`https://rimeos.com/updates/${r.id}`, new Date(r.date).toISOString()]),
+);
+
 export default defineConfig({
   site: "https://rimeos.com",
   output: "static",
@@ -47,6 +56,10 @@ export default defineConfig({
   vite: { build: { assetsInlineLimit: 0 } },
   integrations: [
     sitemap({
+      serialize: (item) => {
+        const lastmod = released.get(item.url.replace(/\/$/, ""));
+        return lastmod ? { ...item, lastmod } : item;
+      },
       filter: (page) => !page.includes("/updates/latest") && !page.endsWith("/404") && !page.endsWith("/install") && !maintenance.has(page.replace(/\/$/, "")),
     }),
   ],

@@ -6,6 +6,8 @@
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import CommandChip from "../components/CommandChip.astro";
+import { software, webPage } from "../lib/seo";
+import { SITE } from "../data/site";
 import downloads from "../../content/downloads.json";
 import RemoteDownload from "../components/RemoteDownload.astro";
 const cur = downloads.current, iso = cur.artifacts.find((a) => a.kind === "iso")!;
@@ -15,8 +17,12 @@ const prev = downloads.previous;
 const gb = (b: number) => (b / 1e9).toFixed(2) + " GB";
 const date = new Date(cur.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Perth" });
 const shortName = cur.name.split(" — ")[0];
+const schema = [
+  webPage(`${SITE.url}/download`, "Download Rime", `Download the Rime network installer (${iso.arch}, ${gb(iso.bytes)}), check it, and install.`),
+  { ...software({ version: cur.tag, downloadUrl: iso.url, fileSize: iso.bytes, datePublished: cur.publishedAt, releaseNotes: cur.url }), "@id": `${SITE.url}/download#software` },
+];
 ---
-<Base title="Download" description={`Download the Rime network installer (${iso.arch}, ${gb(iso.bytes)}), check it, and install.`}>
+<Base title="Download" schema={schema} description={`Download the Rime network installer (${iso.arch}, ${gb(iso.bytes)}), check it, and install.`}>
   <section class="container dl-hero">
     <p class="eyebrow">Download</p>
     <h1>Get Rime.</h1>

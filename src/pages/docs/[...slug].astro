@@ -3,6 +3,8 @@
 // reveal, just the text and a way around.
 import Base from "../../layouts/Base.astro";
 import { getCollection, render } from "astro:content";
+import { article } from "../../lib/seo";
+import { SITE } from "../../data/site";
 export async function getStaticPaths() {
   const docs = await getCollection("docs");
   return docs.map((d) => ({ params: { slug: d.id }, props: { d } }));
@@ -13,7 +15,7 @@ const all = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.o
 const sections = ["Start", "Use", "Reference", "Troubleshooting"] as const;
 const toc = headings.filter((h) => h.depth === 2);
 ---
-<Base title={d.data.title} description={d.data.description}>
+<Base title={d.data.title} description={d.data.description} schema={[article({ url: `${SITE.url}/docs/${d.id}`, headline: d.data.title, description: d.data.description })]}>
   <div class="container docs">
     <nav class="docs-nav" aria-label="Docs">
       {sections.map((s) => {

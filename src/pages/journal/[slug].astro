@@ -2,13 +2,15 @@
 import Base from "../../layouts/Base.astro";
 import { getCollection, render } from "astro:content";
 import { formatDate } from "../../lib/releases";
+import { article } from "../../lib/seo";
+import { SITE } from "../../data/site";
 export async function getStaticPaths() {
   return (await getCollection("journal")).map((p) => ({ params: { slug: p.id }, props: { p } }));
 }
 const { p } = Astro.props;
 const { Content } = await render(p);
 ---
-<Base title={p.data.title} description={p.data.description}>
+<Base title={p.data.title} description={p.data.description} ogType="article" published={p.data.date} schema={[article({ url: `${SITE.url}/journal/${p.id}`, headline: p.data.title, description: p.data.description, type: "BlogPosting", datePublished: p.data.date, author: p.data.author })]}>
   <article class="container post">
     <p class="caption"><a href="/journal">Journal</a> · <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time> · {p.data.author}</p>
     <h1>{p.data.title}</h1>

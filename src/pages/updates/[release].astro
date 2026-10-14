@@ -13,6 +13,7 @@ import { allReleases, isMaintenance, formatDate, AREA_LABEL, KIND_LABEL, type Re
 import { inline, sourceLabel } from "../../lib/md";
 import { channelOf } from "../../lib/channels";
 import { SITE } from "../../data/site";
+import { article } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const all = await allReleases();
@@ -35,7 +36,9 @@ const p = r.provenance;
 const repoOs = SITE.repos.os, repoShell = SITE.repos.shell;
 const desc = r.summary.split(/(?<=\.)\s+/)[0];
 ---
-<Base title={`${r.name}: ${r.title}`} description={desc} og={`/og/updates/${r.id}.png`} noindex={isMaintenance(r)}>
+<Base title={`${r.name}: ${r.title}`} description={desc} og={`/og/updates/${r.id}.png`} noindex={isMaintenance(r)}
+  ogType="article" published={r.date} ogAlt={`${r.name}: ${r.title}`}
+  schema={[article({ url: `${SITE.url}/updates/${r.id}`, headline: `${r.name}: ${r.title}`, description: desc, type: "Article", datePublished: r.date, image: `/og/updates/${r.id}.png` })]}>
   <article class="rel" data-release={r.id} data-predecessor={r.predecessor ?? ""}>
     <header class="rel-hero container">
       <nav class="rel-crumbs caption" aria-label="Breadcrumb"><a href="/updates">Updates</a> <span aria-hidden="true">/</span> <span>{r.id}</span></nav>
