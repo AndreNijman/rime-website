@@ -5,6 +5,7 @@ import "../styles/global.css";
 import RimeFrame from "../components/RimeFrame.astro";
 import Footer from "../components/Footer.astro";
 import { SITE } from "../data/site";
+import { graph, breadcrumbs, webPage, type Node } from "../lib/seo";
 import scenes from "../data/scenes.json";
 
 interface Props {
@@ -15,13 +16,20 @@ interface Props {
   noindex?: boolean;
   bodyClass?: string;
   palette?: string;         // a scene id the page starts in (visitor choice still wins)
+  ogAlt?: string;           // alt text of the social card
+  ogType?: "website" | "article";
+  published?: Date;         // article:published_time
+  modified?: Date;          // article:modified_time
+  schema?: Node[];          // page-specific JSON-LD nodes (src/lib/seo.ts)
 }
-const { title, description = SITE.description, canonical, og = "/og/default.png", noindex = false, bodyClass, palette } = Astro.props;
+const { title, description = SITE.description, canonical, og = "/og/default.png", noindex = false, bodyClass, palette, ogAlt, ogType = "website", published, modified, schema = [] } = Astro.props;
 const fullTitle = title ? `${title} — Rime` : `Rime — ${SITE.tagline}`;
 // build.format "file" builds the home page as /index(.html), which the host
 // redirects to /: a canonical of /index pointed search engines at a redirect.
 const path = (canonical ?? Astro.url.pathname).replace(/\.html$/, "").replace(/(^|\/)index$/, "").replace(/\/$/, "") || "/";
 const canonicalUrl = SITE.url + (path === "/" ? "/" : path);
+const pageTitle = title ?? "Rime";
+const ld = noindex ? null : graph([schema.length ? null : webPage(canonicalUrl, pageTitle, description), ...schema, breadcrumbs(path, pageTitle)]);
 const def = scenes.scenes.find((s) => s.default)!;
 const ids = scenes.scenes.map((s) => s.id);
 // The boot script runs before first paint so a returning visitor's scheme,
@@ -38,7 +46,9 @@ const boot = `(function(){var d=document.documentElement;d.classList.add("js");t
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex
+      ? <meta name="robots" content="noindex" />
+      : <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />}
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content={def.dark.roles.surfaceBase} data-dark={def.dark.roles.surfaceBase} data-light={def.light.roles.surfaceBase} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -48,15 +58,24 @@ const boot = `(function(){var d=document.documentElement;d.classList.add("js");t
     <link rel="alternate" type="application/rss+xml" title="Rime updates (RSS)" href="/updates/rss.xml" />
     <link rel="alternate" type="application/feed+json" title="Rime updates (JSON Feed)" href="/updates/feed.json" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="en_AU" />
     <meta property="og:site_name" content="Rime" />
-    <meta property="og:title" content={title ?? "Rime"} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={new URL(og, SITE.url).href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt ?? `${pageTitle}: ${SITE.tagline}`} />
+    {ogType === "article" && published && <meta property="article:published_time" content={published.toISOString()} />}
+    {ogType === "article" && (modified ?? published) && <meta property="article:modified_time" content={(modified ?? published)!.toISOString()} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(og, SITE.url).href} />
+    <meta name="twitter:image:alt" content={ogAlt ?? `${pageTitle}: ${SITE.tagline}`} />
+    {ld && <script type="application/ld+json" is:inline set:html={ld} />}
     <script is:inline set:html={boot} />
     <slot name="head" />
   </head>

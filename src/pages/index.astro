@@ -12,13 +12,14 @@ import LatestRelease from "../components/LatestRelease.astro";
 import GetRime from "../components/GetRime.astro";
 import { latestRelease, releaseHeadline } from "../lib/releases";
 import { SITE } from "../data/site";
+import { software } from "../lib/seo";
 import downloads from "../../content/downloads.json";
 const remote = (downloads as { remote?: { versionName: string } | null }).remote;
 const latest = (await latestRelease())!;
 const src = (p: string) => `${SITE.repos.shell}/blob/${SITE.pinned.shell}/${p}`;
 const osrc = (p: string) => `${SITE.repos.os}/blob/${SITE.pinned.os}/${p}`;
 ---
-<Base description="Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and reach root only with your password.">
+<Base schema={[software({ version: latest.id })]} description="Rime is a Linux operating system built as one piece: a signed image that updates in one step and can always go back, a desktop coloured by your wallpaper, and coding agents that work in a sandbox and reach root only with your password.">
   <!-- 0 — Entry -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container-wide hero-grid">
