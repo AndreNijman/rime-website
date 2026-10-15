@@ -1,0 +1,53 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.13.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.15"
+product: "rime"
+name: "Rime 2026.10.15"
+title: "The GitHub CLI ships with Rime again"
+date: "2026-10-15T01:59:32Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.10.13.4"
+provenance:
+  osRevision: "e5ff68d1fdb21629fb7ccb6311fbcb9006245b36"
+  shellRevision: "b532a1510d5f7277d0090ac8470f21d3aa7d99c2"
+  imageDigest: "sha256:9270b93c758e5b93eddb8ba4bf6bead05a30399cb43090cbffbbe756d33bcd8c"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38663825626"
+  iso: null
+  reissues: []
+highlights:
+  - "the-github-cli-ships-with-rime-again"
+  - "dashboard-calendar-keeps-the-right-date-after-su"
+changes:
+  - id: "the-github-cli-ships-with-rime-again"
+    area: "system"
+    kind: "fixed"
+    title: "The GitHub CLI ships with Rime again"
+    summary: "The GitHub CLI (gh) is part of Rime again and no longer disappears after updates."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/117"
+    breaking: false
+  - id: "dashboard-calendar-keeps-the-right-date-after-su"
+    area: "shell"
+    kind: "fixed"
+    title: "Dashboard calendar keeps the right date after suspend"
+    summary: "The Dashboard calendar now shows the correct date after your laptop has been asleep or running for days."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/45"
+    breaking: false
+knownIssues: []
+rollback: null
