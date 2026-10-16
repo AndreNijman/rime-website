@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.15. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.16"
+product: "rime"
+name: "Rime 2026.10.16"
+title: "Alt+Tab can be rebound, and games can be hidden from it"
+date: "2026-10-16T02:22:23Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Alt+Tab can now be moved to another key or modifier in Settings → Keybinds, and Settings → Gaming has a new option to keep Steam, its games and Sober out of Alt+Tab."
+predecessor: "2026.10.15"
+provenance:
+  osRevision: "baaff67d93cc9fa90e21ee0cba38cdbd2d4c7269"
+  shellRevision: "bd59d8ab9cb9df4af1e7e82109c11202c58b35cd"
+  imageDigest: "sha256:6a337e94a2f9ad1ea96acf5cbde44cfccb8e56e1482607f4c13864d9102c5818"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/38838805188"
+  iso: null
+  reissues: []
+highlights:
+  - "alt-tab-can-be-rebound-and-games-can-be-hidden-f"
+changes:
+  - id: "alt-tab-can-be-rebound-and-games-can-be-hidden-f"
+    area: "shell"
+    kind: "new"
+    title: "Alt+Tab can be rebound, and games can be hidden from it"
+    summary: "Alt+Tab can now be moved to another key or modifier in Settings → Keybinds, and Settings → Gaming has a new option to keep Steam, its games and Sober out of Alt+Tab."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/46"
+    breaking: false
+knownIssues: []
+rollback: null
