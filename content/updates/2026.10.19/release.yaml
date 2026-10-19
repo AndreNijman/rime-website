@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.10.16. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.10.19"
+product: "rime"
+name: "Rime 2026.10.19"
+title: "Faster boot: the desktop no longer waits for Wi-Fi"
+date: "2026-10-19T02:57:54Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Startup now finishes up to about 8 seconds sooner on laptops: Rime no longer waits for Wi-Fi to finish connecting before it counts the boot as done."
+predecessor: "2026.10.16"
+provenance:
+  osRevision: "b61d46c1cde1cd33ea6c037d5cf66ff6e6394273"
+  shellRevision: "bd59d8ab9cb9df4af1e7e82109c11202c58b35cd"
+  imageDigest: "sha256:420841ee5474cccd8c086fde537ceef29ab7eee637be2096a2cfbb4f2c0d31cc"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/39191191652"
+  iso: null
+  reissues: []
+highlights:
+  - "faster-boot-the-desktop-no-longer-waits-for-wi-f"
+changes:
+  - id: "faster-boot-the-desktop-no-longer-waits-for-wi-f"
+    area: "system"
+    kind: "improved"
+    title: "Faster boot: the desktop no longer waits for Wi-Fi"
+    summary: "Startup now finishes up to about 8 seconds sooner on laptops: Rime no longer waits for Wi-Fi to finish connecting before it counts the boot as done."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/120"
+    breaking: false
+knownIssues: []
+rollback: null
