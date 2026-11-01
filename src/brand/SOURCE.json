@@ -1,0 +1,94 @@
+{
+  "repo": "https://github.com/AndreNijman/rime-os",
+  "ref": "3283f915263e66f94461532effba58bd4909c066",
+  "note": "The Rime mark and wordmark are Rime's own artwork (rime-os docs/branding.md). The wordmark is outlined from Golos Text (SIL OFL 1.1); no font file is vendored.",
+  "files": {
+    "src/brand/ridge/rime-ridge-symbol.svg": {
+      "path": "files/branding/ridge/src/rime-ridge-symbol.svg",
+      "sha256": "63334b902a4b4353741152e85bf55a4cb87456c5c648b6b891dd7a156f8682be"
+    },
+    "src/brand/ridge/rime-ridge-symbol-small.svg": {
+      "path": "files/branding/ridge/src/rime-ridge-symbol-small.svg",
+      "sha256": "28235eb83a88f63869eb54724cfc0427dc947a98889a93f0df596c361f12c854"
+    },
+    "src/brand/ridge/rime-lockup-horizontal.svg.in": {
+      "path": "files/branding/ridge/templates/rime-lockup-horizontal.svg.in",
+      "sha256": "e211aa9e08c0e94348bd4443d404ed957f166ab9b08206faafa0ec75513be681"
+    },
+    "src/brand/ridge/rime-app-icon-dark.svg": {
+      "path": "files/branding/ridge/svg/rime-app-icon-dark.svg",
+      "sha256": "54d81c0def5ab75769e4f530047edfdf69652e92b17fb2590b5a2c65cc79744d"
+    },
+    "src/brand/ridge/palette.json": {
+      "path": "files/branding/ridge/src/palette.json",
+      "sha256": "532e7be9247ea7ede15ad93b8f7ff5a921be2ab8999a7e563aa94885bf4464ee"
+    },
+    "public/favicon.svg": {
+      "path": "files/branding/ridge/favicon/favicon.svg",
+      "sha256": "be16a2781a01a9db12e1d3f865e64b63655c6678c2cc70c8e4a123a29066b1f4"
+    },
+    "public/favicon.ico": {
+      "path": "files/branding/ridge/favicon/favicon.ico",
+      "sha256": "2968460247b90174a50c7a26322e148a0a2befd310b6b69fa76fe16952bef2a6"
+    },
+    "public/favicon-16.png": {
+      "path": "files/branding/ridge/favicon/favicon-16.png",
+      "sha256": "671bcf599c732554590adc61d37e3f62e743531397c0adb3b1a8a65ac7d43d78"
+    },
+    "public/favicon-32.png": {
+      "path": "files/branding/ridge/favicon/favicon-32.png",
+      "sha256": "a1242e93b71f7836a57815164663100967de39a79de9f79f617b8146cd2b06c7"
+    },
+    "public/favicon-48.png": {
+      "path": "files/branding/ridge/favicon/favicon-48.png",
+      "sha256": "916b8c28369c1b50d17f2f133cab24119de271e8f00f33870608b7d2cd58ea5e"
+    },
+    "public/brand/rime-mark-black.svg": {
+      "path": "files/branding/ridge/svg/rime-symbol-mono-black.svg",
+      "sha256": "f206f3ab84d9046ace28f1a5cf82f9c2cd8e225228b29ac8fa3fdf6cb0c8d6e3"
+    },
+    "public/brand/rime-mark-white.svg": {
+      "path": "files/branding/ridge/svg/rime-symbol-mono-white.svg",
+      "sha256": "d3400374642a8326973120feeef05ebfd82bfdf73d31990c2c28084bb017fec5"
+    },
+    "public/brand/rime-symbol-light.svg": {
+      "path": "files/branding/ridge/svg/rime-symbol-light.svg",
+      "sha256": "0d850d50b7a5cafc8738165cc7023fa37137deba84491578296f480ce952c311"
+    },
+    "public/brand/rime-symbol-dark.svg": {
+      "path": "files/branding/ridge/svg/rime-symbol-dark.svg",
+      "sha256": "bd420e418711b04db36f7b9f0773a405a7bea804227713ba5d25016056f31dd0"
+    },
+    "public/brand/rime-lockup-light.svg": {
+      "path": "files/branding/ridge/svg/rime-lockup-horizontal-light.svg",
+      "sha256": "34d0c4ea863666e6f803c488a23853e758b7ebe193c298d3c1db79ea9bc973bd"
+    },
+    "public/brand/rime-lockup-dark.svg": {
+      "path": "files/branding/ridge/svg/rime-lockup-horizontal-dark.svg",
+      "sha256": "258db1b4087d839dbe835cc283d362f6605f81619e3021bd99ccc325eee10843"
+    },
+    "public/brand/rime-lockup-mono-black.svg": {
+      "path": "files/branding/ridge/svg/rime-lockup-horizontal-mono-black.svg",
+      "sha256": "98861ddbf1b0558024000533933cb22d39fd650c3b0baa5bebcffd5444003a60"
+    },
+    "public/brand/rime-lockup-mono-white.svg": {
+      "path": "files/branding/ridge/svg/rime-lockup-horizontal-mono-white.svg",
+      "sha256": "2473102b95cd8cb42add582d7d72dda607b860d8766d5c221eb85c2f914f60a7"
+    },
+    "public/brand/rime-app-icon-dark-512.png": {
+      "path": "files/branding/ridge/icons/app/rime-app-icon-dark-512.png",
+      "sha256": "df4d6274f285628a03a9bf13ba2d580e68dfea8eec6283ea3a401e2a61c7d27c"
+    },
+    "public/brand/rime-app-icon-light-512.png": {
+      "path": "files/branding/ridge/icons/app/rime-app-icon-light-512.png",
+      "sha256": "927b341a22cf9c67d6a58d33d0d883612432a00263407ae181b9a40de8ad351a"
+    }
+  },
+  "derived": {
+    "public/apple-touch-icon.png": {
+      "from": "src/brand/ridge/rime-app-icon-dark.svg",
+      "how": "app tile, corner radius removed, 180 px (sharp)",
+      "sha256": "6b55e8adc510d1a9b62ffac28db24c3e078a1a5fec02deb1f19c3e90c9e29ad0"
+    }
+  }
+}

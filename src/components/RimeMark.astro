@@ -1,23 +1,36 @@
 ---
-// The replaceable mark (src/brand/mark.ts). tone="role" takes the palette's
-// accent; tone="mono" is currentColor. Motion lives elsewhere (Convergence).
+// The layered ridge (src/brand/mark.ts). Planes 1, 2, 4 and the wordmark are
+// currentColor; plane 3 is the only plane that takes a colour of its own:
+//   tone="brand"  Rime Blue (the default, as on the brand pack's website header)
+//   tone="role"   the current scene's accent (how Rime recolours it from a wallpaper)
+//   tone="mono"   currentColor like the rest (one-ink use)
+// `accent` overrides plane 3 with one of the approved accents. `wordmark` draws
+// the horizontal lockup (symbol + "rime"). `size` is the symbol's height in px;
+// at 32 px or less the small-size master is used, as rime-os's exports do.
+// No ids inside: the mark appears several times on a page.
 import { MARK } from "../brand/mark";
-interface Props { size?: number; tone?: "role" | "mono"; label?: string; class?: string }
-const { size = 22, tone = "mono", label, class: cls } = Astro.props;
-const [, , w, h] = MARK.crop.split(" ").map(Number);
+interface Props { size?: number; tone?: "brand" | "role" | "mono"; accent?: string; wordmark?: boolean; label?: string; class?: string }
+const { size = 22, tone = "brand", accent, wordmark = false, label, class: cls } = Astro.props;
+const planes = size <= MARK.smallMax ? MARK.small : MARK.planes;
+const [, , vw, vh] = (wordmark ? MARK.lockup.viewBox : MARK.viewBox).split(" ").map(Number);
+// The lockup's viewBox is the symbol's height, so `size` stays the symbol height.
+const width = Math.round(size * (vw / vh) * 100) / 100;
+// Colours are presentation attributes, never style="" (the CSP forbids those);
+// the role and mono tones override plane 3 from CSS.
+const plane3 = accent ?? MARK.accent;
 ---
 <svg
   class:list={["rime-mark", `rime-mark--${tone}`, cls]}
-  viewBox={MARK.crop}
-  width={Math.round(size * (w / h))}
+  viewBox={wordmark ? MARK.lockup.viewBox : MARK.viewBox}
+  width={width}
   height={size}
   role={label ? "img" : undefined}
   aria-label={label}
   aria-hidden={label ? undefined : "true"}
   focusable="false"
-  data-mark-status={MARK.status}
-><path d={MARK.path} fill="currentColor" /></svg>
+><g transform={wordmark ? MARK.lockup.symbolTransform : undefined}>{planes.map((p, i) => <polygon class:list={["ridge-plane", i === 2 && "ridge-accent"]} points={p.points} fill={i === 2 ? plane3 : "currentColor"} />)}</g>{wordmark && <g transform={MARK.lockup.wordTransform} fill="currentColor">{MARK.lockup.wordPaths.map((d) => <path d={d} />)}</g>}</svg>
 <style>
   .rime-mark { flex: none; }
-  .rime-mark--role { color: var(--rime-accent); }
+  .rime-mark--role .ridge-accent { fill: var(--rime-accent); }
+  .rime-mark--mono .ridge-accent { fill: currentColor; }
 </style>

@@ -44,13 +44,12 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
   <nav class="frame-zones" aria-label="Primary">
     <div class="zone zone-left" data-zone="left">
       <a href="/" class="frame-home" aria-label="Rime home">
-        <RimeMark size={16} tone="role" />
-        <span class="wordmark">Rime</span>
+        <RimeMark size={22} wordmark />
       </a>
     </div>
 
     <div class="zone zone-center" data-zone="center">
-      <a href="/" class="frame-home frame-home--capsule" aria-label="Rime home"><RimeMark size={15} tone="role" /></a>
+      <a href="/" class="frame-home frame-home--capsule" aria-label="Rime home"><RimeMark size={15} /></a>
       <a href="/sitemap" class="frame-trigger" data-bloom-trigger aria-haspopup="dialog" aria-controls="site-bloom" aria-expanded="false">
         <span class="frame-section" data-frame-label>{section}</span>
         <Icon name="chevron-down" size={16} class="frame-chev" />
@@ -183,7 +182,6 @@ const ssrLine = Geo.barHairline({ w: W0, strip: T1.borderWidth, h: T1.notchHeigh
 
   .frame-home { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; height: 30px; padding: 0 8px; border-radius: 999px; }
   @media (hover: hover) { .frame-home:hover { background: var(--rime-hover); } }
-  .wordmark { font-weight: 650; font-size: 1.02rem; letter-spacing: -0.01em; }
   .frame-home--capsule, .frame-search, .frame-get { display: none; }
 
   .frame-trigger {

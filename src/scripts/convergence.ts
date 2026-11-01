@@ -1,4 +1,4 @@
-// Plays the provisional Convergence once per browser session.
+// Plays the Convergence (src/components/Convergence.astro) once per browser session.
 import { Spring } from "../motion/spring";
 import { BASE, effect, isReduced, spatial } from "../motion/policy";
 
@@ -11,16 +11,18 @@ export function runConvergence(): void {
   if (seen || isReduced() || spatial(BASE.hero) === 0) return;
   el.dataset.play = "1";
   const drops = [...el.querySelectorAll<SVGCircleElement>("[data-d]")];
-  const mark = el.querySelector<SVGPathElement>(".conv-mark")!;
+  const mark = el.querySelector<SVGGElement>(".conv-mark")!;
   const group = el.querySelector<SVGGElement>(".conv-drops")!;
-  // Start positions: the mark's four tips, pushed outward.
-  const from: [number, number][] = [[256, 40], [430, 298], [256, 470], [80, 298]];
+  // Each drop starts off its plane's left tip and settles on the plane's centre.
+  const xy = (s: string | undefined) => (s ?? "0,0").split(",").map(Number) as [number, number];
+  const from = drops.map((c) => xy(c.dataset.from));
+  const to = drops.map((c) => xy(c.dataset.to));
   const s = new Spring({ value: 0, response: BASE.hero / 1000, dampingFraction: 0.92 });
   s.onStep = () => {
     const k = s.value;
     drops.forEach((c, i) => {
-      c.setAttribute("cx", String(from[i][0] + (256 - from[i][0]) * k));
-      c.setAttribute("cy", String(from[i][1] + (298 - from[i][1]) * k));
+      c.setAttribute("cx", String(from[i][0] + (to[i][0] - from[i][0]) * k));
+      c.setAttribute("cy", String(from[i][1] + (to[i][1] - from[i][1]) * k));
     });
   };
   s.onStep();

@@ -15,7 +15,7 @@ const PAGES = [
   { title: "Updates", url: "/updates", text: "Every release with what changed, known issues, provenance and feeds.", tags: "release notes changelog feed rss atom" },
   { title: "Privacy", url: "/privacy", text: "No accounts, trackers or analytics; what this site stores in your browser; what Rime contacts.", tags: "privacy telemetry analytics cookies" },
   { title: "Source", url: "/source", text: "Repositories, licences, third-party code, how this site is built from the Shell's own files.", tags: "github licence license mit apache" },
-  { title: "Brand", url: "/brand", text: "The name, the mark, and why there is no brand colour.", tags: "logo mark name" },
+  { title: "Brand", url: "/brand", text: "The name, the layered ridge, and the one plane that takes a colour.", tags: "logo mark ridge name accent" },
   { title: "Journal", url: "/journal", text: "Engineering notes.", tags: "blog posts" },
 ];
 export const GET: APIRoute = async () => {

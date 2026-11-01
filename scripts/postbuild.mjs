@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSy
 import { dirname, join, resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { markSvg, parseLockup } from "../src/brand/ridge.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
@@ -58,12 +59,18 @@ writeFileSync(join(DIST, ".well-known/security.txt"), [
   "",
 ].join("\n"));
 
-// ── social cards (spec §17.2): the mark, the title, the default scene's field ─
+// ── social cards (spec §17.2): the lockup, the title, the default scene's field
 const scenes = JSON.parse(readFileSync(join(ROOT, "src/data/scenes.json"), "utf8"));
 const def = scenes.scenes.find((s) => s.default);
 const roles = def.dark.roles;
 const field = join(ROOT, "public", def.dark.field.src);
-const MARK = "M256 82 L292 264 L384 298 L292 332 L256 430 L220 332 L128 298 L220 264 Z";
+// The layered-ridge lockup from the vendored masters (src/brand/ridge/): outlined
+// paths, so the card's mark never depends on the renderer's fonts. Plane 3 is
+// Rime Blue as in the site's header; the rest is the scene's text ink.
+const LOCKUP = parseLockup(readFileSync(join(ROOT, "src/brand/ridge/rime-lockup-horizontal.svg.in"), "utf8"));
+const RIME_BLUE = JSON.parse(readFileSync(join(ROOT, "src/brand/ridge/palette.json"), "utf8")).rime_blue;
+const LOCKUP_H = 64, LOCKUP_SCALE = LOCKUP_H / Number(LOCKUP.viewBox.split(" ")[3]);
+const lockupSvg = markSvg({ planes: LOCKUP.planes, lockup: LOCKUP, ink: roles.textPrimary, accent: RIME_BLUE, wordmark: true });
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 // The title is laid out by MEASURING each line as the renderer draws it, with
 // whatever font this machine has: a character count let a wider fallback font
@@ -108,7 +115,7 @@ async function card(out, kicker, title) {
   const { size, step, lines } = layout;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
     <rect width="1200" height="630" fill="${roles.surfaceBase}"/>
-    <g transform="translate(88 92) scale(0.16)"><path d="${MARK}" transform="translate(-108 -72)" fill="${roles.accent}"/></g>
+    <g transform="translate(88 ${150 - LOCKUP_H}) scale(${LOCKUP_SCALE.toFixed(5)})">${lockupSvg}</g>
     <text x="88" y="250" font-family="JetBrains Mono, monospace" font-size="30" fill="${roles.accentText}">${esc(kicker)}</text>
     ${lines.map((l, i) => titleText(l, size, TITLE_X, TITLE_TOP + i * step, roles.textPrimary)).join("")}
     <text x="88" y="570" font-family="Noto Sans, sans-serif" font-size="28" fill="${roles.textSecondary}">rimeos.com</text>

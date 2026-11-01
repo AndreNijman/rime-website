@@ -111,6 +111,27 @@ node scripts/build-stage.mjs /var/tmp/rime-capture                              
   takes are marked `ambient`: pixels that move while a state is at rest are left
   out when `cut.py` looks for a transition's start and settle.
 
+## The mark
+
+The Rime mark is the layered ridge: four flat planes, and only the third ever
+takes a colour. Nothing in the site draws it by hand. `scripts/sync-brand.mjs`
+copies rime-os's own exports and masters (`files/branding/ridge/`) byte for
+byte from a pinned revision into `src/brand/ridge/` and `public/` (favicons,
+`/brand` downloads), renders `apple-touch-icon.png` from the dark app tile,
+and records every sha256 in `src/brand/SOURCE.json`; `src/brand/ridge.mjs`
+reads the masters for the pages (`RimeMark.astro`, `Convergence.astro`) and
+the social cards (`postbuild.mjs`).
+
+- every `npm run build` checks the hashes (`sync-brand.mjs --check`, offline);
+- `node scripts/sync-brand.mjs --check-upstream --repo ../rime-os` compares with the pinned revision;
+- to move: `npm run vendor:brand -- --repo ../rime-os --ref <rev>`, then `npm test`.
+
+In the site's chrome (header, footer, first-visit Convergence, social cards)
+plane 3 is Rime Blue and the rest is the text ink. The scenes' accent is not
+used there: the default scene's light accent is near-black (`#000613`) and
+would fold plane 3 into the ink. `/brand` shows the scene-accent version
+(`tone="role"`, how Rime recolours it from a wallpaper) and the approved accents.
+
 ## Palettes
 
 `npm run scenes` (scripts/build-scenes.mjs):
