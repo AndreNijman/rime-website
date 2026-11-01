@@ -11,6 +11,9 @@
 import { MARK } from "../brand/mark";
 interface Props { size?: number; tone?: "brand" | "role" | "mono"; accent?: string; wordmark?: boolean; label?: string; class?: string }
 const { size = 22, tone = "brand", accent, wordmark = false, label, class: cls } = Astro.props;
+// Below the brand's minimum sizes the mark stops reading: refuse at build time.
+const min = wordmark ? MARK.minLockup : MARK.minSymbol;
+if (size < min) throw new Error(`RimeMark: ${wordmark ? "lockup" : "symbol"} at ${size} px is below the ${min} px minimum (rime-os docs/branding.md)`);
 const planes = size <= MARK.smallMax ? MARK.small : MARK.planes;
 const [, , vw, vh] = (wordmark ? MARK.lockup.viewBox : MARK.viewBox).split(" ").map(Number);
 // The lockup's viewBox is the symbol's height, so `size` stays the symbol height.

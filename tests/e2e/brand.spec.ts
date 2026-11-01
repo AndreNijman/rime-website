@@ -2,9 +2,17 @@
 // lockup (symbol + "rime"), planes 1, 2, 4 and the word in the text ink, plane 3
 // in Rime Blue whatever the scene or scheme; the icons it advertises resolve.
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
 import { useScheme } from "./pages";
+import { parsePlanes } from "../../src/brand/ridge.mjs";
 
 const RIME_BLUE = "rgb(145, 194, 220)";
+// The masters' planes, bottom to peak: the drawn mark must keep this order, so
+// the colour lands on plane 3's own shape (a fill-by-index check alone would pass
+// a mark whose planes were reordered).
+const master = (f: string) => parsePlanes(readFileSync(`src/brand/ridge/${f}`, "utf8")).map((p) => p.points);
+const SMALL = master("rime-ridge-symbol-small.svg");  // 32 px and below (the header)
+const FULL = master("rime-ridge-symbol.svg");
 for (const scheme of ["dark", "light"] as const)
   for (const palette of ["rime-default", "ember"])
     test(`header lockup, ${scheme}, ${palette}`, async ({ page }) => {
@@ -16,10 +24,12 @@ for (const scheme of ["dark", "light"] as const)
       const got = await mark.evaluate((svg) => ({
         ink: getComputedStyle(svg).color,
         planes: [...svg.querySelectorAll("polygon")].map((p) => getComputedStyle(p).fill),
+        points: [...svg.querySelectorAll("polygon")].map((p) => p.getAttribute("points")),
         word: [...svg.querySelectorAll("path")].map((p) => getComputedStyle(p).fill),
         ids: svg.querySelectorAll("[id]").length,
       }));
       expect(got.planes).toHaveLength(4);
+      expect(got.points).toEqual(SMALL);
       expect(got.planes[2]).toBe(RIME_BLUE);
       for (const i of [0, 1, 3]) expect(got.planes[i]).toBe(got.ink);
       expect(got.word).toHaveLength(4);
@@ -34,9 +44,11 @@ test("the brand page's role tile takes the scene accent on plane 3 only", async 
   const got = await svg.evaluate((el) => ({
     accent: getComputedStyle(document.documentElement).getPropertyValue("--rime-accent").trim(),
     planes: [...el.querySelectorAll("polygon")].map((p) => getComputedStyle(p).fill),
+    points: [...el.querySelectorAll("polygon")].map((p) => p.getAttribute("points")),
     ink: getComputedStyle(el).color,
   }));
   const probe = await page.evaluate((c) => { const d = document.createElement("div"); d.style.color = c; document.body.append(d); const v = getComputedStyle(d).color; d.remove(); return v; }, got.accent);
+  expect(got.points).toEqual(FULL);
   expect(got.planes[2]).toBe(probe);
   for (const i of [0, 1, 3]) expect(got.planes[i]).toBe(got.ink);
 });

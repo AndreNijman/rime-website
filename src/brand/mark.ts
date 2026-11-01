@@ -27,6 +27,9 @@ export const MARK = {
   // Same planes 20 % thinner: rime-os uses it for every export at 32 px or less.
   small: parsePlanes(smallSvg) as Plane[],
   smallMax: 32,
+  // rime-os docs/branding.md minimum sizes: a lockup 24 px high, the symbol 16 px.
+  minLockup: 24,
+  minSymbol: 16,
   lockup: parseLockup(lockupSvg) as { viewBox: string; symbolTransform: string; planes: Plane[]; wordTransform: string; wordPaths: string[] },
   accent: palette.rime_blue,                           // Rime Blue, plane 3's default
   accents: palette.accents as Record<string, string>,  // the brand pack's approved accents

@@ -31,6 +31,20 @@ test("the mark is four planes, bottom to peak, and plane 3 alone is the accent",
   expect(MARK.status).toBe("final");
 });
 
+test("every RimeMark on the site is at or above the brand's minimum size", () => {
+  expect([MARK.minLockup, MARK.minSymbol]).toEqual([24, 16]);
+  const walk = (d: string): string[] => readdirSync(d).flatMap((n) => {
+    const p = join(d, n);
+    return statSync(p).isDirectory() ? walk(p) : n.endsWith(".astro") ? [p] : [];
+  });
+  const uses = walk("src").flatMap((p) => [...readFileSync(p, "utf8").matchAll(/<RimeMark\b([^>]*)\/>/g)].map((m) => ({ p, a: m[1] })));
+  expect(uses.length).toBeGreaterThanOrEqual(5);
+  for (const { p, a } of uses) {
+    const size = Number(/\bsize=\{(\d+)\}/.exec(a)?.[1] ?? 22);
+    expect(size, `${p}: ${a.trim()}`).toBeGreaterThanOrEqual(/\bwordmark\b/.test(a) ? MARK.minLockup : MARK.minSymbol);
+  }
+});
+
 test("markSvg colours plane 3 and nothing else with the accent", () => {
   const out = polys(markSvg({ planes: MARK.planes, lockup: MARK.lockup, ink: "INK", accent: "ACC" }));
   expect(out.map((p) => p.fill)).toEqual(["INK", "INK", "ACC", "INK"]);
