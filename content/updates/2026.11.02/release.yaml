@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.01.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.02"
+product: "rime"
+name: "Rime 2026.11.02"
+title: "Steam installs on an older Rime OS: matching 32-bit libraries come from Fedora"
+date: "2026-11-02T01:28:31Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Steam and other 32-bit apps now install on a Rime OS that has not been updated for a while: the matching 32-bit libraries come straight from Fedora, checked against Fedora's signing key. If one cannot be found, the error names it and suggests running sudo rime update."
+predecessor: "2026.11.01.2"
+provenance:
+  osRevision: "465ccc7c066a8bc9b40fa62ce506da6f1c257981"
+  shellRevision: "c4d32b000700192f4aa2eb0c7ca849ecd8540a15"
+  imageDigest: "sha256:9ae066cb878d2d612d4cf8884c3932ec8fd917307fc2b29edd78296bef5875e1"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41370783729"
+  iso: null
+  reissues: []
+highlights:
+  - "steam-installs-on-an-older-rime-os-matching-32-b"
+changes:
+  - id: "steam-installs-on-an-older-rime-os-matching-32-b"
+    area: "gaming"
+    kind: "fixed"
+    title: "Steam installs on an older Rime OS: matching 32-bit libraries come from Fedora"
+    summary: "Steam and other 32-bit apps now install on a Rime OS that has not been updated for a while: the matching 32-bit libraries come straight from Fedora, checked against Fedora's signing key. If one cannot be found, the error names it and suggests running sudo rime update."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/136"
+    breaking: false
+knownIssues: []
+rollback: null
