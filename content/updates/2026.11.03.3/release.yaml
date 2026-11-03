@@ -1,0 +1,53 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.03.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.03.3"
+product: "rime"
+name: "Rime 2026.11.03.3"
+title: "The Dashboard says why a power profile change did not happen"
+date: "2026-11-03T09:59:23Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.03.2"
+provenance:
+  osRevision: "093008b3a551e823c6483d664f4e2c65bada79ec"
+  shellRevision: "5f3d41396aa6bedbdb5de21be669cf4cf15757b9"
+  imageDigest: "sha256:ed8ae60d0683bbf362e2a1fcc798991b00b92605a09eac28ae443a7ad1a7afe3"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41613036537"
+  iso: null
+  reissues: []
+highlights:
+  - "smooth-animations-on-battery-and-rime-as-the-one"
+  - "the-dashboard-says-why-a-power-profile-change-di"
+changes:
+  - id: "smooth-animations-on-battery-and-rime-as-the-one"
+    area: "system"
+    kind: "improved"
+    title: "Smooth animations on battery, and Rime as the one power-profile manager"
+    summary: "Window and workspace animations stay smooth on battery in every power profile, and the profile you pick from the Dashboard now stays picked when you plug in, unplug or restart. Rime now manages power profiles on its own, so the system power menu and powerprofilesctl show its modes."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/139"
+    breaking: false
+  - id: "the-dashboard-says-why-a-power-profile-change-di"
+    area: "shell"
+    kind: "fixed"
+    title: "The Dashboard says why a power profile change did not happen"
+    summary: "When a power profile change can't be made, the Dashboard now says why instead of quietly switching back."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/54"
+    breaking: false
+knownIssues: []
+rollback: null
