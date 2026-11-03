@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.03.5. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04"
+product: "rime"
+name: "Rime 2026.11.04"
+title: "Get ready for the move to Rime OS on NixOS"
+date: "2026-11-03T18:15:16Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "sudo rime migrate check tells you whether this machine can move to Rime OS on NixOS. Once a move has started, rime update and the other system-image commands stop and point you at the new system."
+predecessor: "2026.11.03.5"
+provenance:
+  osRevision: "d97a26af194f065ba10e75f9138c295633d3b40d"
+  shellRevision: "6062e9c566d932f91ad7a0bc9501896dbdf3ba14"
+  imageDigest: "sha256:797af177dff3b864626b29b52c9c55e5436f4e485aae579b8e2035c20c171fb3"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41689233703"
+  iso: null
+  reissues: []
+highlights:
+  - "get-ready-for-the-move-to-rime-os-on-nixos"
+changes:
+  - id: "get-ready-for-the-move-to-rime-os-on-nixos"
+    area: "system"
+    kind: "new"
+    title: "Get ready for the move to Rime OS on NixOS"
+    summary: "sudo rime migrate check tells you whether this machine can move to Rime OS on NixOS. Once a move has started, rime update and the other system-image commands stop and point you at the new system."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/137"
+    breaking: false
+knownIssues: []
+rollback: null
