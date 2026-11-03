@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.2"
+product: "rime"
+name: "Rime 2026.11.04.2"
+title: "Adding a COPR repository no longer switches it off when its key cannot be downloaded"
+date: "2026-11-03T18:57:52Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "If adding a COPR repository fails, for example because its signing key cannot be downloaded, a repository that was already enabled now stays enabled."
+predecessor: "2026.11.04"
+provenance:
+  osRevision: "6f4d2f9fa1b8f976fc60e380f4cbc7160b83132e"
+  shellRevision: "6062e9c566d932f91ad7a0bc9501896dbdf3ba14"
+  imageDigest: "sha256:3d286a7d0f1858452800ddc1b8a49a3ea1e0d87ae4059a6a6de674e2d76a723f"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41694909807"
+  iso: null
+  reissues: []
+highlights:
+  - "adding-a-copr-repository-no-longer-switches-it-o"
+changes:
+  - id: "adding-a-copr-repository-no-longer-switches-it-o"
+    area: "system"
+    kind: "fixed"
+    title: "Adding a COPR repository no longer switches it off when its key cannot be downloaded"
+    summary: "If adding a COPR repository fails, for example because its signing key cannot be downloaded, a repository that was already enabled now stays enabled."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/141"
+    breaking: false
+knownIssues: []
+rollback: null
