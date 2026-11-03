@@ -1,0 +1,62 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.03. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.03.2"
+product: "rime"
+name: "Rime 2026.11.03.2"
+title: "The top bar shows when an update is ready"
+date: "2026-11-03T07:05:57Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "3 changes, to the system and Rime Shell."
+predecessor: "2026.11.03"
+provenance:
+  osRevision: "3ccc4501e996be870a0e2da6b53f8c21de86e738"
+  shellRevision: "aee55c4df9d423822b71684a574a78dace759642"
+  imageDigest: "sha256:94afbdb379e23770e817f37e4ba20f7b84590a09dfc7470dc6f1df143189e1d2"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41586373378"
+  iso: null
+  reissues: []
+highlights:
+  - "boot-splash-no-longer-crashes-and-the-weekly-ssd"
+  - "the-top-bar-shows-when-an-update-is-ready"
+  - "settings-apply-and-revert-stay-in-view-while-you"
+changes:
+  - id: "boot-splash-no-longer-crashes-and-the-weekly-ssd"
+    area: "system"
+    kind: "fixed"
+    title: "Boot splash no longer crashes, and the weekly SSD trim no longer stays failed"
+    summary: "The boot splash no longer crashes at the end of startup on some laptops, and the weekly SSD trim no longer stays failed when the laptop goes to sleep during it. Computers installed beside Windows now trim their system drive as well."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/138"
+    breaking: false
+  - id: "the-top-bar-shows-when-an-update-is-ready"
+    area: "shell"
+    kind: "new"
+    title: "The top bar shows when an update is ready"
+    summary: "The top bar now shows an icon when a Rime update is available, when a restart is needed to finish one, or when one could not be applied. Click it to open Settings → Updates."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/51"
+    breaking: false
+  - id: "settings-apply-and-revert-stay-in-view-while-you"
+    area: "shell"
+    kind: "new"
+    title: "Settings: Apply and Revert stay in view while you scroll"
+    summary: "When a settings page has changes waiting, Apply and Revert now float at the bottom of the page and stay in view while you scroll, and Ctrl+Enter applies."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/52"
+    breaking: false
+knownIssues: []
+rollback: null
