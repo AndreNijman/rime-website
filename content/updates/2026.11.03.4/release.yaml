@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.03.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.03.4"
+product: "rime"
+name: "Rime 2026.11.03.4"
+title: "Smoother panels that start moving sooner"
+date: "2026-11-03T10:53:12Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Panels, the Dashboard and Settings now start moving almost as soon as you open them, and their animations no longer stutter on the first frames."
+predecessor: "2026.11.03.3"
+provenance:
+  osRevision: "093008b3a551e823c6483d664f4e2c65bada79ec"
+  shellRevision: "6062e9c566d932f91ad7a0bc9501896dbdf3ba14"
+  imageDigest: "sha256:7a1a621c7af79ebdee49675ea2567376dedde3b23da982747ddfa64162f5bc6c"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41620546344"
+  iso: null
+  reissues: []
+highlights:
+  - "smoother-panels-that-start-moving-sooner"
+changes:
+  - id: "smoother-panels-that-start-moving-sooner"
+    area: "shell"
+    kind: "improved"
+    title: "Smoother panels that start moving sooner"
+    summary: "Panels, the Dashboard and Settings now start moving almost as soon as you open them, and their animations no longer stutter on the first frames."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/53"
+    breaking: false
+knownIssues: []
+rollback: null
