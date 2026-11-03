@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.02. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.03"
+product: "rime"
+name: "Rime 2026.11.03"
+title: "Large UI scales no longer break the dashboard and settings; keyboard layout switcher in the bar"
+date: "2026-11-03T00:44:34Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "The shell no longer breaks at large UI scales: a scale the screen cannot hold is capped (the Display page shows the limit) instead of overlapping the dashboard and cutting off Settings. With more than one keyboard layout set up, the top bar now shows the active layout; click it to switch."
+predecessor: "2026.11.02"
+provenance:
+  osRevision: "465ccc7c066a8bc9b40fa62ce506da6f1c257981"
+  shellRevision: "35e3c93526ed003636c3615ca747dadff25a511e"
+  imageDigest: "sha256:6f1c8bb9dfbe3318f073b876eb7d9740ea4d569a09c7f483371c40a7e6a5855b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41552599458"
+  iso: null
+  reissues: []
+highlights:
+  - "large-ui-scales-no-longer-break-the-dashboard-an"
+changes:
+  - id: "large-ui-scales-no-longer-break-the-dashboard-an"
+    area: "shell"
+    kind: "fixed"
+    title: "Large UI scales no longer break the dashboard and settings; keyboard layout switcher in the bar"
+    summary: "The shell no longer breaks at large UI scales: a scale the screen cannot hold is capped (the Display page shows the limit) instead of overlapping the dashboard and cutting off Settings. With more than one keyboard layout set up, the top bar now shows the active layout; click it to switch."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/50"
+    breaking: false
+knownIssues: []
+rollback: null
