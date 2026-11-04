@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04.6. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.7"
+product: "rime"
+name: "Rime 2026.11.04.7"
+title: "Moving to Rime OS on NixOS no longer needs free space the size of your home folder"
+date: "2026-11-04T14:39:51Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "Moving to Rime OS on NixOS no longer asks for free space the size of your home folder: your files are shared with the old system, not copied, so the check now counts only the new system, the old updates and the extra file records the move writes."
+predecessor: "2026.11.04.6"
+provenance:
+  osRevision: "869f87c1a193e9ffd23c00eceb53dd939a5d4e1d"
+  shellRevision: "45491a649bbaee8c00490282b91cfbee571cefb0"
+  imageDigest: "sha256:b2ab7a76c9279d232d0ca106fca466a581efc51b4f393c4e90dd59591e81501e"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41846756519"
+  iso: null
+  reissues: []
+highlights:
+  - "moving-to-rime-os-on-nixos-no-longer-needs-free"
+changes:
+  - id: "moving-to-rime-os-on-nixos-no-longer-needs-free"
+    area: "system"
+    kind: "fixed"
+    title: "Moving to Rime OS on NixOS no longer needs free space the size of your home folder"
+    summary: "Moving to Rime OS on NixOS no longer asks for free space the size of your home folder: your files are shared with the old system, not copied, so the check now counts only the new system, the old updates and the extra file records the move writes."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/146"
+    breaking: false
+knownIssues: []
+rollback: null
