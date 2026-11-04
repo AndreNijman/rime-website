@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.4"
+product: "rime"
+name: "Rime 2026.11.04.4"
+title: "The login keyring no longer crashes when an app reads it"
+date: "2026-11-04T05:58:34Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "The login keyring no longer crashes when an app reads it, so you are not asked for your password again later in the session."
+predecessor: "2026.11.04.3"
+provenance:
+  osRevision: "3c174be16f20a290e3669790dc0eb5426f28c4fa"
+  shellRevision: "6062e9c566d932f91ad7a0bc9501896dbdf3ba14"
+  imageDigest: "sha256:3fc5256c75738aa52314b26b112d448cde035ee23cfc6aa4d3e5ceb0ef4d0cec"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41779962021"
+  iso: null
+  reissues: []
+highlights:
+  - "the-login-keyring-no-longer-crashes-when-an-app"
+changes:
+  - id: "the-login-keyring-no-longer-crashes-when-an-app"
+    area: "security"
+    kind: "fixed"
+    title: "The login keyring no longer crashes when an app reads it"
+    summary: "The login keyring no longer crashes when an app reads it, so you are not asked for your password again later in the session."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/143"
+    breaking: false
+knownIssues: []
+rollback: null
