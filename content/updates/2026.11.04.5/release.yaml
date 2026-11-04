@@ -1,0 +1,53 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.5"
+product: "rime"
+name: "Rime 2026.11.04.5"
+title: "The update checker names the release on offer"
+date: "2026-11-04T10:22:04Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.04.4"
+provenance:
+  osRevision: "2f007a804d3391b55c22ad71f25238da9f1017e5"
+  shellRevision: "45491a649bbaee8c00490282b91cfbee571cefb0"
+  imageDigest: "sha256:59044db104620be94f231718a12058f7985c95b112d4a91ec6bdb65cb889da59"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41811741208"
+  iso: null
+  reissues: []
+highlights:
+  - "the-update-checker-names-the-release-on-offer"
+  - "the-update-icon-links-to-what-the-update-include"
+changes:
+  - id: "the-update-checker-names-the-release-on-offer"
+    area: "system"
+    kind: "new"
+    title: "The update checker names the release on offer"
+    summary: "The update checker now records which release an update is, so the update icon can open that release's notes on rimeos.com."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/144"
+    breaking: false
+  - id: "the-update-icon-links-to-what-the-update-include"
+    area: "shell"
+    kind: "new"
+    title: "The update icon links to what the update includes"
+    summary: "The update icon in the top bar now has \"What's in this update\", which opens the release notes on rimeos.com for every release the update brings. Settings → Updates has the same link."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/55"
+    breaking: false
+knownIssues: []
+rollback: null
