@@ -1,0 +1,44 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04.5. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.6"
+product: "rime"
+name: "Rime 2026.11.04.6"
+title: "Enrol the Rime key from the boot menu when Secure Boot refuses Rime OS"
+date: "2026-11-04T11:06:14Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "If Rime OS stops at \"bad shim signature\" because its Secure Boot key was never enrolled, the boot menu now has \"Enrol the Rime OS Secure Boot key\", so you no longer have to turn Secure Boot off. The installer also explains the blue key screen and what skipping enrolment means."
+predecessor: "2026.11.04.5"
+provenance:
+  osRevision: "e2c58aa19c917b70ad9cd8101ee0fa6aff938c10"
+  shellRevision: "45491a649bbaee8c00490282b91cfbee571cefb0"
+  imageDigest: "sha256:3a8246c59e1eb3960c211af686509d15b19a10dcc6abc4d7751c799e69b29e4a"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41814448480"
+  iso: null
+  reissues: []
+highlights:
+  - "enrol-the-rime-key-from-the-boot-menu-when-secur"
+changes:
+  - id: "enrol-the-rime-key-from-the-boot-menu-when-secur"
+    area: "system"
+    kind: "fixed"
+    title: "Enrol the Rime key from the boot menu when Secure Boot refuses Rime OS"
+    summary: "If Rime OS stops at \"bad shim signature\" because its Secure Boot key was never enrolled, the boot menu now has \"Enrol the Rime OS Secure Boot key\", so you no longer have to turn Secure Boot off. The installer also explains the blue key screen and what skipping enrolment means."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/145"
+    breaking: false
+knownIssues: []
+rollback: null
