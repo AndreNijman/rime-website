@@ -1,0 +1,53 @@
+# Written by scripts/sync-releases.mjs from the published image and the pull
+# requests merged since 2026.11.04.7. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.04.8"
+product: "rime"
+name: "Rime 2026.11.04.8"
+title: "The Secure Boot key steps name every EFI partition label"
+date: "2026-11-04T15:34:46Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+maintenance: false
+summary: "2 changes, to the system."
+predecessor: "2026.11.04.7"
+provenance:
+  osRevision: "d8d8c90f02a4dfc99c20fef7d3520fc49748d5ad"
+  shellRevision: "45491a649bbaee8c00490282b91cfbee571cefb0"
+  imageDigest: "sha256:eeb25d821aed993c467a64cfb3e12df84ab814a0c5ef8039279440333a27d073"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41849662435"
+  iso: null
+  reissues: []
+highlights:
+  - "the-secure-boot-key-steps-name-every-efi-partiti"
+  - "the-move-s-report-says-how-to-get-the-old-system"
+changes:
+  - id: "the-secure-boot-key-steps-name-every-efi-partiti"
+    area: "system"
+    kind: "fixed"
+    title: "The Secure Boot key steps name every EFI partition label"
+    summary: "The boot menu's \"Enrol the Rime OS Secure Boot key\" steps now name every label Rime gives its EFI partition, so the key file is easier to find on the blue key screen."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/147"
+    breaking: false
+  - id: "the-move-s-report-says-how-to-get-the-old-system"
+    area: "system"
+    kind: "fixed"
+    title: "The move's report says how to get the old system's space back"
+    summary: "After moving to Rime OS on NixOS, sudo rime migrate finish gives back the space the old system still holds; the move's report now says so and how to preview it first with --dry-run."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/149"
+    breaking: false
+knownIssues: []
+rollback: null
