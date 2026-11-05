@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.05.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.05.4"
+product: "rime"
+name: "Rime 2026.11.05.4"
+title: "Kernel 7.2.11"
+date: "2026-11-05T10:20:00Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "The kernel is updated to 7.2.11 with the latest stable fixes. This update is larger than usual because the system core is rebuilt around the new kernel."
+predecessor: "2026.11.05.3"
+provenance:
+  osRevision: "4b588ae93f9d3d71971eaf5790071d97b912bb04"
+  shellRevision: "f62670e44bf49ad88046d515aa33740f94431eea"
+  imageDigest: "sha256:ecc0b5ad53dc8dc8519cebfda9688534bee9390b1828b8abd9ce8e03a651a4e0"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41994562446"
+  iso: null
+  reissues: []
+highlights:
+  - "kernel-7-2-11"
+changes:
+  - id: "kernel-7-2-11"
+    area: "system"
+    kind: "improved"
+    title: "Kernel 7.2.11"
+    summary: "The kernel is updated to 7.2.11 with the latest stable fixes. This update is larger than usual because the system core is rebuilt around the new kernel."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/153"
+    breaking: false
+knownIssues: []
+rollback: null
