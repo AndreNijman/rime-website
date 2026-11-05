@@ -161,7 +161,10 @@ writes the record for any release newer than the newest one here: the release
 id, Shell revision and digest come from the published image's labels
 (`rime-os:daily-<commit>`), the build and date from the rime-os build-image
 run, and the changes from the pull requests merged into rime-os and rime-shell
-since the release before. A pull request that should read well on the page
+since the release before. Releases of the NixOS edition are found through its
+channel document (`rime-os:nix-channels`): each release manifest's annotations
+carry the same three facts, and its `issued` time dates it. Both editions take
+ids from one sequence, so an id published by both is one record. A pull request that should read well on the page
 says so in its body:
 
 ```md

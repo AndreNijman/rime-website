@@ -11,6 +11,9 @@
 //     (GHCR labels);
 //   · the first run with an id is the release, a later run with the same id is
 //     a reissue (the weekly cron rebuilding the same source);
+//   · every release the NixOS edition's channel document (rime-os:nix-channels)
+//     offers: its manifest's annotations carry the same three facts. Both
+//     editions share one id sequence, so an id published by both is one record;
 //   · its changes are the pull requests merged into rime-os and rime-shell
 //     between the previous release's revisions and this one's.
 //
@@ -36,6 +39,9 @@ const OWNER = "AndreNijman";
 const OS = "rime-os";
 const SHELL = "rime-shell";
 const IMAGE = "andrenijman/rime-os";
+const NIX_CHANNELS_TAG = "nix-channels";
+const NIX_RELEASE_TYPE = "application/vnd.rimeos.nix-release.v1+json";
+const NIX_CHANNELS_TYPE = "application/vnd.rimeos.nix-channels.v1+json";
 const SITE = "https://rimeos.com";
 // The first image that says which release it is (/usr/share/rime/release.json,
 // rime-os #72). Earlier releases have hand-written records.
@@ -165,7 +171,8 @@ export function recordFor(rel, changes) {
     name: `Rime ${rel.id}`,
     title: lead ? lead.title : "Maintenance build",
     date: rel.date,
-    channels: CHANNELS,
+    channels: rel.channels ?? CHANNELS,
+    editions: rel.editions ?? ["bootc"],
     maintenance: changes.length === 0,
     summary: changes.length === 0 ? "A maintenance build: newer packages and build fixes, with no change you would notice in Rime."
       : changes.length === 1 ? changes[0].summary
@@ -175,6 +182,7 @@ export function recordFor(rel, changes) {
       osRevision: rel.osRevision,
       shellRevision: rel.shellRevision,
       imageDigest: rel.digest,
+      ...(rel.nixManifest ? { nixManifest: rel.nixManifest } : {}),
       build: rel.build,
       iso: null,
       reissues: rel.reissues,
@@ -219,27 +227,50 @@ const MANIFEST_TYPES = [
   "application/vnd.docker.distribution.manifest.v2+json", "application/vnd.docker.distribution.manifest.list.v2+json",
 ].join(", ");
 
-// { digest, labels } of ghcr.io/<IMAGE>:<tag>, or null when there is no such tag.
-export async function imageLabels(tag) {
+async function registryHeaders() {
   if (!registryToken) {
     const r = await fetchRetry(`https://ghcr.io/token?scope=repository:${IMAGE}:pull`);
     registryToken = (await r.json()).token;
   }
-  const headers = { Authorization: `Bearer ${registryToken}`, Accept: MANIFEST_TYPES };
-  let r = await fetchRetry(`https://ghcr.io/v2/${IMAGE}/manifests/${tag}`, { headers });
+  return { Authorization: `Bearer ${registryToken}`, Accept: MANIFEST_TYPES };
+}
+
+// { digest, manifest } of ghcr.io/<IMAGE>:<tag or digest>, or null when there is no such tag.
+export async function manifestOf(ref) {
+  const headers = await registryHeaders();
+  let r = await fetchRetry(`https://ghcr.io/v2/${IMAGE}/manifests/${ref}`, { headers });
   if (r.status === 404) return null;
-  if (!r.ok) throw new Error(`GHCR ${tag}: HTTP ${r.status}`);
-  let digest = r.headers.get("docker-content-digest");
+  if (!r.ok) throw new Error(`GHCR ${ref}: HTTP ${r.status}`);
+  let digest = r.headers.get("docker-content-digest") || (ref.startsWith("sha256:") ? ref : null);
   let m = await r.json();
   if (m.manifests) {  // an index: the amd64 image is the one machines run
     const pick = m.manifests.find((x) => x.platform?.architecture === "amd64") || m.manifests[0];
     r = await fetchRetry(`https://ghcr.io/v2/${IMAGE}/manifests/${pick.digest}`, { headers });
+    if (!r.ok) throw new Error(`GHCR ${pick.digest}: HTTP ${r.status}`);
     digest = pick.digest;
     m = await r.json();
   }
-  const c = await fetchRetry(`https://ghcr.io/v2/${IMAGE}/blobs/${m.config.digest}`, { headers });
-  const config = await c.json();
-  return { digest, labels: config.config?.Labels || {} };
+  return { digest, manifest: m };
+}
+
+async function blobJson(digest) {
+  const r = await fetchRetry(`https://ghcr.io/v2/${IMAGE}/blobs/${digest}`, { headers: await registryHeaders() });
+  if (!r.ok) throw new Error(`GHCR blob ${digest}: HTTP ${r.status}`);
+  return r.json();
+}
+
+// { digest, labels } of ghcr.io/<IMAGE>:<tag>, or null when there is no such tag.
+// A NixOS release manifest is an OCI artifact whose config is `{}`: its labels
+// are the manifest's annotations (rime-os nix/release/rime_nix_release.py pack).
+export async function imageLabels(tag) {
+  const got = await manifestOf(tag);
+  if (!got) return null;
+  const m = got.manifest;
+  let labels = {};
+  if (m.config?.digest && m.config.mediaType !== "application/vnd.oci.empty.v1+json")
+    labels = (await blobJson(m.config.digest))?.config?.Labels || {};
+  if (!Object.keys(labels).length) labels = m.annotations || {};
+  return { digest: got.digest, labels };
 }
 
 // The records this checkout already has: id, date and revisions.
@@ -279,10 +310,10 @@ export function latestRunPerCommit(runs) {
   return [...last.values()].sort((a, b) => a.created_at.localeCompare(b.created_at));
 }
 
-// Releases published after the newest record, oldest first, each with its
-// predecessor. Only runs from two days before that record on are looked at,
-// so a check every 15 minutes costs a few requests, not one per release ever.
-export async function newReleases(known) {
+// bootc releases published after the newest record, oldest first. Only runs
+// from two days before that record on are looked at, so a check every 15
+// minutes costs a few requests, not one per release ever.
+export async function bootcReleases(known) {
   const newest = known[known.length - 1];
   const since = newest ? new Date(Date.parse(newest.date) - 2 * 86400e3).toISOString() : FIRST_STAMPED;
   const runs = [];
@@ -312,13 +343,103 @@ export async function newReleases(known) {
       osRevision: img.labels["org.opencontainers.image.revision"] || run.head_sha,
       shellRevision: img.labels["org.rimeos.rime-shell.ref"] || null,
       reissues: [],
+      editions: ["bootc"],
     };
     byId.set(id, rel);
     releases.push(rel);
   }
+  return releases;
+}
+
+// -1, 0 or 1. Ids that are not YYYY.MM.DD[.N] (the apex-v records) sort first.
+export function compareIds(a, b) {
+  const parts = (id) => RELEASE_ID.test(id) ? (([y, m, d, n]) => [y, m, d, n ?? 1])(id.split(".").map(Number)) : [-1];
+  const x = parts(a), y = parts(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) {
+    if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) < (y[i] ?? 0) ? -1 : 1;
+  }
+  return 0;
+}
+
+const layerOf = (m, media) => {
+  const l = (m.layers || []).find((x) => x.mediaType === media);
+  if (!l) throw new Error(`a NixOS object has no ${media} layer`);
+  return l.digest;
+};
+
+// NixOS releases newer than the newest record. The channel document
+// (rime-os:nix-channels) names each channel's release manifest by digest; a
+// manifest's annotations say which release it is, and its payload's `issued`
+// (Unix seconds, set when the manifest was built) dates it. Only a new
+// release's payload is read: it lists the whole closure.
+export async function nixReleases(known) {
+  const doc = await manifestOf(NIX_CHANNELS_TAG);
+  if (!doc) return [];  // nothing published from the NixOS edition yet
+  const channels = await blobJson(layerOf(doc.manifest, NIX_CHANNELS_TYPE));
+  const newest = known[known.length - 1];
+  const knownIds = new Set(known.map((k) => k.id));
+  const byDigest = new Map();
+  for (const e of channels.channels || []) {
+    if (!byDigest.has(e.digest)) byDigest.set(e.digest, { release: e.release, channels: [] });
+    byDigest.get(e.digest).channels.push(e.channel);
+  }
+  const releases = [];
+  for (const [digest, entry] of byDigest) {
+    const got = await manifestOf(digest);
+    if (!got) throw new Error(`the NixOS channel document names ${digest}, which the registry does not have`);
+    const ann = got.manifest.annotations || {};
+    const id = ann["org.rimeos.release.id"];
+    if (!id) continue;
+    if (!RELEASE_ID.test(id)) throw new Error(`NixOS manifest ${digest} carries a release id the site cannot use: ${JSON.stringify(id)}`);
+    if (entry.release && entry.release !== id) throw new Error(`the NixOS channel document calls ${digest} ${entry.release}, its manifest says ${id}`);
+    if (knownIds.has(id) || (newest && compareIds(id, newest.id) <= 0)) continue;
+    const m = await blobJson(layerOf(got.manifest, NIX_RELEASE_TYPE));
+    if (m.release !== id) throw new Error(`NixOS manifest ${digest} is release ${m.release}, its annotation says ${id}`);
+    const issued = Number.isInteger(m.issued) ? m.issued : channels.issued;
+    releases.push({
+      id,
+      digest: null,
+      nixManifest: digest,
+      build: null,
+      date: new Date(issued * 1000).toISOString().replace(".000Z", "Z"),
+      osRevision: ann["org.opencontainers.image.revision"] || m.source?.rime_os,
+      shellRevision: ann["org.rimeos.rime-shell.ref"] || m.source?.rime_shell || null,
+      reissues: [],
+      editions: ["nixos"],
+      channels: entry.channels.sort(),
+    });
+  }
+  return releases;
+}
+
+// Both editions draw ids from one sequence (rime-os next-release-id), so an id
+// seen from both is one release: one record, both editions. Oldest first, each
+// with its predecessor.
+export function mergeReleases(newest, ...sources) {
+  const byId = new Map();
+  for (const rel of sources.flat()) {
+    const had = byId.get(rel.id);
+    if (!had) { byId.set(rel.id, { ...rel }); continue; }
+    const [a, b] = had.editions.includes("bootc") ? [had, rel] : [rel, had];
+    byId.set(rel.id, {
+      ...a,
+      date: Date.parse(b.date) < Date.parse(a.date) ? b.date : a.date,
+      digest: a.digest ?? b.digest ?? null,
+      nixManifest: a.nixManifest ?? b.nixManifest ?? null,
+      build: a.build ?? b.build ?? null,
+      channels: a.channels,  // the bootc release's image tags (recordFor's default)
+      editions: [...new Set([...a.editions, ...b.editions])].sort(),
+    });
+  }
+  const releases = [...byId.values()].sort((a, b) => Date.parse(a.date) - Date.parse(b.date) || compareIds(a.id, b.id));
   let prev = newest || null;
   for (const r of releases) { r.prev = prev; r.predecessor = prev ? prev.id : null; prev = r; }
   return releases;
+}
+
+// Releases published after the newest record, from either edition.
+export async function newReleases(known) {
+  return mergeReleases(known[known.length - 1], await bootcReleases(known), await nixReleases(known));
 }
 
 async function mergedPulls(repo, base, head) {
@@ -354,7 +475,7 @@ export async function changesFor(rel) {
   return out;
 }
 
-const HEADER = (rel) => `# Written by scripts/sync-releases.mjs from the published image and the pull
+const HEADER = (rel) => `# Written by scripts/sync-releases.mjs from the published release and the pull
 # requests merged since ${rel.predecessor ?? "the previous release"}. Edit freely: the script never
 # touches a record that exists.
 `;

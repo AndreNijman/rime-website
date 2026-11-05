@@ -31,7 +31,8 @@ const groups: { id: string; title: string; items: Change[]; quiet?: boolean }[] 
   { id: "fixed", title: "Fixed", items: rest.filter((c) => c.kind === "fixed" && !isSec(c) && c.area !== "developer"), quiet: true },
   { id: "developer", title: "Developer changes", items: rest.filter((c) => c.area === "developer"), quiet: true },
 ].filter((g) => g.items.length);
-const ch = channelOf(r.channels);
+const ch = channelOf(r.channels, r.editions);
+const EDITION = { bootc: "Image (bootc)", nixos: "NixOS" } as const;
 const p = r.provenance;
 const repoOs = SITE.repos.os, repoShell = SITE.repos.shell;
 const desc = r.summary.split(/(?<=\.)\s+/)[0];
@@ -149,7 +150,9 @@ const desc = r.summary.split(/(?<=\.)\s+/)[0];
             <div><dt>Release</dt><dd>{r.id}</dd></div>
             <div><dt>OS revision</dt><dd><a href={`${repoOs}/commit/${p.osRevision}`}>{p.osRevision}</a></dd></div>
             {p.shellRevision && <div><dt>Shell revision</dt><dd><a href={`${repoShell}/commit/${p.shellRevision}`}>{p.shellRevision}</a></dd></div>}
+            {r.editions && <div><dt>Editions</dt><dd>{r.editions.map((e) => EDITION[e]).join(", ")}</dd></div>}
             {p.imageDigest && <div><dt>Image digest</dt><dd>{p.imageDigest}</dd></div>}
+            {p.nixManifest && <div><dt>NixOS manifest</dt><dd>{p.nixManifest}</dd></div>}
             {p.reissues.map((x) => <div><dt>Reissued</dt><dd>{x.digest}<br /><span class="reissue-note">{x.date.toISOString()} · <a href={x.build}>{x.build.replace("https://github.com/", "")}</a> · {x.note}</span></dd></div>)}
             {p.iso && <div><dt>Installer</dt><dd><a href={p.iso.url}>{p.iso.name}</a> · {p.iso.bytes.toLocaleString("en-AU")} bytes</dd></div>}
             {p.iso && <div><dt>ISO SHA-256</dt><dd>{p.iso.sha256}</dd></div>}

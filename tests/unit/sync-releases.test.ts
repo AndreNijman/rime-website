@@ -1,7 +1,8 @@
 // scripts/sync-releases.mjs: how a merged pull request becomes a line on a
 // public release page, without the network (the sources are read in CI).
-import { test, expect } from "vitest";
-import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit, publishingRun, branchType } from "../../scripts/sync-releases.mjs";
+import { test, expect, vi, afterEach } from "vitest";
+import { parseTitle, summaryFrom, changeFrom, recordFor, latestRunPerCommit, publishingRun, branchType,
+  imageLabels, nixReleases, mergeReleases, compareIds } from "../../scripts/sync-releases.mjs";
 
 const pr = (title: string, body = "", extra: Record<string, unknown> = {}) =>
   ({ number: 7, title, body, html_url: "https://github.com/AndreNijman/rime-os/pull/7", labels: [], ...extra });
@@ -129,3 +130,133 @@ test("the build that asks for its page is still running, and counts", () => {
   expect(publishingRun({ status: "completed", conclusion: "cancelled" })).toBe(false);
 });
 
+// ── the NixOS edition, against a fake registry ───────────────────────────────
+const sha = (c: string) => "sha256:" + c.repeat(64);
+const OS_REV = "a".repeat(40), SHELL_REV = "b".repeat(40);
+const RELEASE_TYPE = "application/vnd.rimeos.nix-release.v1+json";
+const CHANNELS_TYPE = "application/vnd.rimeos.nix-channels.v1+json";
+
+// Answers ghcr.io for the given manifests and blobs (keyed by tag or digest);
+// anything else is a 404, so a request the code should not make fails the test.
+function fakeRegistry(objects: Record<string, { body: unknown; digest?: string }>) {
+  const asked: string[] = [];
+  const fetch = vi.fn(async (url: string) => {
+    if (url.startsWith("https://ghcr.io/token")) return Response.json({ token: "t" });
+    const m = /^https:\/\/ghcr\.io\/v2\/andrenijman\/rime-os\/(?:manifests|blobs)\/(.+)$/.exec(url);
+    if (m) asked.push(m[1]);
+    const o = m && objects[m[1]];
+    if (!o) return new Response("", { status: 404 });
+    return Response.json(o.body, { headers: o.digest ? { "docker-content-digest": o.digest } : {} });
+  });
+  vi.stubGlobal("fetch", fetch);
+  return asked;
+}
+afterEach(() => vi.unstubAllGlobals());
+
+// rime-os nix/release/rime_nix_release.py pack(): config `{}`, one layer, identity in annotations.
+const artifact = (media: string, layer: string, annotations: Record<string, string>) => ({
+  schemaVersion: 2, mediaType: "application/vnd.oci.image.manifest.v1+json", artifactType: media,
+  config: { mediaType: "application/vnd.oci.image.config.v1+json", digest: sha("e"), size: 2 },
+  layers: [{ mediaType: media, digest: layer, size: 1 }], annotations,
+});
+const nixAnnotations = (id: string) => ({ "org.rimeos.release.id": id, "org.opencontainers.image.revision": OS_REV,
+  "org.rimeos.rime-shell.ref": SHELL_REV, "org.rimeos.product": "nixos" });
+
+test("a NixOS release manifest's labels are its annotations, its config being {}", async () => {
+  fakeRegistry({
+    [`nix-${OS_REV}-${SHELL_REV}`]: { body: artifact(RELEASE_TYPE, sha("4"), nixAnnotations("2026.11.05")), digest: sha("2") },
+    [sha("e")]: { body: {} },
+  });
+  expect(await imageLabels(`nix-${OS_REV}-${SHELL_REV}`)).toEqual({ digest: sha("2"), labels: nixAnnotations("2026.11.05") });
+});
+
+test("a bootc image's labels still come from its config", async () => {
+  fakeRegistry({
+    "daily-abc": { body: { config: { mediaType: "application/vnd.oci.image.config.v1+json", digest: sha("c") },
+      layers: [], annotations: { "org.rimeos.release.id": "wrong" } }, digest: sha("9") },
+    [sha("c")]: { body: { config: { Labels: { "org.rimeos.release.id": "2026.11.05" } } } },
+  });
+  expect(await imageLabels("daily-abc")).toEqual({ digest: sha("9"), labels: { "org.rimeos.release.id": "2026.11.05" } });
+  expect(await imageLabels("daily-missing")).toBeNull();
+});
+
+const known = [{ id: "2026.11.04", date: "2026-11-04T02:00:00.000Z", osRevision: "f".repeat(40), shellRevision: null }];
+const channelDoc = (entries: unknown[]) => ({
+  "nix-channels": { body: artifact(CHANNELS_TYPE, sha("1"), { "org.rimeos.product": "nixos" }), digest: sha("d") },
+  [sha("1")]: { body: { schema: 1, serial: 3, issued: 1794000000, expires: 1795000000, repository: "x", channels: entries } },
+});
+
+test("a NixOS release is found through the channel document, dated by its manifest", async () => {
+  const asked = fakeRegistry({
+    ...channelDoc([
+      { channel: "edge", digest: sha("2"), release: "2026.11.05", percent: 100, halt: false },
+      { channel: "beta", digest: sha("2"), percent: 100, halt: false },
+      { channel: "stable", digest: sha("3"), release: "2026.11.01", percent: 100, halt: false },
+    ]),
+    [sha("2")]: { body: artifact(RELEASE_TYPE, sha("4"), nixAnnotations("2026.11.05")) },
+    [sha("4")]: { body: { schema: 1, kind: "rime-nixos-release", release: "2026.11.05", issued: 1793847600,
+      source: { rime_os: OS_REV, rime_shell: SHELL_REV } } },
+    [sha("3")]: { body: artifact(RELEASE_TYPE, sha("5"), nixAnnotations("2026.11.01")) },
+  });
+  expect(await nixReleases(known)).toEqual([{
+    id: "2026.11.05", digest: null, nixManifest: sha("2"), build: null, date: "2026-11-05T03:00:00Z",
+    osRevision: OS_REV, shellRevision: SHELL_REV, reissues: [], editions: ["nixos"], channels: ["beta", "edge"],
+  }]);
+  // The older release on stable is not new: its (closure-sized) payload is never fetched.
+  expect(asked).not.toContain(sha("5"));
+});
+
+test("no channel document yet means no NixOS release", async () => {
+  fakeRegistry({});
+  expect(await nixReleases(known)).toEqual([]);
+});
+
+test("a NixOS release id the site cannot use is refused", async () => {
+  fakeRegistry({
+    ...channelDoc([{ channel: "edge", digest: sha("2"), percent: 100, halt: false }]),
+    [sha("2")]: { body: artifact(RELEASE_TYPE, sha("4"), nixAnnotations("2026.11.05; rm -rf ~")) },
+  });
+  await expect(nixReleases(known)).rejects.toThrow(/release id the site cannot use/);
+});
+
+test("a channel entry and its manifest must agree on the release", async () => {
+  fakeRegistry({
+    ...channelDoc([{ channel: "edge", digest: sha("2"), release: "2026.11.06", percent: 100, halt: false }]),
+    [sha("2")]: { body: artifact(RELEASE_TYPE, sha("4"), nixAnnotations("2026.11.05")) },
+  });
+  await expect(nixReleases(known)).rejects.toThrow(/calls .* 2026\.11\.06/);
+});
+
+test("both editions merge into one chain; an id from both is one release", () => {
+  const bootc = [
+    { id: "2026.11.05.2", date: "2026-11-05T09:00:00Z", digest: sha("7"), build: "https://github.com/AndreNijman/rime-os/actions/runs/2",
+      osRevision: OS_REV, shellRevision: SHELL_REV, reissues: [], editions: ["bootc"] },
+    { id: "2026.11.05", date: "2026-11-05T03:10:00Z", digest: sha("6"), build: "https://github.com/AndreNijman/rime-os/actions/runs/1",
+      osRevision: OS_REV, shellRevision: SHELL_REV, reissues: [], editions: ["bootc"] },
+  ];
+  const nix = [
+    { id: "2026.11.05", date: "2026-11-05T03:00:00Z", digest: null, nixManifest: sha("2"), build: null,
+      osRevision: OS_REV, shellRevision: SHELL_REV, reissues: [], editions: ["nixos"], channels: ["edge"] },
+    { id: "2026.11.05.3", date: "2026-11-05T11:00:00Z", digest: null, nixManifest: sha("8"), build: null,
+      osRevision: OS_REV, shellRevision: SHELL_REV, reissues: [], editions: ["nixos"], channels: ["edge"] },
+  ];
+  const out = mergeReleases(known[0], bootc, nix);
+  expect(out.map((r: any) => [r.id, r.predecessor])).toEqual([
+    ["2026.11.05", "2026.11.04"], ["2026.11.05.2", "2026.11.05"], ["2026.11.05.3", "2026.11.05.2"]]);
+  expect(out[0]).toMatchObject({ editions: ["bootc", "nixos"], digest: sha("6"), nixManifest: sha("2"),
+    build: "https://github.com/AndreNijman/rime-os/actions/runs/1", date: "2026-11-05T03:00:00Z" });
+  // A release both published keeps the image tags; one only NixOS published lists its channels.
+  expect(recordFor(out[0], []).channels).toContain("rime");
+  const nixOnly = recordFor(out[2], []);
+  expect(nixOnly).toMatchObject({ channels: ["edge"], editions: ["nixos"], predecessor: "2026.11.05.2" });
+  expect(nixOnly.provenance).toMatchObject({ imageDigest: null, nixManifest: sha("8"), build: null, osRevision: OS_REV });
+  expect(recordFor(rel, []).editions).toEqual(["bootc"]);
+  expect(recordFor(rel, []).provenance).not.toHaveProperty("nixManifest");
+});
+
+test("release ids order by date, then by number within a day", () => {
+  expect(compareIds("2026.11.05", "2026.11.05.2")).toBe(-1);
+  expect(compareIds("2026.11.05.10", "2026.11.05.9")).toBe(1);
+  expect(compareIds("2026.11.05", "2026.11.05")).toBe(0);
+  expect(compareIds("apex-v2.1.0", "2026.09.28")).toBe(-1);
+});
