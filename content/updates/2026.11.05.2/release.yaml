@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.05. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.05.2"
+product: "rime"
+name: "Rime 2026.11.05.2"
+title: "Right-clicking the desktop restarts a stopped Rime Shell and opens the menu"
+date: "2026-11-05T04:03:33Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Right-clicking the desktop while Rime Shell is not running now restarts the Shell and opens the desktop menu."
+predecessor: "2026.11.05"
+provenance:
+  osRevision: "aa2acb898e28d175aa73f5b092f90ec6594a9fba"
+  shellRevision: "f62670e44bf49ad88046d515aa33740f94431eea"
+  imageDigest: "sha256:dac0c8c78ef91011d70df2a070ca0a3f89d3bd894476fa4259c8809991a80e3d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41960664319"
+  iso: null
+  reissues: []
+highlights:
+  - "right-clicking-the-desktop-restarts-a-stopped-ri"
+changes:
+  - id: "right-clicking-the-desktop-restarts-a-stopped-ri"
+    area: "system"
+    kind: "fixed"
+    title: "Right-clicking the desktop restarts a stopped Rime Shell and opens the menu"
+    summary: "Right-clicking the desktop while Rime Shell is not running now restarts the Shell and opens the desktop menu."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/151"
+    breaking: false
+knownIssues: []
+rollback: null
