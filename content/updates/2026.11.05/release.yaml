@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.04.8. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.05"
+product: "rime"
+name: "Rime 2026.11.05"
+title: "The Windows installer can install into an empty partition you made, and Rime no longer takes the space next to its partition"
+date: "2026-11-05T03:22:37Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "The Windows installer can now install Rime into an empty partition you made in Disk Management, with or without a drive letter. Rime also no longer takes over free space left after the partition it was installed into."
+predecessor: "2026.11.04.8"
+provenance:
+  osRevision: "99c4f640e0f438826d03848503445c4008fba649"
+  shellRevision: "f62670e44bf49ad88046d515aa33740f94431eea"
+  imageDigest: "sha256:f9960146d9325a5d8cee1d9d01f0b21bd34135dfcddade145eebf1da7ddc0fcb"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/41959247219"
+  iso: null
+  reissues: []
+highlights:
+  - "the-windows-installer-can-install-into-an-empty"
+changes:
+  - id: "the-windows-installer-can-install-into-an-empty"
+    area: "system"
+    kind: "fixed"
+    title: "The Windows installer can install into an empty partition you made, and Rime no longer takes the space next to its partition"
+    summary: "The Windows installer can now install Rime into an empty partition you made in Disk Management, with or without a drive letter. Rime also no longer takes over free space left after the partition it was installed into."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/148"
+    breaking: false
+knownIssues: []
+rollback: null
