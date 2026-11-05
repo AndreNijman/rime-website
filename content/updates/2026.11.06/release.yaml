@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.05.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.06"
+product: "rime"
+name: "Rime 2026.11.06"
+title: "Rime Shell for Rime OS on NixOS"
+date: "2026-11-05T17:14:04Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "A first SUPER+B press works before the dashboard has opened, and power mode changes say why Rime refused one and which power tier is in force."
+predecessor: "2026.11.05.4"
+provenance:
+  osRevision: "8f38a7a73d2b7607a900e58032171fb15ce11553"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:ca34678ce19df7e5a154c36376819cf006e8b4a7bf35480f1de99b9b1575c7e2"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/42069550423"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-shell-for-rime-os-on-nixos"
+changes:
+  - id: "rime-shell-for-rime-os-on-nixos"
+    area: "shell"
+    kind: "new"
+    title: "Rime Shell for Rime OS on NixOS"
+    summary: "A first SUPER+B press works before the dashboard has opened, and power mode changes say why Rime refused one and which power tier is in force."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/56"
+    breaking: false
+knownIssues: []
+rollback: null
