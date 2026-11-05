@@ -28,12 +28,17 @@ const updates = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     channels: z.array(z.string()).default([]),
+    // Which editions published this id (one id sequence covers both). Absent on
+    // records written before the NixOS edition existed: those are bootc.
+    editions: z.array(z.enum(["bootc", "nixos"])).optional(),
     summary: z.string(),
     predecessor: z.string().nullable(),
     provenance: z.object({
       osRevision: z.string().regex(/^[0-9a-f]{7,40}$/),
       shellRevision: z.string().regex(/^[0-9a-f]{7,40}$/).nullable(),
       imageDigest: z.string().regex(/^sha256:[0-9a-f]{12,64}$/).nullable(),
+      // The NixOS edition's signed release manifest (rime-os:nix-<os>-<shell>).
+      nixManifest: z.string().regex(/^sha256:[0-9a-f]{64}$/).nullable().optional(),
       build: z.url().nullable(),
       iso: z.object({ name: z.string(), bytes: z.number(), sha256: z.string(), url: z.url() }).nullable().optional(),
       // Same source rebuilt later (the weekly cron): a new digest, not a new release.

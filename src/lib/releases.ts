@@ -76,6 +76,7 @@ export function releaseJson(r: Release, site: string) {
     title: r.title,
     date: r.date.toISOString(),
     channels: r.channels,
+    ...(r.editions ? { editions: r.editions } : {}),
     predecessor: r.predecessor,
     notes: `${site}/updates/${r.id}`,
     summary: r.summary,
