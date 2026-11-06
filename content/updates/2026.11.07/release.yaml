@@ -1,0 +1,37 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.06.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.07"
+product: "rime"
+name: "Rime 2026.11.07"
+title: "Maintenance build"
+date: "2026-11-06T16:33:10Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: true
+summary: "A maintenance build: newer packages and build fixes, with no change you would notice in Rime."
+predecessor: "2026.11.06.4"
+provenance:
+  osRevision: "f28e3e518556a11af7d66ed9c29fe4851e6a8a34"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:702650650ac795b3bc46c89a331c634cd3dc37496af39251c92ba3dd1ad941f7"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/42250929786"
+  iso: null
+  reissues: []
+highlights: []
+changes: []
+knownIssues: []
+rollback: null
