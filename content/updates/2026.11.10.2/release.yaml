@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.10. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.10.2"
+product: "rime"
+name: "Rime 2026.11.10.2"
+title: "The move to Rime on NixOS needs no external drive"
+date: "2026-11-10T15:30:30Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Moving to Rime on NixOS no longer needs an external drive: the move keeps a restore point on the same disk, checked before anything else changes."
+predecessor: "2026.11.10"
+provenance:
+  osRevision: "6a0aec920353e8dedbfc2931a19765ab5f2334ed"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:a817ccbc5b8c2ae68092433cea4db3652783eaa30d1b59f4baa36aef50ff6ede"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/42841977402"
+  iso: null
+  reissues: []
+highlights:
+  - "the-move-to-rime-on-nixos-needs-no-external-driv"
+changes:
+  - id: "the-move-to-rime-on-nixos-needs-no-external-driv"
+    area: "system"
+    kind: "new"
+    title: "The move to Rime on NixOS needs no external drive"
+    summary: "Moving to Rime on NixOS no longer needs an external drive: the move keeps a restore point on the same disk, checked before anything else changes."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/161"
+    breaking: false
+knownIssues: []
+rollback: null
