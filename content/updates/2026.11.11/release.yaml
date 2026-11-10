@@ -1,0 +1,37 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.10.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.11"
+product: "rime"
+name: "Rime 2026.11.11"
+title: "Rime on NixOS ships a signed kernel again"
+date: "2026-11-10T19:39:39Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: false
+summary: "Rime on NixOS starts again on machines with Secure Boot on: its kernel was published without its signature."
+predecessor: "2026.11.10.2"
+provenance:
+  osRevision: "681d16e3bd5decb7f798f5adec094d66d797dfd5"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: null
+  nixManifest: "sha256:4fcdd6ab29a14ad0f39e23774b402070a820fbc999c2dcd3ac36a8b81c613521"
+  build: null
+  iso: null
+  reissues: []
+highlights:
+  - "rime-on-nixos-ships-a-signed-kernel-again"
+changes:
+  - id: "rime-on-nixos-ships-a-signed-kernel-again"
+    area: "system"
+    kind: "fixed"
+    title: "Rime on NixOS ships a signed kernel again"
+    summary: "Rime on NixOS starts again on machines with Secure Boot on: its kernel was published without its signature."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/162"
+    breaking: false
+knownIssues: []
+rollback: null
