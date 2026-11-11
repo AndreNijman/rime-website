@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.11. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.11.2"
+product: "rime"
+name: "Rime 2026.11.11.2"
+title: "The move to NixOS no longer stops on container images in home"
+date: "2026-11-11T16:13:46Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: false
+summary: "2 changes, to the system."
+predecessor: "2026.11.11"
+provenance:
+  osRevision: "374920b3fe40cca0a0541f06d9f864ad9e112a28"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: null
+  nixManifest: "sha256:9fa1fae1504cc2b36d432bff1acafc14b562f89e661a9f19ddd3341e010c7404"
+  build: null
+  iso: null
+  reissues: []
+highlights:
+  - "the-move-to-nixos-no-longer-stops-on-container-i"
+  - "an-undone-move-to-nixos-keeps-checking-for-updat"
+changes:
+  - id: "the-move-to-nixos-no-longer-stops-on-container-i"
+    area: "system"
+    kind: "fixed"
+    title: "The move to NixOS no longer stops on container images in home"
+    summary: "Moving to Rime on NixOS no longer stops when your home folder holds container images: their links to system folders were mistaken for parts of home missing from the restore point."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/163"
+    breaking: false
+  - id: "an-undone-move-to-nixos-keeps-checking-for-updat"
+    area: "system"
+    kind: "fixed"
+    title: "An undone move to NixOS keeps checking for updates"
+    summary: "If the move to Rime on NixOS stops and undoes itself, the system keeps checking for updates again straight away, without needing a restart."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/164"
+    breaking: false
+knownIssues: []
+rollback: null
