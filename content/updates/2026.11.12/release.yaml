@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.11.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.12"
+product: "rime"
+name: "Rime 2026.11.12"
+title: "A computer moved to NixOS starts without waiting for a missing disk"
+date: "2026-11-11T19:38:27Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Moving a computer to Rime on NixOS no longer leaves its first NixOS start stuck waiting for a disk the computer does not have. Rime refuses the earlier move packages that had this fault."
+predecessor: "2026.11.11.2"
+provenance:
+  osRevision: "9b856520d891c2927e37f78caae310dd227e4c5f"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:64495155d82efbc150303c84d11b4aac172b3bf015fd9be61ada12daac8d0bb2"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43085815072"
+  iso: null
+  reissues: []
+highlights:
+  - "a-computer-moved-to-nixos-starts-without-waiting"
+changes:
+  - id: "a-computer-moved-to-nixos-starts-without-waiting"
+    area: "system"
+    kind: "fixed"
+    title: "A computer moved to NixOS starts without waiting for a missing disk"
+    summary: "Moving a computer to Rime on NixOS no longer leaves its first NixOS start stuck waiting for a disk the computer does not have. Rime refuses the earlier move packages that had this fault."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/165"
+    breaking: false
+knownIssues: []
+rollback: null
