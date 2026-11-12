@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.12. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.12.2"
+product: "rime"
+name: "Rime 2026.11.12.2"
+title: "Take back a move to Rime on NixOS whose new system never started"
+date: "2026-11-12T01:25:12Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "If a move to Rime on NixOS finished but the new system never started, sudo rime migrate undo now takes the move back so the computer updates normally again."
+predecessor: "2026.11.12"
+provenance:
+  osRevision: "eb0b824612cc02e78d2cc5e2065f0fe08cfd0deb"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:508681d75764e12fc4166204d0cc165abb50022b9fdcda2ec45126158307584c"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43132436141"
+  iso: null
+  reissues: []
+highlights:
+  - "take-back-a-move-to-rime-on-nixos-whose-new-syst"
+changes:
+  - id: "take-back-a-move-to-rime-on-nixos-whose-new-syst"
+    area: "system"
+    kind: "fixed"
+    title: "Take back a move to Rime on NixOS whose new system never started"
+    summary: "If a move to Rime on NixOS finished but the new system never started, sudo rime migrate undo now takes the move back so the computer updates normally again."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/166"
+    breaking: false
+knownIssues: []
+rollback: null
