@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.13. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.13.2"
+product: "rime"
+name: "Rime 2026.11.13.2"
+title: "Machines moved to NixOS work like they did before the move"
+date: "2026-11-13T07:00:58Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.13"
+provenance:
+  osRevision: "f94615100a9b5cc946603ea57daa81c027a0f4af"
+  shellRevision: "eb9ffb207b466b9cb146917fea944eff871d654a"
+  imageDigest: "sha256:c45125f3b788fe767448a1e395b861be2f57fe7ded35aa6f726d90e9fd34aa00"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43380352057"
+  iso: null
+  reissues: []
+highlights:
+  - "machines-moved-to-nixos-work-like-they-did-befor"
+  - "new-terminal-windows-open-in-your-home-folder"
+changes:
+  - id: "machines-moved-to-nixos-work-like-they-did-befor"
+    area: "system"
+    kind: "fixed"
+    title: "Machines moved to NixOS work like they did before the move"
+    summary: "Machines moved to NixOS Rime work like they did before the move: administrators use sudo without a password, programs and scripts that name /usr/bin or /bin/bash run again, the shell tools, zsh plugins and zoxide are back, every login has your language setting again (btop starts), ssh from Ghostty works, firmware…"
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/168"
+    breaking: false
+  - id: "new-terminal-windows-open-in-your-home-folder"
+    area: "shell"
+    kind: "fixed"
+    title: "New terminal windows open in your home folder"
+    summary: "New terminal windows open in your home folder instead of the folder of the window you were in."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/57"
+    breaking: false
+knownIssues: []
+rollback: null
