@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.12.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.13"
+product: "rime"
+name: "Rime 2026.11.13"
+title: "Moved machines get the terminal greeting, working Flatpak launchers and their Flatpak apps"
+date: "2026-11-13T00:32:14Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "A machine moved to NixOS shows the Rime logo in new terminals again, its Flatpak apps open from the launcher, and the move now brings the system's Flatpak apps along."
+predecessor: "2026.11.12.2"
+provenance:
+  osRevision: "c4b9278775d29a48d4432453976e05fb36f12d4b"
+  shellRevision: "2afae84c86f88e7457fb95931e4ab9479bcaaabd"
+  imageDigest: "sha256:fc23b63adeaec6416249930041acd62943699518ac9fc8036f42e7a2f186e8b5"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43335253797"
+  iso: null
+  reissues: []
+highlights:
+  - "moved-machines-get-the-terminal-greeting-working"
+changes:
+  - id: "moved-machines-get-the-terminal-greeting-working"
+    area: "system"
+    kind: "fixed"
+    title: "Moved machines get the terminal greeting, working Flatpak launchers and their Flatpak apps"
+    summary: "A machine moved to NixOS shows the Rime logo in new terminals again, its Flatpak apps open from the launcher, and the move now brings the system's Flatpak apps along."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/167"
+    breaking: false
+knownIssues: []
+rollback: null
