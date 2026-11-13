@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.13.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.14"
+product: "rime"
+name: "Rime 2026.11.14"
+title: "Ctrl+Enter in the terminal goes to your program, not fullscreen"
+date: "2026-11-13T17:27:56Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.13.2"
+provenance:
+  osRevision: "a81cfa7afb9a289024b1daef4c5272715b1925df"
+  shellRevision: "7a4bbe4846dee8d2cfac73a8f2b7e47cde64484a"
+  imageDigest: "sha256:9677ea1437bd9707094cb5cca51e1e5a7446a6fe040f2123d0276a50519dd614"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43470363863"
+  iso: null
+  reissues: []
+highlights:
+  - "ctrl-enter-in-the-terminal-goes-to-your-program"
+  - "ctrl-enter-in-the-terminal-goes-to-your-program-2"
+changes:
+  - id: "ctrl-enter-in-the-terminal-goes-to-your-program"
+    area: "system"
+    kind: "fixed"
+    title: "Ctrl+Enter in the terminal goes to your program, not fullscreen"
+    summary: "Ctrl+Enter in the terminal now goes to the program you are using instead of making the window fullscreen. A Ghostty config you wrote yourself without Rime's terminal theme keeps Ghostty's own default."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/169"
+    breaking: false
+  - id: "ctrl-enter-in-the-terminal-goes-to-your-program-2"
+    area: "shell"
+    kind: "fixed"
+    title: "Ctrl+Enter in the terminal goes to your program, not fullscreen"
+    summary: "Ctrl+Enter in the terminal now goes to the program you are using instead of making the window fullscreen. A Ghostty config you wrote yourself without Rime's terminal theme keeps Ghostty's own default."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/58"
+    breaking: false
+knownIssues: []
+rollback: null
