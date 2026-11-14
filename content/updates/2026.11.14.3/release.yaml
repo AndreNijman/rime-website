@@ -1,0 +1,28 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.14.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.14.3"
+product: "rime"
+name: "Rime 2026.11.14.3"
+title: "Maintenance build"
+date: "2026-11-14T08:19:13Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: true
+summary: "A maintenance build: newer packages and build fixes, with no change you would notice in Rime."
+predecessor: "2026.11.14.2"
+provenance:
+  osRevision: "fa66e8258456463ad3aa27db196f972af44d8c23"
+  shellRevision: "76fb26729cbec65729bc3124b4de9765b003d50d"
+  imageDigest: null
+  nixManifest: "sha256:3fb07b4994e44e1c6a808aec2e535008f015ddff83d9a066e2824424473b5d96"
+  build: null
+  iso: null
+  reissues: []
+highlights: []
+changes: []
+knownIssues: []
+rollback: null
