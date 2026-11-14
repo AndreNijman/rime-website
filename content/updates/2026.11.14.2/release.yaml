@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.14. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.14.2"
+product: "rime"
+name: "Rime 2026.11.14.2"
+title: "Origin, Rime's new logo, on NixOS"
+date: "2026-11-14T02:05:13Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.14"
+provenance:
+  osRevision: "0d1a706944f6e1fb15a12e53e64f59647a49a570"
+  shellRevision: "76fb26729cbec65729bc3124b4de9765b003d50d"
+  imageDigest: "sha256:31b56218fd157f1179d6d94f9e1fb03a81b3fdb85cd965f28551b1a55ef45174"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43542682681"
+  iso: null
+  reissues: []
+highlights:
+  - "origin-rime-s-new-logo-on-nixos"
+  - "the-origin-logo-in-the-shell"
+changes:
+  - id: "origin-rime-s-new-logo-on-nixos"
+    area: "system"
+    kind: "new"
+    title: "Origin, Rime's new logo, on NixOS"
+    summary: "Rime OS on NixOS has a new logo, Origin: five circles growing from one point, in your accent colour. It appears on the boot splash, the login screen, the terminal greeting and the app icons. The Fedora-based Rime OS image keeps its current logo for now."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/170"
+    breaking: false
+  - id: "the-origin-logo-in-the-shell"
+    area: "shell"
+    kind: "new"
+    title: "The Origin logo in the Shell"
+    summary: "Rime OS on NixOS shows the new Origin logo in the bar, in Settings and on the Settings app icon, drawn in your accent colour."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/59"
+    breaking: false
+knownIssues: []
+rollback: null
