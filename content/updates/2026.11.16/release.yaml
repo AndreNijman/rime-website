@@ -1,0 +1,37 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.14.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.16"
+product: "rime"
+name: "Rime 2026.11.16"
+title: "Joining a new Wi-Fi network no longer asks an administrator for a password on NixOS"
+date: "2026-11-15T17:31:02Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: false
+summary: "Joining a new Wi-Fi network on Rime for NixOS no longer asks an administrator for a password, the same as on Fedora."
+predecessor: "2026.11.14.3"
+provenance:
+  osRevision: "82bf3236fca28e81cfa72296b5108885aaab4f69"
+  shellRevision: "76fb26729cbec65729bc3124b4de9765b003d50d"
+  imageDigest: null
+  nixManifest: "sha256:e906974303fd81126271ffee33b32a32cb207154d56605f19d7dffb7833df343"
+  build: null
+  iso: null
+  reissues: []
+highlights:
+  - "joining-a-new-wi-fi-network-no-longer-asks-an-ad"
+changes:
+  - id: "joining-a-new-wi-fi-network-no-longer-asks-an-ad"
+    area: "system"
+    kind: "fixed"
+    title: "Joining a new Wi-Fi network no longer asks an administrator for a password on NixOS"
+    summary: "Joining a new Wi-Fi network on Rime for NixOS no longer asks an administrator for a password, the same as on Fedora."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/172"
+    breaking: false
+knownIssues: []
+rollback: null
