@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.16. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.16.2"
+product: "rime"
+name: "Rime 2026.11.16.2"
+title: "The audio visualisers switch off on battery"
+date: "2026-11-16T07:48:33Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "The music visualiser in the notch and the screen recorder's audio meter now switch off on battery to save power, and come back when you plug in."
+predecessor: "2026.11.16"
+provenance:
+  osRevision: "1066943b1018c9b9ae374c7edcb81d9796db46ef"
+  shellRevision: "8f9779dab602c28ced77a75a19f137cc9a149f6c"
+  imageDigest: "sha256:4237f2a7b301ef197ee6824ef4bd5a99ceb76cf505f6350b7b29428adf03c8aa"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/43824700128"
+  iso: null
+  reissues: []
+highlights:
+  - "the-audio-visualisers-switch-off-on-battery"
+changes:
+  - id: "the-audio-visualisers-switch-off-on-battery"
+    area: "shell"
+    kind: "fixed"
+    title: "The audio visualisers switch off on battery"
+    summary: "The music visualiser in the notch and the screen recorder's audio meter now switch off on battery to save power, and come back when you plug in."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/60"
+    breaking: false
+knownIssues: []
+rollback: null
