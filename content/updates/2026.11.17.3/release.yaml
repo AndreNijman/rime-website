@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.17.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.17.3"
+product: "rime"
+name: "Rime 2026.11.17.3"
+title: "Ring your phone from Settings and see its battery"
+date: "2026-11-17T12:06:43Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to Rime Shell."
+predecessor: "2026.11.17.2"
+provenance:
+  osRevision: "7200bfeaa4f7b84b8d30c74cd131a988b81bd368"
+  shellRevision: "4263ce70f22784c1bd968d8973061c083bc9eb4e"
+  imageDigest: "sha256:399ce412731e12ac22642131b50678d9463b0fa9c49cb563aeebc141e837736e"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44077579976"
+  iso: null
+  reissues: []
+highlights:
+  - "ring-your-phone-from-settings-and-see-its-batter"
+  - "send-your-clipboard-to-your-phone-from-settings"
+changes:
+  - id: "ring-your-phone-from-settings-and-see-its-batter"
+    area: "shell"
+    kind: "new"
+    title: "Ring your phone from Settings and see its battery"
+    summary: "Settings → Remote → Devices shows each phone's battery and has a Ring button to find a phone you've misplaced."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/61"
+    breaking: false
+  - id: "send-your-clipboard-to-your-phone-from-settings"
+    area: "shell"
+    kind: "new"
+    title: "Send your clipboard to your phone from Settings"
+    summary: "Settings → Remote → Devices has a Send clipboard button that puts your computer's clipboard text on your phone."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/62"
+    breaking: false
+knownIssues: []
+rollback: null
