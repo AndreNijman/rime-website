@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.16.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.17"
+product: "rime"
+name: "Rime 2026.11.17"
+title: "Rime Remote's terminal keeps your prompt when the keyboard opens"
+date: "2026-11-17T04:15:08Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "The Rime Remote terminal keeps your prompt where it was when the keyboard opens, and screen readers no longer stop on an unlabelled field beside it."
+predecessor: "2026.11.16.2"
+provenance:
+  osRevision: "fca0e5c549aa72bb01d9e4de8c17adb8210f2975"
+  shellRevision: "8f9779dab602c28ced77a75a19f137cc9a149f6c"
+  imageDigest: "sha256:1fca73914f22f6ee8bef78bdcf911d0c233ed435e77a6b9df872a1279c819aa0"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44013151383"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-remote-s-terminal-keeps-your-prompt-when-th"
+changes:
+  - id: "rime-remote-s-terminal-keeps-your-prompt-when-th"
+    area: "agents"
+    kind: "fixed"
+    title: "Rime Remote's terminal keeps your prompt when the keyboard opens"
+    summary: "The Rime Remote terminal keeps your prompt where it was when the keyboard opens, and screen readers no longer stop on an unlabelled field beside it."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/180"
+    breaking: false
+knownIssues: []
+rollback: null
