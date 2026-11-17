@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.17.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.18"
+product: "rime"
+name: "Rime 2026.11.18"
+title: "Dismiss a phone's notification on the computer and it leaves the phone"
+date: "2026-11-17T22:18:40Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.17.3"
+provenance:
+  osRevision: "4904f8fd8a8367edc401abf9725922a99f41f75a"
+  shellRevision: "acb30d52abac2e16bafc3ce22298733c726cb142"
+  imageDigest: "sha256:75edf3f0bc377b7a630c0906816f1b51cceeb3e3544bb59c087b9844d10ac148"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44185459940"
+  iso: null
+  reissues: []
+highlights:
+  - "dismiss-a-phone-s-notification-on-the-computer-a"
+  - "reply-to-notifications-from-the-desktop"
+changes:
+  - id: "dismiss-a-phone-s-notification-on-the-computer-a"
+    area: "system"
+    kind: "new"
+    title: "Dismiss a phone's notification on the computer and it leaves the phone"
+    summary: "When you dismiss one of your phone's notifications on the computer, it now disappears from the phone too."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/190"
+    breaking: false
+  - id: "reply-to-notifications-from-the-desktop"
+    area: "shell"
+    kind: "new"
+    title: "Reply to notifications from the desktop"
+    summary: "You can answer a message notification right from the desktop: click Reply on the notification, type, and press Return."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/63"
+    breaking: false
+knownIssues: []
+rollback: null
