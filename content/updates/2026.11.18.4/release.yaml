@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.18.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.18.4"
+product: "rime"
+name: "Rime 2026.11.18.4"
+title: "Your phone's network and Do Not Disturb on the computer, and Do Not Disturb that follows"
+date: "2026-11-18T06:05:34Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "With Rime Shell and the new switches turned on, Do Not Disturb follows between your phone and your computer, and the computer shows your phone's network and signal."
+predecessor: "2026.11.18.3"
+provenance:
+  osRevision: "03b9bfdc3fc86568b98ad8566a53f31b738b998d"
+  shellRevision: "b9937910f85b1864603fc75b5ddc5efb1f7f2a19"
+  imageDigest: "sha256:cb1dc6be72b0dc04f6e05b5c65630eb22260c6939a6c51750b619105a18a967d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44246938215"
+  iso: null
+  reissues: []
+highlights:
+  - "your-phone-s-network-and-do-not-disturb-on-the-c"
+changes:
+  - id: "your-phone-s-network-and-do-not-disturb-on-the-c"
+    area: "system"
+    kind: "new"
+    title: "Your phone's network and Do Not Disturb on the computer, and Do Not Disturb that follows"
+    summary: "With Rime Shell and the new switches turned on, Do Not Disturb follows between your phone and your computer, and the computer shows your phone's network and signal."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/195"
+    breaking: false
+knownIssues: []
+rollback: null
