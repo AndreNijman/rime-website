@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.18.5. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.18.6"
+product: "rime"
+name: "Rime 2026.11.18.6"
+title: "Control your phone's music from the computer"
+date: "2026-11-18T16:06:41Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.18.5"
+provenance:
+  osRevision: "8a2c45a9dafb62758eaec7bc8ad6ffbb8b939905"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: null
+  nixManifest: "sha256:7c83127ae8719cb84e3c563f78ca34432bbc06d807feacbf36e751ad9a6cde20"
+  build: null
+  iso: null
+  reissues: []
+highlights:
+  - "control-your-phone-s-music-from-the-computer"
+  - "a-phone-tab-for-your-phone-s-messages-calls-and"
+changes:
+  - id: "control-your-phone-s-music-from-the-computer"
+    area: "system"
+    kind: "new"
+    title: "Control your phone's music from the computer"
+    summary: "With Rime Shell and \"Control from your computer\" on in the app, the media keys and the player card can play, pause, skip and seek what your phone is playing when nothing on the computer is playing."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/196"
+    breaking: false
+  - id: "a-phone-tab-for-your-phone-s-messages-calls-and"
+    area: "shell"
+    kind: "new"
+    title: "A Phone tab for your phone's messages, calls and photos"
+    summary: "The Dashboard has a Phone tab: read and reply to your phone's text messages, see and end calls, dial, and save photos from your paired phone."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/68"
+    breaking: false
+knownIssues: []
+rollback: null
