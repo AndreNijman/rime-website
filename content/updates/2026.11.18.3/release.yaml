@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.18.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.18.3"
+product: "rime"
+name: "Rime 2026.11.18.3"
+title: "Reply to your phone's messages from the computer"
+date: "2026-11-18T04:14:42Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system."
+predecessor: "2026.11.18.2"
+provenance:
+  osRevision: "787c546864f730fa261638948c5b6ca358472c51"
+  shellRevision: "95f60d33b9185e79acf8e59cef68d75506951b53"
+  imageDigest: "sha256:9c8d5bef69591169465e11545103aabbff3c2c7a068c87317e8c06a790810991"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44233740093"
+  iso: null
+  reissues: []
+highlights:
+  - "reply-to-your-phone-s-messages-from-the-computer"
+  - "what-your-phone-is-playing-shows-on-the-computer"
+changes:
+  - id: "reply-to-your-phone-s-messages-from-the-computer"
+    area: "system"
+    kind: "new"
+    title: "Reply to your phone's messages from the computer"
+    summary: "With Rime Shell and \"Reply from your computer\" turned on in the app, you can answer a message from your phone right on the computer: type into the notification's Reply field and the phone sends it from the app."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/191"
+    breaking: false
+  - id: "what-your-phone-is-playing-shows-on-the-computer"
+    area: "system"
+    kind: "new"
+    title: "What your phone is playing shows on the computer"
+    summary: "With Rime Shell and \"Media on your computer\" turned on in the app, the song or video playing on your phone shows on the computer, in the notch and on the player card."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/193"
+    breaking: false
+knownIssues: []
+rollback: null
