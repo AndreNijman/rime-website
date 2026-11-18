@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.18.6. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.19"
+product: "rime"
+name: "Rime 2026.11.19"
+title: "Rime Remote: your computer's clipboard on your phone, and your phone's messages, calls and photos on your computer"
+date: "2026-11-18T23:12:42Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Rime Remote can now put your computer's clipboard on your phone, keep working after your phone restarts, and show your phone's text messages, calls and recent photos on the computer, each turned on in the app first."
+predecessor: "2026.11.18.6"
+provenance:
+  osRevision: "277ccc3f498a158f039814d28328ffa76486a75e"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:b59ceb0eabeca654f68f0e43b36b1390c12e621fe2fab260e1238fd6ff280175"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44416087919"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-remote-your-computer-s-clipboard-on-your-ph"
+changes:
+  - id: "rime-remote-your-computer-s-clipboard-on-your-ph"
+    area: "agents"
+    kind: "improved"
+    title: "Rime Remote: your computer's clipboard on your phone, and your phone's messages, calls and photos on your computer"
+    summary: "Rime Remote can now put your computer's clipboard on your phone, keep working after your phone restarts, and show your phone's text messages, calls and recent photos on the computer, each turned on in the app first."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/197"
+    breaking: false
+knownIssues: []
+rollback: null
