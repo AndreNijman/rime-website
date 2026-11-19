@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.19. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.19.2"
+product: "rime"
+name: "Rime 2026.11.19.2"
+title: "Pair two Rime computers"
+date: "2026-11-19T01:16:29Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "You can pair two Rime computers with rime remote computers add: one shows a six-digit code and the other asks for it."
+predecessor: "2026.11.19"
+provenance:
+  osRevision: "99ec5b3dbe5afcfcd7b81eadbe6a25d607c79d9f"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:b3315af3dae8215bd68e9e1b503d92b8ac59c91c79c5e892ee7cbc16b5339f74"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44432982042"
+  iso: null
+  reissues: []
+highlights:
+  - "pair-two-rime-computers"
+changes:
+  - id: "pair-two-rime-computers"
+    area: "system"
+    kind: "new"
+    title: "Pair two Rime computers"
+    summary: "You can pair two Rime computers with rime remote computers add: one shows a six-digit code and the other asks for it."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/198"
+    breaking: false
+knownIssues: []
+rollback: null
