@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.19.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.19.3"
+product: "rime"
+name: "Rime 2026.11.19.3"
+title: "Paired Rime computers stay in step: presence and removals"
+date: "2026-11-19T04:06:33Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Paired Rime computers now show each other's battery and network in rime remote computers list, and removing a computer on one removes it on the others."
+predecessor: "2026.11.19.2"
+provenance:
+  osRevision: "a108212c32cac311834c6e82ae077238a46331c3"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:fe6020293933e70e8a6434fa10e08cd51e86282d6010e0bdd871cc52f53169a4"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44454070898"
+  iso: null
+  reissues: []
+highlights:
+  - "paired-rime-computers-stay-in-step-presence-and"
+changes:
+  - id: "paired-rime-computers-stay-in-step-presence-and"
+    area: "system"
+    kind: "new"
+    title: "Paired Rime computers stay in step: presence and removals"
+    summary: "Paired Rime computers now show each other's battery and network in rime remote computers list, and removing a computer on one removes it on the others."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/199"
+    breaking: false
+knownIssues: []
+rollback: null
