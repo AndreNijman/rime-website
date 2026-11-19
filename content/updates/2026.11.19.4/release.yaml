@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.19.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.19.4"
+product: "rime"
+name: "Rime 2026.11.19.4"
+title: "Your phone introduces your Rime computers to each other"
+date: "2026-11-19T06:47:39Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Your phone can now introduce your Rime computers to each other, and a newly paired computer can bring your phone along, without another code. A device added this way waits for you to run rime remote devices allow or rime remote computers allow before it gets full access."
+predecessor: "2026.11.19.3"
+provenance:
+  osRevision: "fdb6fff3fb8bc545b7002e89bec439ed85f12509"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:56ca347a99a025e96fc0dc33a3dbacb527840eef272ca6e999ff380aefde6a65"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44472232889"
+  iso: null
+  reissues: []
+highlights:
+  - "your-phone-introduces-your-rime-computers-to-eac"
+changes:
+  - id: "your-phone-introduces-your-rime-computers-to-eac"
+    area: "system"
+    kind: "new"
+    title: "Your phone introduces your Rime computers to each other"
+    summary: "Your phone can now introduce your Rime computers to each other, and a newly paired computer can bring your phone along, without another code. A device added this way waits for you to run rime remote devices allow or rime remote computers allow before it gets full access."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/200"
+    breaking: false
+knownIssues: []
+rollback: null
