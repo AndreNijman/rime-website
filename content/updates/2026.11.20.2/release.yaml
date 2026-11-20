@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.20. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.20.2"
+product: "rime"
+name: "Rime 2026.11.20.2"
+title: "Rime restarts after a kernel panic and shows why it crashed"
+date: "2026-11-20T15:46:44Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "When the system crashes, the screen now shows the reason instead of a wall of log, the computer restarts by itself after 30 seconds, and the next login tells you what happened (rime crash shows the details)."
+predecessor: "2026.11.20"
+provenance:
+  osRevision: "f2f9e2b2aa1067f718f16d983b57f1445d2440e8"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:2b801532fdec1a006e63cc125458fe42927a5247fe6ed997f030367adbeec585"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44763053218"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-restarts-after-a-kernel-panic-and-shows-why"
+changes:
+  - id: "rime-restarts-after-a-kernel-panic-and-shows-why"
+    area: "system"
+    kind: "fixed"
+    title: "Rime restarts after a kernel panic and shows why it crashed"
+    summary: "When the system crashes, the screen now shows the reason instead of a wall of log, the computer restarts by itself after 30 seconds, and the next login tells you what happened (rime crash shows the details)."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/201"
+    breaking: false
+knownIssues: []
+rollback: null
