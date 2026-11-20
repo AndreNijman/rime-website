@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.19.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.20"
+product: "rime"
+name: "Rime 2026.11.20"
+title: "Rime updates say when the download server is busy"
+date: "2026-11-20T13:22:31Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "When the Rime download server is busy, rime update on NixOS now tries again for about a minute and then says \"the Rime download server is busy; nothing was changed; try again later\" instead of reporting a signature failure."
+predecessor: "2026.11.19.4"
+provenance:
+  osRevision: "bd844d2d4e856472260a3ccd8c89438b06a1a760"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:1d30b3a6643f48b0564ad2a9694600baac11c60bb0509235aaa7090f3ac3b446"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44740955039"
+  iso: null
+  reissues: []
+highlights:
+  - "rime-updates-say-when-the-download-server-is-bus"
+changes:
+  - id: "rime-updates-say-when-the-download-server-is-bus"
+    area: "system"
+    kind: "fixed"
+    title: "Rime updates say when the download server is busy"
+    summary: "When the Rime download server is busy, rime update on NixOS now tries again for about a minute and then says \"the Rime download server is busy; nothing was changed; try again later\" instead of reporting a signature failure."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/203"
+    breaking: false
+knownIssues: []
+rollback: null
