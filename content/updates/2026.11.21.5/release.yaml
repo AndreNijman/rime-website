@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.21.4. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.21.5"
+product: "rime"
+name: "Rime 2026.11.21.5"
+title: "Files between your computers work on slow connections"
+date: "2026-11-21T14:20:33Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Sending a file to another of your computers now works on slow connections such as a phone hotspot."
+predecessor: "2026.11.21.4"
+provenance:
+  osRevision: "dfe2d735c14e199613a391640c32990c9b4ffb4c"
+  shellRevision: "84ffca06ebe0915c18377b2b1762d348e6160ef6"
+  imageDigest: "sha256:3ebc55dc9bbc32e8c63c47afc4b9f8c8fb84281b207ba020a5d4977ace8501b7"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44911534744"
+  iso: null
+  reissues: []
+highlights:
+  - "files-between-your-computers-work-on-slow-connec"
+changes:
+  - id: "files-between-your-computers-work-on-slow-connec"
+    area: "system"
+    kind: "fixed"
+    title: "Files between your computers work on slow connections"
+    summary: "Sending a file to another of your computers now works on slow connections such as a phone hotspot."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/207"
+    breaking: false
+knownIssues: []
+rollback: null
