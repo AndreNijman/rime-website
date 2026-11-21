@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.20.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.21"
+product: "rime"
+name: "Rime 2026.11.21"
+title: "Share the clipboard and send files between your Rime computers"
+date: "2026-11-21T01:51:09Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Two paired Rime computers can now share the clipboard and send each other files: turn it on with rime remote computers clipboard, and send with rime remote computers send. Files land in Downloads and are never opened."
+predecessor: "2026.11.20.2"
+provenance:
+  osRevision: "21142b4365db8a0ed5dabe689921ab979a04ea15"
+  shellRevision: "af30a3a391ee442518ef2345cb3ca6a95babae5c"
+  imageDigest: "sha256:1c02d84c4398806aef08aa05ba51d177051eb41b8b2fa727431b204184cb8a5d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44850796361"
+  iso: null
+  reissues: []
+highlights:
+  - "share-the-clipboard-and-send-files-between-your"
+changes:
+  - id: "share-the-clipboard-and-send-files-between-your"
+    area: "system"
+    kind: "new"
+    title: "Share the clipboard and send files between your Rime computers"
+    summary: "Two paired Rime computers can now share the clipboard and send each other files: turn it on with rime remote computers clipboard, and send with rime remote computers send. Files land in Downloads and are never opened."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/202"
+    breaking: false
+knownIssues: []
+rollback: null
