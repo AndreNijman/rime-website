@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.21.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.21.3"
+product: "rime"
+name: "Rime 2026.11.21.3"
+title: "See and work in agent sessions on your other computers"
+date: "2026-11-21T08:47:20Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to agents and Rime Shell."
+predecessor: "2026.11.21.2"
+provenance:
+  osRevision: "dec0eaef4a6a8d696b2b739d1ac9d016de5c8857"
+  shellRevision: "84ffca06ebe0915c18377b2b1762d348e6160ef6"
+  imageDigest: "sha256:0048cca37f4f231ca332fa404c962edc39a20f6e2cb3256f3e90f43ec285441e"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44885148609"
+  iso: null
+  reissues: []
+highlights:
+  - "see-and-work-in-agent-sessions-on-your-other-com"
+  - "agent-sessions-on-your-other-computers-in-the-ag"
+changes:
+  - id: "see-and-work-in-agent-sessions-on-your-other-com"
+    area: "agents"
+    kind: "new"
+    title: "See and work in agent sessions on your other computers"
+    summary: "You can now let one of your Rime computers see, or work in, the agent sessions on another, with rime remote computers grant. It is off until you turn it on, and turning it off takes effect at once."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/206"
+    breaking: false
+  - id: "agent-sessions-on-your-other-computers-in-the-ag"
+    area: "shell"
+    kind: "new"
+    title: "Agent sessions on your other computers in the Agent Center"
+    summary: "The Agent Center now shows agent sessions on your other Rime computers that share them with you, so you can peek at them and, where allowed, attach from a terminal. In Settings you can stop another computer from seeing your own agent sessions, or copy the terminal command that lets it do more."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/70"
+    breaking: false
+knownIssues: []
+rollback: null
