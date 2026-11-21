@@ -1,0 +1,55 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.21. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.21.2"
+product: "rime"
+name: "Rime 2026.11.21.2"
+title: "Open a link on your other computer"
+date: "2026-11-21T06:45:06Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "2 changes, to the system and Rime Shell."
+predecessor: "2026.11.21"
+provenance:
+  osRevision: "b41a90e2f812c2986d538d533395789232c5ed09"
+  shellRevision: "ff503cceee37771e29b9a93e9212d301679b262b"
+  imageDigest: "sha256:ebc9c3feb025716c0e08d833c08fbe83f684f056a2091637769b49719f42b27d"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44875582670"
+  iso: null
+  reissues: []
+highlights:
+  - "open-a-link-on-your-other-computer"
+  - "your-other-computers-on-the-phone-page-and-in-se"
+changes:
+  - id: "open-a-link-on-your-other-computer"
+    area: "system"
+    kind: "new"
+    title: "Open a link on your other computer"
+    summary: "You can now send a web link from one of your Rime computers to another with rime remote computers open. It appears there as a card and opens only when someone presses Open."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/204"
+    breaking: false
+  - id: "your-other-computers-on-the-phone-page-and-in-se"
+    area: "shell"
+    kind: "new"
+    title: "Your other computers on the Phone page and in Settings"
+    summary: "Your other Rime computers now appear on the Phone page and in Settings, Paired devices: see whether each is online, open a link or send a file there, and choose what each may share with this computer."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/69"
+    breaking: false
+knownIssues: []
+rollback: null
