@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.22. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.22.2"
+product: "rime"
+name: "Rime 2026.11.22.2"
+title: "Reloading the Shell while the screen is locked no longer unlocks it"
+date: "2026-11-22T00:28:16Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Reloading the Shell's configuration while the screen is locked no longer unlocks the session."
+predecessor: "2026.11.22"
+provenance:
+  osRevision: "5fb374822c0acc01e7cd22960f064833dd1fe32d"
+  shellRevision: "3571ae3d7b02d71598538947df50c053ed5615c8"
+  imageDigest: "sha256:550ccbc601c2d945ea8bc14a0572f62c0a01c5e5b483e5770e84a21e29e41da1"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44963199169"
+  iso: null
+  reissues: []
+highlights:
+  - "reloading-the-shell-while-the-screen-is-locked-n"
+changes:
+  - id: "reloading-the-shell-while-the-screen-is-locked-n"
+    area: "shell"
+    kind: "fixed"
+    title: "Reloading the Shell while the screen is locked no longer unlocks it"
+    summary: "Reloading the Shell's configuration while the screen is locked no longer unlocks the session."
+    source:
+      - "https://github.com/AndreNijman/rime-shell/pull/72"
+    breaking: false
+knownIssues: []
+rollback: null
