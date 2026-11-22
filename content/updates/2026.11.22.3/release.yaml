@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.22.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.22.3"
+product: "rime"
+name: "Rime 2026.11.22.3"
+title: "Reloading or restarting the Shell while locked keeps the screen locked, with its password prompt"
+date: "2026-11-22T02:43:43Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Reloading or restarting the Shell while the screen is locked no longer unlocks it, and no longer leaves the screen locked without a password prompt."
+predecessor: "2026.11.22.2"
+provenance:
+  osRevision: "5f6c4d33ba01c382366bb8bab8f1095e9deebaf5"
+  shellRevision: "28be84a208672a01f075f590e6c1f1ca52be5016"
+  imageDigest: "sha256:1b9d272ca12dd933fbfeb7cf9c057a5a8c8d7cdf437a66173ba15257b853757f"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/44975989374"
+  iso: null
+  reissues: []
+highlights:
+  - "reloading-or-restarting-the-shell-while-locked-k"
+changes:
+  - id: "reloading-or-restarting-the-shell-while-locked-k"
+    area: "system"
+    kind: "fixed"
+    title: "Reloading or restarting the Shell while locked keeps the screen locked, with its password prompt"
+    summary: "Reloading or restarting the Shell while the screen is locked no longer unlocks it, and no longer leaves the screen locked without a password prompt."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/210"
+    breaking: false
+knownIssues: []
+rollback: null
