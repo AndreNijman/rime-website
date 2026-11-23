@@ -1,0 +1,37 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.22.3. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.23"
+product: "rime"
+name: "Rime 2026.11.23"
+title: "Use your phone as this computer's touchpad and keyboard"
+date: "2026-11-23T12:20:02Z"
+channels:
+  - "edge"
+editions:
+  - "nixos"
+maintenance: false
+summary: "Your phone can now be this computer's touchpad and keyboard, turned on for each phone at the computer with rime remote devices grant <phone> input on. The computer needs Rime 2026.11.22.3 or later."
+predecessor: "2026.11.22.3"
+provenance:
+  osRevision: "62bcf53bb52afb83631d70915f6641782537d004"
+  shellRevision: "28be84a208672a01f075f590e6c1f1ca52be5016"
+  imageDigest: null
+  nixManifest: "sha256:7d998b256cd7fa2ff2c35920cd8b8240c9eb8109878786c4c9b9347e75e6a5b1"
+  build: null
+  iso: null
+  reissues: []
+highlights:
+  - "use-your-phone-as-this-computer-s-touchpad-and-k"
+changes:
+  - id: "use-your-phone-as-this-computer-s-touchpad-and-k"
+    area: "system"
+    kind: "new"
+    title: "Use your phone as this computer's touchpad and keyboard"
+    summary: "Your phone can now be this computer's touchpad and keyboard, turned on for each phone at the computer with rime remote devices grant <phone> input on. The computer needs Rime 2026.11.22.3 or later."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/211"
+    breaking: false
+knownIssues: []
+rollback: null
