@@ -1,0 +1,46 @@
+# Written by scripts/sync-releases.mjs from the published release and the pull
+# requests merged since 2026.11.23.2. Edit freely: the script never
+# touches a record that exists.
+schema: 1
+id: "2026.11.26"
+product: "rime"
+name: "Rime 2026.11.26"
+title: "Screen sharing and file pickers work again: the desktop portal starts at login"
+date: "2026-11-26T05:08:36Z"
+channels:
+  - "apex"
+  - "daily"
+  - "edge"
+  - "gaming-mesa"
+  - "gaming-nvidia"
+  - "platform-apex"
+  - "platform-daily"
+  - "platform-gaming-mesa"
+  - "platform-gaming-nvidia"
+  - "platform-rime"
+  - "rime"
+editions:
+  - "bootc"
+maintenance: false
+summary: "Screen sharing (Discord, browsers, OBS) and Flatpak file pickers now work in the Hyprland and labwc sessions: the desktop portal starts at login instead of failing every time. Machines updated across many releases also get their service accounts' IDs repaired at boot, which had left RealtimeKit and the portal hanging."
+predecessor: "2026.11.23.2"
+provenance:
+  osRevision: "7aa06ab1ce263cb1446cb20dc69af11cceca51aa"
+  shellRevision: "28be84a208672a01f075f590e6c1f1ca52be5016"
+  imageDigest: "sha256:9cbf4f9841f3ff65cc725737942840e099296772fdb4389e6f00c25f7ea5aa9b"
+  build: "https://github.com/AndreNijman/rime-os/actions/runs/45757755452"
+  iso: null
+  reissues: []
+highlights:
+  - "screen-sharing-and-file-pickers-work-again-the-d"
+changes:
+  - id: "screen-sharing-and-file-pickers-work-again-the-d"
+    area: "system"
+    kind: "fixed"
+    title: "Screen sharing and file pickers work again: the desktop portal starts at login"
+    summary: "Screen sharing (Discord, browsers, OBS) and Flatpak file pickers now work in the Hyprland and labwc sessions: the desktop portal starts at login instead of failing every time. Machines updated across many releases also get their service accounts' IDs repaired at boot, which had left RealtimeKit and the portal hanging."
+    source:
+      - "https://github.com/AndreNijman/rime-os/pull/213"
+    breaking: false
+knownIssues: []
+rollback: null
